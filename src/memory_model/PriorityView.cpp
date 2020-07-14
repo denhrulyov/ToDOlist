@@ -4,6 +4,13 @@
 
 #include "PriorityView.h"
 
+
+PriorityView::PriorityView() {
+    for (auto prior : Task::allPriorities()) {
+        view[prior] = priority_view::multiset_type(priority_view::cmp_time);
+    }
+}
+
 void PriorityView::addToView(std::weak_ptr<TaskNode> pnode) {
     auto pnode_access = pnode.lock();
     view[pnode_access->getTask().priority].insert(pnode);
@@ -27,3 +34,4 @@ std::vector<TaskEntity> PriorityView::getAllToDate(time_t date) {
     }
     return result_set;
 }
+

@@ -28,11 +28,7 @@ namespace priority_view {
 class PriorityView {
 
 public:
-    PriorityView() {
-        for (auto prior : Task::allPriorities()) {
-            view[prior] = priority_view::multiset_type(priority_view::cmp_time);
-        }
-    }
+    PriorityView();
 
 public:
     void addToView(std::weak_ptr<TaskNode> pnode);
