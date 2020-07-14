@@ -9,7 +9,7 @@ include(GoogleTest)
 find_package(GTest REQUIRED)
 enable_testing()
 
-add_executable(TestsExecutable tests/TaskNodeTest.cpp)
+add_executable(TestsExecutable tests/TaskNodeTest.cpp tests/TestTaskEntity.cpp tests/TestTaskStorage.cpp)
 target_link_libraries(TestsExecutable GTest::GTest GTest::Main)
 
 gtest_discover_tests(TestsExecutable)
