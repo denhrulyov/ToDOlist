@@ -12,7 +12,7 @@ int main() {
 
     uint id4 = service.addTask("T5", Task::Priority::FIRST, "tag4", 2020);
     uint id5 = service.addSubTask(id, "T6", Task::Priority::THIRD, "tag5", 2021);
-    //service.popTask(id5);
+    service.popTask(id5);
     uint id6 = service.addSubTask(id4, "T7", Task::Priority::NONE, "tag6", 2022);
     service.popTask(id);
     auto tsk = service.getAllTasks();
