@@ -5,8 +5,11 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_executable(ToDOList src/main.cpp src/memory_model/TaskService.cpp src/memory_model/TaskService.h src/memory_model/Task.h src/memory_model/TaskNode.cpp src/memory_model/TaskNode.h src/memory_model/TaskStorage.cpp src/memory_model/TaskStorage.h src/memory_model/TaskController.cpp src/memory_model/TaskController.h src/memory_model/PriorityView.cpp src/memory_model/PriorityView.h src/memory_model/TaskEntity.cpp src/memory_model/TaskEntity.h src/task_io/task_io.hpp)
 
-add_subdirectory(googletest)
-include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+include(GoogleTest)
+find_package(GTest REQUIRED)
+enable_testing()
 
-add_executable(TestExecutable tests/TaskNodeTest.cpp)
-target_link_libraries(TestExecutable gtest gtest_main)
+add_executable(TestsExecutable tests/TaskNodeTest.cpp)
+target_link_libraries(TestsExecutable GTest::GTest GTest::Main)
+
+gtest_discover_tests(TestsExecutable)
