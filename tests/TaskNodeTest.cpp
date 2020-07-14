@@ -14,3 +14,4 @@ TEST_F(TaskNodeTest, correctConstruction) {
     ASSERT_EQ(tst.getTask().label, "lbl");
     ASSERT_EQ(tst.getTask().date, 2020);
 }
+
