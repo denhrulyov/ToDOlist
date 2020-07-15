@@ -8,16 +8,16 @@
 #include <memory>
 
 uint TaskService::addTask(const std::string &name, Task::Priority priority, const std::string &label, time_t date) {
-    std::unique_ptr<Task> ptask = storage_.createTask(name, priority, label, date);
-    std::weak_ptr<TaskNode> pnode = tasks_.createSingleNode(std::move(ptask));
+    std::shared_ptr<Task> ptask = storage_.createTask(name, priority, label, date);
+    std::weak_ptr<TaskNode> pnode = tasks_.createSingleNode(ptask);
     uint created_id = pnode.lock()->getId();
     order_.addToView(pnode);
     return created_id;
 }
 
 uint TaskService::addSubTask(uint id_parent, const std::string &name, Task::Priority priority, const std::string &label, time_t date) {
-    std::unique_ptr<Task> ptask = storage_.createTask(name, priority, label, date);
-    std::weak_ptr<TaskNode> pnode = tasks_.createChild(id_parent, std::move(ptask));
+    std::shared_ptr<Task> ptask = storage_.createTask(name, priority, label, date);
+    std::weak_ptr<TaskNode> pnode = tasks_.createChild(id_parent, ptask);
     uint created_id = pnode.lock()->getId();
     order_.addToView(pnode);
     return created_id;

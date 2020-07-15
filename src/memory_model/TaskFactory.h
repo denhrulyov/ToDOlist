@@ -9,7 +9,7 @@
 class TaskFactory {
 
 public:
-    std::unique_ptr<Task> createTask(const std::string& name, Task::Priority priority, const std::string& label, time_t date);
+    std::shared_ptr<Task> createTask(const std::string& name, Task::Priority priority, const std::string& label, time_t date);
 
 };
 

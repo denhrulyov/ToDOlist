@@ -16,21 +16,21 @@ uint TaskController::getNextAvailableId() {
 
 
 
-std::shared_ptr<TaskNode> TaskController::createNode(std::unique_ptr<Task> tptr) {
+std::shared_ptr<TaskNode> TaskController::createNode(std::shared_ptr<Task> tptr) {
     uint created_id = getNextAvailableId();
     auto pnode = std::make_shared<TaskNode>(created_id, std::move(tptr));
     id_to_node_[created_id] = pnode;
     return pnode;
 }
 
-std::weak_ptr<TaskNode> TaskController::createChild(uint id_parent, std::unique_ptr<Task> tptr) {
+std::weak_ptr<TaskNode> TaskController::createChild(uint id_parent, std::shared_ptr<Task> tptr) {
     auto pnode = createNode(std::move(tptr));
     auto parent_node = id_to_node_[id_parent];
     __bind_parent(&parent_node->getSubtasks(), pnode);
     return pnode;
 }
 
-std::weak_ptr<TaskNode> TaskController::createSingleNode(std::unique_ptr<Task> tptr) {
+std::weak_ptr<TaskNode> TaskController::createSingleNode(std::shared_ptr<Task> tptr) {
     auto pnode = createNode(std::move(tptr));
     __bind_parent(&task_nodes_, pnode);
     return pnode;

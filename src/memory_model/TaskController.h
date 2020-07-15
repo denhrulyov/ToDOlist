@@ -11,8 +11,8 @@ class TaskController {
 
 public:
 
-    std::weak_ptr<TaskNode>     createChild(uint id_parent, std::unique_ptr<Task> tptr);
-    std::weak_ptr<TaskNode>     createSingleNode(std::unique_ptr<Task> tptr);
+    std::weak_ptr<TaskNode>     createChild(uint id_parent, std::shared_ptr<Task> tptr);
+    std::weak_ptr<TaskNode>     createSingleNode(std::shared_ptr<Task> tptr);
     std::vector<uint>           getAllSubtasks(uint id_parent);
     void                        eraseNode(uint id_erase);
 
@@ -20,7 +20,7 @@ private:
     uint getNextAvailableId();
 
 private:
-    std::shared_ptr<TaskNode> createNode(std::unique_ptr<Task> tptr);
+    std::shared_ptr<TaskNode> createNode(std::shared_ptr<Task> tptr);
 
     // stateful functions that require careful usage
     void __find_all_children(const TaskNode& tnode, std::vector<uint>& buf);
