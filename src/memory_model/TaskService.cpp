@@ -4,9 +4,6 @@
 
 #include "TaskService.h"
 
-#include <algorithm>
-#include <memory>
-
 uint TaskService::addTask(const std::string &name, Task::Priority priority, const std::string &label, time_t date) {
     std::shared_ptr<Task> ptask = storage_.createTask(name, priority, label, date);
     std::weak_ptr<TaskNode> pnode = tasks_.createSingleNode(ptask);

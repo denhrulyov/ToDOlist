@@ -5,9 +5,8 @@
 #ifndef EVAL_TASK_H
 #define EVAL_TASK_H
 
-#include <bits/stdc++.h>
-
-
+#include <string>
+#include <ctime>
 
 
 struct Task {

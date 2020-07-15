@@ -6,6 +6,8 @@
 #define TODOLIST_PRIORITYVIEW_H
 #include "TaskNode.h"
 #include "TaskEntity.h"
+#include <functional>
+#include <set>
 
 namespace priority_view {
 

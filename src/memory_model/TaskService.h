@@ -9,6 +9,8 @@
 #include "TaskController.h"
 #include "PriorityView.h"
 #include <unordered_map>
+#include <algorithm>
+#include <memory>
 
 class TaskService {
 

@@ -5,6 +5,8 @@
 #ifndef EVAL_TASKSTORAGE_H
 #define EVAL_TASKSTORAGE_H
 #include "Task.h"
+#include <memory>
+
 
 class TaskFactory {
 
