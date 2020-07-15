@@ -3,8 +3,8 @@
 //
 
 #include <gtest/gtest.h>
-#include "../src/memory_model/TaskStorage.h"
-#include "../src/memory_model/TaskStorage.cpp"
+#include "memory_model/TaskStorage.h"
+#include "memory_model/TaskStorage.cpp"
 
 class TaskStorageTest : public ::testing::Test {
 

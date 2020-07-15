@@ -3,8 +3,8 @@
 //
 
 #include <gtest/gtest.h>
-#include "../src/memory_model/TaskEntity.h"
-#include "../src/memory_model/TaskEntity.cpp"
+#include "memory_model/TaskEntity.h"
+#include "memory_model/TaskEntity.cpp"
 
 class TaskEntityTest : public ::testing::Test {
 
