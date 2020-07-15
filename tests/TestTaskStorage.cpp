@@ -3,15 +3,15 @@
 //
 
 #include <gtest/gtest.h>
-#include "memory_model/TaskStorage.h"
-#include "memory_model/TaskStorage.cpp"
+#include "memory_model/TaskFactory.h"
+#include "memory_model/TaskFactory.cpp"
 
 class TaskStorageTest : public ::testing::Test {
 
 };
 
 TEST_F(TaskStorageTest, ptrIsValid) {
-    TaskStorage ts;
+    TaskFactory ts;
     auto ptask = ts.createTask("name", Task::Priority::NONE, "lbl", 2020);
     ASSERT_TRUE(ptask);
     EXPECT_EQ(ptask->name, "name");

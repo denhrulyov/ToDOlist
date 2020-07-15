@@ -6,7 +6,7 @@
 #define EVAL_TASKSTORAGE_H
 #include "Task.h"
 
-class TaskStorage {
+class TaskFactory {
 
 public:
     std::unique_ptr<Task> createTask(const std::string& name, Task::Priority priority, const std::string& label, time_t date);

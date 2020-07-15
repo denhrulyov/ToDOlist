@@ -5,7 +5,7 @@
 #ifndef EVAL_TASKSERVICE_H
 #define EVAL_TASKSERVICE_H
 #include "TaskNode.h"
-#include "TaskStorage.h"
+#include "TaskFactory.h"
 #include "TaskController.h"
 #include "PriorityView.h"
 #include <unordered_map>
@@ -37,7 +37,7 @@ public:
     */
 private:
     TaskController      tasks_;
-    TaskStorage         storage_;
+    TaskFactory         storage_;
     PriorityView        order_;
 };
 
