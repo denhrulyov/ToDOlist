@@ -2,8 +2,8 @@
 // Created by denis on 13.07.20.
 //
 
-#ifndef TODOLIST_TASK_IO_HPP
-#define TODOLIST_TASK_IO_HPP
+#ifndef TODOLIST_TASK_IO_H
+#define TODOLIST_TASK_IO_H
 
 #include "../memory_model/TaskEntity.h"
 
@@ -30,4 +30,4 @@ std::ostream& operator << (std::ostream& out, TaskEntity task) {
 
 
 
-#endif //TODOLIST_TASK_IO_HPP
+#endif //TODOLIST_TASK_IO_H

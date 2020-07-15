@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "memory_model/TaskService.h"
-#include "../src/task_io/task_io.hpp"
+#include "task_io/task_io.h"
 
 int main() {
     TaskService service;
