@@ -4,9 +4,10 @@
 
 #include "PriorityView.h"
 
+const std::vector<Task::Priority> PriorityView::priorities_by_order = { Task::Priority::FIRST, Task::Priority::SECOND, Task::Priority::THIRD, Task::Priority::NONE };
 
 PriorityView::PriorityView() {
-    for (auto prior : Task::allPriorities()) {
+    for (auto prior : priorities_by_order) {
         view[prior] = priority_view::multiset_type(priority_view::cmp_time);
     }
 }
@@ -20,7 +21,7 @@ std::vector<TaskEntity> PriorityView::getAllToDate(time_t date) {
     std::vector<TaskEntity> result_set;
     time_t current_time;
     time(&current_time); //  get current time
-    for (auto prior : Task::allPriorities()) {
+    for (auto prior : priorities_by_order) {
         for (const auto& ptask : view[prior]) {
             if (ptask.expired()) {
                 continue;

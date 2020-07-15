@@ -35,6 +35,7 @@ public:
     std::vector<TaskEntity> getAllToDate(time_t date);
 
 private:
+    static const std::vector<Task::Priority> priorities_by_order;
     std::unordered_map<Task::Priority, priority_view::multiset_type> view;
 };
 

@@ -8,6 +8,8 @@
 #include <bits/stdc++.h>
 
 
+
+
 struct Task {
     enum class Priority {
         NONE,
@@ -16,9 +18,6 @@ struct Task {
         THIRD
     };
 
-    static std::vector<Priority> allPriorities() {
-        return { Priority::FIRST, Priority::SECOND, Priority::THIRD, Priority::NONE };
-    }
 
     const std::string       name;
     const Task::Priority    priority;
