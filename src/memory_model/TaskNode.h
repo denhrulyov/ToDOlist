@@ -18,6 +18,8 @@ public:
     uint                                        getId() const;
     std::list<std::shared_ptr<TaskNode>>&       getSubtasks();
     const std::list<std::shared_ptr<TaskNode>>& getSubtasks() const;
+    std::shared_ptr<TaskNode> getParent();
+    void setParent(const std::shared_ptr<TaskNode>&);
 
 public:
     void addSubtask(std::shared_ptr<TaskNode> subtask);
@@ -28,6 +30,7 @@ public:
 private:
     uint id;
     std::shared_ptr<Task> root_task_;
+    std::shared_ptr<TaskNode> parent_;
     std::list<std::shared_ptr<TaskNode>> subtasks_;
 };
 

@@ -13,6 +13,7 @@
 class TaskController {
 
 public:
+    TaskController();
 
     std::weak_ptr<TaskNode>     createChild(uint id_parent, std::shared_ptr<Task> tptr);
     std::weak_ptr<TaskNode>     createSingleNode(std::shared_ptr<Task> tptr);
@@ -31,17 +32,8 @@ private:
     void __erase_node_references(uint node_id);
     void __remove_from_tree(uint);
 
-    std::list<std::shared_ptr<TaskNode>> task_nodes_;
+    std::shared_ptr<TaskNode> root_task_;
     std::map<uint, std::shared_ptr<TaskNode>> id_to_node_;
-    // map of ids' corresponding to parent node list and place of node in the list with given id
-    std::unordered_map<
-                    uint,
-                    std::pair<
-                            std::list<std::shared_ptr<TaskNode>>*,
-                            std::list<std::shared_ptr<TaskNode>>::iterator
-                             >
-                    >
-                    node_places_;
 };
 
 

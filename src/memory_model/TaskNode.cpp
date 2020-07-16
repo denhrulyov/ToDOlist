@@ -23,3 +23,11 @@ uint TaskNode::getId() const {
 const std::list<std::shared_ptr<TaskNode>> &TaskNode::getSubtasks() const {
     return subtasks_;
 }
+
+std::shared_ptr<TaskNode> TaskNode::getParent() {
+    return parent_;
+}
+
+void TaskNode::setParent(const std::shared_ptr<TaskNode>& parent) {
+    parent_ = parent;
+}

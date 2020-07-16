@@ -18,7 +18,9 @@ uint TaskController::getNextAvailableId() {
 
 std::shared_ptr<TaskNode> TaskController::createNode(std::shared_ptr<Task> tptr) {
     uint created_id = getNextAvailableId();
-    auto pnode = std::make_shared<TaskNode>(created_id, std::move(tptr));
+    auto pnode = std::make_shared<TaskNode>(created_id, tptr);
+    root_task_->addSubtask(pnode);
+    pnode->setParent(root_task_);
     id_to_node_[created_id] = pnode;
     return pnode;
 }
@@ -26,13 +28,14 @@ std::shared_ptr<TaskNode> TaskController::createNode(std::shared_ptr<Task> tptr)
 std::weak_ptr<TaskNode> TaskController::createChild(uint id_parent, std::shared_ptr<Task> tptr) {
     auto pnode = createNode(std::move(tptr));
     auto parent_node = id_to_node_[id_parent];
-    __bind_parent(&parent_node->getSubtasks(), pnode);
+    parent_node->addSubtask(pnode);
+    pnode->setParent(parent_node);
+    id_to_node_[pnode->getId()] = pnode;
     return pnode;
 }
 
 std::weak_ptr<TaskNode> TaskController::createSingleNode(std::shared_ptr<Task> tptr) {
     auto pnode = createNode(std::move(tptr));
-    __bind_parent(&task_nodes_, pnode);
     return pnode;
 }
 
@@ -58,7 +61,6 @@ void TaskController::__bind_parent(
         std::list<std::shared_ptr<TaskNode>> * parent_children_list,
         const std::shared_ptr<TaskNode>& child) {
     parent_children_list->push_back(child);
-    node_places_[child->getId()] = std::make_pair(parent_children_list, std::prev(parent_children_list->end()));
 }
 
 
@@ -70,11 +72,23 @@ void TaskController::__find_all_children(const TaskNode &tnode, std::vector<uint
 }
 
 void TaskController::__erase_node_references(uint node_id) {
-    node_places_.erase(node_id);
     id_to_node_.erase(node_id);
 }
 
 void TaskController::__remove_from_tree(uint id_task) {
-    auto parent_n_child = node_places_[id_task];
-    parent_n_child.first->erase(parent_n_child.second);
+    auto ptr_task_node = id_to_node_[id_task];
+    auto ptr_parent_node = ptr_task_node->getParent();
+    if (ptr_parent_node) {
+        auto children_ = ptr_parent_node->getSubtasks();
+        for (auto iter = children_.begin(); iter != children_.end(); ++iter) {
+            if (iter->get()->getId() == id_task) {
+                children_.erase(iter);
+                break;
+            }
+        }
+    }
+}
+
+TaskController::TaskController() {
+    root_task_ = std::make_shared<TaskNode>(0, nullptr);
 }
