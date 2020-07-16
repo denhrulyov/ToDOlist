@@ -4,8 +4,8 @@
 
 #include "TaskNode.h"
 
-const Task& TaskNode::getTask() const {
-    return *root_task_.get();
+std::shared_ptr<Task> TaskNode::getTask() const {
+    return root_task_;
 }
 
 std::list<std::shared_ptr<TaskNode>>& TaskNode::getSubtasks() {

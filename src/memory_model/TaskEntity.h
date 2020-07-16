@@ -6,12 +6,13 @@
 #define TODOLIST_TASKENTITY_H
 
 #include "Task.h"
+#include "memory"
 
 class TaskEntity {
 
 public:
-    TaskEntity(uint id_task, const Task& tref) :
-    task_(tref), id_(id_task) {}
+    TaskEntity(uint id_task, const std::shared_ptr<Task>& task_) :
+    task_(task_), id_(id_task) {}
     uint                getId();
     std::string         getName();
     time_t              getDate();
@@ -20,7 +21,7 @@ public:
 
 private:
     uint id_;
-    const Task& task_;
+    std::shared_ptr<Task> task_;
 };
 
 

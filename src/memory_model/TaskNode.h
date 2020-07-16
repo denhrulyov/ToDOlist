@@ -14,7 +14,7 @@ class TaskNode {
 public:
     TaskNode(uint id, std::shared_ptr<Task> tptr) :
     id(id), root_task_(tptr) {}
-    const Task&                                 getTask() const;
+    std::shared_ptr<Task>                       getTask() const;
     uint                                        getId() const;
     std::list<std::shared_ptr<TaskNode>>&       getSubtasks();
     const std::list<std::shared_ptr<TaskNode>>& getSubtasks() const;

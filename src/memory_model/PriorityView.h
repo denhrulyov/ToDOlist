@@ -22,7 +22,7 @@ namespace priority_view {
 
     const order_cmp_type cmp_time =
             [] (const std::weak_ptr<TaskNode>& lhs, const std::weak_ptr<TaskNode>& rhs) {
-                return lhs.lock()->getTask().date < rhs.lock()->getTask().date;
+                return lhs.lock()->getTask()->date < rhs.lock()->getTask()->date;
             }
     ;
 }
