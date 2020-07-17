@@ -4,7 +4,7 @@
 
 #include "TaskNode.h"
 
-std::shared_ptr<Task> TaskNode::getTask() const {
+Task TaskNode::getTask() const {
     return root_task_;
 }
 

@@ -11,7 +11,7 @@
 class TaskEntity {
 
 public:
-    TaskEntity(uint id_task, const std::shared_ptr<Task>& task_) :
+    TaskEntity(uint id_task, const Task& task_) :
     task_(task_), id_(id_task) {}
     uint                getId();
     std::string         getName();
@@ -21,7 +21,7 @@ public:
 
 private:
     uint id_;
-    std::shared_ptr<Task> task_;
+    Task task_;
 };
 
 

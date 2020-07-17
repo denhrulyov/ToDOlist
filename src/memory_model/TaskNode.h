@@ -4,7 +4,7 @@
 
 #ifndef EVAL_TASKNODE_H
 #define EVAL_TASKNODE_H
-#include "Task.h"
+#include "TaskEntity.h"
 #include <list>
 #include <memory>
 #include <iostream>
@@ -12,9 +12,9 @@
 class TaskNode {
 
 public:
-    TaskNode(uint id, std::shared_ptr<Task> tptr) :
-    id(id), root_task_(tptr) {}
-    std::shared_ptr<Task>                       getTask() const;
+    TaskNode(uint id, const Task& tptr) :
+    id(id), root_task_(tptr), parent_(nullptr), subtasks_() {}
+    Task                                        getTask() const;
     uint                                        getId() const;
     std::list<std::shared_ptr<TaskNode>>&       getSubtasks();
     const std::list<std::shared_ptr<TaskNode>>& getSubtasks() const;
@@ -28,10 +28,10 @@ public:
     ~TaskNode() {std::cout << "Delete task node\n"; }
 
 private:
-    uint id;
-    std::shared_ptr<Task> root_task_;
-    std::shared_ptr<TaskNode> parent_;
-    std::list<std::shared_ptr<TaskNode>> subtasks_;
+    uint                                    id;
+    Task                                    root_task_;
+    std::shared_ptr<TaskNode>               parent_;
+    std::list<std::shared_ptr<TaskNode>>    subtasks_;
 };
 
 
