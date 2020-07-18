@@ -37,6 +37,10 @@ public:
         std::cout << "node_places_ : " << node_places_.size() << std::endl;
     }
     */
+
+    void inspectRoot() {
+        tasks_.see();
+    }
 private:
     TaskController      tasks_;
     TaskFactory         storage_;

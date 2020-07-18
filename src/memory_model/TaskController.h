@@ -20,6 +20,18 @@ public:
     std::vector<uint>           getAllSubtasks(uint id_parent);
     void                        eraseNode(uint id_erase);
 
+
+    void see() {
+        auto sb = getAllSubtasks(0);
+        for (uint id : sb) {
+            std::cout << "node " << id << " | ";
+            for (const auto& nd : id_to_node_[id]->getSubtasks()) {
+                std::cout << nd->getId() << ' ';
+            }
+            if (id) std::cout << "/ p = " << id_to_node_[id]->getParent()->getId();
+            std::cout << std::endl;
+        }
+    }
 private:
     uint getNextAvailableId();
 

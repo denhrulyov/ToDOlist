@@ -18,8 +18,7 @@ uint TaskController::getNextAvailableId() {
 
 std::shared_ptr<TaskNode> TaskController::createNode(const Task& tptr) {
     uint created_id = getNextAvailableId();
-    auto pnode = std::make_shared<TaskNode>(created_id, Task {} );
-    root_task_->addSubtask(pnode);
+    auto pnode = std::make_shared<TaskNode>(created_id, tptr);
     pnode->setParent(root_task_);
     id_to_node_[created_id] = pnode;
     return pnode;
@@ -36,6 +35,7 @@ std::weak_ptr<TaskNode> TaskController::createChild(uint id_parent, const Task& 
 
 std::weak_ptr<TaskNode> TaskController::createSingleNode(const Task& tptr) {
     auto pnode = createNode(tptr);
+    root_task_->addSubtask(pnode);
     return pnode;
 }
 
@@ -48,8 +48,10 @@ std::vector<uint> TaskController::getAllSubtasks(uint id_parent) {
 
 
 void TaskController::eraseNode(uint id_erase) {
+    auto ls = getAllSubtasks(id_erase);
     __remove_from_tree(id_erase);
-    for (uint id : getAllSubtasks(id_erase)) {
+    //std::cout << "id : " << id_erase << " / cnt : " << id_to_node_[id_erase].use_count() << std::endl;
+    for (uint id : ls) {
         __erase_node_references(id);
     }
 }
@@ -72,17 +74,20 @@ void TaskController::__find_all_children(const TaskNode &tnode, std::vector<uint
 }
 
 void TaskController::__erase_node_references(uint node_id) {
-    id_to_node_.erase(node_id);
+    if (node_id) id_to_node_.erase(node_id);
 }
 
 void TaskController::__remove_from_tree(uint id_task) {
     auto ptr_task_node = id_to_node_[id_task];
     auto ptr_parent_node = ptr_task_node->getParent();
     if (ptr_parent_node) {
-        auto children_ = ptr_parent_node->getSubtasks();
+        auto& children_ = ptr_parent_node->getSubtasks();
         for (auto iter = children_.begin(); iter != children_.end(); ++iter) {
             if (iter->get()->getId() == id_task) {
+                // std::cout << "id : " << iter->get()->getId() << " / cnt : " << iter->use_count() << std::endl;
+                //std::cout << children_.size() << std::endl;
                 children_.erase(iter);
+                //std::cout << ptr_parent_node->getSubtasks().size() << std::endl;
                 break;
             }
         }
@@ -91,4 +96,5 @@ void TaskController::__remove_from_tree(uint id_task) {
 
 TaskController::TaskController() {
     root_task_ = std::make_shared<TaskNode>(0, Task {});
+    id_to_node_[0] = root_task_;
 }

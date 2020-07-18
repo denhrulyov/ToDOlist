@@ -8,6 +8,7 @@ uint TaskService::addTask(const std::string &name, Task::Priority priority, cons
     Task ptask = storage_.createTask(name, priority, label, date);
     std::weak_ptr<TaskNode> pnode = tasks_.createSingleNode(ptask);
     uint created_id = pnode.lock()->getId();
+
     order_.addToView(pnode);
     return created_id;
 }
@@ -16,6 +17,7 @@ uint TaskService::addSubTask(uint id_parent, const std::string &name, Task::Prio
     Task ptask = storage_.createTask(name, priority, label, date);
     std::weak_ptr<TaskNode> pnode = tasks_.createChild(id_parent, ptask);
     uint created_id = pnode.lock()->getId();
+    std::cout << "id : " << created_id << " / cnt : " << pnode.use_count() << std::endl;
     order_.addToView(pnode);
     return created_id;
 }

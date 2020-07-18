@@ -25,9 +25,9 @@ const std::list<std::shared_ptr<TaskNode>> &TaskNode::getSubtasks() const {
 }
 
 std::shared_ptr<TaskNode> TaskNode::getParent() {
-    return parent_;
+    return parent_.lock();
 }
 
-void TaskNode::setParent(const std::shared_ptr<TaskNode>& parent) {
+void TaskNode::setParent(std::weak_ptr<TaskNode> parent) {
     parent_ = parent;
 }

@@ -13,13 +13,13 @@ class TaskNode {
 
 public:
     TaskNode(uint id, const Task& tptr) :
-    id(id), root_task_(tptr), parent_(nullptr), subtasks_() {}
+    id(id), root_task_(tptr), subtasks_() {}
     Task                                        getTask() const;
     uint                                        getId() const;
     std::list<std::shared_ptr<TaskNode>>&       getSubtasks();
     const std::list<std::shared_ptr<TaskNode>>& getSubtasks() const;
     std::shared_ptr<TaskNode> getParent();
-    void setParent(const std::shared_ptr<TaskNode>&);
+    void setParent(std::weak_ptr<TaskNode>);
 
 public:
     void addSubtask(std::shared_ptr<TaskNode> subtask);
@@ -30,7 +30,7 @@ public:
 private:
     uint                                    id;
     Task                                    root_task_;
-    std::shared_ptr<TaskNode>               parent_;
+    std::weak_ptr<TaskNode>                 parent_;
     std::list<std::shared_ptr<TaskNode>>    subtasks_;
 };
 
