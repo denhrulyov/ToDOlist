@@ -26,7 +26,7 @@ public:
         for (uint id : sb) {
             std::cout << "node " << id << " | ";
             for (const auto& nd : id_to_node_[id]->getSubtasks()) {
-                std::cout << nd->getId() << ' ';
+                std::cout << nd << ' ';
             }
             if (id) std::cout << "/ p = " << id_to_node_[id]->getParent()->getId();
             std::cout << std::endl;

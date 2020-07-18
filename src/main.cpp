@@ -22,6 +22,7 @@ int main() {
     service.popTask(id);
     service.inspectRoot();
     uint id7 = service.addSubTask(id4, "T8", Task::Priority::NONE, "tag7", 2022);
+    service.inspectRoot();
     auto tsk = service.getAllTasks();
     for (auto ts : tsk) {
         std::cout << ts;

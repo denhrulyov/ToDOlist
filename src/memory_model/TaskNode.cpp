@@ -8,21 +8,15 @@ Task TaskNode::getTask() const {
     return root_task_;
 }
 
-std::list<std::shared_ptr<TaskNode>>& TaskNode::getSubtasks() {
-    return subtasks_;
-}
 
 void TaskNode::addSubtask(std::shared_ptr<TaskNode> subtask) {
-    subtasks_.push_back(subtask);
+    subtasks_[subtask->getId()] = subtask;
 }
 
 uint TaskNode::getId() const {
     return id;
 }
 
-const std::list<std::shared_ptr<TaskNode>> &TaskNode::getSubtasks() const {
-    return subtasks_;
-}
 
 std::shared_ptr<TaskNode> TaskNode::getParent() {
     return parent_.lock();
@@ -30,4 +24,16 @@ std::shared_ptr<TaskNode> TaskNode::getParent() {
 
 void TaskNode::setParent(std::weak_ptr<TaskNode> parent) {
     parent_ = parent;
+}
+
+std::vector<uint> TaskNode::getSubtasks() const {
+    std::vector<uint> sub;
+    for (const auto& pnode : subtasks_) {
+        sub.push_back(pnode.first);
+    }
+    return sub;
+}
+
+void TaskNode::eraseSubtask(uint id_erase) {
+    subtasks_.erase(id_erase);
 }

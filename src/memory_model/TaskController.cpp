@@ -68,8 +68,8 @@ void TaskController::__bind_parent(
 
 void TaskController::__find_all_children(const TaskNode &tnode, std::vector<uint> &buf) {
     buf.push_back(tnode.getId());
-    for (auto& child : tnode.getSubtasks()) {
-        __find_all_children(*child, buf);
+    for (auto child : tnode.getSubtasks()) {
+        __find_all_children(*id_to_node_[child], buf);
     }
 }
 
@@ -81,16 +81,7 @@ void TaskController::__remove_from_tree(uint id_task) {
     auto ptr_task_node = id_to_node_[id_task];
     auto ptr_parent_node = ptr_task_node->getParent();
     if (ptr_parent_node) {
-        auto& children_ = ptr_parent_node->getSubtasks();
-        for (auto iter = children_.begin(); iter != children_.end(); ++iter) {
-            if (iter->get()->getId() == id_task) {
-                // std::cout << "id : " << iter->get()->getId() << " / cnt : " << iter->use_count() << std::endl;
-                //std::cout << children_.size() << std::endl;
-                children_.erase(iter);
-                //std::cout << ptr_parent_node->getSubtasks().size() << std::endl;
-                break;
-            }
-        }
+        ptr_parent_node->eraseSubtask(id_task);
     }
 }
 
