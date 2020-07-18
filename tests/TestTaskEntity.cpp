@@ -3,8 +3,8 @@
 //
 
 #include <gtest/gtest.h>
-#include "memory_model/TaskEntity.h"
-#include "memory_model/TaskEntity.cpp"
+#include "memory_model/TaskDTO.h"
+#include "memory_model/TaskDTO.cpp"
 
 class TaskEntityTest : public ::testing::Test {
 
@@ -12,7 +12,7 @@ class TaskEntityTest : public ::testing::Test {
 
 TEST_F(TaskEntityTest, noRefrenceCorruption) {
     Task t {"name", Task::Priority::NONE, "lbl", 2020};
-    TaskEntity x(1, std::make_shared<Task>(t));
+    TaskDTO x(1, std::make_shared<Task>(t));
     auto y = x;
     EXPECT_EQ(x.getName(), "name");
     EXPECT_EQ(x.getPriority(), Task::Priority::NONE);
@@ -22,7 +22,7 @@ TEST_F(TaskEntityTest, noRefrenceCorruption) {
 
 TEST_F(TaskEntityTest, correctCopy) {
     Task t {"name", Task::Priority::NONE, "lbl", 2020};
-    TaskEntity x(1, std::make_shared<Task>(t));
+    TaskDTO x(1, std::make_shared<Task>(t));
     auto y = x;
     EXPECT_EQ(y.getId(), 1);
     EXPECT_EQ(y.getName(), "name");

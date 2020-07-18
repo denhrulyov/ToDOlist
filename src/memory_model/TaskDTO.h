@@ -2,16 +2,16 @@
 // Created by denis on 13.07.20.
 //
 
-#ifndef TODOLIST_TASKENTITY_H
-#define TODOLIST_TASKENTITY_H
+#ifndef TODOLIST_TASKDTO_H
+#define TODOLIST_TASKDTO_H
 
 #include "Task.h"
 #include "memory"
 
-class TaskEntity {
+class TaskDTO {
 
 public:
-    TaskEntity(uint id_task, const Task& task_) :
+    TaskDTO(uint id_task, const Task& task_) :
     task_(task_), id_(id_task) {}
     uint                getId();
     std::string         getName();
@@ -25,4 +25,4 @@ private:
 };
 
 
-#endif //TODOLIST_TASKENTITY_H
+#endif //TODOLIST_TASKDTO_H

@@ -8,7 +8,7 @@ class TaskNodeTest : public ::testing::Test {
 
 TEST_F(TaskNodeTest, correctConstruction) {
     auto task = std::make_shared<Task>(Task {"a", Task::Priority::NONE, "lbl", 2020});
-    auto entity = std::make_shared<TaskEntity>(1, task);
+    auto entity = std::make_shared<TaskDTO>(1, task);
     TaskNode tst(entity);
     EXPECT_EQ(tst.getId(), 1);
     EXPECT_EQ(tst.getTask()->getName(), "a");

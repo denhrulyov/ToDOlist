@@ -17,8 +17,8 @@ void PriorityView::addToView(std::weak_ptr<TaskNode> pnode) {
     view[pnode_access->getTask().priority].insert(pnode);
 }
 
-std::vector<TaskEntity> PriorityView::getAllToDate(time_t date) {
-    std::vector<TaskEntity> result_set;
+std::vector<TaskDTO> PriorityView::getAllToDate(time_t date) {
+    std::vector<TaskDTO> result_set;
     time_t current_time;
     time(&current_time); //  get current time
     for (auto prior : priorities_by_order) {

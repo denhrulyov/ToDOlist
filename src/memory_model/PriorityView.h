@@ -5,7 +5,7 @@
 #ifndef TODOLIST_PRIORITYVIEW_H
 #define TODOLIST_PRIORITYVIEW_H
 #include "TaskNode.h"
-#include "TaskEntity.h"
+#include "TaskDTO.h"
 #include <functional>
 #include <set>
 
@@ -37,7 +37,7 @@ public:
 
 public:
     void addToView(std::weak_ptr<TaskNode> pnode);
-    std::vector<TaskEntity> getAllToDate(time_t date);
+    std::vector<TaskDTO> getAllToDate(time_t date);
 
 private:
     static const std::vector<Task::Priority> priorities_by_order;

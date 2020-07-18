@@ -5,7 +5,7 @@
 #ifndef TODOLIST_TASK_IO_H
 #define TODOLIST_TASK_IO_H
 
-#include "../memory_model/TaskEntity.h"
+#include "../memory_model/TaskDTO.h"
 
 namespace task_io {
 
@@ -18,7 +18,7 @@ namespace task_io {
 
 }
 
-std::ostream& operator << (std::ostream& out, TaskEntity task) {
+std::ostream& operator << (std::ostream& out, TaskDTO task) {
     out << "Task id = " << task.getId() << std::endl;
     out << "  name : " << task.getName() << std::endl;
     out << "  priority : " << task_io::priorty_repr.at(task.getPriority()) << std::endl;

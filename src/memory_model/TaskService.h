@@ -15,7 +15,7 @@
 class TaskService {
 
 public:
-    std::vector<TaskEntity> getAllTasks();
+    std::vector<TaskDTO> getAllTasks();
 
 
 public:
