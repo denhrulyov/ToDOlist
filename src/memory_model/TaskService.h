@@ -39,12 +39,12 @@ public:
     */
 
     void inspectRoot() {
-        tasks_.see();
+        task_tree_.see();
     }
 private:
-    TaskController      tasks_;
-    TaskFactory         storage_;
-    PriorityView        order_;
+    TaskController      task_tree_;
+    TaskFactory         task_creator_;
+    PriorityView        by_priority_;
 };
 
 

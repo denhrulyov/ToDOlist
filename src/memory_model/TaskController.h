@@ -14,11 +14,15 @@ class TaskController {
 
 public:
     TaskController();
+    std::vector<uint>                              getAllSubtasks(uint id_parent);
+    std::shared_ptr<TaskNode>                      getNodeById(uint id_node);
 
-    std::weak_ptr<TaskNode>     createChild(uint id_parent, const Task& tptr);
-    std::weak_ptr<TaskNode>     createSingleNode(const Task& tptr);
-    std::vector<uint>           getAllSubtasks(uint id_parent);
-    void                        eraseNode(uint id_erase);
+public:
+
+    std::weak_ptr<TaskNode>       createSubNode(uint id_parent, const Task& tptr);
+    std::weak_ptr<TaskNode>       createNodeAndAddToRoot(const Task& tptr);
+
+    void                          eraseNode(uint id_erase);
 
 
     void see() {
@@ -34,6 +38,7 @@ public:
     }
 private:
     uint getNextAvailableId();
+    void registerNode(const std::shared_ptr<TaskNode>& node);
 
 private:
     std::shared_ptr<TaskNode> createNode(const Task& tptr);

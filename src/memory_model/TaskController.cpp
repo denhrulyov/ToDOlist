@@ -5,6 +5,11 @@
 #include "TaskController.h"
 
 
+void tie_child_to_parent(std::shared_ptr<TaskNode>& child, std::shared_ptr<TaskNode>& parent) {
+    child->setParent(parent);
+    parent->addSubtask(child);
+}
+
 uint TaskController::getNextAvailableId() {
     uint newid = id_to_node_.empty() ?
                  1 :
@@ -19,24 +24,21 @@ uint TaskController::getNextAvailableId() {
 std::shared_ptr<TaskNode> TaskController::createNode(const Task& tptr) {
     uint created_id = getNextAvailableId();
     auto pnode = std::make_shared<TaskNode>(created_id, tptr);
-    pnode->setParent(root_task_);
-    id_to_node_[created_id] = pnode;
+    registerNode(pnode);
     return pnode;
 }
 
-std::weak_ptr<TaskNode> TaskController::createChild(uint id_parent, const Task& tptr) {
-    auto pnode = createNode(tptr);
-    auto parent_node = id_to_node_[id_parent];
-    parent_node->addSubtask(pnode);
-    pnode->setParent(parent_node);
-    id_to_node_[pnode->getId()] = pnode;
-    return pnode;
+std::weak_ptr<TaskNode> TaskController::createSubNode(uint id_parent, const Task& tptr) {
+    auto subnode = createNode(tptr);
+    auto parent_node = getNodeById(id_parent);
+    tie_child_to_parent(subnode, parent_node);
+    return subnode;
 }
 
-std::weak_ptr<TaskNode> TaskController::createSingleNode(const Task& tptr) {
-    auto pnode = createNode(tptr);
-    root_task_->addSubtask(pnode);
-    return pnode;
+std::weak_ptr<TaskNode> TaskController::createNodeAndAddToRoot(const Task& tptr) {
+    auto node = createNode(tptr);
+    tie_child_to_parent(node, root_task_);
+    return node;
 }
 
 
@@ -88,4 +90,12 @@ void TaskController::__remove_from_tree(uint id_task) {
 TaskController::TaskController() {
     root_task_ = std::make_shared<TaskNode>(0, Task {});
     id_to_node_[0] = root_task_;
+}
+
+std::shared_ptr<TaskNode> TaskController::getNodeById(uint id_node) {
+    return id_to_node_[id_node];
+}
+
+void TaskController::registerNode(const std::shared_ptr<TaskNode> &node) {
+    id_to_node_[node->getId()] = node;
 }
