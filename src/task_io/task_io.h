@@ -19,7 +19,7 @@ namespace task_io {
 }
 
 std::ostream& operator << (std::ostream& out, TaskDTO task) {
-    out << "Task id = " << task.getId() << std::endl;
+    out << "Task id_ = " << task.getId() << std::endl;
     out << "  name : " << task.getName() << std::endl;
     out << "  priority : " << task_io::priorty_repr.at(task.getPriority()) << std::endl;
     out << "  date : " << task.getDate() << std::endl;

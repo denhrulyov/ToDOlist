@@ -8,7 +8,7 @@ uint TaskService::addTask(const std::string &name, Task::Priority priority, cons
     Task ptask = task_creator_.createTask(name, priority, label, date);
     auto created_node = task_tree_.createNodeAndAddToRoot(ptask);
     by_priority_.addToView(created_node);
-    // extract and return id of the node
+    // extract and return id_ of the node
     uint created_id = created_node.lock()->getId();
     return created_id;
 }
@@ -17,7 +17,7 @@ uint TaskService::addSubTask(uint id_parent, const std::string &name, Task::Prio
     Task ptask = task_creator_.createTask(name, priority, label, date);
     auto created_node = task_tree_.createSubNode(id_parent, ptask);
     by_priority_.addToView(created_node);
-    // extract and return id of the node
+    // extract and return id_ of the node
     uint created_id = created_node.lock()->getId();
     return created_id;
 }

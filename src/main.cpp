@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "memory_model/TaskService.h"
+#include "memory_model/TaskID.h"
 #include "task_io/task_io.h"
 
 int main() {

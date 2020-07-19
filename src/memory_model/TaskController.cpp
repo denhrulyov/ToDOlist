@@ -52,7 +52,7 @@ std::vector<uint> TaskController::getAllSubtasks(uint id_parent) {
 void TaskController::eraseNode(uint id_erase) {
     auto ls = getAllSubtasks(id_erase);
     __remove_from_tree(id_erase);
-    //std::cout << "id : " << id_erase << " / cnt : " << id_to_node_[id_erase].use_count() << std::endl;
+    //std::cout << "id_ : " << id_erase << " / cnt : " << id_to_node_[id_erase].use_count() << std::endl;
     for (uint id : ls) {
         __erase_node_references(id);
     }
