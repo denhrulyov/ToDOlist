@@ -7,11 +7,12 @@
 
 #include "Task.h"
 #include "memory"
+#include "TaskID.h"
 
 class TaskDTO {
 
 public:
-    TaskDTO(uint id_task, const Task& task_) :
+    TaskDTO(TaskID id_task, const Task& task_) :
     task_(task_), id_(id_task) {}
     uint                getId();
     std::string         getName();
@@ -20,7 +21,7 @@ public:
     Task::Priority      getPriority();
 
 private:
-    uint id_;
+    TaskID id_;
     Task task_;
 };
 
