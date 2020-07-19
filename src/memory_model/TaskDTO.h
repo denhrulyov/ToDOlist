@@ -14,7 +14,7 @@ class TaskDTO {
 public:
     TaskDTO(TaskID id_task, const Task& task_) :
     task_(task_), id_(id_task) {}
-    uint                getId();
+    TaskID              getId();
     std::string         getName();
     time_t              getDate();
     std::string         getLabel();

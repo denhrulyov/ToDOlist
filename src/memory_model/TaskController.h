@@ -37,17 +37,15 @@ public:
         }
     }
 private:
-    uint getNextAvailableId();
     void registerNode(const std::shared_ptr<TaskNode>& node);
 
 private:
     std::shared_ptr<TaskNode> createNode(const Task& tptr);
 
     // stateful functions that require careful usage
-    void __find_all_children(const TaskNode& tnode, std::vector<TaskID>& buf);
-    void __bind_parent(std::list<std::shared_ptr<TaskNode>>*, const std::shared_ptr<TaskNode>&);
-    void __erase_node_references(TaskID node_id);
-    void __remove_from_tree(TaskID);
+    void findAllChildren(const TaskNode& tnode, std::vector<TaskID>& buf);
+    void eraseNodeReferences(TaskID node_id);
+    void removeFromTree(TaskID);
 
 private:
     TaskIDFactory                               id_generator_;

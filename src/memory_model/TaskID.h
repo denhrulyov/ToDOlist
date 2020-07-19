@@ -15,15 +15,14 @@ class TaskIDFactory;
 class TaskID {
 public:
     static const unsigned int id_invalid_;
-    TaskID() {
-        id_ = id_invalid_;
-    }
+    TaskID() : id_(id_invalid_) {}
+    explicit TaskID(unsigned int id_create) : id_(id_create) {}
 
 public:
     unsigned int getInt() const {
         return id_;
     }
-    bool vaild() {
+    bool vaild() const {
         return id_ != id_invalid_;
     }
 
@@ -48,16 +47,12 @@ public:
         return id_;
     }
 
-
-
-private:
-    explicit TaskID(unsigned int id_create) : id_(id_create) {}
-
 private:
     unsigned int id_;
 
-    friend class TaskIDFactory;
 };
+
+
 
 class TaskIDFactory {
 public:

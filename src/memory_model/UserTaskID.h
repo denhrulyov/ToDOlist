@@ -5,9 +5,14 @@
 #ifndef TODOLIST_USERTASKID_H
 #define TODOLIST_USERTASKID_H
 
+#include <vector>
 
 class UserTaskID {
 
+
+
+private:
+    std::vector<unsigned int> level_index_;
 };
 
 
