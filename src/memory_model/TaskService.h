@@ -8,6 +8,7 @@
 #include "TaskFactory.h"
 #include "TaskController.h"
 #include "PriorityView.h"
+#include "TaskID.h"
 #include <unordered_map>
 #include <algorithm>
 #include <memory>
@@ -19,9 +20,9 @@ public:
 
 
 public:
-    uint    addTask(const std::string& name, Task::Priority priority, const std::string& label, time_t date);
-    uint    addSubTask(uint parent, const std::string &name, Task::Priority priority, const std::string &label, time_t date);
-    void    popTask(uint id_task);
+    TaskID    addTask(const std::string& name, Task::Priority priority, const std::string& label, time_t date);
+    TaskID    addSubTask(TaskID parent, const std::string &name, Task::Priority priority, const std::string &label, time_t date);
+    void      popTask(TaskID id_task);
 
 
     /*test ------------------------------------------------------------------
@@ -42,8 +43,8 @@ public:
         task_tree_.see();
     }
 private:
-    TaskController      task_tree_;
     TaskFactory         task_creator_;
+    TaskController      task_tree_;
     PriorityView        by_priority_;
 };
 

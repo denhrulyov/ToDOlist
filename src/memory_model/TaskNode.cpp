@@ -13,7 +13,7 @@ void TaskNode::addSubtask(std::shared_ptr<TaskNode> subtask) {
     subtasks_[subtask->getId()] = subtask;
 }
 
-uint TaskNode::getId() const {
+TaskID TaskNode::getId() const {
     return id;
 }
 
@@ -26,14 +26,14 @@ void TaskNode::setParent(std::weak_ptr<TaskNode> parent) {
     parent_ = parent;
 }
 
-std::vector<uint> TaskNode::getSubtasks() const {
-    std::vector<uint> sub;
+std::vector<TaskID> TaskNode::getSubtasks() const {
+    std::vector<TaskID> sub;
     for (const auto& pnode : subtasks_) {
         sub.push_back(pnode.first);
     }
     return sub;
 }
 
-void TaskNode::eraseSubtask(uint id_erase) {
+void TaskNode::eraseSubtask(TaskID id_erase) {
     subtasks_.erase(id_erase);
 }

@@ -10,25 +10,15 @@ void tie_child_to_parent(std::shared_ptr<TaskNode>& child, std::shared_ptr<TaskN
     parent->addSubtask(child);
 }
 
-uint TaskController::getNextAvailableId() {
-    uint newid = id_to_node_.empty() ?
-                 1 :
-                 (std::prev(id_to_node_.end())->first + 1);
-    return newid;
-}
-
-
-
-
 
 std::shared_ptr<TaskNode> TaskController::createNode(const Task& tptr) {
-    uint created_id = getNextAvailableId();
+    TaskID created_id = id_generator_.generateID();
     auto pnode = std::make_shared<TaskNode>(created_id, tptr);
     registerNode(pnode);
     return pnode;
 }
 
-std::weak_ptr<TaskNode> TaskController::createSubNode(uint id_parent, const Task& tptr) {
+std::weak_ptr<TaskNode> TaskController::createSubNode(TaskID id_parent, const Task& tptr) {
     auto subnode = createNode(tptr);
     auto parent_node = getNodeById(id_parent);
     tie_child_to_parent(subnode, parent_node);
@@ -42,18 +32,18 @@ std::weak_ptr<TaskNode> TaskController::createNodeAndAddToRoot(const Task& tptr)
 }
 
 
-std::vector<uint> TaskController::getAllSubtasks(uint id_parent) {
-    std::vector<uint> children;
+std::vector<TaskID> TaskController::getAllSubtasks(TaskID id_parent) {
+    std::vector<TaskID> children;
     __find_all_children(*id_to_node_[id_parent], children);
     return children;
 }
 
 
-void TaskController::eraseNode(uint id_erase) {
+void TaskController::eraseNode(TaskID id_erase) {
     auto ls = getAllSubtasks(id_erase);
     __remove_from_tree(id_erase);
     //std::cout << "id_ : " << id_erase << " / cnt : " << id_to_node_[id_erase].use_count() << std::endl;
-    for (uint id : ls) {
+    for (TaskID id : ls) {
         __erase_node_references(id);
     }
 }
@@ -68,18 +58,18 @@ void TaskController::__bind_parent(
 }
 
 
-void TaskController::__find_all_children(const TaskNode &tnode, std::vector<uint> &buf) {
+void TaskController::__find_all_children(const TaskNode &tnode, std::vector<TaskID> &buf) {
     buf.push_back(tnode.getId());
     for (auto child : tnode.getSubtasks()) {
         __find_all_children(*id_to_node_[child], buf);
     }
 }
 
-void TaskController::__erase_node_references(uint node_id) {
-    if (node_id) id_to_node_.erase(node_id);
+void TaskController::__erase_node_references(TaskID node_id) {
+    if (node_id.getInt()) id_to_node_.erase(node_id);
 }
 
-void TaskController::__remove_from_tree(uint id_task) {
+void TaskController::__remove_from_tree(TaskID id_task) {
     auto ptr_task_node = id_to_node_[id_task];
     auto ptr_parent_node = ptr_task_node->getParent();
     if (ptr_parent_node) {
@@ -88,11 +78,12 @@ void TaskController::__remove_from_tree(uint id_task) {
 }
 
 TaskController::TaskController() {
-    root_task_ = std::make_shared<TaskNode>(0, Task {});
-    id_to_node_[0] = root_task_;
+    TaskID root_id = id_generator_.generateID();
+    root_task_ = std::make_shared<TaskNode>(root_id, Task {});
+    id_to_node_[root_id] = root_task_;
 }
 
-std::shared_ptr<TaskNode> TaskController::getNodeById(uint id_node) {
+std::shared_ptr<TaskNode> TaskController::getNodeById(TaskID id_node) {
     return id_to_node_[id_node];
 }
 
