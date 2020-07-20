@@ -4,7 +4,7 @@
 
 #ifndef EVAL_TASKNODE_H
 #define EVAL_TASKNODE_H
-#include "TaskDTO.h"
+#include "Task.h"
 #include "TaskID.h"
 #include <list>
 #include <memory>
