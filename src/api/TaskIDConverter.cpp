@@ -6,7 +6,7 @@
 
 bool prev_by_date(const TaskNode& lhs, const TaskNode& rhs) {
     return  (lhs.getTask().date < rhs.getTask().date) ||
-            (lhs.getTask().date < rhs.getTask().date && lhs.getId() < rhs.getId());
+            (lhs.getTask().date == rhs.getTask().date && lhs.getId() < rhs.getId());
 }
 
 std::size_t find_order_of_node_by_date(std::shared_ptr<TaskNode> node) {
