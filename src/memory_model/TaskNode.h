@@ -11,6 +11,7 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <algorithm>
 
 class TaskNode {
 
@@ -21,6 +22,8 @@ public:
     TaskID                                      getId() const;
     std::vector<TaskID>                         getSubtasks() const;
     std::shared_ptr<TaskNode>                   getParent();
+    std::shared_ptr<TaskNode>                   getSubtaskByID(TaskID id);
+    std::shared_ptr<TaskNode>                   getNthByDate(std::size_t N) const;
     void                                        setParent(std::weak_ptr<TaskNode>);
 
 public:

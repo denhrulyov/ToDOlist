@@ -9,6 +9,7 @@
 #include "TaskController.h"
 #include "PriorityView.h"
 #include "TaskID.h"
+#include "TaskIDConverter.h"
 #include <unordered_map>
 #include <algorithm>
 #include <memory>
@@ -45,6 +46,7 @@ public:
 private:
     TaskFactory         task_creator_;
     TaskController      task_tree_;
+    TaskIDConverter     id_converter_;
     PriorityView        by_priority_;
 };
 

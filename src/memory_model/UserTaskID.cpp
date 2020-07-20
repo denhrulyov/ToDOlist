@@ -3,3 +3,7 @@
 //
 
 #include "UserTaskID.h"
+
+std::vector<std::size_t> UserTaskID::getLevelIndices() {
+    return level_index_;
+}

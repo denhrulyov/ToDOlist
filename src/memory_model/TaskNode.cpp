@@ -37,3 +37,17 @@ std::vector<TaskID> TaskNode::getSubtasks() const {
 void TaskNode::eraseSubtask(TaskID id_erase) {
     subtasks_.erase(id_erase);
 }
+
+std::shared_ptr<TaskNode> TaskNode::getNthByDate(std::size_t N) const {
+    std::vector<std::pair<time_t, std::shared_ptr<TaskNode>>> nodes;
+    for (const auto& id_and_node : subtasks_) {
+        const auto& node = id_and_node.second;
+        nodes.emplace_back(node->getTask().date, node);
+    }
+    std::nth_element(nodes.begin(), nodes.begin() + N, nodes.end());
+    return (nodes.begin() + N)->second;
+}
+
+std::shared_ptr<TaskNode> TaskNode::getSubtaskByID(TaskID id) {
+    return subtasks_[id];
+}

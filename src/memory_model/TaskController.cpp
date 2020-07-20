@@ -77,10 +77,14 @@ TaskController::TaskController() {
     id_to_node_[root_id] = root_task_;
 }
 
-std::shared_ptr<TaskNode> TaskController::getNodeById(TaskID id_node) {
-    return id_to_node_[id_node];
+std::shared_ptr<TaskNode> TaskController::getNodeById(TaskID id_node) const {
+    return id_to_node_.at(id_node);
 }
 
 void TaskController::registerNode(const std::shared_ptr<TaskNode> &node) {
     id_to_node_[node->getId()] = node;
+}
+
+std::shared_ptr<TaskNode> TaskController::getRoot() const {
+    return root_task_;
 }

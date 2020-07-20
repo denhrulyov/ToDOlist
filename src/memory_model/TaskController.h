@@ -15,7 +15,8 @@ class TaskController {
 public:
     TaskController();
     std::vector<TaskID>                            getAllSubtasks(TaskID id_parent);
-    std::shared_ptr<TaskNode>                      getNodeById(TaskID id_node);
+    std::shared_ptr<TaskNode>                      getNodeById(TaskID id_node) const;
+    std::shared_ptr<TaskNode>                      getRoot() const;
 
 public:
 

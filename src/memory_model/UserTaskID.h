@@ -9,10 +9,13 @@
 
 class UserTaskID {
 
-
+public:
+    explicit UserTaskID(const std::vector<std::size_t>& level_index) :
+    level_index_(level_index) {}
+    std::vector<std::size_t> getLevelIndices();
 
 private:
-    std::vector<unsigned int> level_index_;
+    std::vector<std::size_t> level_index_;
 };
 
 
