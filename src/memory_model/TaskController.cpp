@@ -5,76 +5,87 @@
 #include "TaskController.h"
 
 
-uint TaskController::getNextAvailableId() {
-    uint newid = id_to_node_.empty() ?
-                 0 :
-                 (std::prev(id_to_node_.end())->first + 1);
-    return newid;
+void tie_child_to_parent(std::shared_ptr<TaskNode>& child, std::shared_ptr<TaskNode>& parent) {
+    child->setParent(parent);
+    parent->addSubtask(child);
 }
 
+/***********************************************************************************/
 
-
-
-
-std::shared_ptr<TaskNode> TaskController::createNode(std::shared_ptr<Task> tptr) {
-    uint created_id = getNextAvailableId();
-    auto pnode = std::make_shared<TaskNode>(created_id, std::move(tptr));
-    id_to_node_[created_id] = pnode;
+std::shared_ptr<TaskNode> TaskController::createNode(const Task& tptr) {
+    TaskID created_id = id_generator_.generateID();
+    auto pnode = std::make_shared<TaskNode>(created_id, tptr);
+    registerNode(pnode);
     return pnode;
 }
 
-std::weak_ptr<TaskNode> TaskController::createChild(uint id_parent, std::shared_ptr<Task> tptr) {
-    auto pnode = createNode(std::move(tptr));
-    auto parent_node = id_to_node_[id_parent];
-    __bind_parent(&parent_node->getSubtasks(), pnode);
-    return pnode;
+std::weak_ptr<TaskNode> TaskController::createSubNode(TaskID id_parent, const Task& tptr) {
+    auto subnode = createNode(tptr);
+    auto parent_node = getNodeById(id_parent);
+    tie_child_to_parent(subnode, parent_node);
+    return subnode;
 }
 
-std::weak_ptr<TaskNode> TaskController::createSingleNode(std::shared_ptr<Task> tptr) {
-    auto pnode = createNode(std::move(tptr));
-    __bind_parent(&task_nodes_, pnode);
-    return pnode;
+std::weak_ptr<TaskNode> TaskController::createNodeAndAddToRoot(const Task& tptr) {
+    auto node = createNode(tptr);
+    tie_child_to_parent(node, root_task_);
+    return node;
 }
 
 
-std::vector<uint> TaskController::getAllSubtasks(uint id_parent) {
-    std::vector<uint> children;
-    __find_all_children(*id_to_node_[id_parent], children);
+std::vector<TaskID> TaskController::getAllSubtasks(TaskID id_parent) {
+    std::vector<TaskID> children;
+    findAllChildren(*id_to_node_[id_parent], children);
     return children;
 }
 
 
-void TaskController::eraseNode(uint id_erase) {
-    __remove_from_tree(id_erase);
-    for (uint id : getAllSubtasks(id_erase)) {
-        __erase_node_references(id);
+void TaskController::eraseNode(TaskID id_erase) {
+    auto ls = getAllSubtasks(id_erase);
+    removeFromTree(id_erase);
+    //std::cout << "id_ : " << id_erase << " / cnt : " << id_to_node_[id_erase].use_count() << std::endl;
+    for (TaskID id : ls) {
+        eraseNodeReferences(id);
     }
 }
 
 
 //----------------------__dont_touch---methods--------------------------------------
 
-void TaskController::__bind_parent(
-        std::list<std::shared_ptr<TaskNode>> * parent_children_list,
-        const std::shared_ptr<TaskNode>& child) {
-    parent_children_list->push_back(child);
-    node_places_[child->getId()] = std::make_pair(parent_children_list, std::prev(parent_children_list->end()));
-}
 
-
-void TaskController::__find_all_children(const TaskNode &tnode, std::vector<uint> &buf) {
+void TaskController::findAllChildren(const TaskNode &tnode, std::vector<TaskID> &buf) {
     buf.push_back(tnode.getId());
-    for (auto& child : tnode.getSubtasks()) {
-        __find_all_children(*child, buf);
+    for (auto child : tnode.getSubtasks()) {
+        findAllChildren(*id_to_node_[child], buf);
     }
 }
 
-void TaskController::__erase_node_references(uint node_id) {
-    node_places_.erase(node_id);
-    id_to_node_.erase(node_id);
+void TaskController::eraseNodeReferences(TaskID node_id) {
+    if (node_id.getInt()) id_to_node_.erase(node_id);
 }
 
-void TaskController::__remove_from_tree(uint id_task) {
-    auto parent_n_child = node_places_[id_task];
-    parent_n_child.first->erase(parent_n_child.second);
+void TaskController::removeFromTree(TaskID id_task) {
+    auto ptr_task_node = id_to_node_[id_task];
+    auto ptr_parent_node = ptr_task_node->getParent();
+    if (ptr_parent_node) {
+        ptr_parent_node->eraseSubtask(id_task);
+    }
+}
+
+TaskController::TaskController() {
+    TaskID root_id = id_generator_.generateID();
+    root_task_ = std::make_shared<TaskNode>(root_id, Task {});
+    id_to_node_[root_id] = root_task_;
+}
+
+std::shared_ptr<TaskNode> TaskController::getNodeById(TaskID id_node) const {
+    return id_to_node_.at(id_node);
+}
+
+void TaskController::registerNode(const std::shared_ptr<TaskNode> &node) {
+    id_to_node_[node->getId()] = node;
+}
+
+std::shared_ptr<TaskNode> TaskController::getRoot() const {
+    return root_task_;
 }
