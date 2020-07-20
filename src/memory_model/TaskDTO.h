@@ -8,20 +8,21 @@
 #include "Task.h"
 #include "memory"
 #include "TaskID.h"
+#include "UserTaskID.h"
 
 class TaskDTO {
 
 public:
-    TaskDTO(TaskID id_task, const Task& task_) :
+    TaskDTO(UserTaskID id_task, const Task& task_) :
     task_(task_), id_(id_task) {}
-    TaskID              getId();
-    std::string         getName();
-    time_t              getDate();
-    std::string         getLabel();
-    Task::Priority      getPriority();
+    UserTaskID              getId();
+    std::string             getName();
+    time_t                  getDate();
+    std::string             getLabel();
+    Task::Priority          getPriority();
 
 private:
-    TaskID id_;
+    UserTaskID id_;
     Task task_;
 };
 

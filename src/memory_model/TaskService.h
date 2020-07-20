@@ -21,9 +21,9 @@ public:
     std::vector<TaskDTO> getAllTasks();
 
 public:
-    TaskID    addTask(const std::string& name, Task::Priority priority, const std::string& label, time_t date);
-    TaskID    addSubTask(TaskID parent, const std::string &name, Task::Priority priority, const std::string &label, time_t date);
-    void      popTask(TaskID id_task);
+    UserTaskID      addTask(const std::string& name, Task::Priority priority, const std::string& label, time_t date);
+    UserTaskID      addSubTask(UserTaskID parent, const std::string &name, Task::Priority priority, const std::string &label, time_t date);
+    void            popTask(TaskID id_task);
 
 
     /*test ------------------------------------------------------------------

@@ -4,7 +4,7 @@
 
 #include "TaskDTO.h"
 
-TaskID TaskDTO::getId() {
+UserTaskID TaskDTO::getId() {
     return id_;
 }
 

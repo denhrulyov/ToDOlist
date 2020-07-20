@@ -44,8 +44,8 @@ std::shared_ptr<TaskNode> TaskNode::getNthByDate(std::size_t N) const {
         const auto& node = id_and_node.second;
         nodes.emplace_back(node->getTask().date, node);
     }
-    std::nth_element(nodes.begin(), nodes.begin() + N, nodes.end());
-    return (nodes.begin() + N)->second;
+    std::nth_element(nodes.begin(), nodes.begin() + N - 1, nodes.end());
+    return nodes[N - 1].second;
 }
 
 std::shared_ptr<TaskNode> TaskNode::getSubtaskByID(TaskID id) {

@@ -20,6 +20,14 @@ namespace task_io {
 
 }
 
+std::ostream& operator << (std::ostream& out, UserTaskID task) {
+    for (auto level_id : task.getLevelIndices()) {
+        std::cout << level_id << ".";
+    }
+    return out;
+}
+
+
 std::ostream& operator << (std::ostream& out, TaskDTO task) {
     out << "Task id_ = " << task.getId() << std::endl;
     out << "  name : " << task.getName() << std::endl;
