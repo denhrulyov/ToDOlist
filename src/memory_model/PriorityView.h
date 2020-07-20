@@ -5,7 +5,7 @@
 #ifndef TODOLIST_PRIORITYVIEW_H
 #define TODOLIST_PRIORITYVIEW_H
 #include "TaskNode.h"
-#include "TaskDTO.h"
+#include "api/TaskDTO.h"
 #include <functional>
 #include <set>
 

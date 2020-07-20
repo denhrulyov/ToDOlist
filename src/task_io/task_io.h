@@ -5,7 +5,7 @@
 #ifndef TODOLIST_TASK_IO_H
 #define TODOLIST_TASK_IO_H
 
-#include "memory_model/TaskDTO.h"
+#include "api/TaskDTO.h"
 #include <unordered_map>
 
 

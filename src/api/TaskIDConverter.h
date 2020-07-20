@@ -5,7 +5,7 @@
 #ifndef TODOLIST_TASKIDCONVERTER_H
 #define TODOLIST_TASKIDCONVERTER_H
 
-#include "TaskController.h"
+#include "memory_model/TaskController.h"
 #include "UserTaskID.h"
 
 class TaskIDConverter {

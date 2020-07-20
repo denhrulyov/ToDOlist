@@ -3,8 +3,8 @@
 //
 
 #include <gtest/gtest.h>
-#include "memory_model/TaskDTO.h"
-#include "memory_model/TaskDTO.cpp"
+#include "api/TaskDTO.h"
+#include "api/TaskDTO.cpp"
 
 class TaskEntityTest : public ::testing::Test {
 

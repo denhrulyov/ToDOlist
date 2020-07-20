@@ -5,7 +5,9 @@
 #ifndef TODOLIST_USERTASKID_H
 #define TODOLIST_USERTASKID_H
 
+#include <memory>
 #include <vector>
+#include "memory_model/TaskNode.h"
 
 class UserTaskID {
 

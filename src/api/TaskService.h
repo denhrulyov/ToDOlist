@@ -4,11 +4,11 @@
 
 #ifndef EVAL_TASKSERVICE_H
 #define EVAL_TASKSERVICE_H
-#include "TaskNode.h"
-#include "TaskFactory.h"
-#include "TaskController.h"
-#include "PriorityView.h"
-#include "TaskID.h"
+#include "memory_model/TaskNode.h"
+#include "memory_model/TaskFactory.h"
+#include "memory_model/TaskController.h"
+#include "memory_model/PriorityView.h"
+#include "memory_model/TaskID.h"
 #include "TaskIDConverter.h"
 #include <unordered_map>
 #include <algorithm>
