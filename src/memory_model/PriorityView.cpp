@@ -17,8 +17,8 @@ void PriorityView::addToView(std::weak_ptr<TaskNode> pnode) {
     view[pnode_access->getTask().priority].emplace(pnode.lock()->getTask().date, pnode);
 }
 
-std::vector<TaskDTO> PriorityView::getAllToDate(time_t date) {
-    std::vector<TaskDTO> result_set;
+std::vector<std::weak_ptr<TaskNode>> PriorityView::getAllToDate(time_t date) {
+    std::vector<std::weak_ptr<TaskNode>> result_set;
     time_t current_time;
     time(&current_time); //  get current time
     for (auto prior : priorities_by_order) {
@@ -32,7 +32,7 @@ std::vector<TaskDTO> PriorityView::getAllToDate(time_t date) {
             if (its_date > date) {
                 break;
             }
-            result_set.emplace_back(ptask_access->getId(), ptask_access->getTask());
+            result_set.push_back(p_task);
         }
     }
     return result_set;

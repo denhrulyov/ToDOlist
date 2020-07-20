@@ -22,7 +22,7 @@ public:
 
 public:
     void addToView(std::weak_ptr<TaskNode> pnode);
-    std::vector<TaskDTO> getAllToDate(time_t date);
+    std::vector<std::weak_ptr<TaskNode>> getAllToDate(time_t date);
 
 private:
     static const std::vector<Task::Priority> priorities_by_order;

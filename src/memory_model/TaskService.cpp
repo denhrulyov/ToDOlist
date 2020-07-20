@@ -27,6 +27,15 @@ void TaskService::popTask(TaskID id_task) {
 }
 
 std::vector<TaskDTO> TaskService::getAllTasks() {
-    return by_priority_.getAllToDate(std::numeric_limits<time_t>::max());
+    auto result_set = by_priority_.getAllToDate(std::numeric_limits<time_t>::max());
+    std::vector<TaskDTO> user_result_set;
+    std::transform(result_set.begin(), result_set.end(),
+                    std::back_inserter(user_result_set),
+                    [] (std::weak_ptr<TaskNode> p_node) {
+                        auto pnode_access = p_node.lock();
+                        return TaskDTO(pnode_access->getId(), pnode_access->getTask());
+                    }
+                   );
+    return user_result_set;
 }
 
