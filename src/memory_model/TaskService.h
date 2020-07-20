@@ -17,8 +17,8 @@
 class TaskService {
 
 public:
+    TaskService() : id_converter_(task_tree_) {}
     std::vector<TaskDTO> getAllTasks();
-
 
 public:
     TaskID    addTask(const std::string& name, Task::Priority priority, const std::string& label, time_t date);
