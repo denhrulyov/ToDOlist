@@ -24,7 +24,7 @@ UserTaskID TaskService::addSubTask(UserTaskID id_parent, const std::string &name
     return id_converter_.getUserTaskID(created_id);
 }
 
-void TaskService::popTask(TaskID id_task) {
+void TaskService::deleteTask(TaskID id_task) {
     task_tree_.eraseNode(id_task);
 }
 

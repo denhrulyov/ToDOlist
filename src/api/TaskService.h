@@ -23,7 +23,7 @@ public:
 public:
     UserTaskID      addTask(const std::string& name, Task::Priority priority, const std::string& label, time_t date);
     UserTaskID      addSubTask(UserTaskID parent, const std::string &name, Task::Priority priority, const std::string &label, time_t date);
-    void            popTask(TaskID id_task);
+    void            deleteTask(TaskID id_task);
 
 
     /*test ------------------------------------------------------------------
