@@ -3,8 +3,8 @@
 //
 
 #include <gtest/gtest.h>
-#include "memory_model/TaskFactory.h"
-#include "memory_model/TaskFactory.cpp"
+#include "api/TaskFactory.h"
+#include "api/TaskFactory.cpp"
 
 
 class TestTaskFactory : public ::testing::Test {

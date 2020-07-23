@@ -4,8 +4,8 @@
 
 #ifndef EVAL_TASKSTORAGE_H
 #define EVAL_TASKSTORAGE_H
-#include "Task.h"
-#include "TaskFactoryInterface.h"
+#include "memory_model/Task.h"
+#include "memory_model/TaskFactoryInterface.h"
 #include <memory>
 
 

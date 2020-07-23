@@ -12,7 +12,7 @@
 #include "TaskIDConverter.h"
 #include "memory_model/TaskController.h"
 #include "memory_model/PriorityView.h"
-#include "memory_model/TaskFactory.h"
+#include "TaskFactory.h"
 
 
 namespace task_service {

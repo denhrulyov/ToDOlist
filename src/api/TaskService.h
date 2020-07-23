@@ -34,21 +34,6 @@ public:
     UserTaskID      addSubTask(UserTaskID parent, const std::string &name, Task::Priority priority, const std::string &label, time_t date);
     void            deleteTask(TaskID id_task);
 
-
-    /*test ------------------------------------------------------------------
-    void inspectRoot() {
-        const auto& pp = *task_nodes_.begin();
-        std::cout << "references : " << pp.use_count() << std::endl;
-    }
-
-    void inspectSize() {
-        std::cout << "\nTEST___****\n";
-        std::cout << "task_nodes_ : " << task_nodes_.size() << std::endl;
-        std::cout << "id_to_node_ : " << id_to_node_.size() << std::endl;
-        std::cout << "node_places_ : " << node_places_.size() << std::endl;
-    }
-    */
-
     void inspectRoot() {
         task_tree_->see();
     }
