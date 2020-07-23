@@ -4,7 +4,7 @@
 
 #ifndef TODOLIST_PRIORITYVIEW_H
 #define TODOLIST_PRIORITYVIEW_H
-#include "TaskNode.h"
+#include "PriorityViewInterface.h"
 #include "api/TaskDTO.h"
 #include <functional>
 #include <set>
@@ -15,18 +15,21 @@ using multimap_by_date = std::multimap<
                                     std::weak_ptr<TaskNode>
                                     >;
 
-class PriorityView {
+class PriorityView : public PriorityViewInterface {
 
 public:
     PriorityView();
 
 public:
-    void addToView(std::weak_ptr<TaskNode> pnode);
-    std::vector<std::weak_ptr<TaskNode>> getAllToDate(time_t date);
+    void addToView(std::weak_ptr<TaskNode> pnode) override ;
+    std::vector<std::weak_ptr<TaskNode>> getAllToDate(time_t date) override;
 
 private:
     static const std::vector<Task::Priority> priorities_by_order;
     std::unordered_map<Task::Priority, multimap_by_date> view;
+
+public:
+    ~PriorityView() override = default;
 };
 
 

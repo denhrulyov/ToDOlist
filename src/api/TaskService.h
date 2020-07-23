@@ -17,7 +17,11 @@
 class TaskService {
 
 public:
-    TaskService() : id_converter_(task_tree_) {}
+    TaskService(std::unique_ptr<PriorityViewInterface> service) :
+    id_converter_(task_tree_),
+    by_priority_(std::move(service))
+    {}
+
     std::vector<TaskDTO> getAllTasks();
 
 public:
@@ -44,10 +48,10 @@ public:
         task_tree_.see();
     }
 private:
-    TaskFactory         task_creator_;
-    TaskController      task_tree_;
-    TaskIDConverter     id_converter_;
-    PriorityView        by_priority_;
+    TaskFactory                                   task_creator_;
+    TaskController                                task_tree_;
+    TaskIDConverter                               id_converter_;
+    std::unique_ptr<PriorityViewInterface>        by_priority_;
 };
 
 
