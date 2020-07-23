@@ -5,6 +5,7 @@
 #ifndef EVAL_TASKSTORAGE_H
 #define EVAL_TASKSTORAGE_H
 #include "memory_model/Task.h"
+#include "TaskDTO.h"
 #include "memory_model/TaskFactoryInterface.h"
 #include <memory>
 
@@ -12,7 +13,7 @@
 class TaskFactory : public TaskFactoryInterface {
 
 public:
-    Task createTask(const std::string& name, Task::Priority priority, const std::string& label, time_t date) override;
+    Task createTask(const TaskDTO& task_data) override;
 
 };
 

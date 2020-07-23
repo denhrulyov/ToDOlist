@@ -30,8 +30,8 @@ public:
     std::vector<TaskDTO> getAllTasks();
 
 public:
-    UserTaskID      addTask(const std::string& name, Task::Priority priority, const std::string& label, time_t date);
-    UserTaskID      addSubTask(UserTaskID parent, const std::string &name, Task::Priority priority, const std::string &label, time_t date);
+    UserTaskID      addTask(const TaskDTO &user_data);
+    UserTaskID      addSubTask(const TaskDTO &user_data);
     void            deleteTask(TaskID id_task);
 
     void inspectRoot() {

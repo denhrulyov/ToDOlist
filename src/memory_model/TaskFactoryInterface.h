@@ -5,13 +5,11 @@
 #ifndef TODOLIST_TASKFACTORYINTERFACE_H
 #define TODOLIST_TASKFACTORYINTERFACE_H
 
+class TaskDTO;
 
 class TaskFactoryInterface {
 public:
-    virtual Task createTask(const std::string& name,
-                            Task::Priority priority,
-                            const std::string& label,
-                            time_t date) = 0;
+    virtual Task createTask(const TaskDTO&) = 0;
 
     virtual ~TaskFactoryInterface() = default;
 };

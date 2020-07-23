@@ -15,11 +15,11 @@ class TaskDTO {
 public:
     TaskDTO(UserTaskID id_task, const Task& task_) :
     task_(task_), id_(id_task) {}
-    UserTaskID              getId();
-    std::string             getName();
-    time_t                  getDate();
-    std::string             getLabel();
-    Task::Priority          getPriority();
+    UserTaskID              getId() const ;
+    std::string             getName() const ;
+    time_t                  getDate() const ;
+    std::string             getLabel() const ;
+    Task::Priority          getPriority() const ;
 
 private:
     UserTaskID id_;

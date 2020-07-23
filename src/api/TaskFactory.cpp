@@ -4,6 +4,6 @@
 
 #include "TaskFactory.h"
 
-Task TaskFactory::createTask(const std::string &name, Task::Priority priority, const std::string &label, time_t date) {
-    return Task {name, priority, label, date};
+Task TaskFactory::createTask(const TaskDTO& task_data) {
+    return Task {task_data.getName(), task_data.getPriority(), task_data.getLabel(), task_data.getDate()};
 }
