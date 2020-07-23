@@ -6,7 +6,7 @@
 #define EVAL_TASKSERVICE_H
 #include "memory_model/TaskNode.h"
 #include "memory_model/TaskFactory.h"
-#include "memory_model/TaskController.h"
+#include "memory_model/TaskControllerInterface.h"
 #include "memory_model/PriorityView.h"
 #include "memory_model/TaskID.h"
 #include "TaskIDConverter.h"
@@ -17,9 +17,11 @@
 class TaskService {
 
 public:
-    TaskService(std::unique_ptr<PriorityViewInterface> service) :
-    id_converter_(task_tree_),
-    by_priority_(std::move(service))
+    TaskService(std::unique_ptr<PriorityViewInterface> service,
+                std::unique_ptr<TaskControllerInterface> task_tree) :
+    task_tree_(std::move(task_tree)),
+    by_priority_(std::move(service)),
+    id_converter_(*task_tree_)
     {}
 
     std::vector<TaskDTO> getAllTasks();
@@ -45,11 +47,11 @@ public:
     */
 
     void inspectRoot() {
-        task_tree_.see();
+        task_tree_->see();
     }
 private:
     TaskFactory                                   task_creator_;
-    TaskController                                task_tree_;
+    std::unique_ptr<TaskControllerInterface>      task_tree_;
     TaskIDConverter                               id_converter_;
     std::unique_ptr<PriorityViewInterface>        by_priority_;
 };

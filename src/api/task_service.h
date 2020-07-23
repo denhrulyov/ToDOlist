@@ -15,7 +15,8 @@
 namespace task_service {
     TaskService create() {
         auto view = std::make_unique<PriorityView>();
-        return TaskService(std::move(view));
+        auto tree = std::make_unique<TaskController>();
+        return TaskService(std::move(view), std::move(tree));
     }
 
 }

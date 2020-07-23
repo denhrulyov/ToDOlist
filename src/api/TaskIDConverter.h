@@ -10,7 +10,7 @@
 
 class TaskIDConverter {
 public:
-    explicit TaskIDConverter(const TaskController& ref_tree) : ref_tree_(ref_tree) {}
+    explicit TaskIDConverter(const TaskControllerInterface& ref_tree) : ref_tree_(ref_tree) {}
 
 public:
     TaskID getTaskID(UserTaskID user_id);
@@ -18,7 +18,7 @@ public:
 
 private:
 
-    const TaskController& ref_tree_;
+    const TaskControllerInterface& ref_tree_;
 };
 
 
