@@ -22,9 +22,7 @@ std::vector<std::weak_ptr<TaskNode>> PriorityView::getAllToDate(time_t date) {
     time_t current_time;
     time(&current_time); //  get current time
     for (auto prior : priorities_by_order) {
-        for (const auto& date_and_task : view[prior]) {
-            auto p_task = date_and_task.second;
-            time_t its_date = date_and_task.first;
+        for (const auto& [its_date, p_task] : view[prior]) {
             if (p_task.expired()) {
                 continue;
             }
