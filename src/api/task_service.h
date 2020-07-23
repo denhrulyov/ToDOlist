@@ -12,6 +12,7 @@
 #include "TaskIDConverter.h"
 #include "memory_model/TaskController.h"
 #include "memory_model/PriorityView.h"
+#include "memory_model/TaskFactory.h"
 
 
 namespace task_service {
@@ -19,7 +20,8 @@ namespace task_service {
         auto view =         std::make_unique<PriorityView>();
         auto tree =         std::make_unique<TaskController>();
         auto converter =    std::make_unique<TaskIDConverter>(*tree);
-        return TaskService(std::move(view), std::move(tree), std::move(converter));
+        auto creator =      std::make_unique<TaskFactory>();
+        return TaskService(std::move(view), std::move(tree), std::move(converter), std::move(creator));
     }
 
 }

@@ -5,13 +5,14 @@
 #ifndef EVAL_TASKSTORAGE_H
 #define EVAL_TASKSTORAGE_H
 #include "Task.h"
+#include "TaskFactoryInterface.h"
 #include <memory>
 
 
-class TaskFactory {
+class TaskFactory : public TaskFactoryInterface {
 
 public:
-    Task createTask(const std::string& name, Task::Priority priority, const std::string& label, time_t date);
+    Task createTask(const std::string& name, Task::Priority priority, const std::string& label, time_t date) override;
 
 };
 

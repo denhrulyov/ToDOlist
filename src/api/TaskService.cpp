@@ -5,7 +5,7 @@
 #include "TaskService.h"
 
 UserTaskID TaskService::addTask(const std::string &name, Task::Priority priority, const std::string &label, time_t date) {
-    Task ptask = task_creator_.createTask(name, priority, label, date);
+    Task ptask = task_creator_->createTask(name, priority, label, date);
     auto created_node = task_tree_->createNodeAndAddToRoot(ptask);
     by_priority_->addToView(created_node);
     // extract and return id_ of the node
@@ -14,7 +14,7 @@ UserTaskID TaskService::addTask(const std::string &name, Task::Priority priority
 }
 
 UserTaskID TaskService::addSubTask(UserTaskID id_parent, const std::string &name, Task::Priority priority, const std::string &label, time_t date) {
-    Task ptask = task_creator_.createTask(name, priority, label, date);
+    Task ptask = task_creator_->createTask(name, priority, label, date);
     auto created_node = task_tree_
                         ->createSubNode(id_converter_->getTaskID(id_parent),
                                         ptask);
