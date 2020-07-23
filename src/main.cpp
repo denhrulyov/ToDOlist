@@ -6,12 +6,15 @@
 
 int main() {
     TaskService service = task_service::create();
-    UserTaskID id = service.addTask(TaskDTO(UserTaskID ({}), Task
-    {"T1", Task::Priority::FIRST, "tag1", 2020}));
-    UserTaskID id2 = service.addSubTask(TaskDTO(id, Task
-    {"T2", Task::Priority::NONE, "tag2", 2021}));
-    UserTaskID id3 = service.addSubTask(TaskDTO(id2, Task
-    {"T3", Task::Priority::THIRD, "tag3", 2022}));
+    UserTaskID id = service.addTask(
+            TaskDTO("T1", Task::Priority::FIRST, "tag1", 2020)
+            );
+    UserTaskID id2 = service.addSubTask(
+            TaskDTO(id, "T2", Task::Priority::NONE, "tag2", 2021)
+            );
+    UserTaskID id3 = service.addSubTask(
+            TaskDTO(id2,"T3", Task::Priority::THIRD, "tag3", 2022)
+            );
     service.deleteTask(TaskID(1));
     //UserTaskID id4 = service.addTask("T5", Task::Priority::FIRST, "tag4", 2020);
     /*service.inspectRoot();

@@ -13,17 +13,22 @@
 class TaskDTO {
 
 public:
-    TaskDTO(UserTaskID id_task, const Task& task_) :
-    task_(task_), id_(id_task) {}
+    TaskDTO(UserTaskID, const Task&);
+    TaskDTO(UserTaskID, const std::string& name, Task::Priority, const std::string& label, time_t);
+    TaskDTO(            const std::string& name, Task::Priority, const std::string& label, time_t);
     UserTaskID              getId() const ;
     std::string             getName() const ;
-    time_t                  getDate() const ;
-    std::string             getLabel() const ;
     Task::Priority          getPriority() const ;
+    std::string             getLabel() const ;
+    time_t                  getDate() const ;
+
 
 private:
     UserTaskID id_;
-    Task task_;
+    std::string name_;
+    Task::Priority priority_;
+    std::string label_;
+    time_t date_;
 };
 
 
