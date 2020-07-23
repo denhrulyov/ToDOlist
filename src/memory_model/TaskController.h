@@ -4,13 +4,13 @@
 
 #ifndef TODOLIST_TASKCONTROLLER_H
 #define TODOLIST_TASKCONTROLLER_H
-#include "TaskNode.h"
+#include "TaskControllerInterface.h"
 
 #include <vector>
 #include <map>
 #include <unordered_map>
 
-class TaskController {
+class TaskController : public TaskControllerInterface {
 
 public:
     TaskController();
