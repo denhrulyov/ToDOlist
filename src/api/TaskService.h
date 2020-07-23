@@ -9,7 +9,7 @@
 #include "memory_model/TaskControllerInterface.h"
 #include "memory_model/PriorityView.h"
 #include "memory_model/TaskID.h"
-#include "TaskIDConverter.h"
+#include "TaskIDConverterInterface.h"
 #include <unordered_map>
 #include <algorithm>
 #include <memory>
@@ -18,10 +18,12 @@ class TaskService {
 
 public:
     TaskService(std::unique_ptr<PriorityViewInterface> service,
-                std::unique_ptr<TaskControllerInterface> task_tree) :
+                std::unique_ptr<TaskControllerInterface> task_tree,
+                std::unique_ptr<TaskIDConverterInterface> id_converter
+                ) :
     task_tree_(std::move(task_tree)),
     by_priority_(std::move(service)),
-    id_converter_(*task_tree_)
+    id_converter_(std::move(id_converter))
     {}
 
     std::vector<TaskDTO> getAllTasks();
@@ -52,7 +54,7 @@ public:
 private:
     TaskFactory                                   task_creator_;
     std::unique_ptr<TaskControllerInterface>      task_tree_;
-    TaskIDConverter                               id_converter_;
+    std::unique_ptr<TaskIDConverterInterface>     id_converter_;
     std::unique_ptr<PriorityViewInterface>        by_priority_;
 };
 
