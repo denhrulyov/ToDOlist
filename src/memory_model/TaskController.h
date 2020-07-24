@@ -4,29 +4,29 @@
 
 #ifndef TODOLIST_TASKCONTROLLER_H
 #define TODOLIST_TASKCONTROLLER_H
-#include "TaskNode.h"
+#include "TaskControllerInterface.h"
 
 #include <vector>
 #include <map>
 #include <unordered_map>
 
-class TaskController {
+class TaskController : public TaskControllerInterface {
 
 public:
     TaskController();
-    std::vector<TaskID>                            getAllSubtasks(TaskID id_parent);
-    std::shared_ptr<TaskNode>                      getNodeById(TaskID id_node) const;
-    std::shared_ptr<TaskNode>                      getRoot() const;
+    std::vector<TaskID>                            getAllSubtasks(TaskID id_parent) override;
+    std::shared_ptr<TaskNode>                      getNodeById(TaskID id_node) const override;
+    std::shared_ptr<TaskNode>                      getRoot() const override;
 
 public:
 
-    std::weak_ptr<TaskNode>       createSubNode(TaskID id_parent, const Task& tptr);
-    std::weak_ptr<TaskNode>       createNodeAndAddToRoot(const Task& tptr);
+    std::weak_ptr<TaskNode>       createSubNode(TaskID id_parent, const Task& tptr) override;
+    std::weak_ptr<TaskNode>       createNodeAndAddToRoot(const Task& tptr) override;
 
-    void                          eraseNode(TaskID id_erase);
+    void                          eraseNode(TaskID id_erase) override;
 
 
-    void see() {
+    void see() override {
         auto sb = getAllSubtasks(root_task_->getId());
         for (TaskID id : sb) {
             std::cout << "node " << id << " | ";

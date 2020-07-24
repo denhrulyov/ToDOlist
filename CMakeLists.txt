@@ -3,11 +3,21 @@ project(ToDOlist)
 
 set(CMAKE_CXX_STANDARD 17)
 #set(CMAKE_CXX_FLAGS "-D_GLIBCXX_DEBUG")
-add_executable(ToDOList src/main.cpp src/api/TaskService.cpp src/api/TaskService.h
-        src/memory_model/Task.h src/memory_model/TaskNode.cpp src/memory_model/TaskNode.h
-        src/memory_model/TaskFactory.cpp src/memory_model/TaskFactory.h src/memory_model/TaskController.cpp
-        src/memory_model/TaskController.h src/memory_model/PriorityView.cpp src/memory_model/PriorityView.h
-        src/api/TaskDTO.cpp src/api/TaskDTO.h src/task_io/task_io.h src/memory_model/TaskID.cpp src/memory_model/TaskID.h src/api/UserTaskID.cpp src/api/UserTaskID.h src/api/TaskIDConverter.cpp src/api/TaskIDConverter.h src/api/TaskUserDescriptor.cpp src/api/TaskUserDescriptor.h)
+add_executable(ToDOList src/main.cpp
+        src/api/TaskService.cpp src/api/TaskService.h
+        src/memory_model/Task.h
+        src/memory_model/TaskNode.cpp src/memory_model/TaskNode.h
+        src/api/TaskFactory.cpp src/api/TaskFactory.h
+        src/memory_model/TaskController.cpp src/memory_model/TaskController.h
+        src/memory_model/PriorityView.cpp src/memory_model/PriorityView.h
+        src/api/TaskDTO.cpp src/api/TaskDTO.h
+        src/task_io/task_io.h
+        src/memory_model/TaskID.cpp src/memory_model/TaskID.h
+        src/api/UserTaskID.cpp src/api/UserTaskID.h
+        src/api/TaskIDConverter.cpp src/api/TaskIDConverter.h
+        src/api/TaskUserDescriptor.cpp src/api/TaskUserDescriptor.h
+        src/memory_model/PriorityViewInterface.cpp src/memory_model/PriorityViewInterface.h
+        src/api/task_service.h src/memory_model/TaskControllerInterface.h src/api/TaskIDConverterInterface.h src/memory_model/TaskFactoryInterface.h)
 
 include_directories(src)
 include_directories(tests)
