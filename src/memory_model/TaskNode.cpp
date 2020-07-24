@@ -62,16 +62,16 @@ id(id), root_task_(tptr)
     }
 }
 
-std::shared_ptr<TaskNode> TaskNode::modified(const Task & modified_data) {
+std::shared_ptr<TaskNode> TaskNode::modifyAndMove(const Task & modified_data) {
     auto this_modified = std::make_shared<TaskNode>(*this);
     this_modified->root_task_ = modified_data;
-    this_modified->subtasks_.clear();
+    this_modified->subtasks_ = subtasks_;
+    for (auto p_child : subtasks_) {
+        p_child.second->setParent(this_modified);
+    }
     return this_modified;
 }
 
 void TaskNode::disconnect() {
-    if (getParent()) {
-        getParent()->eraseSubtask(getId());
-    }
-    subtasks_ = std::map<TaskID, std::shared_ptr<TaskNode>>();
+    subtasks_.clear();
 }

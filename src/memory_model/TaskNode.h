@@ -26,7 +26,7 @@ public:
     std::shared_ptr<TaskNode>                   getSubtaskByID(TaskID id);
     std::shared_ptr<TaskNode>                   getNthByDate(std::size_t N) const;
     void                                        setParent(std::weak_ptr<TaskNode>);
-    std::shared_ptr<TaskNode>                   modified(const Task&);
+    std::shared_ptr<TaskNode>                   modifyAndMove(const Task&);
 
 public:
     void disconnect();

@@ -111,7 +111,7 @@ std::shared_ptr<TaskNode> TaskController::getRoot() const {
 void TaskController::modifyTaskData(TaskID id_modify, const Task& new_data) {
     auto old_node = getNodeById(id_modify);
     TaskID id_parent = old_node->getParent()->getId();
-    auto new_node = old_node->modified(new_data);
+    auto new_node = old_node->modifyAndMove(new_data);
     addNodeTo(id_parent, new_node);
     old_node->disconnect();
 }
