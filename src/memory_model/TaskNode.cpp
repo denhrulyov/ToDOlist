@@ -4,6 +4,8 @@
 
 #include "TaskNode.h"
 
+#include <memory>
+
 Task TaskNode::getTask() const {
     return root_task_;
 }
@@ -50,4 +52,26 @@ std::shared_ptr<TaskNode> TaskNode::getNthByDate(std::size_t N) const {
 
 std::shared_ptr<TaskNode> TaskNode::getSubtaskByID(TaskID id) {
     return subtasks_[id];
+}
+
+TaskNode::TaskNode(TaskID id, const Task &tptr, const std::vector<std::shared_ptr<TaskNode>>& subtasks) :
+id(id), root_task_(tptr)
+{
+    for (const auto& node : subtasks) {
+        subtasks_[node->getId()] = node;
+    }
+}
+
+std::shared_ptr<TaskNode> TaskNode::modified(const Task & modified_data) {
+    auto this_modified = std::make_shared<TaskNode>(*this);
+    this_modified->root_task_ = modified_data;
+    this_modified->subtasks_.clear();
+    return this_modified;
+}
+
+void TaskNode::disconnect() {
+    if (getParent()) {
+        getParent()->eraseSubtask(getId());
+    }
+    subtasks_ = std::map<TaskID, std::shared_ptr<TaskNode>>();
 }

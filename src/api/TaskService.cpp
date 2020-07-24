@@ -13,10 +13,10 @@ UserTaskID TaskService::addTask(const TaskDTO &user_data) {
     return id_converter_->getUserTaskID(created_id);
 }
 
-UserTaskID TaskService::addSubTask(const TaskDTO &user_data) {
+UserTaskID TaskService::addSubTask(UserTaskID id_parent, const TaskDTO &user_data) {
     Task ptask = task_creator_->createTask(user_data);
     auto created_node = task_tree_
-                        ->createSubNode(id_converter_->getTaskID(user_data.getId()),
+                        ->createSubNode(id_converter_->getTaskID(id_parent),
                                         ptask);
     by_priority_->addToView(created_node);
     // extract and return id_ of the node
@@ -24,8 +24,8 @@ UserTaskID TaskService::addSubTask(const TaskDTO &user_data) {
     return id_converter_->getUserTaskID(created_id);
 }
 
-void TaskService::deleteTask(TaskID id_task) {
-    task_tree_->eraseNode(id_task);
+void TaskService::deleteTask(UserTaskID id_task) {
+    task_tree_->eraseNode(id_converter_->getTaskID(id_task));
 }
 
 std::vector<TaskDTO> TaskService::getAllTasks() {
@@ -42,4 +42,26 @@ std::vector<TaskDTO> TaskService::getAllTasks() {
                    );
     return user_result_set;
 }
+
+TaskDTO TaskService::getTaskBySystemID(TaskID id_task) {
+    auto p_node = task_tree_->getNodeById(id_task);
+    return TaskDTO(id_converter_->getUserTaskID(p_node->getId()),
+                   p_node       ->getTask());
+}
+
+TaskDTO TaskService::getTaskByID(UserTaskID id_task) {
+    return getTaskBySystemID(id_converter_->getTaskID(id_task));
+}
+
+
+void TaskService::postponeTask(UserTaskID id_task, time_t date_postpone) {
+    TaskDTO task_data = getTaskByID(id_task);
+    TaskID system_id_task = id_converter_->getTaskID(id_task);
+    task_tree_->modifyTaskData(system_id_task,
+                               task_creator_->createPostponedTask(task_data, date_postpone));
+    by_priority_->addToView(task_tree_->getNodeById(system_id_task));
+}
+
+
+
 

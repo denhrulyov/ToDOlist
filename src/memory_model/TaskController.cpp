@@ -12,23 +12,38 @@ void tie_child_to_parent(std::shared_ptr<TaskNode>& child, std::shared_ptr<TaskN
 
 /***********************************************************************************/
 
-std::shared_ptr<TaskNode> TaskController::createNode(const Task& tptr) {
-    TaskID created_id = id_generator_.generateID();
-    auto pnode = std::make_shared<TaskNode>(created_id, tptr);
+std::shared_ptr<TaskNode> TaskController::createFreeNode(TaskID id_newnode, const Task &tptr) {
+    auto pnode = std::make_shared<TaskNode>(id_newnode, tptr);
+    return pnode;
+}
+
+std::shared_ptr<TaskNode> TaskController::createNode(TaskID id_newnode, const Task &tptr) {
+    auto pnode = createFreeNode(id_newnode, tptr);
     registerNode(pnode);
     return pnode;
 }
 
+std::shared_ptr<TaskNode> TaskController::createNode(const Task& tptr) {
+    TaskID created_id = id_generator_.generateID();
+    return createNode(created_id, tptr);
+}
+
+void TaskController::addNodeTo(TaskID id_parent, std::shared_ptr<TaskNode> p_node) {
+    registerNode(p_node);
+    auto parent_node = getNodeById(id_parent);
+    tie_child_to_parent(p_node, parent_node);
+}
+
+
 std::weak_ptr<TaskNode> TaskController::createSubNode(TaskID id_parent, const Task& tptr) {
     auto subnode = createNode(tptr);
-    auto parent_node = getNodeById(id_parent);
-    tie_child_to_parent(subnode, parent_node);
+    addNodeTo(id_parent, subnode);
     return subnode;
 }
 
 std::weak_ptr<TaskNode> TaskController::createNodeAndAddToRoot(const Task& tptr) {
     auto node = createNode(tptr);
-    tie_child_to_parent(node, root_task_);
+    addNodeTo(root_task_->getId(), node);
     return node;
 }
 
@@ -40,10 +55,10 @@ std::vector<TaskID> TaskController::getAllSubtasks(TaskID id_parent) {
 }
 
 
+
 void TaskController::eraseNode(TaskID id_erase) {
     auto ls = getAllSubtasks(id_erase);
     removeFromTree(id_erase);
-    //std::cout << "id_ : " << id_erase << " / cnt : " << id_to_node_[id_erase].use_count() << std::endl;
     for (TaskID id : ls) {
         eraseNodeReferences(id);
     }
@@ -64,12 +79,15 @@ void TaskController::eraseNodeReferences(TaskID node_id) {
     if (node_id.getInt()) id_to_node_.erase(node_id);
 }
 
-void TaskController::removeFromTree(TaskID id_task) {
-    auto ptr_task_node = id_to_node_[id_task];
+void TaskController::removeFromTree(std::shared_ptr<TaskNode> ptr_task_node) {
     auto ptr_parent_node = ptr_task_node->getParent();
     if (ptr_parent_node) {
-        ptr_parent_node->eraseSubtask(id_task);
+        ptr_parent_node->eraseSubtask(ptr_task_node->getId());
     }
+}
+
+void TaskController::removeFromTree(TaskID id_task) {
+    removeFromTree(id_to_node_[id_task]);
 }
 
 TaskController::TaskController() {
@@ -88,4 +106,12 @@ void TaskController::registerNode(const std::shared_ptr<TaskNode> &node) {
 
 std::shared_ptr<TaskNode> TaskController::getRoot() const {
     return root_task_;
+}
+
+void TaskController::modifyTaskData(TaskID id_modify, const Task& new_data) {
+    auto old_node = getNodeById(id_modify);
+    TaskID id_parent = old_node->getParent()->getId();
+    auto new_node = old_node->modified(new_data);
+    addNodeTo(id_parent, new_node);
+    old_node->disconnect();
 }

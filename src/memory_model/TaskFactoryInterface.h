@@ -10,7 +10,7 @@ class TaskDTO;
 class TaskFactoryInterface {
 public:
     virtual Task createTask(const TaskDTO&) = 0;
-
+    virtual Task createPostponedTask(const TaskDTO& task_data, time_t timedelta) = 0;
     virtual ~TaskFactoryInterface() = default;
 };
 

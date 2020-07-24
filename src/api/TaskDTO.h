@@ -13,6 +13,7 @@
 class TaskDTO {
 
 public:
+    TaskDTO(const Task&);
     TaskDTO(UserTaskID, const Task&);
     TaskDTO(UserTaskID, const std::string& name, Task::Priority, const std::string& label, time_t);
     TaskDTO(            const std::string& name, Task::Priority, const std::string& label, time_t);

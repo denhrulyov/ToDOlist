@@ -28,16 +28,20 @@ public:
     {}
 
     std::vector<TaskDTO> getAllTasks();
+    TaskDTO getTaskByID(UserTaskID id_task);
 
 public:
     UserTaskID      addTask(const TaskDTO &user_data);
-    UserTaskID      addSubTask(const TaskDTO &user_data);
-    void            deleteTask(TaskID id_task);
+    UserTaskID      addSubTask(UserTaskID id_parent, const TaskDTO &user_data);
+    void            deleteTask(UserTaskID id_task);
+    void            postponeTask(UserTaskID id_task, time_t date);
 
     void inspectRoot() {
         task_tree_->see();
     }
 private:
+    TaskDTO getTaskBySystemID(TaskID id_task);
+
     std::unique_ptr<TaskFactoryInterface>         task_creator_;
     std::unique_ptr<TaskControllerInterface>      task_tree_;
     std::unique_ptr<TaskIDConverterInterface>     id_converter_;

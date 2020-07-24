@@ -10,12 +10,12 @@ int main() {
             TaskDTO("T1", Task::Priority::FIRST, "tag1", 2020)
             );
     UserTaskID id2 = service.addSubTask(
-            TaskDTO(id, "T2", Task::Priority::NONE, "tag2", 2021)
+            id, TaskDTO("T2", Task::Priority::NONE, "tag2", 2021)
             );
     UserTaskID id3 = service.addSubTask(
-            TaskDTO(id2,"T3", Task::Priority::THIRD, "tag3", 2022)
+            id2, TaskDTO("T3", Task::Priority::THIRD, "tag3", 2022)
             );
-    service.deleteTask(TaskID(1));
+    service.postponeTask(id2, 4000);
     //UserTaskID id4 = service.addTask("T5", Task::Priority::FIRST, "tag4", 2020);
     /*service.inspectRoot();
     //service.deleteTask(id2);

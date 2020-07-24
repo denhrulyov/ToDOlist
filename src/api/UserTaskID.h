@@ -20,6 +20,7 @@ public:
     {}
 
     std::vector<std::size_t> getLevelIndices();
+    UserTaskID getMainTaskID();
 
 private:
     std::vector<std::size_t> level_index_;

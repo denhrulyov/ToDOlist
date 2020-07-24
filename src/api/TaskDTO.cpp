@@ -53,3 +53,10 @@ TaskDTO::TaskDTO(UserTaskID id_task, const Task& task_) :
         label_(task_.label),
         priority_(task_.priority)
         {}
+
+TaskDTO::TaskDTO(const Task & task_) :
+        name_(task_.name),
+        date_(task_.date),
+        label_(task_.label),
+        priority_(task_.priority)
+{}

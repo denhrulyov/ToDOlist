@@ -14,6 +14,7 @@ class TaskFactory : public TaskFactoryInterface {
 
 public:
     Task createTask(const TaskDTO& task_data) override;
+    Task createPostponedTask(const TaskDTO& task_data, time_t new_date) override;
     // Task createTask(const std::string& name, Task::Priority, const std::string& label, time_t) override;
 };
 
