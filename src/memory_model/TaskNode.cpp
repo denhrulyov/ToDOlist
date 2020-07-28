@@ -3,8 +3,18 @@
 //
 
 #include "TaskNode.h"
-
 #include <memory>
+
+std::map<TaskID, std::shared_ptr<TaskNode>> mapify(const std::vector<std::shared_ptr<TaskNode>>& vector) {
+    std::map<TaskID, std::shared_ptr<TaskNode>> map;
+    for (const auto& p_node : vector) {
+        map[p_node->getId()] = p_node;
+    }
+    return map;
+}
+
+/*************************************/
+
 
 Task TaskNode::getTask() const {
     return root_task_;
@@ -36,6 +46,15 @@ std::vector<TaskID> TaskNode::getSubtasks() const {
     return sub;
 }
 
+std::vector<std::shared_ptr<TaskNode>> TaskNode::getSubNodes() const {
+    std::vector<std::shared_ptr<TaskNode>> sub;
+    for (const auto& pnode : subtasks_) {
+        sub.push_back(pnode.second);
+    }
+    return sub;
+}
+
+
 void TaskNode::eraseSubtask(TaskID id_erase) {
     subtasks_.erase(id_erase);
 }
@@ -54,24 +73,14 @@ std::shared_ptr<TaskNode> TaskNode::getSubtaskByID(TaskID id) {
     return subtasks_[id];
 }
 
-TaskNode::TaskNode(TaskID id, const Task &tptr, const std::vector<std::shared_ptr<TaskNode>>& subtasks) :
-id(id), root_task_(tptr)
-{
-    for (const auto& node : subtasks) {
-        subtasks_[node->getId()] = node;
-    }
-}
-
-std::shared_ptr<TaskNode> TaskNode::modifyAndMove(const Task & modified_data) {
-    auto this_modified = std::make_shared<TaskNode>(*this);
-    this_modified->root_task_ = modified_data;
-    this_modified->subtasks_ = subtasks_;
-    for (auto p_child : subtasks_) {
-        p_child.second->setParent(this_modified);
-    }
-    return this_modified;
-}
 
 void TaskNode::disconnect() {
     subtasks_.clear();
 }
+
+std::shared_ptr<TaskNode> TaskNode::clone(const Task& new_data) {
+    auto this_modified = std::make_shared<TaskNode>(id, new_data, subtasks_);
+    return this_modified;
+}
+
+

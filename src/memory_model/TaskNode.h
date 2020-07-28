@@ -18,15 +18,18 @@ class TaskNode {
 public:
     TaskNode(TaskID id, const Task& tptr) :
     id(id), root_task_(tptr), subtasks_() {}
-    TaskNode(TaskID id, const Task& tptr, const std::vector<std::shared_ptr<TaskNode>>& subtasks);
+    TaskNode(TaskID id, const Task& tptr, const std::map<TaskID, std::shared_ptr<TaskNode>>& subtasks):
+    id(id), root_task_(tptr), subtasks_(subtasks)
+    {}
     Task                                        getTask() const;
     TaskID                                      getId() const;
     std::vector<TaskID>                         getSubtasks() const;
+    std::vector<std::shared_ptr<TaskNode>>      getSubNodes() const;
     std::shared_ptr<TaskNode>                   getParent();
     std::shared_ptr<TaskNode>                   getSubtaskByID(TaskID id);
     std::shared_ptr<TaskNode>                   getNthByDate(std::size_t N) const;
     void                                        setParent(std::weak_ptr<TaskNode>);
-    std::shared_ptr<TaskNode>                   modifyAndMove(const Task&);
+    std::shared_ptr<TaskNode>                   clone(const Task& new_data);
 
 public:
     void disconnect();

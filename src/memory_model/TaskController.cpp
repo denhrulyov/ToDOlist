@@ -65,9 +65,6 @@ void TaskController::eraseNode(TaskID id_erase) {
 }
 
 
-//----------------------__dont_touch---methods--------------------------------------
-
-
 void TaskController::findAllChildren(const TaskNode &tnode, std::vector<TaskID> &buf) {
     buf.push_back(tnode.getId());
     for (auto child : tnode.getSubtasks()) {
@@ -111,7 +108,10 @@ std::shared_ptr<TaskNode> TaskController::getRoot() const {
 void TaskController::modifyTaskData(TaskID id_modify, const Task& new_data) {
     auto old_node = getNodeById(id_modify);
     TaskID id_parent = old_node->getParent()->getId();
-    auto new_node = old_node->modifyAndMove(new_data);
+    auto new_node = old_node->clone(new_data);
+    for (const auto& p_child : new_node->getSubNodes()) {
+        p_child->setParent(new_node);
+    }
     addNodeTo(id_parent, new_node);
     old_node->disconnect();
 }

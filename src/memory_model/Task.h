@@ -18,10 +18,10 @@ struct Task {
     };
 
 
-    std::string       name;
-    Task::Priority    priority;
-    std::string       label;
-    time_t            date;
+    const std::string       name;
+    const Task::Priority    priority;
+    const std::string       label;
+    const time_t            date;
 };
 
 
