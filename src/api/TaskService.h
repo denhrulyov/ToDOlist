@@ -33,9 +33,6 @@ public:
     void            deleteTask(TaskID id_task);
     void            postponeTask(TaskID id_task, time_t date);
 
-    void inspectRoot() {
-        task_tree_->see();
-    }
 private:
     TaskDTO getTaskBySystemID(TaskID id_task);
 

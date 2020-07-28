@@ -21,9 +21,6 @@ public:
     virtual void                          eraseNode(TaskID id_erase) = 0;
 
 public:
-    // "test"
-    virtual void see() = 0;
-public:
     virtual ~TaskControllerInterface() = default;
 };
 

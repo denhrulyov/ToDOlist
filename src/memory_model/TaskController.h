@@ -28,17 +28,7 @@ public:
     void                          eraseNode(TaskID id_erase) override;
 
 
-    void see() override {
-        auto sb = getAllSubtasks(root_task_->getId());
-        for (TaskID id : sb) {
-            std::cout << "node " << id << " | ";
-            for (const auto& nd : id_to_node_[id]->getSubtasks()) {
-                std::cout << nd << ' ';
-            }
-            if (id) std::cout << "/ p = " << id_to_node_[id]->getParent()->getId();
-            std::cout << std::endl;
-        }
-    }
+
 private:
     void registerNode(const std::shared_ptr<TaskNode>& node);
 
