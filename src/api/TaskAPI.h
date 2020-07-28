@@ -8,7 +8,7 @@
 #include "TaskService.h"
 #include "memory_model/TaskController.h"
 #include "memory_model/PriorityView.h"
-#include "TaskFactory.h"
+#include "memory_model/TaskFactory.h"
 
 // TaskService injector
 /*********************/

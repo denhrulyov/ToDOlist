@@ -5,7 +5,7 @@
 #ifndef EVAL_TASKSTORAGE_H
 #define EVAL_TASKSTORAGE_H
 #include "memory_model/Task.h"
-#include "TaskDTO.h"
+#include "api/TaskDTO.h"
 #include "memory_model/TaskFactoryInterface.h"
 #include <memory>
 
