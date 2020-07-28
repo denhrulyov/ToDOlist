@@ -14,7 +14,11 @@ add_executable(ToDOList src/main.cpp
         src/task_io/task_io.h
         src/memory_model/TaskID.cpp src/memory_model/TaskID.h
         src/memory_model/PriorityViewInterface.cpp src/memory_model/PriorityViewInterface.h
-        src/api/TaskAPI.h src/memory_model/TaskControllerInterface.h src/memory_model/TaskFactoryInterface.h src/memory_model/TaskIDFactory.cpp src/memory_model/TaskIDFactory.h)
+        src/api/TaskAPI.h
+        src/memory_model/TaskControllerInterface.h
+        src/memory_model/TaskFactoryInterface.h
+        src/memory_model/TaskIDFactory.cpp src/memory_model/TaskIDFactory.h
+        src/api/TaskCreationResult.cpp src/api/TaskCreationResult.h)
 
 include_directories(src)
 include_directories(tests)
@@ -23,7 +27,7 @@ include(GoogleTest)
 find_package(GTest REQUIRED)
 enable_testing()
 
-add_executable(TestsExecutable tests/TaskNodeTest.cpp tests/TestTaskDTO.cpp tests/TestTaskFactory.cpp)
+add_executable(TestsExecutable tests/TaskNodeTest.cpp tests/TestTaskDTO.cpp tests/TestTaskFactory.cpp tests/TaskCreationResultTest.cpp)
 target_link_libraries(TestsExecutable GTest::GTest GTest::Main)
 
 gtest_discover_tests(TestsExecutable)

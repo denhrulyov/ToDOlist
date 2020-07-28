@@ -11,6 +11,7 @@
 #include <unordered_map>
 #include <algorithm>
 #include <memory>
+#include <optional>
 
 class TaskService {
 
