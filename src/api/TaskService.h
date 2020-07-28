@@ -8,6 +8,7 @@
 #include "memory_model/TaskFactoryInterface.h"
 #include "memory_model/TaskControllerInterface.h"
 #include "memory_model/PriorityView.h"
+#include "TaskCreationResult.h"
 #include <unordered_map>
 #include <algorithm>
 #include <memory>
@@ -29,10 +30,10 @@ public:
     TaskDTO getTaskByID(TaskID id_task);
 
 public:
-    TaskID          addTask(const TaskDTO &user_data);
-    TaskID          addSubTask(TaskID id_parent, const TaskDTO &user_data);
-    void            deleteTask(TaskID id_task);
-    void            postponeTask(TaskID id_task, time_t date);
+    TaskCreationResult          addTask(const TaskDTO &user_data);
+    TaskCreationResult          addSubTask(TaskID id_parent, const TaskDTO &user_data);
+    void                        deleteTask(TaskID id_task);
+    void                        postponeTask(TaskID id_task, time_t date);
 
 private:
     TaskDTO getTaskBySystemID(TaskID id_task);

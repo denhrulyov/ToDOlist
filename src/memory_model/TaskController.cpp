@@ -30,7 +30,7 @@ std::shared_ptr<TaskNode> TaskController::createNode(const Task& tptr) {
 
 void TaskController::addNodeTo(TaskID id_parent, std::shared_ptr<TaskNode> p_node) {
     registerNode(p_node);
-    auto parent_node = getNodeById(id_parent);
+    auto parent_node = getNodeById(id_parent).value();
     tie_child_to_parent(p_node, parent_node);
 }
 
@@ -93,8 +93,11 @@ TaskController::TaskController() {
     id_to_node_[root_id] = root_task_;
 }
 
-std::shared_ptr<TaskNode> TaskController::getNodeById(TaskID id_node) const {
-    return id_to_node_.at(id_node);
+std::optional<std::shared_ptr<TaskNode>> TaskController::getNodeById(TaskID id_node) const {
+    auto iter = id_to_node_.find(id_node);
+    return (iter != id_to_node_.end()) ?
+            std::make_optional(id_to_node_.at(id_node)) :
+            std::nullopt;
 }
 
 void TaskController::registerNode(const std::shared_ptr<TaskNode> &node) {
@@ -106,7 +109,7 @@ std::shared_ptr<TaskNode> TaskController::getRoot() const {
 }
 
 void TaskController::modifyTaskData(TaskID id_modify, const Task& new_data) {
-    auto old_node = getNodeById(id_modify);
+    auto old_node = getNodeById(id_modify).value();
     TaskID id_parent = old_node->getParent()->getId();
     auto new_node = old_node->clone(new_data);
     for (const auto& p_child : new_node->getSubNodes()) {

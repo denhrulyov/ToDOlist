@@ -10,13 +10,14 @@
 #include <vector>
 #include <map>
 #include <unordered_map>
+#include <optional>
 
 class TaskController : public TaskControllerInterface {
 
 public:
     TaskController();
     std::vector<TaskID>                            getAllSubtasks(TaskID id_parent) override;
-    std::shared_ptr<TaskNode>                      getNodeById(TaskID id_node) const override;
+    std::optional<std::shared_ptr<TaskNode>>       getNodeById(TaskID id_node) const override;
     std::shared_ptr<TaskNode>                      getRoot() const override;
 
 public:
