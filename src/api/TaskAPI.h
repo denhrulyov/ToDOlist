@@ -2,8 +2,8 @@
 // Created by denis on 23.07.20.
 //
 
-#ifndef TODOLIST_TASK_SERVICE_H
-#define TODOLIST_TASK_SERVICE_H
+#ifndef TODOLIST_TASKAPI_H
+#define TODOLIST_TASKAPI_H
 
 #include "TaskService.h"
 #include "TaskIDConverter.h"
@@ -14,9 +14,9 @@
 // TaskService injector
 /*********************/
 
-namespace task_service {
+namespace task_api {
 
-    TaskService create() {
+    TaskService createService() {
         auto view =         std::make_unique<PriorityView>();
         auto tree =         std::make_unique<TaskController>();
         auto converter =    std::make_unique<TaskIDConverter>(*tree);
@@ -26,4 +26,4 @@ namespace task_service {
 
 }
 
-#endif //TODOLIST_TASK_SERVICE_H
+#endif //TODOLIST_TASKAPI_H

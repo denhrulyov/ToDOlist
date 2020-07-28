@@ -2,10 +2,10 @@
 
 #include "api/TaskService.h"
 #include "task_io/task_io.h"
-#include "api/task_service.h"
+#include "api/TaskAPI.h"
 
 int main() {
-    TaskService service = task_service::create();
+    TaskService service = task_api::createService();
     UserTaskID id = service.addTask(
             TaskDTO("T1", Task::Priority::FIRST, "tag1", 2020)
             );
