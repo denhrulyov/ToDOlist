@@ -4,7 +4,7 @@
 
 #include "TaskDTO.h"
 
-UserTaskID TaskDTO::getId() const {
+TaskID TaskDTO::getId() const {
     return id_;
 }
 
@@ -34,7 +34,7 @@ TaskDTO::TaskDTO(const std::string &name,
         priority_(priority)
         {}
 
-TaskDTO::TaskDTO(UserTaskID id_task,
+TaskDTO::TaskDTO(TaskID id_task,
                  const std::string &name,
                  Task::Priority priority,
                  const std::string &label,
@@ -46,7 +46,7 @@ TaskDTO::TaskDTO(UserTaskID id_task,
         priority_(priority)
 {}
 
-TaskDTO::TaskDTO(UserTaskID id_task, const Task& task_) :
+TaskDTO::TaskDTO(TaskID id_task, const Task& task_) :
         id_(id_task),
         name_(task_.name),
         date_(task_.date),

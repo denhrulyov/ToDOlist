@@ -8,7 +8,6 @@
 #include "memory_model/TaskFactoryInterface.h"
 #include "memory_model/TaskControllerInterface.h"
 #include "memory_model/PriorityView.h"
-#include "TaskIDConverterInterface.h"
 #include <unordered_map>
 #include <algorithm>
 #include <memory>
@@ -18,23 +17,21 @@ class TaskService {
 public:
     TaskService(std::unique_ptr<PriorityViewInterface> service,
                 std::unique_ptr<TaskControllerInterface> task_tree,
-                std::unique_ptr<TaskIDConverterInterface> id_converter,
                 std::unique_ptr<TaskFactoryInterface> task_creator
                 ) :
     task_tree_(std::move(task_tree)),
     by_priority_(std::move(service)),
-    id_converter_(std::move(id_converter)),
     task_creator_(std::move(task_creator))
     {}
 
     std::vector<TaskDTO> getAllTasks();
-    TaskDTO getTaskByID(UserTaskID id_task);
+    TaskDTO getTaskByID(TaskID id_task);
 
 public:
-    UserTaskID      addTask(const TaskDTO &user_data);
-    UserTaskID      addSubTask(UserTaskID id_parent, const TaskDTO &user_data);
-    void            deleteTask(UserTaskID id_task);
-    void            postponeTask(UserTaskID id_task, time_t date);
+    TaskID          addTask(const TaskDTO &user_data);
+    TaskID          addSubTask(TaskID id_parent, const TaskDTO &user_data);
+    void            deleteTask(TaskID id_task);
+    void            postponeTask(TaskID id_task, time_t date);
 
     void inspectRoot() {
         task_tree_->see();
@@ -44,7 +41,6 @@ private:
 
     std::unique_ptr<TaskFactoryInterface>         task_creator_;
     std::unique_ptr<TaskControllerInterface>      task_tree_;
-    std::unique_ptr<TaskIDConverterInterface>     id_converter_;
     std::unique_ptr<PriorityViewInterface>        by_priority_;
 };
 

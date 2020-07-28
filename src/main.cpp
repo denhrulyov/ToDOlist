@@ -6,13 +6,13 @@
 
 int main() {
     TaskService service = task_api::createService();
-    UserTaskID id = service.addTask(
+    TaskID id = service.addTask(
             TaskDTO("T1", Task::Priority::FIRST, "tag1", 2020)
             );
-    UserTaskID id2 = service.addSubTask(
+    TaskID id2 = service.addSubTask(
             id, TaskDTO("T2", Task::Priority::NONE, "tag2", 2021)
             );
-    UserTaskID id3 = service.addSubTask(
+    TaskID id3 = service.addSubTask(
             id2, TaskDTO("T3", Task::Priority::THIRD, "tag3", 2022)
             );
     service.postponeTask(id2, 4000);

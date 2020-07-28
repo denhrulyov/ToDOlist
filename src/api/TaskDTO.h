@@ -8,16 +8,15 @@
 #include "memory_model/Task.h"
 #include "memory"
 #include "memory_model/TaskID.h"
-#include "UserTaskID.h"
 
 class TaskDTO {
 
 public:
     TaskDTO(const Task&);
-    TaskDTO(UserTaskID, const Task&);
-    TaskDTO(UserTaskID, const std::string& name, Task::Priority, const std::string& label, time_t);
-    TaskDTO(            const std::string& name, Task::Priority, const std::string& label, time_t);
-    UserTaskID              getId() const ;
+    TaskDTO(TaskID, const Task&);
+    TaskDTO(TaskID, const std::string& name, Task::Priority, const std::string& label, time_t);
+    TaskDTO(        const std::string& name, Task::Priority, const std::string& label, time_t);
+    TaskID              getId() const ;
     std::string             getName() const ;
     Task::Priority          getPriority() const ;
     std::string             getLabel() const ;
@@ -25,7 +24,7 @@ public:
 
 
 private:
-    UserTaskID id_;
+    TaskID id_;
     std::string name_;
     Task::Priority priority_;
     std::string label_;

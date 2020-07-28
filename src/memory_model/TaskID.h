@@ -9,12 +9,10 @@
 #include <iostream>
 #include <limits>
 
-class TaskID;
-class TaskIDFactory;
+const unsigned int id_invalid_ = std::numeric_limits<unsigned int>::max();
 
 class TaskID {
 public:
-    static const unsigned int id_invalid_;
     TaskID() : id_(id_invalid_) {}
     explicit TaskID(unsigned int id_create) : id_(id_create) {}
 
@@ -52,15 +50,5 @@ private:
 
 };
 
-
-
-class TaskIDFactory {
-public:
-    explicit TaskIDFactory(unsigned int initial_id = 0) : current_id_(initial_id) {};
-    TaskID generateID();
-
-private:
-    unsigned int current_id_;
-};
 
 #endif //TODOLIST_TASKID_H

@@ -5,6 +5,7 @@
 #ifndef TODOLIST_TASKCONTROLLER_H
 #define TODOLIST_TASKCONTROLLER_H
 #include "TaskControllerInterface.h"
+#include "TaskIDFactory.h"
 
 #include <vector>
 #include <map>

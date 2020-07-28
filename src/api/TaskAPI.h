@@ -6,7 +6,6 @@
 #define TODOLIST_TASKAPI_H
 
 #include "TaskService.h"
-#include "TaskIDConverter.h"
 #include "memory_model/TaskController.h"
 #include "memory_model/PriorityView.h"
 #include "TaskFactory.h"
@@ -19,9 +18,8 @@ namespace task_api {
     TaskService createService() {
         auto view =         std::make_unique<PriorityView>();
         auto tree =         std::make_unique<TaskController>();
-        auto converter =    std::make_unique<TaskIDConverter>(*tree);
         auto creator =      std::make_unique<TaskFactory>();
-        return TaskService(std::move(view), std::move(tree), std::move(converter), std::move(creator));
+        return TaskService(std::move(view), std::move(tree), std::move(creator));
     }
 
 }

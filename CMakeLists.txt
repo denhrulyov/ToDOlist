@@ -13,10 +13,8 @@ add_executable(ToDOList src/main.cpp
         src/api/TaskDTO.cpp src/api/TaskDTO.h
         src/task_io/task_io.h
         src/memory_model/TaskID.cpp src/memory_model/TaskID.h
-        src/api/UserTaskID.cpp src/api/UserTaskID.h
-        src/api/TaskIDConverter.cpp src/api/TaskIDConverter.h
         src/memory_model/PriorityViewInterface.cpp src/memory_model/PriorityViewInterface.h
-        src/api/TaskAPI.h src/memory_model/TaskControllerInterface.h src/api/TaskIDConverterInterface.h src/memory_model/TaskFactoryInterface.h)
+        src/api/TaskAPI.h src/memory_model/TaskControllerInterface.h src/memory_model/TaskFactoryInterface.h src/memory_model/TaskIDFactory.cpp src/memory_model/TaskIDFactory.h)
 
 include_directories(src)
 include_directories(tests)
