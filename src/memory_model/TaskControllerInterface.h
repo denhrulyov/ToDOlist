@@ -10,7 +10,7 @@
 class TaskControllerInterface {
 public:
     virtual std::vector<TaskID>                            getAllSubtasks(TaskID id_parent) = 0;
-    virtual std::optional<std::shared_ptr<TaskNode>>       getNodeById(TaskID id_node) const = 0;
+    virtual std::shared_ptr<TaskNode>                      getNodeById(TaskID id_node) const = 0;
     virtual std::shared_ptr<TaskNode>                      getRoot() const = 0;
 
 public:

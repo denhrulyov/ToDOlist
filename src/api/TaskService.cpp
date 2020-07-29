@@ -13,7 +13,7 @@ TaskCreationResult TaskService::addTask(const TaskDTO &user_data) {
 }
 
 TaskCreationResult TaskService::addSubTask(TaskID id_parent, const TaskDTO &user_data) {
-    if (!task_tree_->getNodeById(id_parent).has_value()) {
+    if (!task_tree_->getNodeById(id_parent)) {
         return TaskCreationResult::taskNotFound();
     }
     Task ptask = task_creator_->createTask(user_data);
@@ -44,7 +44,7 @@ std::vector<TaskDTO> TaskService::getAllTasks() {
 }
 
 TaskDTO TaskService::getTaskBySystemID(TaskID id_task) {
-    auto p_node = task_tree_->getNodeById(id_task).value();
+    auto p_node = task_tree_->getNodeById(id_task);
     return TaskDTO(p_node->getId(),
                    p_node->getTask());
 }
@@ -59,7 +59,7 @@ void TaskService::postponeTask(TaskID id_task, time_t date_postpone) {
     TaskID system_id_task = id_task;
     task_tree_->modifyTaskData(system_id_task,
                                task_creator_->createPostponedTask(task_data, date_postpone));
-    by_priority_->addToView(task_tree_->getNodeById(system_id_task).value());
+    by_priority_->addToView(task_tree_->getNodeById(system_id_task));
 }
 
 

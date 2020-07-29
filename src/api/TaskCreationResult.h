@@ -22,7 +22,7 @@ public:
 
 private:
 
-    TaskCreationResult( const std::optional<TaskID> &created_id,
+    TaskCreationResult( const std::optional<TaskID>& created_id,
                         bool success,
                         const std::optional<std::string>& error_message) :
     created_id_(created_id),
