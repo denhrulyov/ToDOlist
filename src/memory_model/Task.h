@@ -11,10 +11,11 @@
 
 struct Task {
     enum class Priority {
-        NONE,
+
         FIRST,
         SECOND,
-        THIRD
+        THIRD,
+        NONE
     };
 
 
@@ -23,6 +24,8 @@ struct Task {
     const std::string       label;
     const time_t            date;
 };
+
+
 
 
 #endif //EVAL_TASK_H

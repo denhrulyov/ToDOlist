@@ -6,11 +6,11 @@
 #include "memory_model/TagPriorityView.h"
 #include "memory_model/TagPriorityView.cpp"
 
-class TagPriorityViewPriTest : public ::testing::Test {
+class TagPriorityViewTest : public ::testing::Test {
 
 };
 
-TEST_F(TagPriorityViewPriTest, AllTasksAdded) {
+TEST_F(TagPriorityViewTest, AllTasksAdded) {
     auto node1 = std::make_shared<TaskNode>(
             TaskID(1),
             Task {"t1", Task::Priority::FIRST, "lbl1", 2000}
@@ -36,7 +36,7 @@ TEST_F(TagPriorityViewPriTest, AllTasksAdded) {
     EXPECT_EQ(tw.getAllWithTag("lbl2").size(), 2);
 }
 
-TEST_F(TagPriorityViewPriTest, PointerExpiredCorrectReaction) {
+TEST_F(TagPriorityViewTest, PointerExpiredCorrectReaction) {
     auto node1 = std::make_shared<TaskNode>(
             TaskID(1),
             Task {"t1", Task::Priority::FIRST, "lbl1", 2000}
