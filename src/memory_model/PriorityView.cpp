@@ -4,7 +4,7 @@
 
 #include "PriorityView.h"
 
-const std::vector<Task::Priority> PriorityView::priorities_by_order = { Task::Priority::FIRST, Task::Priority::SECOND, Task::Priority::THIRD, Task::Priority::NONE };
+
 
 PriorityView::PriorityView() {
     for (auto prior : priorities_by_order) {

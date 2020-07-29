@@ -16,7 +16,7 @@ public:
     TaskDTO(TaskID, const Task&);
     TaskDTO(TaskID, const std::string& name, Task::Priority, const std::string& label, time_t);
     TaskDTO(        const std::string& name, Task::Priority, const std::string& label, time_t);
-    TaskID              getId() const ;
+    TaskID                  getId() const ;
     std::string             getName() const ;
     Task::Priority          getPriority() const ;
     std::string             getLabel() const ;

@@ -15,6 +15,11 @@ using multimap_by_date = std::multimap<
                                     std::weak_ptr<TaskNode>
                                     >;
 
+const std::vector<Task::Priority> priorities_by_order = { Task::Priority::FIRST,
+                                                          Task::Priority::SECOND,
+                                                          Task::Priority::THIRD,
+                                                          Task::Priority::NONE };
+
 class PriorityView : public PriorityViewInterface {
 
 public:
@@ -25,7 +30,6 @@ public:
     std::vector<std::weak_ptr<TaskNode>> getAllToDate(time_t date) override;
 
 private:
-    static const std::vector<Task::Priority> priorities_by_order;
     std::unordered_map<Task::Priority, multimap_by_date> view;
 
 public:
