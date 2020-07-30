@@ -49,3 +49,8 @@ std::vector<std::weak_ptr<TaskNode>> TagPriorityView::getAll(const std::string &
             collect(view_.at(tag)) :
             std::vector<std::weak_ptr<TaskNode>>();
 }
+
+void TagPriorityView::removeFromView(TaskID id) {
+    auto task_in_view = place_of_[id];
+    view_.erase(task_in_view);
+}

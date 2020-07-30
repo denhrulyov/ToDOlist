@@ -37,7 +37,7 @@ TEST_F(PriorityViewTest, AllTasksAdded) {
     tw.addToView(node2);
     tw.addToView(node3);
     tw.addToView(node4);
-    EXPECT_EQ(tw.getAllToDate(date_infinity).size(), 4);
+    EXPECT_EQ(tw.getAll(date_infinity).size(), 4);
 }
 
 TEST_F(PriorityViewTest, AllTasksSorted) {
@@ -46,7 +46,7 @@ TEST_F(PriorityViewTest, AllTasksSorted) {
     tw.addToView(node2);
     tw.addToView(node3);
     tw.addToView(node4);
-    auto result_set = tw.getAllToDate(date_infinity);
+    auto result_set = tw.getAll(date_infinity);
     for (std::size_t i = 0; i < result_set.size() - 1; ++i) {
         EXPECT_GE(result_set[i + 1].lock()->getTask().priority,
                   result_set[i].lock()->getTask().priority      );
@@ -67,5 +67,5 @@ TEST_F(PriorityViewTest, PointerExpiredCorrectReaction) {
     tw.addToView(node1);
     tw.addToView(node2);
     node2.reset();
-    EXPECT_EQ(tw.getAllToDate(date_infinity).size(), 1);
+    EXPECT_EQ(tw.getAll(date_infinity).size(), 1);
 }

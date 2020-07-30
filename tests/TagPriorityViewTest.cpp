@@ -32,8 +32,8 @@ TEST_F(TagPriorityViewTest, AllTasksAdded) {
     tw.addToView(node2);
     tw.addToView(node3);
     tw.addToView(node4);
-    EXPECT_EQ(tw.getAllWithTag("lbl1").size(), 2);
-    EXPECT_EQ(tw.getAllWithTag("lbl2").size(), 2);
+    EXPECT_EQ(tw.getAll("lbl1").size(), 2);
+    EXPECT_EQ(tw.getAll("lbl2").size(), 2);
 }
 
 TEST_F(TagPriorityViewTest, PointerExpiredCorrectReaction) {
@@ -49,6 +49,6 @@ TEST_F(TagPriorityViewTest, PointerExpiredCorrectReaction) {
     tw.addToView(node1);
     tw.addToView(node2);
     node2.reset();
-    EXPECT_EQ(tw.getAllWithTag("lbl1").size(), 1);
-    EXPECT_EQ(tw.getAllWithTag("lbl2").size(), 0);
+    EXPECT_EQ(tw.getAll("lbl1").size(), 1);
+    EXPECT_EQ(tw.getAll("lbl2").size(), 0);
 }

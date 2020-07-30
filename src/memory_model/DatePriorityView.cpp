@@ -36,3 +36,8 @@ std::vector<std::weak_ptr<TaskNode>> DatePriorityView::getAll(const time_t& date
     return result_set;
 }
 
+void DatePriorityView::removeFromView(TaskID id) {
+    auto task_in_view = place_of_[id];
+    view.erase(task_in_view);
+}
+
