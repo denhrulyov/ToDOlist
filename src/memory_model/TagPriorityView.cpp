@@ -4,6 +4,8 @@
 
 #include "TagPriorityView.h"
 
+using namespace tag_view;
+
 const simple_priority_view blank_priority_container =
         {
           {Task::Priority::FIRST    , task_list()   },

@@ -19,16 +19,20 @@ class TaskService {
 
 public:
     TaskService(
-            std::unique_ptr<TaskIDFactoryInterface>         id_generator,
-            std::unique_ptr<TaskFactoryInterface>           task_creator,
-            std::unique_ptr<PriorityViewInterface<time_t>>  view
+            std::unique_ptr<TaskIDFactoryInterface>                 id_generator,
+            std::unique_ptr<TaskFactoryInterface>                   task_creator,
+            std::unique_ptr<PriorityViewInterface<time_t>>          view_time,
+            std::unique_ptr<PriorityViewInterface<std::string>>     view_label
             ) :
             id_generator_(std::move(id_generator)),
             task_creator_(std::move(task_creator)),
-            by_time_(std::move(view))
+            by_time_(std::move(view_time)),
+            by_label_(std::move(view_label))
     {}
 
+public:
     std::vector<TaskDTO> getAllTasks();
+    std::vector<TaskDTO> getAllWithLabel(const std::string& label);
     TaskDTO getTaskByID(TaskID id_task);
 
 public:
@@ -38,6 +42,7 @@ public:
     void                                                    postponeTask(TaskID id, time_t date);
 
 private:
+    void                                                    addToViews(const std::shared_ptr<TaskNode>&);
     void                                                    eraseAllReferences(TaskID id);
 
 private:
@@ -45,6 +50,7 @@ private:
     std::unique_ptr<TaskIDFactoryInterface>                 id_generator_;
     std::unique_ptr<TaskFactoryInterface>                   task_creator_;
     std::unique_ptr<PriorityViewInterface<time_t>>          by_time_;
+    std::unique_ptr<PriorityViewInterface<std::string>>     by_label_;
 };
 
 

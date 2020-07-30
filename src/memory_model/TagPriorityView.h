@@ -8,15 +8,17 @@
 #include <map>
 #include <unordered_map>
 #include "PriorityViewInterface.h"
+namespace tag_view {
 
-using task_list =               std::list<std::weak_ptr<TaskNode>>;
-using simple_priority_view =    std::unordered_map<Task::Priority, task_list>;
-using tag_map =                 std::map<std::string, simple_priority_view>;
-using id_map =                  std::map<TaskID, std::pair<task_list*, task_list::iterator>>;
+    using task_list = std::list<std::weak_ptr<TaskNode>>;
+    using simple_priority_view = std::unordered_map<Task::Priority, task_list>;
+    using tag_map = std::map<std::string, simple_priority_view>;
+    using id_map = std::map<TaskID, std::pair<task_list *, task_list::iterator>>;
+}
 
 /********************************************************************************************/
 
-class TagPriorityView : PriorityViewInterface<std::string> {
+class TagPriorityView : public PriorityViewInterface<std::string> {
 
 public:
     void                                        addToView(const std::weak_ptr<TaskNode>&) override;
@@ -25,8 +27,8 @@ public:
     ~TagPriorityView() = default;
 
 private:
-    tag_map                                     view_;
-    id_map                                      place_of_;
+    tag_view::tag_map                           view_;
+    tag_view::id_map                            place_of_;
 };
 
 

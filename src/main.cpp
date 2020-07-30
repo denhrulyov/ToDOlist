@@ -17,7 +17,7 @@ int main() {
             id2.getCreatedTaskID().value(), TaskDTO("T3", Task::Priority::THIRD, "tag3", 2022)
             );
     service.postponeTask(id2.getCreatedTaskID().value(), 4000);
-    service.deleteTask(id3.getCreatedTaskID().value());
+   // service.deleteTask(id3.getCreatedTaskID().value());
     TaskCreationResult id4 = service.addSubTask(
             id2.getCreatedTaskID().value(), TaskDTO("T3", Task::Priority::THIRD, "tag3", 2022)
     );
@@ -39,7 +39,7 @@ int main() {
     UserTaskID id7 = service.addSubTask(<#initializer#>);
     service.inspectRoot();
      */
-    auto tsk = service.getAllTasks();
+    auto tsk = service.getAllWithLabel("tag1");
     for (auto ts : tsk) {
         std::cout << ts;
     }

@@ -4,14 +4,46 @@
 
 #include "TaskService.h"
 
+
+TaskDTO getDTO(const std::weak_ptr<TaskNode>& node) {
+    auto shared_node = node.lock();
+    TaskID id_task = shared_node->getId();
+    return TaskDTO(id_task, shared_node->getTask());
+}
+
+std::vector<TaskDTO> convertAll(const std::vector<std::weak_ptr<TaskNode>>& all) {
+    std::vector<TaskDTO> user_result_set;
+    std::transform(all.begin(), all.end(),
+                   std::back_inserter(user_result_set),
+                   getDTO
+    );
+    return user_result_set;
+}
+
+/**********************************************************************/
+
+void TaskService::addToViews(const std::shared_ptr<TaskNode>& node) {
+    nodes_[node->getId()] = node;
+    by_time_->addToView(node);
+    by_label_->addToView(node);
+}
+
+void TaskService::eraseAllReferences(TaskID id) {
+    auto parent = nodes_[id]->getParent();
+    if (parent) {
+        parent->eraseSubtask(id);
+    }
+    nodes_.erase(id);
+    by_time_->removeFromView(id);
+    by_label_->removeFromView(id);
+}
+
 TaskCreationResult TaskService::addTask(const TaskDTO &task_data) {
     Task task = task_creator_->createTask(task_data);
     TaskID generated_id = id_generator_->generateID();
     auto created_node = std::make_shared<TaskNode>(generated_id, task);
     // set links to new node
-    nodes_[generated_id] = created_node;
-    by_time_->addToView(created_node);
-
+    addToViews(created_node);
     return TaskCreationResult::success(generated_id);
 }
 
@@ -38,48 +70,33 @@ void TaskService::deleteTask(TaskID id) {
     eraseAllReferences(id);
 }
 
-std::vector<TaskDTO> TaskService::getAllTasks() {
-    auto result_set = by_time_->getAll(std::numeric_limits<time_t>::max());
-    std::vector<TaskDTO> user_result_set;
-    std::transform(result_set.begin(), result_set.end(),
-                    std::back_inserter(user_result_set),
-                    [this] (std::weak_ptr<TaskNode> p_node) {
-                        auto pnode_access = p_node.lock();
-                        TaskID id_task = pnode_access->getId();
-                        return TaskDTO(id_task, pnode_access->getTask());
-                    }
-                   );
-    return user_result_set;
-}
-
-TaskDTO TaskService::getTaskByID(TaskID id) {
-    return TaskDTO(id, nodes_[id]->getTask());
-}
-
-
 void TaskService::postponeTask(TaskID id, time_t date_postpone) {
     auto old_node = nodes_[id];
     auto modified_node =
             std::make_shared<TaskNode>(
                     id,
                     task_creator_->createPostponedTask(old_node->getTask(), date_postpone)
-                    );
+            );
     for (auto subnode : nodes_[id]->getSubNodes()) {
         modified_node->addSubtask(subnode);
         subnode->setParent(modified_node);
     }
     eraseAllReferences(id);
-    nodes_[id] = modified_node;
-    by_time_->addToView(modified_node);
+    addToViews(modified_node);
 }
 
-void TaskService::eraseAllReferences(TaskID id) {
-    auto parent = nodes_[id]->getParent();
-    if (parent) {
-        parent->eraseSubtask(id);
-    }
-    nodes_.erase(id);
-    by_time_->removeFromView(id);
+std::vector<TaskDTO> TaskService::getAllTasks() {
+    auto result_set = by_time_->getAll(std::numeric_limits<time_t>::max());
+    return convertAll(result_set);
 }
 
+std::vector<TaskDTO> TaskService::getAllWithLabel(const std::string &label) {
+    auto result_set = by_label_->getAll(label);
+    return convertAll(result_set);
+}
+
+
+TaskDTO TaskService::getTaskByID(TaskID id) {
+    return TaskDTO(id, nodes_[id]->getTask());
+}
 
