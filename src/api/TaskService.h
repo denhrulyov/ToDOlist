@@ -9,6 +9,7 @@
 #include "memory_model/TaskControllerInterface.h"
 #include "memory_model/DatePriorityView.h"
 #include "TaskCreationResult.h"
+#include "memory_model/TaskIDFactory.h"
 #include <unordered_map>
 #include <algorithm>
 #include <memory>
@@ -30,14 +31,17 @@ public:
     TaskDTO getTaskByID(TaskID id_task);
 
 public:
-    TaskCreationResult          addTask(const TaskDTO &user_data);
-    TaskCreationResult          addSubTask(TaskID id_parent, const TaskDTO &user_data);
-    void                        deleteTask(TaskID id_task);
-    void                        postponeTask(TaskID id_task, time_t date);
+    TaskCreationResult                                      addTask(const TaskDTO &user_data);
+    TaskCreationResult                                      addSubTask(TaskID parent, const TaskDTO &user_data);
+    void                                                    deleteTask(TaskID id_task);
+    void                                                    postponeTask(TaskID id_task, time_t date);
 
 private:
-    TaskDTO getTaskBySystemID(TaskID id_task);
+    void                                                    eraseAllReferences(TaskID id);
 
+private:
+    std::map<TaskID, std::shared_ptr<TaskNode>>             nodes_;
+    TaskIDFactory                                           id_generator_;
     std::unique_ptr<TaskFactoryInterface>                   task_creator_;
     std::unique_ptr<TaskControllerInterface>                task_tree_;
     std::unique_ptr<PriorityViewInterface<time_t>>          by_priority_;

@@ -19,8 +19,9 @@ int main() {
     service.postponeTask(id2.getCreatedTaskID().value(), 4000);
     service.deleteTask(id3.getCreatedTaskID().value());
     TaskCreationResult id4 = service.addSubTask(
-            id3.getCreatedTaskID().value(), TaskDTO("T3", Task::Priority::THIRD, "tag3", 2022)
+            id2.getCreatedTaskID().value(), TaskDTO("T3", Task::Priority::THIRD, "tag3", 2022)
     );
+    service.deleteTask(id2.getCreatedTaskID().value());
     //UserTaskID id4 = service.addTask("T5", Task::Priority::FIRST, "tag4", 2020);
     /*service.inspectRoot();
     //service.deleteTask(id2);

@@ -8,7 +8,6 @@ add_executable(ToDOList src/main.cpp
         src/memory_model/Task.h
         src/memory_model/TaskNode.cpp src/memory_model/TaskNode.h
         src/memory_model/TaskFactory.cpp src/memory_model/TaskFactory.h
-        src/memory_model/TaskController.cpp src/memory_model/TaskController.h
         src/memory_model/DatePriorityView.cpp src/memory_model/DatePriorityView.h
         src/api/TaskDTO.cpp src/api/TaskDTO.h
         src/task_io/task_io.h

@@ -26,6 +26,7 @@ using multimap_iterator_type = decltype(multimap_by_date().emplace(0, std::share
 using priority_map =    std::map<Task::Priority, multimap_by_date>;
 using id_map =          std::map<TaskID, std::pair<multimap_by_date*, multimap_iterator_type>>;
 
+/********************************************************************************************/
 
 class DatePriorityView : public PriorityViewInterface<time_t> {
 

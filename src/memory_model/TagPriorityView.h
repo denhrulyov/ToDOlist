@@ -14,6 +14,8 @@ using simple_priority_view =    std::unordered_map<Task::Priority, task_list>;
 using tag_map =                 std::map<std::string, simple_priority_view>;
 using id_map =                  std::map<TaskID, std::pair<task_list*, task_list::iterator>>;
 
+/********************************************************************************************/
+
 class TagPriorityView : PriorityViewInterface<std::string> {
 
 public:
