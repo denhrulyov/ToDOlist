@@ -3,6 +3,7 @@
 #include "api/TaskService.h"
 #include "task_io/task_io.h"
 #include "api/TaskAPI.h"
+#include <boost/date_time.hpp>
 
 int main() {
     TaskService service = task_api::createService();

@@ -21,6 +21,8 @@ public:
     TaskNode(TaskID id, const Task& tptr, const std::map<TaskID, std::shared_ptr<TaskNode>>& subtasks):
     id(id), root_task_(tptr), subtasks_(subtasks)
     {}
+
+public:
     Task                                        getTask() const;
     TaskID                                      getId() const;
     std::vector<TaskID>                         getSubtasks() const;
@@ -29,7 +31,10 @@ public:
     std::shared_ptr<TaskNode>                   getSubtaskByID(TaskID id);
     std::shared_ptr<TaskNode>                   getNthByDate(std::size_t N) const;
     void                                        setParent(std::weak_ptr<TaskNode>);
+
+public:
     std::shared_ptr<TaskNode>                   clone(const Task& new_data);
+    void                                        complete();
 
 public:
     void disconnect();
@@ -42,6 +47,7 @@ public:
 private:
     TaskID                                          id;
     Task                                            root_task_;
+    bool                                            complete_ = false;
     std::weak_ptr<TaskNode>                         parent_;
     std::map<TaskID, std::shared_ptr<TaskNode>>     subtasks_;
 };

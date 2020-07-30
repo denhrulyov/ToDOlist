@@ -118,3 +118,11 @@ void TaskController::modifyTaskData(TaskID id_modify, const Task& new_data) {
     addNodeTo(id_parent, new_node);
     old_node->disconnect();
 }
+
+void TaskController::completeTask(TaskID id_task) {
+    auto p_node = getNodeById(id_task);
+    p_node->complete();
+    for (auto id_child : p_node->getSubtasks()) {
+        completeTask(id_child);
+    }
+}

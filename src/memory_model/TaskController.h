@@ -16,18 +16,18 @@ class TaskController : public TaskControllerInterface {
 
 public:
     TaskController();
-    std::vector<TaskID>                            getAllSubtasks(TaskID id_parent) override;
-    std::shared_ptr<TaskNode>                      getNodeById(TaskID id_node) const override;
-    std::shared_ptr<TaskNode>                      getRoot() const override;
+    std::vector<TaskID>                      getAllSubtasks(TaskID id_parent) override;
+    std::shared_ptr<TaskNode>                getNodeById(TaskID id_node) const override;
+    std::shared_ptr<TaskNode>                getRoot() const override;
 
 public:
 
-    std::weak_ptr<TaskNode>       createSubNode(TaskID id_parent, const Task& tptr) override;
-    std::weak_ptr<TaskNode>       createNodeAndAddToRoot(const Task& tptr) override;
+    std::weak_ptr<TaskNode>                  createSubNode(TaskID id_parent, const Task& tptr) override;
+    std::weak_ptr<TaskNode>                  createNodeAndAddToRoot(const Task& tptr) override;
 
-    void                          modifyTaskData(TaskID id_modify, const Task& new_data) override;
-    void                          eraseNode(TaskID id_erase) override;
-
+    void                                     modifyTaskData(TaskID id_modify, const Task& new_data) override;
+    void                                     eraseNode(TaskID id_erase) override;
+    void                                     completeTask(TaskID id_task);
 
 
 private:

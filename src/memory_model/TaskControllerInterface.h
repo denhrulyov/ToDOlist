@@ -19,6 +19,7 @@ public:
     virtual std::weak_ptr<TaskNode>       createNodeAndAddToRoot(const Task& tptr) = 0;
     virtual void                          modifyTaskData(TaskID id_modify, const Task& new_data) = 0;
     virtual void                          eraseNode(TaskID id_erase) = 0;
+    virtual void                          completeTask(TaskID id_task) = 0;
 
 public:
     virtual ~TaskControllerInterface() = default;

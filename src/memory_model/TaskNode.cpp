@@ -83,4 +83,8 @@ std::shared_ptr<TaskNode> TaskNode::clone(const Task& new_data) {
     return this_modified;
 }
 
+void TaskNode::complete() {
+    complete_ = true;
+}
+
 
