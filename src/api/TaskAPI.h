@@ -7,7 +7,7 @@
 
 #include "TaskService.h"
 #include "memory_model/TaskController.h"
-#include "memory_model/PriorityView.h"
+#include "memory_model/DatePriorityView.h"
 #include "memory_model/TaskFactory.h"
 
 // TaskService injector
@@ -16,7 +16,7 @@
 namespace task_api {
 
     TaskService createService() {
-        auto view =         std::make_unique<PriorityView>();
+        auto view =         std::make_unique<DatePriorityView>();
         auto tree =         std::make_unique<TaskController>();
         auto creator =      std::make_unique<TaskFactory>();
         return TaskService(std::move(view), std::move(tree), std::move(creator));

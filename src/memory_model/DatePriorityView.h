@@ -2,8 +2,8 @@
 // Created by denis on 13.07.20.
 //
 
-#ifndef TODOLIST_PRIORITYVIEW_H
-#define TODOLIST_PRIORITYVIEW_H
+#ifndef TODOLIST_DATEPRIORITYVIEW_H
+#define TODOLIST_DATEPRIORITYVIEW_H
 #include "PriorityViewInterface.h"
 #include "api/TaskDTO.h"
 #include <functional>
@@ -20,21 +20,21 @@ const std::vector<Task::Priority> priorities_by_order = { Task::Priority::FIRST,
                                                           Task::Priority::THIRD,
                                                           Task::Priority::NONE };
 
-class PriorityView : public PriorityViewInterface {
+class DatePriorityView : public PriorityViewInterface<time_t> {
 
 public:
-    PriorityView();
+    DatePriorityView();
 
 public:
-    void addToView(std::weak_ptr<TaskNode> pnode) override ;
-    std::vector<std::weak_ptr<TaskNode>> getAllToDate(time_t date) override;
+    void addToView(const std::weak_ptr<TaskNode>& pnode) override ;
+    std::vector<std::weak_ptr<TaskNode>> getAll(const time_t& date) override;
 
 private:
     std::unordered_map<Task::Priority, multimap_by_date> view;
 
 public:
-    ~PriorityView() override = default;
+    ~DatePriorityView() override = default;
 };
 
 
-#endif //TODOLIST_PRIORITYVIEW_H
+#endif //TODOLIST_DATEPRIORITYVIEW_H

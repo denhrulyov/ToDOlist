@@ -9,16 +9,16 @@ add_executable(ToDOList src/main.cpp
         src/memory_model/TaskNode.cpp src/memory_model/TaskNode.h
         src/memory_model/TaskFactory.cpp src/memory_model/TaskFactory.h
         src/memory_model/TaskController.cpp src/memory_model/TaskController.h
-        src/memory_model/PriorityView.cpp src/memory_model/PriorityView.h
+        src/memory_model/DatePriorityView.cpp src/memory_model/DatePriorityView.h
         src/api/TaskDTO.cpp src/api/TaskDTO.h
         src/task_io/task_io.h
         src/memory_model/TaskID.cpp src/memory_model/TaskID.h
-        src/memory_model/PriorityViewInterface.cpp src/memory_model/PriorityViewInterface.h
+        src/memory_model/PriorityViewInterface.h
         src/api/TaskAPI.h
         src/memory_model/TaskControllerInterface.h
         src/memory_model/TaskFactoryInterface.h
         src/memory_model/TaskIDFactory.cpp src/memory_model/TaskIDFactory.h
-        src/api/TaskCreationResult.cpp src/api/TaskCreationResult.h src/memory_model/TagPriorityViewInterface.h src/memory_model/TagPriorityView.cpp src/memory_model/TagPriorityView.h)
+        src/api/TaskCreationResult.cpp src/api/TaskCreationResult.h src/memory_model/TagPriorityView.cpp src/memory_model/TagPriorityView.h)
 find_package(Boost 1.70.0 REQUIRED system)
 
 

@@ -7,7 +7,7 @@
 #include "memory_model/TaskNode.h"
 #include "memory_model/TaskFactoryInterface.h"
 #include "memory_model/TaskControllerInterface.h"
-#include "memory_model/PriorityView.h"
+#include "memory_model/DatePriorityView.h"
 #include "TaskCreationResult.h"
 #include <unordered_map>
 #include <algorithm>
@@ -17,7 +17,7 @@
 class TaskService {
 
 public:
-    TaskService(std::unique_ptr<PriorityViewInterface> service,
+    TaskService(std::unique_ptr<PriorityViewInterface<time_t>> service,
                 std::unique_ptr<TaskControllerInterface> task_tree,
                 std::unique_ptr<TaskFactoryInterface> task_creator
                 ) :
@@ -40,7 +40,7 @@ private:
 
     std::unique_ptr<TaskFactoryInterface>         task_creator_;
     std::unique_ptr<TaskControllerInterface>      task_tree_;
-    std::unique_ptr<PriorityViewInterface>        by_priority_;
+    std::unique_ptr<PriorityViewInterface<time_t>>        by_priority_;
 };
 
 

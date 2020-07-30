@@ -3,8 +3,8 @@
 //
 
 #include <gtest/gtest.h>
-#include "memory_model/PriorityView.h"
-#include "memory_model/PriorityView.cpp"
+#include "memory_model/DatePriorityView.h"
+#include "memory_model/DatePriorityView.cpp"
 
 class PriorityViewTest : public ::testing::Test {
 
@@ -32,7 +32,7 @@ const auto node4 = std::make_shared<TaskNode>(
 
 
 TEST_F(PriorityViewTest, AllTasksAdded) {
-    PriorityView tw;
+    DatePriorityView tw;
     tw.addToView(node1);
     tw.addToView(node2);
     tw.addToView(node3);
@@ -41,7 +41,7 @@ TEST_F(PriorityViewTest, AllTasksAdded) {
 }
 
 TEST_F(PriorityViewTest, AllTasksSorted) {
-    PriorityView tw;
+    DatePriorityView tw;
     tw.addToView(node1);
     tw.addToView(node2);
     tw.addToView(node3);
@@ -63,7 +63,7 @@ TEST_F(PriorityViewTest, PointerExpiredCorrectReaction) {
             TaskID(2),
             Task {"t2", Task::Priority::SECOND, "lbl2", 2000}
     );
-    PriorityView tw;
+    DatePriorityView tw;
     tw.addToView(node1);
     tw.addToView(node2);
     node2.reset();

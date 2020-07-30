@@ -7,17 +7,17 @@
 
 #include <map>
 #include <unordered_map>
-#include "TagPriorityViewInterface.h"
+#include "PriorityViewInterface.h"
 
 
 using simple_priority_view = std::unordered_map<Task::Priority, std::vector<std::weak_ptr<TaskNode>>>;
 using tag_priority_view = std::map<std::string, simple_priority_view>;
 
-class TagPriorityView : TagPriorityViewInterface {
+class TagPriorityView : PriorityViewInterface<std::string> {
 
 public:
     void addToView(const std::weak_ptr<TaskNode>&) override;
-    std::vector<std::weak_ptr<TaskNode>> getAllWithTag(const std::string& tag) override;
+    std::vector<std::weak_ptr<TaskNode>> getAll(const std::string& tag) override;
     ~TagPriorityView() = default;
 
 private:

@@ -30,7 +30,7 @@ void TaskService::deleteTask(TaskID id_task) {
 }
 
 std::vector<TaskDTO> TaskService::getAllTasks() {
-    auto result_set = by_priority_->getAllToDate(std::numeric_limits<time_t>::max());
+    auto result_set = by_priority_->getAll(std::numeric_limits<time_t>::max());
     std::vector<TaskDTO> user_result_set;
     std::transform(result_set.begin(), result_set.end(),
                     std::back_inserter(user_result_set),

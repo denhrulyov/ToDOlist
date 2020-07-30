@@ -44,7 +44,7 @@ void TagPriorityView::addToView(const std::weak_ptr<TaskNode>& node) {
     view_[task.label][task.priority].push_back(node);
 }
 
-std::vector<std::weak_ptr<TaskNode>> TagPriorityView::getAllWithTag(const std::string &tag) {
+std::vector<std::weak_ptr<TaskNode>> TagPriorityView::getAll(const std::string &tag) {
     return  view_.count(tag) ?
             collect(view_.at(tag)) :
             std::vector<std::weak_ptr<TaskNode>>();
