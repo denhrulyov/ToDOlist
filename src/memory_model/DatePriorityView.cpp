@@ -13,8 +13,12 @@ DatePriorityView::DatePriorityView() {
 }
 
 void DatePriorityView::addToView(const std::weak_ptr<TaskNode>& pnode) {
-    auto pnode_access = pnode.lock();
-    view[pnode_access->getTask().priority].emplace(pnode.lock()->getTask().date, pnode);
+    auto shared_node = pnode.lock();
+    multimap_by_date& map_to_insert = view[shared_node->getTask().priority];
+    auto inserted_entry =
+                map_to_insert.emplace(shared_node->getTask().date, pnode);
+    TaskID id = shared_node->getId();
+    place_of_[id] = {&map_to_insert, inserted_entry};
 }
 
 std::vector<std::weak_ptr<TaskNode>> DatePriorityView::getAll(const time_t& date) {
@@ -23,10 +27,6 @@ std::vector<std::weak_ptr<TaskNode>> DatePriorityView::getAll(const time_t& date
     time(&current_time); //  get current time
     for (auto prior : priorities_by_order) {
         for (const auto& [its_date, p_task] : view[prior]) {
-            if (p_task.expired()) {
-                continue;
-            }
-            auto ptask_access = p_task.lock();
             if (its_date > date) {
                 break;
             }
@@ -37,7 +37,7 @@ std::vector<std::weak_ptr<TaskNode>> DatePriorityView::getAll(const time_t& date
 }
 
 void DatePriorityView::removeFromView(TaskID id) {
-    auto task_in_view = place_of_[id];
-    view.erase(task_in_view);
+    auto [container, iterator] = place_of_[id];
+    container->erase(iterator);
 }
 

@@ -35,20 +35,3 @@ TEST_F(TagPriorityViewTest, AllTasksAdded) {
     EXPECT_EQ(tw.getAll("lbl1").size(), 2);
     EXPECT_EQ(tw.getAll("lbl2").size(), 2);
 }
-
-TEST_F(TagPriorityViewTest, PointerExpiredCorrectReaction) {
-    auto node1 = std::make_shared<TaskNode>(
-            TaskID(1),
-            Task {"t1", Task::Priority::FIRST, "lbl1", 2000}
-    );
-    auto node2 = std::make_shared<TaskNode>(
-            TaskID(2),
-            Task {"t2", Task::Priority::SECOND, "lbl2", 2000}
-    );
-    TagPriorityView tw;
-    tw.addToView(node1);
-    tw.addToView(node2);
-    node2.reset();
-    EXPECT_EQ(tw.getAll("lbl1").size(), 1);
-    EXPECT_EQ(tw.getAll("lbl2").size(), 0);
-}

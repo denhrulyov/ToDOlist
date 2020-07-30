@@ -53,19 +53,3 @@ TEST_F(PriorityViewTest, AllTasksSorted) {
     }
 }
 
-
-TEST_F(PriorityViewTest, PointerExpiredCorrectReaction) {
-    auto node1 = std::make_shared<TaskNode>(
-            TaskID(1),
-            Task {"t1", Task::Priority::FIRST, "lbl1", 2000}
-    );
-    auto node2 = std::make_shared<TaskNode>(
-            TaskID(2),
-            Task {"t2", Task::Priority::SECOND, "lbl2", 2000}
-    );
-    DatePriorityView tw;
-    tw.addToView(node1);
-    tw.addToView(node2);
-    node2.reset();
-    EXPECT_EQ(tw.getAll(date_infinity).size(), 1);
-}

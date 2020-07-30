@@ -38,9 +38,9 @@ public:
 private:
     TaskDTO getTaskBySystemID(TaskID id_task);
 
-    std::unique_ptr<TaskFactoryInterface>         task_creator_;
-    std::unique_ptr<TaskControllerInterface>      task_tree_;
-    std::unique_ptr<PriorityViewInterface<time_t>>        by_priority_;
+    std::unique_ptr<TaskFactoryInterface>                   task_creator_;
+    std::unique_ptr<TaskControllerInterface>                task_tree_;
+    std::unique_ptr<PriorityViewInterface<time_t>>          by_priority_;
 };
 
 
