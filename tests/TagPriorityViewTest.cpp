@@ -13,19 +13,19 @@ class TagPriorityViewTest : public ::testing::Test {
 TEST_F(TagPriorityViewTest, AllTasksAdded) {
     auto node1 = std::make_shared<TaskNode>(
             TaskID(1),
-            Task {"t1", Task::Priority::FIRST, "lbl1", 2000}
+            Task::create("t1", Task::Priority::FIRST, "lbl1", 2000)
             );
     auto node2 = std::make_shared<TaskNode>(
             TaskID(2),
-            Task {"t2", Task::Priority::SECOND, "lbl2", 2000}
+            Task::create("t2", Task::Priority::SECOND, "lbl2", 2000)
     );
     auto node3 = std::make_shared<TaskNode>(
             TaskID(3),
-            Task {"t3", Task::Priority::THIRD, "lbl1", 2000}
+            Task::create("t3", Task::Priority::THIRD, "lbl1", 2000)
     );
     auto node4 = std::make_shared<TaskNode>(
             TaskID(4),
-            Task {"t4", Task::Priority::NONE, "lbl2", 2000}
+            Task::create("t4", Task::Priority::NONE, "lbl2", 2000)
     );
     TagPriorityView tw;
     tw.addToView(node1);

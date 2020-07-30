@@ -9,7 +9,9 @@
 #include <ctime>
 
 
-struct Task {
+class Task {
+public:
+
     enum class Priority {
 
         FIRST,
@@ -18,11 +20,31 @@ struct Task {
         NONE
     };
 
+public:
+    static Task create(std::string name, Task::Priority priority, std::string label, time_t date);
 
-    const std::string       name;
-    const Task::Priority    priority;
-    const std::string       label;
-    const time_t            date;
+public:
+
+
+private:
+    Task(std::string name, Task::Priority priority, std::string label, time_t date) :
+    name_(name),
+    priority_(priority),
+    label_(label),
+    date_(date)
+    {}
+
+    std::string       name_;
+public:
+    std::string getName() const;
+    Priority getPriority() const;
+    std::string getLabel() const;
+    time_t getDate() const;
+
+private:
+    Task::Priority    priority_;
+    std::string       label_;
+    time_t            date_;
 };
 
 

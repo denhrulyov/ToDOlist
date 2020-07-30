@@ -14,9 +14,9 @@ DatePriorityView::DatePriorityView() {
 
 void DatePriorityView::addToView(const std::weak_ptr<TaskNode>& pnode) {
     auto shared_node = pnode.lock();
-    multimap_by_date& map_to_insert = view[shared_node->getTask().priority];
+    multimap_by_date& map_to_insert = view[shared_node->getTask().getPriority()];
     auto inserted_entry =
-                map_to_insert.emplace(shared_node->getTask().date, pnode);
+                map_to_insert.emplace(shared_node->getTask().getDate(), pnode);
     TaskID id = shared_node->getId();
     place_of_[id] = {&map_to_insert, inserted_entry};
 }

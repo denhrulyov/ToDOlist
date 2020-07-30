@@ -44,9 +44,9 @@ TaskDTO::TaskDTO(TaskID id,
                  }
 
 TaskDTO::TaskDTO(TaskID id, const Task& task_) :
-        TaskDTO(id,  task_.name, task_.priority, task_.label, task_.date)
+        TaskDTO(id,  task_.getName(), task_.getPriority(), task_.getLabel(), task_.getDate())
         {}
 
 TaskDTO::TaskDTO(const Task & task_) :
-        TaskDTO(task_.name, task_.priority, task_.label, task_.date)
+        TaskDTO(task_.getName(), task_.getPriority(), task_.getLabel(), task_.getDate())
         {}

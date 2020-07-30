@@ -32,11 +32,11 @@ void TagPriorityView::addToView(const std::weak_ptr<TaskNode>& node) {
     // 1. Prepare insertion
     auto shared_node = node.lock();
     const Task& task = shared_node->getTask();
-    if (view_.count(task.label) == 0) {
-        view_[task.label] = blank_priority_container;
+    if (view_.count(task.getLabel()) == 0) {
+        view_[task.getLabel()] = blank_priority_container;
     }
     TaskID id = shared_node->getId();
-    task_list& list_to_insert = view_[task.label][task.priority];
+    task_list& list_to_insert = view_[task.getLabel()][task.getPriority()];
     // 2. Insert the task into view
     list_to_insert.push_back(node);
     // 3. Memorize place of pointer in our view

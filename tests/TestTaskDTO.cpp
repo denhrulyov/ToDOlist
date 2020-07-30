@@ -12,7 +12,7 @@ class TestTaskDTO : public ::testing::Test {
 
 
 TEST_F(TestTaskDTO, correctCopy) {
-    Task t {"name", Task::Priority::NONE, "lbl", 2020};
+    Task t = Task::create("name", Task::Priority::NONE, "lbl", 2020);
     TaskDTO x(TaskID(1), t);
     auto y = x;
     EXPECT_EQ(y.getId(), 1);
