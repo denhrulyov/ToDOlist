@@ -19,8 +19,24 @@ add_executable(ToDOList src/main.cpp
         src/memory_model/TaskFactoryInterface.h
         src/memory_model/TaskIDFactory.cpp src/memory_model/TaskIDFactory.h
         src/api/TaskCreationResult.cpp src/api/TaskCreationResult.h src/memory_model/TagPriorityViewInterface.h src/memory_model/TagPriorityView.cpp src/memory_model/TagPriorityView.h)
-#find_package(Boost 1.74.0 REQUIRED system)
-#TARGET_LINK_LIBRARIES( ToDOList LINK_PUBLIC ${Boost_LIBRARIES} )
+find_package(Boost 1.70.0 REQUIRED system)
+
+
+set(Boost_USE_STATIC_LIBS        ON)  # only find static libs
+set(Boost_USE_DEBUG_LIBS         OFF) # ignore debug libs and
+set(Boost_USE_RELEASE_LIBS       ON)  # only find release libs
+set(Boost_USE_MULTITHREADED      OFF)
+set(Boost_USE_STATIC_RUNTIME     OFF)
+
+if(Boost_FOUND)
+    include_directories(${Boost_INCLUDE_DIRS})
+endif()
+find_package(Boost REQUIRED COMPONENTS date_time)
+find_package(Boost REQUIRED COMPONENTS regex)
+
+target_link_libraries(ToDOList -static)
+target_link_libraries(ToDOList ${Boost_LIBRARIES})
+
 include_directories(src)
 include_directories(tests)
 
