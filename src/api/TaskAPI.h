@@ -15,9 +15,10 @@
 namespace task_api {
 
     TaskService createService() {
-        auto view =         std::make_unique<DatePriorityView>();
+        auto id_generator = std::make_unique<TaskIDFactory>(0);
         auto creator =      std::make_unique<TaskFactory>();
-        return TaskService(std::move(view), nullptr, std::move(creator));
+        auto view =         std::make_unique<DatePriorityView>();
+        return TaskService(std::move(id_generator), std::move(creator), std::move(view));
     }
 
 }

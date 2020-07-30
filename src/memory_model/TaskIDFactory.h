@@ -5,12 +5,13 @@
 #ifndef TODOLIST_TASKIDFACTORY_H
 #define TODOLIST_TASKIDFACTORY_H
 
-#include "TaskID.h"
+#include "TaskIDFactoryInterface.h"
 
-class TaskIDFactory {
+class TaskIDFactory : public TaskIDFactoryInterface {
 public:
     explicit TaskIDFactory(unsigned int initial_id = 0) : current_id_(initial_id) {};
-    TaskID generateID();
+    TaskID generateID() override;
+    ~TaskIDFactory() override = default;
 
 private:
     unsigned int current_id_;

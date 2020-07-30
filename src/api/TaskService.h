@@ -18,13 +18,14 @@
 class TaskService {
 
 public:
-    TaskService(std::unique_ptr<PriorityViewInterface<time_t>> service,
-                std::unique_ptr<TaskControllerInterface> task_tree,
-                std::unique_ptr<TaskFactoryInterface> task_creator
-                ) :
-    task_tree_(std::move(task_tree)),
-    by_priority_(std::move(service)),
-    task_creator_(std::move(task_creator))
+    TaskService(
+            std::unique_ptr<TaskIDFactoryInterface>         id_generator,
+            std::unique_ptr<TaskFactoryInterface>           task_creator,
+            std::unique_ptr<PriorityViewInterface<time_t>>  view
+            ) :
+            id_generator_(std::move(id_generator)),
+            task_creator_(std::move(task_creator)),
+            by_time_(std::move(view))
     {}
 
     std::vector<TaskDTO> getAllTasks();
@@ -33,18 +34,17 @@ public:
 public:
     TaskCreationResult                                      addTask(const TaskDTO &user_data);
     TaskCreationResult                                      addSubTask(TaskID parent, const TaskDTO &user_data);
-    void                                                    deleteTask(TaskID id_task);
-    void                                                    postponeTask(TaskID id_task, time_t date);
+    void                                                    deleteTask(TaskID id);
+    void                                                    postponeTask(TaskID id, time_t date);
 
 private:
     void                                                    eraseAllReferences(TaskID id);
 
 private:
     std::map<TaskID, std::shared_ptr<TaskNode>>             nodes_;
-    TaskIDFactory                                           id_generator_;
+    std::unique_ptr<TaskIDFactoryInterface>                 id_generator_;
     std::unique_ptr<TaskFactoryInterface>                   task_creator_;
-    std::unique_ptr<TaskControllerInterface>                task_tree_;
-    std::unique_ptr<PriorityViewInterface<time_t>>          by_priority_;
+    std::unique_ptr<PriorityViewInterface<time_t>>          by_time_;
 };
 
 
