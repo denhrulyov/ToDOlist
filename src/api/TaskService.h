@@ -31,9 +31,9 @@ public:
     {}
 
 public:
-    std::vector<TaskDTO> getAllTasks();
-    std::vector<TaskDTO> getAllWithLabel(const std::string& label);
-    TaskDTO getTaskByID(TaskID id_task);
+    std::vector<TaskDTO>                                    getAllTasks();
+    std::vector<TaskDTO>                                    getAllWithLabel(const std::string& label);
+    TaskDTO                                                 getTaskByID(TaskID id_task);
 
 public:
     TaskCreationResult                                      addTask(const TaskDTO &user_data);

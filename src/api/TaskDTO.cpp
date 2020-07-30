@@ -34,29 +34,19 @@ TaskDTO::TaskDTO(const std::string &name,
         priority_(priority)
         {}
 
-TaskDTO::TaskDTO(TaskID id_task,
+TaskDTO::TaskDTO(TaskID id,
                  const std::string &name,
                  Task::Priority priority,
                  const std::string &label,
                  time_t date) :
-        id_(id_task),
-        name_(name),
-        date_(date),
-        label_(label),
-        priority_(priority)
-{}
+                 TaskDTO(name, priority, label, date) {
+                    id_ = id;
+                 }
 
-TaskDTO::TaskDTO(TaskID id_task, const Task& task_) :
-        id_(id_task),
-        name_(task_.name),
-        date_(task_.date),
-        label_(task_.label),
-        priority_(task_.priority)
+TaskDTO::TaskDTO(TaskID id, const Task& task_) :
+        TaskDTO(id,  task_.name, task_.priority, task_.label, task_.date)
         {}
 
 TaskDTO::TaskDTO(const Task & task_) :
-        name_(task_.name),
-        date_(task_.date),
-        label_(task_.label),
-        priority_(task_.priority)
-{}
+        TaskDTO(task_.name, task_.priority, task_.label, task_.date)
+        {}
