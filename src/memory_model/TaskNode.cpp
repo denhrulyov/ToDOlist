@@ -75,6 +75,12 @@ std::shared_ptr<TaskNode> TaskNode::getSubtaskByID(TaskID id) {
 
 
 void TaskNode::disconnect() {
+    auto parent = getParent();
+    if (parent) {
+        if (parent->getSubtaskByID(id)) {
+            parent->eraseSubtask(id);
+        }
+    }
     subtasks_.clear();
 }
 

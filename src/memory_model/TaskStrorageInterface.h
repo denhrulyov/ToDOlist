@@ -13,6 +13,7 @@ public:
     virtual std::shared_ptr<TaskNode>   createTask(const Task&) = 0;
     virtual void                        eraseTask(TaskID id_erase) = 0;
     virtual std::shared_ptr<TaskNode>   getTaskByID(TaskID id) = 0;
+    virtual std::shared_ptr<TaskNode>   recreateTask(TaskID, const Task&) = 0;
 
     virtual                             ~TaskStrorageInterface() = default;
 };

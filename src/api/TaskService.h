@@ -6,8 +6,8 @@
 #define EVAL_TASKSERVICE_H
 #include "memory_model/TaskNode.h"
 #include "memory_model/TaskFactoryInterface.h"
-#include "memory_model/TaskControllerInterface.h"
 #include "memory_model/DatePriorityView.h"
+#include "memory_model/TaskStrorageInterface.h"
 #include "TaskCreationResult.h"
 #include "memory_model/TaskIDFactory.h"
 #include <unordered_map>
@@ -19,12 +19,12 @@ class TaskService {
 
 public:
     TaskService(
-            std::unique_ptr<TaskIDFactoryInterface>                 id_generator,
+            std::unique_ptr<TaskStrorageInterface>                  storage,
             std::unique_ptr<TaskFactoryInterface>                   task_creator,
             std::unique_ptr<PriorityViewInterface<time_t>>          view_time,
             std::unique_ptr<PriorityViewInterface<std::string>>     view_label
             ) :
-            id_generator_(std::move(id_generator)),
+            storage_(std::move(storage)),
             task_creator_(std::move(task_creator)),
             by_time_(std::move(view_time)),
             by_label_(std::move(view_label))
@@ -43,11 +43,10 @@ public:
 
 private:
     void                                                    addToViews(const std::shared_ptr<TaskNode>&);
-    void                                                    eraseAllReferences(TaskID id);
+    void                                                    eraseFromViews(TaskID id);
 
 private:
-    std::map<TaskID, std::shared_ptr<TaskNode>>             nodes_;
-    std::unique_ptr<TaskIDFactoryInterface>                 id_generator_;
+    std::unique_ptr<TaskStrorageInterface>                  storage_;
     std::unique_ptr<TaskFactoryInterface>                   task_creator_;
     std::unique_ptr<PriorityViewInterface<time_t>>          by_time_;
     std::unique_ptr<PriorityViewInterface<std::string>>     by_label_;
