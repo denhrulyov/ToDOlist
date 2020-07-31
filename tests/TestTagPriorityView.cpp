@@ -6,11 +6,11 @@
 #include "memory_model/TagPriorityView.h"
 #include "memory_model/TagPriorityView.cpp"
 
-class TagPriorityViewTest : public ::testing::Test {
+class TestTagPriorityView : public ::testing::Test {
 
 };
 
-TEST_F(TagPriorityViewTest, AllTasksAdded) {
+TEST_F(TestTagPriorityView, AllTasksAdded) {
     auto node1 = std::make_shared<TaskNode>(
             TaskID(1),
             Task::create("t1", Task::Priority::FIRST, "lbl1", 2000)

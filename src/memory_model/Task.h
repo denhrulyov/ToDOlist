@@ -27,19 +27,14 @@ public:
 
 
 private:
-    Task(std::string name, Task::Priority priority, std::string label, time_t date) :
-    name_(name),
-    priority_(priority),
-    label_(label),
-    date_(date)
-    {}
+    Task(std::string name, Task::Priority priority, std::string label, time_t date);
 
     std::string       name_;
 public:
-    std::string getName() const;
-    Priority getPriority() const;
-    std::string getLabel() const;
-    time_t getDate() const;
+    std::string       getName() const;
+    Priority          getPriority() const;
+    std::string       getLabel() const;
+    time_t            getDate() const;
 
 private:
     Task::Priority    priority_;

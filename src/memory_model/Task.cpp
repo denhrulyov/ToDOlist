@@ -6,6 +6,13 @@
 
 #include "Task.h"
 
+Task::Task(std::string name, Task::Priority priority, std::string label, time_t date) :
+        name_(name),
+        priority_(priority),
+        label_(label),
+        date_(date)
+        {}
+
 Task Task::create(std::string name, Task::Priority priority, std::string label, time_t date) {
     return Task(name, priority, label, date);
 }

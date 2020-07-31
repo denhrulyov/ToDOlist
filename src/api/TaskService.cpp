@@ -72,17 +72,18 @@ void TaskService::deleteTask(TaskID id) {
 
 void TaskService::postponeTask(TaskID id, time_t date_postpone) {
     auto old_node = nodes_[id];
-    auto modified_node =
+    auto new_node =
             std::make_shared<TaskNode>(
                     id,
                     task_creator_->createPostponedTask(old_node->getTask(), date_postpone)
             );
     for (auto subnode : nodes_[id]->getSubNodes()) {
-        modified_node->addSubtask(subnode);
-        subnode->setParent(modified_node);
+        // link children with new node
+        new_node->addSubtask(subnode);
+        subnode->setParent(new_node);
     }
     eraseAllReferences(id);
-    addToViews(modified_node);
+    addToViews(new_node);
 }
 
 std::vector<TaskDTO> TaskService::getAllTasks() {

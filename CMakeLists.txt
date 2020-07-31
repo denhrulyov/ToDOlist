@@ -17,7 +17,7 @@ add_executable(ToDOList src/main.cpp
         src/memory_model/TaskControllerInterface.h
         src/memory_model/TaskFactoryInterface.h
         src/memory_model/TaskIDFactory.cpp src/memory_model/TaskIDFactory.h
-        src/api/TaskCreationResult.cpp src/api/TaskCreationResult.h src/memory_model/TagPriorityView.cpp src/memory_model/TagPriorityView.h src/memory_model/TaskIDFactoryInterface.h src/memory_model/Task.cpp)
+        src/api/TaskCreationResult.cpp src/api/TaskCreationResult.h src/memory_model/TagPriorityView.cpp src/memory_model/TagPriorityView.h src/memory_model/TaskIDFactoryInterface.h src/memory_model/Task.cpp src/memory_model/TaskStrorageInterface.h src/memory_model/TaskStrorage.cpp src/memory_model/TaskStrorage.h)
 find_package(Boost 1.70.0 REQUIRED system)
 
 
@@ -44,7 +44,7 @@ include(GoogleTest)
 find_package(GTest REQUIRED)
 enable_testing()
 
-add_executable(TestsExecutable tests/TaskNodeTest.cpp tests/TestTaskDTO.cpp tests/TestTaskFactory.cpp tests/TaskCreationResultTest.cpp tests/TagPriorityViewTest.cpp tests/PriorityViewTest.cpp)
+add_executable(TestsExecutable tests/TaskNodeTest.cpp tests/TestTaskDTO.cpp tests/TestTaskFactory.cpp tests/TaskCreationResultTest.cpp tests/TestTagPriorityView.cpp tests/TestDatePriortyView.cpp)
 target_link_libraries(TestsExecutable GTest::GTest GTest::Main)
 
 gtest_discover_tests(TestsExecutable)
