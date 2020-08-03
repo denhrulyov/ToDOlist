@@ -19,11 +19,11 @@ add_executable(ToDOList src/main.cpp
         src/api/TaskCreationResult.cpp src/api/TaskCreationResult.h src/memory_model/TagPriorityView.cpp src/memory_model/TagPriorityView.h src/memory_model/TaskIDFactoryInterface.h src/memory_model/Task.cpp src/memory_model/TaskStrorageInterface.h src/memory_model/TaskStrorage.cpp src/memory_model/TaskStrorage.h)
 find_package(Boost 1.70.0 REQUIRED system)
 
-
+# boost #####################################################
 set(Boost_USE_STATIC_LIBS        ON)  # only find static libs
 set(Boost_USE_DEBUG_LIBS         OFF) # ignore debug libs and
 set(Boost_USE_RELEASE_LIBS       ON)  # only find release libs
-set(Boost_USE_MULTITHREADED      OFF)
+set(Boost_USE_MULTITHREADED      ON)
 set(Boost_USE_STATIC_RUNTIME     OFF)
 
 if(Boost_FOUND)
@@ -35,15 +35,30 @@ find_package(Boost REQUIRED COMPONENTS regex)
 target_link_libraries(ToDOList -static)
 target_link_libraries(ToDOList ${Boost_LIBRARIES})
 
+##############################################################
+
 include_directories(src)
 include_directories(tests)
 
+#boost pthread issue fixup ##################
+
+#set(THREADS_PREFER_PTHREAD_FLAG ON)
+#find_package(Threads REQUIRED)
+
+#thread
+target_link_libraries(ToDOList Threads::Threads)
+
+#############################################
+
+# tests #####################################
 
 include(GoogleTest)
 find_package(GTest REQUIRED)
 enable_testing()
 
-add_executable(TestsExecutable tests/TaskNodeTest.cpp tests/TestTaskDTO.cpp tests/TestTaskFactory.cpp tests/TaskCreationResultTest.cpp tests/TestTagPriorityView.cpp tests/TestDatePriortyView.cpp)
+add_executable(TestsExecutable tests/TestTaskNode.cpp tests/TestTaskDTO.cpp tests/TestTaskFactory.cpp tests/TestTaskCreationResult.cpp tests/TestTagPriorityView.cpp tests/TestDatePriortyView.cpp)
 target_link_libraries(TestsExecutable GTest::GTest GTest::Main)
 
 gtest_discover_tests(TestsExecutable)
+
+#############################################
