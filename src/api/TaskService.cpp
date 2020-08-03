@@ -43,8 +43,7 @@ void TaskService::eraseFromViews(TaskID id) {
 TaskCreationResult TaskService::addTask(const TaskDTO &task_data) {
     auto created_node = storage_->createTask(getTask(task_data));
     // set links to new node
-    addToViews(created_node);
-
+    reference_handler_.setReferences(created_node);
     return TaskCreationResult::success(created_node->getId());
 }
 
@@ -53,12 +52,9 @@ TaskCreationResult TaskService::addSubTask(TaskID parent, const TaskDTO &task_da
     if (!parent_node) {
         return TaskCreationResult::taskNotFound();
     }
-    // create Node
     auto generated_id = addTask(task_data).getCreatedTaskID().value();
     auto created_node = storage_->getTaskByID(generated_id);
-    // tie new node with parent
-    parent_node->addSubtask(created_node);
-    created_node->setParent(parent_node);
+    reference_handler_.linkSubTask(parent_node, created_node);
 
     return TaskCreationResult::success(generated_id);
 }
@@ -68,26 +64,19 @@ void TaskService::deleteTask(TaskID id) {
     for (TaskID subtask : shared_node->getSubtasks()) {
         deleteTask(subtask);
     }
-    storage_->getTaskByID(id)->disconnect();
+    reference_handler_.removeRefrences(shared_node);
     storage_->eraseTask(id);
-    eraseFromViews(id);
-    if (shared_node->getParent()) {
-        shared_node->getParent()->eraseSubtask(id);
-    }
 }
 
 void TaskService::postponeTask(TaskID id, time_t date_postpone) {
     auto old_node = storage_->getTaskByID(id);
     auto new_node =
             storage_->recreateTask(id, getPostponedTask(old_node->getTask(), date_postpone));
-    //  reassign node links
-    //     - link children with new node
-    for (auto subnode : old_node->getSubNodes()) {
-        subnode->setParent(new_node);
-    }
-    old_node->disconnect();
-    eraseFromViews(id);
-    addToViews(new_node);
+
+    reference_handler_.copyExternalReferences(old_node, new_node);
+    reference_handler_.moveInternalRefrences(old_node, new_node);
+    reference_handler_.removeRefrences(old_node);
+    reference_handler_.setReferences(new_node);
 }
 
 std::vector<TaskDTO> TaskService::getAllTasks() {

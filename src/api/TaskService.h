@@ -9,6 +9,7 @@
 #include "memory_model/TaskStrorageInterface.h"
 #include "TaskCreationResult.h"
 #include "memory_model/TaskIDFactory.h"
+#include "memory_model/ReferenceHandler.h"
 #include <unordered_map>
 #include <algorithm>
 #include <memory>
@@ -20,11 +21,13 @@ public:
     TaskService(
             std::unique_ptr<TaskStrorageInterface>                  storage,
             std::unique_ptr<PriorityViewInterface<time_t>>          view_time,
-            std::unique_ptr<PriorityViewInterface<std::string>>     view_label
+            std::unique_ptr<PriorityViewInterface<std::string>>     view_label,
+            const ReferenceHandler&                                 reference_handler
             ) :
             storage_(std::move(storage)),
             by_time_(std::move(view_time)),
-            by_label_(std::move(view_label))
+            by_label_(std::move(view_label)),
+            reference_handler_(reference_handler)
     {}
 
 public:
@@ -47,6 +50,7 @@ private:
     std::unique_ptr<TaskStrorageInterface>                  storage_;
     std::unique_ptr<PriorityViewInterface<time_t>>          by_time_;
     std::unique_ptr<PriorityViewInterface<std::string>>     by_label_;
+    ReferenceHandler                                        reference_handler_;
 };
 
 
