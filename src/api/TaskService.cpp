@@ -56,7 +56,7 @@ void TaskService::postponeTask(TaskID id, time_t date_postpone) {
     auto new_node =
             storage_->recreateTask(id, getPostponedTask(old_node->getTask(), date_postpone));
 
-    reference_handler_.moveInternalRefrences(old_node, new_node);
+    reference_handler_.moveInboundRefrences(old_node, new_node);
     reference_handler_.removeRefrences(old_node);
     reference_handler_.setReferences(new_node);
 }

@@ -141,7 +141,7 @@ TEST_F(ReferenceHandlerTest, MoveInternalReferencesMethodSetLinksCorrect) {
             TaskID(2),
             Task::create("t2_copy", Task::Priority::SECOND, "tg5", 3100));
     rh.copyExternalReferences(node, node2);
-    rh.moveInternalRefrences(node, node2);
+    rh.moveInboundRefrences(node, node2);
     EXPECT_EQ(parent->getSubNodes().size(), 1);
     EXPECT_EQ(node2->getSubNodes().size(), 2);
     EXPECT_EQ(node2->getParent().get(), parent.get());

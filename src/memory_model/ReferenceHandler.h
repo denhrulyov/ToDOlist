@@ -18,7 +18,7 @@ public:
     void linkSubTask(const std::shared_ptr<TaskNode>& main_task, const std::shared_ptr<TaskNode>& sub_task);
     void setReferences(const std::shared_ptr<TaskNode>& node);
     void removeRefrences(const std::shared_ptr<TaskNode>& node);
-    void moveInternalRefrences(const std::shared_ptr<TaskNode>& from, const std::shared_ptr<TaskNode>& to);
+    void moveInboundRefrences(const std::shared_ptr<TaskNode>& from, const std::shared_ptr<TaskNode>& to);
     void copyExternalReferences(const std::shared_ptr<TaskNode>& from, const std::shared_ptr<TaskNode>& to);
 
 private:

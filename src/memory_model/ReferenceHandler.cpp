@@ -35,7 +35,7 @@ void ReferenceHandler::removeRefrences(const std::shared_ptr<TaskNode> &node) {
     }
 }
 
-void ReferenceHandler::moveInternalRefrences(const std::shared_ptr<TaskNode> &from, const std::shared_ptr<TaskNode> &to) {
+void ReferenceHandler::moveInboundRefrences(const std::shared_ptr<TaskNode> &from, const std::shared_ptr<TaskNode> &to) {
     for (const auto& subnode : from->getSubNodes()) {
         subnode->setParent(to);
     }
