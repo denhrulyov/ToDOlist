@@ -28,7 +28,7 @@ public:
     bool                                        isComplete() const;
     std::vector<TaskID>                         getSubtasks() const;
     std::vector<std::shared_ptr<TaskNode>>      getSubNodes() const;
-    std::shared_ptr<TaskNode>                   getParent();
+    std::shared_ptr<TaskNode>                   getParent() const ;
     std::shared_ptr<TaskNode>                   getSubtaskByID(TaskID id);
     std::shared_ptr<TaskNode>                   getNthByDate(std::size_t N) const;
     void                                        setParent(std::weak_ptr<TaskNode>);

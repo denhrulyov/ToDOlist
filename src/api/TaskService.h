@@ -5,7 +5,6 @@
 #ifndef EVAL_TASKSERVICE_H
 #define EVAL_TASKSERVICE_H
 #include "memory_model/TaskNode.h"
-#include "memory_model/DatePriorityView.h"
 #include "memory_model/TaskStrorageInterface.h"
 #include "TaskCreationResult.h"
 #include "memory_model/TaskIDFactory.h"
@@ -42,10 +41,6 @@ public:
     void                                                    deleteTask(TaskID id);
     void                                                    postponeTask(TaskID id, time_t date);
     void                                                    complete(TaskID id);
-
-private:
-    void                                                    addToViews(const std::shared_ptr<TaskNode>&);
-    void                                                    eraseFromViews(TaskID id);
 
 private:
     std::unique_ptr<TaskStrorageInterface>                  storage_;

@@ -42,7 +42,7 @@ TEST_F(PriorityViewTest, AllTasksAdded) {
     EXPECT_EQ(tw.getAll(date_infinity).size(), 4);
 }
 
-TEST_F(PriorityViewTest, AllTasksSorted) {
+TEST_F(PriorityViewTest, AllTasksSortedByPrior) {
     DatePriorityView tw;
     tw.addToView(node1);
     tw.addToView(node2);
@@ -55,3 +55,15 @@ TEST_F(PriorityViewTest, AllTasksSorted) {
     }
 }
 
+TEST_F(PriorityViewTest, AllTasksSortedByDate) {
+    DatePriorityView tw;
+    tw.addToView(node1);
+    tw.addToView(node2);
+    tw.addToView(node3);
+    tw.addToView(node4);
+    auto result_set = tw.getAll(date_infinity);
+    for (std::size_t i = 0; i < result_set.size() - 1; ++i) {
+        EXPECT_GE(result_set[i + 1].lock()->getTask().getPriority(),
+                  result_set[i].lock()->getTask().getPriority()      );
+    }
+}

@@ -30,7 +30,7 @@ TaskID TaskNode::getId() const {
 }
 
 
-std::shared_ptr<TaskNode> TaskNode::getParent() {
+std::shared_ptr<TaskNode> TaskNode::getParent() const {
     return parent_.lock();
 }
 
