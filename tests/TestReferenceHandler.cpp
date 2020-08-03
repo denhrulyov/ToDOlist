@@ -148,12 +148,16 @@ TEST_F(ReferenceHandlerTest, MoveInternalReferencesMethodSetLinksCorrect) {
     EXPECT_EQ(child1->getParent().get(), node2.get());
     EXPECT_EQ(child2->getParent().get(), node2.get());
     // check if view was updated
-    EXPECT_EQ(by_tag->getAll(node2
-                                    ->getTask()
-                                    .getLabel()
-                                 )[0]
+    auto with_node2_tag =  by_tag->getAll(
+                                        node2
+                                          ->getTask()
+                                          .getLabel()
+                                          );
+    EXPECT_EQ(with_node2_tag.size(), 1);
+    EXPECT_EQ(with_node2_tag[0]
                                  .lock()
                                  .get(),
               node2.get()
               );
+
 }
