@@ -43,13 +43,6 @@ TaskDTO::TaskDTO(TaskID id,
                     id_ = id;
                  }
 
-TaskDTO::TaskDTO(TaskID id, const Task& task_) :
-        TaskDTO(id,  task_.getName(), task_.getPriority(), task_.getLabel(), task_.getDate())
-        {}
-
-TaskDTO::TaskDTO(const Task & task_) :
-        TaskDTO(task_.getName(), task_.getPriority(), task_.getLabel(), task_.getDate())
-        {}
 
 TaskDTO::TaskDTO(TaskID id,
                  const std::string &name,
@@ -61,8 +54,4 @@ TaskDTO::TaskDTO(TaskID id,
 
 bool TaskDTO::isComplete() const {
     return complete_;
-}
-
-TaskDTO::TaskDTO(TaskID id, const Task& task, bool complete) : TaskDTO(id, task) {
-    complete_ = complete;
 }

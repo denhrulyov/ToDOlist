@@ -5,15 +5,6 @@
 #include "TaskService.h"
 
 
-TaskDTO getDTO(const std::weak_ptr<TaskNode>& node) {
-    auto shared_node = node.lock();
-    TaskID id_task = shared_node->getId();
-    return TaskDTO(id_task, shared_node->getTask(), shared_node->isComplete());
-}
-
-Task getTask(const TaskDTO& task) {
-    return Task::create(task.getName(), task.getPriority(), task.getLabel(), task.getDate());
-}
 
 Task getPostponedTask(const Task& task, time_t date_postpone) {
     return Task::create(task.getName(), task.getPriority(), task.getLabel(), date_postpone);
@@ -23,27 +14,19 @@ std::vector<TaskDTO> convertAll(const std::vector<std::weak_ptr<TaskNode>>& all)
     std::vector<TaskDTO> user_result_set;
     std::transform(all.begin(), all.end(),
                    std::back_inserter(user_result_set),
-                   getDTO
+                   [] (std::weak_ptr<TaskNode> node) {
+                        return TaskDTOConverter::getDTO(node.lock());
+                    }
     );
     return user_result_set;
 }
 
 /**********************************************************************/
 
-void TaskService::addToViews(const std::shared_ptr<TaskNode>& node) {
-    by_time_->addToView(node);
-    by_label_->addToView(node);
-}
-
-void TaskService::eraseFromViews(TaskID id) {
-    by_time_->removeFromView(id);
-    by_label_->removeFromView(id);
-}
-
 TaskCreationResult TaskService::addTask(const TaskDTO &task_data) {
-    auto created_node = storage_->createTask(getTask(task_data));
-    // set links to new node
+    auto created_node = storage_->createTask(TaskDTOConverter::getTask(task_data));
     reference_handler_.setReferences(created_node);
+
     return TaskCreationResult::success(created_node->getId());
 }
 
@@ -90,7 +73,7 @@ std::vector<TaskDTO> TaskService::getAllWithLabel(const std::string &label) {
 
 
 TaskDTO TaskService::getTaskByID(TaskID id) {
-    return TaskDTO(id, storage_->getTaskByID(id)->getTask());
+    return TaskDTOConverter::getDTO(storage_->getTaskByID(id));
 }
 
 void TaskService::complete(TaskID id) {

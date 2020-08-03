@@ -10,5 +10,11 @@ Task TaskDTOConverter::getTask(const TaskDTO &dto) {
 
 TaskDTO TaskDTOConverter::getDTO(const std::shared_ptr<TaskNode> &node) {
     const Task& task = node->getTask();
-    return TaskDTO(node->getId(), task.getName(), task.getPriority(), task.getLabel(), task.getDate());
+    return TaskDTO( node->getId(),
+                    task.getName(),
+                    task.getPriority(),
+                    task.getLabel(),
+                    task.getDate(),
+                    node->isComplete());
 }
+

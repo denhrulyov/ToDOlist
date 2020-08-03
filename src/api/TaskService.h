@@ -10,6 +10,7 @@
 #include "TaskCreationResult.h"
 #include "memory_model/TaskIDFactory.h"
 #include "memory_model/ReferenceHandler.h"
+#include "TaskDTOConverter.h"
 #include <unordered_map>
 #include <algorithm>
 #include <memory>
