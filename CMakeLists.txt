@@ -8,14 +8,12 @@ add_executable(ToDOList src/main.cpp
         src/memory_model/Task.h
         src/memory_model/Task.cpp
         src/memory_model/TaskNode.cpp src/memory_model/TaskNode.h
-        src/memory_model/TaskFactory.cpp src/memory_model/TaskFactory.h
         src/memory_model/DatePriorityView.cpp src/memory_model/DatePriorityView.h
         src/api/TaskDTO.cpp src/api/TaskDTO.h
         src/task_io/task_io.h
         src/memory_model/TaskID.cpp src/memory_model/TaskID.h
         src/memory_model/PriorityViewInterface.h
         src/api/TaskAPI.h
-        src/memory_model/TaskFactoryInterface.h
         src/memory_model/TaskIDFactory.cpp src/memory_model/TaskIDFactory.h
         src/api/TaskCreationResult.cpp src/api/TaskCreationResult.h
         src/memory_model/TagPriorityView.cpp src/memory_model/TagPriorityView.h
@@ -64,8 +62,7 @@ enable_testing()
 add_executable(TestsExecutable
                 tests/TestTaskNode.cpp
                 tests/TestTaskDTO.cpp
-                tests/TestTaskFactory.cpp
-                tests/TestTaskCreationResult.cpp
+        tests/TestTaskCreationResult.cpp
                 tests/TestTagPriorityView.cpp
                 tests/TestDatePriortyView.cpp
                 tests/TestTaskService.cpp
@@ -73,8 +70,7 @@ add_executable(TestsExecutable
                 src/api/TaskService.cpp
                 src/memory_model/Task.cpp
                 src/memory_model/TaskNode.cpp
-                src/memory_model/TaskFactory.cpp
-                src/memory_model/DatePriorityView.cpp
+        src/memory_model/DatePriorityView.cpp
                 src/api/TaskDTO.cpp
                 src/memory_model/TaskID.cpp
                 src/memory_model/TaskIDFactory.cpp

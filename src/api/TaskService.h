@@ -5,7 +5,6 @@
 #ifndef EVAL_TASKSERVICE_H
 #define EVAL_TASKSERVICE_H
 #include "memory_model/TaskNode.h"
-#include "memory_model/TaskFactoryInterface.h"
 #include "memory_model/DatePriorityView.h"
 #include "memory_model/TaskStrorageInterface.h"
 #include "TaskCreationResult.h"
@@ -20,12 +19,10 @@ class TaskService {
 public:
     TaskService(
             std::unique_ptr<TaskStrorageInterface>                  storage,
-            std::unique_ptr<TaskFactoryInterface>                   task_creator,
             std::unique_ptr<PriorityViewInterface<time_t>>          view_time,
             std::unique_ptr<PriorityViewInterface<std::string>>     view_label
             ) :
             storage_(std::move(storage)),
-            task_creator_(std::move(task_creator)),
             by_time_(std::move(view_time)),
             by_label_(std::move(view_label))
     {}
@@ -48,7 +45,6 @@ private:
 
 private:
     std::unique_ptr<TaskStrorageInterface>                  storage_;
-    std::unique_ptr<TaskFactoryInterface>                   task_creator_;
     std::unique_ptr<PriorityViewInterface<time_t>>          by_time_;
     std::unique_ptr<PriorityViewInterface<std::string>>     by_label_;
 };
