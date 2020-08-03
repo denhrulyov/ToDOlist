@@ -5,6 +5,7 @@
 #include "TagPriorityView.h"
 
 using namespace tag_view;
+using Prior = Task::Priority;
 
 const simple_priority_view blank_priority_container =
         {
@@ -17,8 +18,11 @@ const simple_priority_view blank_priority_container =
 
 auto collect(const simple_priority_view& priority_lists) {
     std::vector<std::weak_ptr<TaskNode>> collected;
-    for (const auto& ls : priority_lists) {
-        auto task_ls = ls.second;
+    for (const auto& prior : { Prior::FIRST, Prior::SECOND, Prior::THIRD, Prior::NONE }) {
+        if (priority_lists.count(prior) == 0) {
+            continue;
+        }
+        auto task_ls = priority_lists.at(prior);
         std::copy(  task_ls.begin(), task_ls.end(),
                     std::back_inserter(collected)    );
     }
