@@ -19,7 +19,7 @@ add_executable(ToDOList src/main.cpp
         src/memory_model/TagPriorityView.cpp src/memory_model/TagPriorityView.h
         src/memory_model/TaskIDFactoryInterface.h
         src/memory_model/TaskStrorageInterface.h
-        src/memory_model/TaskStrorage.cpp src/memory_model/TaskStrorage.h src/memory_model/ReferenceHandler.cpp src/memory_model/ReferenceHandler.h)
+        src/memory_model/TaskStrorage.cpp src/memory_model/TaskStrorage.h src/memory_model/ReferenceHandler.cpp src/memory_model/ReferenceHandler.h src/api/TaskDTOConverter.cpp src/api/TaskDTOConverter.h)
 find_package(Boost 1.70.0 REQUIRED system)
 
 # boost #####################################################
@@ -78,7 +78,7 @@ add_executable(TestsExecutable
                 src/api/TaskCreationResult.cpp
                 src/memory_model/TagPriorityView.cpp
                 src/memory_model/TaskStrorage.cpp
-                src/memory_model/ReferenceHandler.cpp)
+                src/memory_model/ReferenceHandler.cpp src/api/TaskDTOConverter.cpp src/api/TaskDTOConverter.h)
 target_link_libraries(TestsExecutable GTest::GTest GTest::Main)
 
 gtest_discover_tests(TestsExecutable)

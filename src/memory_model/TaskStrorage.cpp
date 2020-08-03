@@ -22,11 +22,7 @@ std::shared_ptr<TaskNode> TaskStrorage::getTaskByID(TaskID id) {
 
 std::shared_ptr<TaskNode> TaskStrorage::recreateTask(TaskID id, const Task& new_data) {
     auto old = nodes_[id];
-    auto new_node = std::make_shared<TaskNode>(id, new_data);
-    new_node->setParent(old->getParent());
-    for (auto child : old->getSubNodes()) {
-        new_node->addSubtask(child);
-    }
+    auto new_node = old->clone(new_data);
     return nodes_.count(id) ? (nodes_[id] = new_node) : nullptr;
 }
 

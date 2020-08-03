@@ -86,6 +86,8 @@ void TaskNode::disconnect() {
 
 std::shared_ptr<TaskNode> TaskNode::clone(const Task& new_data) {
     auto this_modified = std::make_shared<TaskNode>(id, new_data, subtasks_);
+    this_modified->complete_ = complete_;
+    this_modified->parent_ = parent_;
     return this_modified;
 }
 
