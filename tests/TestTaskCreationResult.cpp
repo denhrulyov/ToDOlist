@@ -4,7 +4,6 @@
 
 #include <gtest/gtest.h>
 #include "api/TaskCreationResult.h"
-#include "api/TaskCreationResult.cpp"
 
 class TaskCreationResultTest : public ::testing::Test {
 

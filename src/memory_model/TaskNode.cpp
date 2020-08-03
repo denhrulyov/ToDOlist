@@ -93,4 +93,8 @@ void TaskNode::complete() {
     complete_ = true;
 }
 
+bool TaskNode::isComplete() const {
+    return complete_;
+}
+
 

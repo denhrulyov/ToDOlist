@@ -4,7 +4,6 @@
 
 #include <gtest/gtest.h>
 #include "api/TaskDTO.h"
-#include "api/TaskDTO.cpp"
 
 class TestTaskDTO : public ::testing::Test {
 

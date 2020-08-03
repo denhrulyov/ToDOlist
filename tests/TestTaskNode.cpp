@@ -1,7 +1,5 @@
 #include <gtest/gtest.h>
 #include "memory_model/TaskNode.h"
-#include "memory_model/TaskNode.cpp"
-#include "memory_model/Task.cpp"
 
 class TaskNodeTest : public ::testing::Test {
 

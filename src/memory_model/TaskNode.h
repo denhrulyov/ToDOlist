@@ -25,6 +25,7 @@ public:
 public:
     Task                                        getTask() const;
     TaskID                                      getId() const;
+    bool                                        isComplete() const;
     std::vector<TaskID>                         getSubtasks() const;
     std::vector<std::shared_ptr<TaskNode>>      getSubNodes() const;
     std::shared_ptr<TaskNode>                   getParent();

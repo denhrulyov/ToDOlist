@@ -2,10 +2,11 @@ cmake_minimum_required(VERSION 3.15)
 project(ToDOlist)
 
 set(CMAKE_CXX_STANDARD 17)
-#set(CMAKE_CXX_FLAGS "-D_GLIBCXX_DEBUG")
+set(CMAKE_CXX_FLAGS "-D_GLIBCXX_DEBUG")
 add_executable(ToDOList src/main.cpp
         src/api/TaskService.cpp src/api/TaskService.h
         src/memory_model/Task.h
+        src/memory_model/Task.cpp
         src/memory_model/TaskNode.cpp src/memory_model/TaskNode.h
         src/memory_model/TaskFactory.cpp src/memory_model/TaskFactory.h
         src/memory_model/DatePriorityView.cpp src/memory_model/DatePriorityView.h
@@ -16,7 +17,11 @@ add_executable(ToDOList src/main.cpp
         src/api/TaskAPI.h
         src/memory_model/TaskFactoryInterface.h
         src/memory_model/TaskIDFactory.cpp src/memory_model/TaskIDFactory.h
-        src/api/TaskCreationResult.cpp src/api/TaskCreationResult.h src/memory_model/TagPriorityView.cpp src/memory_model/TagPriorityView.h src/memory_model/TaskIDFactoryInterface.h src/memory_model/Task.cpp src/memory_model/TaskStrorageInterface.h src/memory_model/TaskStrorage.cpp src/memory_model/TaskStrorage.h)
+        src/api/TaskCreationResult.cpp src/api/TaskCreationResult.h
+        src/memory_model/TagPriorityView.cpp src/memory_model/TagPriorityView.h
+        src/memory_model/TaskIDFactoryInterface.h
+        src/memory_model/TaskStrorageInterface.h
+        src/memory_model/TaskStrorage.cpp src/memory_model/TaskStrorage.h)
 find_package(Boost 1.70.0 REQUIRED system)
 
 # boost #####################################################
@@ -56,7 +61,27 @@ include(GoogleTest)
 find_package(GTest REQUIRED)
 enable_testing()
 
-add_executable(TestsExecutable tests/TestTaskNode.cpp tests/TestTaskDTO.cpp tests/TestTaskFactory.cpp tests/TestTaskCreationResult.cpp tests/TestTagPriorityView.cpp tests/TestDatePriortyView.cpp)
+add_executable(TestsExecutable
+                tests/TestTaskNode.cpp
+                tests/TestTaskDTO.cpp
+                tests/TestTaskFactory.cpp
+                tests/TestTaskCreationResult.cpp
+                tests/TestTagPriorityView.cpp
+                tests/TestDatePriortyView.cpp
+                tests/TestTaskService.cpp
+
+                src/api/TaskService.cpp
+                src/memory_model/Task.cpp
+                src/memory_model/TaskNode.cpp
+                src/memory_model/TaskFactory.cpp
+                src/memory_model/DatePriorityView.cpp
+                src/api/TaskDTO.cpp
+                src/memory_model/TaskID.cpp
+                src/memory_model/TaskIDFactory.cpp
+                src/api/TaskCreationResult.cpp
+                src/memory_model/TagPriorityView.cpp
+                src/memory_model/TaskStrorage.cpp
+                )
 target_link_libraries(TestsExecutable GTest::GTest GTest::Main)
 
 gtest_discover_tests(TestsExecutable)

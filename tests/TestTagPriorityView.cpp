@@ -4,7 +4,6 @@
 
 #include <gtest/gtest.h>
 #include "memory_model/TagPriorityView.h"
-#include "memory_model/TagPriorityView.cpp"
 
 class TestTagPriorityView : public ::testing::Test {
 

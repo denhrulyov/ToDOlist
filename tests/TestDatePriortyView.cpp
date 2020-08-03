@@ -4,7 +4,6 @@
 
 #include <gtest/gtest.h>
 #include "memory_model/DatePriorityView.h"
-#include "memory_model/DatePriorityView.cpp"
 
 class PriorityViewTest : public ::testing::Test {
 protected:

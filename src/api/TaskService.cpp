@@ -8,7 +8,7 @@
 TaskDTO getDTO(const std::weak_ptr<TaskNode>& node) {
     auto shared_node = node.lock();
     TaskID id_task = shared_node->getId();
-    return TaskDTO(id_task, shared_node->getTask());
+    return TaskDTO(id_task, shared_node->getTask(), shared_node->isComplete());
 }
 
 Task getTask(const TaskDTO& task) {
@@ -64,12 +64,16 @@ TaskCreationResult TaskService::addSubTask(TaskID parent, const TaskDTO &task_da
 }
 
 void TaskService::deleteTask(TaskID id) {
-    for (TaskID subtask : storage_->getTaskByID(id)->getSubtasks()) {
+    auto shared_node = storage_->getTaskByID(id);
+    for (TaskID subtask : shared_node->getSubtasks()) {
         deleteTask(subtask);
     }
     storage_->getTaskByID(id)->disconnect();
     storage_->eraseTask(id);
     eraseFromViews(id);
+    if (shared_node->getParent()) {
+        shared_node->getParent()->eraseSubtask(id);
+    }
 }
 
 void TaskService::postponeTask(TaskID id, time_t date_postpone) {
@@ -99,5 +103,13 @@ std::vector<TaskDTO> TaskService::getAllWithLabel(const std::string &label) {
 
 TaskDTO TaskService::getTaskByID(TaskID id) {
     return TaskDTO(id, storage_->getTaskByID(id)->getTask());
+}
+
+void TaskService::complete(TaskID id) {
+    auto shared_node = storage_->getTaskByID(id);
+    shared_node->complete();
+    for (TaskID child : shared_node->getSubtasks()) {
+        complete(child);
+    }
 }
 

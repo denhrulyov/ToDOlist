@@ -4,8 +4,10 @@
 #include "task_io/task_io.h"
 #include "api/TaskAPI.h"
 #include <boost/date_time.hpp>
+#include <boost/regex.hpp>
 
 int main() {
+    auto re = boost::regex("ff");
     TaskService service = task_api::createService();
     TaskCreationResult id = service.addTask(
             TaskDTO("T1", Task::Priority::FIRST, "tag1", 2020)
@@ -22,6 +24,7 @@ int main() {
             id2.getCreatedTaskID().value(), TaskDTO("T3", Task::Priority::THIRD, "tag3", 2022)
     );
     service.deleteTask(id2.getCreatedTaskID().value());
+    service.complete(id.getCreatedTaskID().value());
     //UserTaskID id4 = service.addTask("T5", Task::Priority::FIRST, "tag4", 2020);
     /*service.inspectRoot();
     //service.deleteTask(id2);

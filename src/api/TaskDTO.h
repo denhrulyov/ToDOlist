@@ -14,13 +14,16 @@ class TaskDTO {
 public:
     TaskDTO(const Task&);
     TaskDTO(TaskID, const Task&);
+    TaskDTO(TaskID, const Task&, bool complete);
     TaskDTO(TaskID, const std::string& name, Task::Priority, const std::string& label, time_t);
     TaskDTO(        const std::string& name, Task::Priority, const std::string& label, time_t);
+    TaskDTO(TaskID, const std::string& name, Task::Priority, const std::string& label, time_t, bool);
     TaskID                  getId() const ;
     std::string             getName() const ;
     Task::Priority          getPriority() const ;
     std::string             getLabel() const ;
     time_t                  getDate() const ;
+    bool                    isComplete() const ;
 
 
 private:
@@ -29,6 +32,7 @@ private:
     Task::Priority priority_;
     std::string label_;
     time_t date_;
+    bool complete_;
 };
 
 

@@ -4,7 +4,6 @@
 
 #include <gtest/gtest.h>
 #include "memory_model/TaskFactory.h"
-#include "memory_model/TaskFactory.cpp"
 
 
 class TestTaskFactory : public ::testing::Test {

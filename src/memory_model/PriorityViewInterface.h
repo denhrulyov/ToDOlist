@@ -7,12 +7,12 @@
 
 #include "TaskNode.h"
 
-template<class constraint_type>
+template<class T>
 class PriorityViewInterface {
 
 public:
     virtual void                                    addToView(const std::weak_ptr<TaskNode>&) = 0;
-    virtual std::vector<std::weak_ptr<TaskNode>>    getAll(const constraint_type& param) = 0;
+    virtual std::vector<std::weak_ptr<TaskNode>>    getAll(const T& param) = 0;
     virtual void                                    removeFromView(TaskID id) = 0;
     virtual ~PriorityViewInterface() =              default;
 };

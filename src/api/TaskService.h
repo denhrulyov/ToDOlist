@@ -40,6 +40,7 @@ public:
     TaskCreationResult                                      addSubTask(TaskID parent, const TaskDTO &user_data);
     void                                                    deleteTask(TaskID id);
     void                                                    postponeTask(TaskID id, time_t date);
+    void                                                    complete(TaskID id);
 
 private:
     void                                                    addToViews(const std::shared_ptr<TaskNode>&);
