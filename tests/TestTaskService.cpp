@@ -5,7 +5,7 @@
 #include <gtest/gtest.h>
 #include <api/TaskAPI.h>
 
-class TaskNodeTest : public ::testing::Test {
+class TaskServiceTest : public ::testing::Test {
 
 public:
     //std::vector<TaskDTO> tasks;
@@ -14,7 +14,7 @@ public:
     }
 };
 
-TEST_F(TaskNodeTest, TestAllSubtasksComplete) {
+TEST_F(TaskServiceTest, TestAllSubtasksComplete) {
     std::vector<TaskDTO> tasks {
             TaskDTO("t1", Task::Priority::FIRST, "lbl1", 2020),
             TaskDTO("t1", Task::Priority::SECOND, "lbl2", 2021),
@@ -32,4 +32,33 @@ TEST_F(TaskNodeTest, TestAllSubtasksComplete) {
     for (const auto& dto : ts.getAllTasks()) {
         EXPECT_TRUE(dto.isComplete());
     }
+}
+
+TEST_F(TaskServiceTest, TestTaskAdded) {
+    TaskService ts = task_api::createService();
+    TaskID id = ts.addTask(
+            TaskDTO("t1", Task::Priority::THIRD, "lbl5", 3000)
+            ).getCreatedTaskID().value();
+    EXPECT_TRUE(ts.getTaskByID(id));
+}
+
+TEST_F(TaskServiceTest, TestSubTaskAdded) {
+    TaskService ts = task_api::createService();
+    TaskID id = ts.addTask(
+            TaskDTO("t1", Task::Priority::THIRD, "lbl5", 3000)
+    ).getCreatedTaskID().value();
+    TaskID id2 = ts.addSubTask(
+            id,
+            TaskDTO("t2", Task::Priority::FIRST, "lbl3", 3200)
+    ).getCreatedTaskID().value();
+    EXPECT_TRUE(ts.getTaskByID(id2));
+}
+
+TEST_F(TaskServiceTest, TestDeleteTask) {
+    TaskService ts = task_api::createService();
+    TaskID id = ts.addTask(
+            TaskDTO("t1", Task::Priority::THIRD, "lbl5", 3000)
+    ).getCreatedTaskID().value();
+    ts.deleteTask(id);
+    EXPECT_FALSE(ts.getTaskByID(id));
 }
