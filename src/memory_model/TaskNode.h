@@ -30,7 +30,6 @@ public:
     std::vector<std::shared_ptr<TaskNode>>      getSubNodes() const;
     std::shared_ptr<TaskNode>                   getParent() const ;
     std::shared_ptr<TaskNode>                   getSubtaskByID(TaskID id);
-    std::shared_ptr<TaskNode>                   getNthByDate(std::size_t N) const;
     void                                        setParent(std::weak_ptr<TaskNode>);
 
 public:
@@ -38,7 +37,6 @@ public:
     void                                        complete();
 
 public:
-    void disconnect();
     void addSubtask(std::shared_ptr<TaskNode> subtask);
     void eraseSubtask(TaskID id_erase);
 
