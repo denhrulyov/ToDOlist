@@ -41,3 +41,32 @@ void DatePriorityView::removeFromView(TaskID id) {
     container->erase(iterator);
 }
 
+std::vector<std::weak_ptr<TaskNode>> DatePriorityView::getAllSortedByFirstParam() {
+    std::vector<std::weak_ptr<TaskNode>> result_set;
+    std::map<Task::Priority, std::multimap<time_t, std::weak_ptr<TaskNode>>::iterator> prior_iterators;
+    for (Task::Priority prior : priorities_by_order) {
+        prior_iterators[prior] = view[prior].begin();
+    }
+    bool any_item_left = true;
+    while (any_item_left) {
+        any_item_left = false;
+        time_t min_date = std::numeric_limits<time_t>::max();
+        Task::Priority best = Task::Priority::NONE;
+        for (auto cur_prior : priorities_by_order) {
+            auto cur = prior_iterators[cur_prior];
+            if (cur != view[cur_prior].end()) {
+                any_item_left = true;
+                if (cur->first < min_date) {
+                    min_date = cur->first;
+                    best = cur_prior;
+                }
+            }
+        }
+        if (any_item_left) {
+            result_set.push_back(prior_iterators[best]->second);
+            prior_iterators[best]++;
+        }
+    }
+    return result_set;
+}
+

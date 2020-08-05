@@ -50,7 +50,19 @@ std::vector<std::weak_ptr<TaskNode>> TagPriorityView::getAllWithConstraint(const
             std::vector<std::weak_ptr<TaskNode>>();
 }
 
+std::vector<std::weak_ptr<TaskNode>> TagPriorityView::getAllSortedByFirstParam() {
+    std::vector<std::weak_ptr<TaskNode>> result_set;
+    for (const auto& [tag, lists_by_priors] : view_) {
+        auto task_ls = collect(lists_by_priors);
+        std::copy(  task_ls.begin(), task_ls.end(),
+                    std::back_inserter(result_set));
+    }
+    return result_set;
+}
+
+
 void TagPriorityView::removeFromView(TaskID id) {
     auto [container, iterator] = place_of_[id];
     container->erase(iterator);
 }
+

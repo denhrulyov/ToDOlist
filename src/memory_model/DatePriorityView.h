@@ -36,13 +36,13 @@ public:
 public:
     void                                        addToView(const std::weak_ptr<TaskNode>& pnode) override ;
     std::vector<std::weak_ptr<TaskNode>>        getAllWithConstraint(const time_t& date) override;
+    std::vector<std::weak_ptr<TaskNode>>        getAllSortedByFirstParam() override;
     void                                        removeFromView(TaskID id) override;
+    ~DatePriorityView() =                       default;
 private:
     priority_map                                view;
     id_map                                      place_of_;
 
-public:
-    ~DatePriorityView() override = default;
 };
 
 
