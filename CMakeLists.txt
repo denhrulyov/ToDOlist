@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.15)
 project(ToDOlist)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-instr-generate -fcoverage-mapping")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-instr-generate -fcoverage-mapping")
 #set(CMAKE_CXX_FLAGS "-D_GLIBCXX_DEBUG")
 add_executable(ToDOList src/main.cpp
         src/api/TaskService.cpp src/api/TaskService.h
@@ -67,6 +69,9 @@ add_executable(TestsExecutable
                 tests/TestDatePriortyView.cpp
                 tests/TestTaskService.cpp
                 tests/TestReferenceHandler.cpp
+                tests/TestTaskStorage.cpp
+                tests/TestTaskID.cpp
+                tests/TestTaskIDFactory.cpp
 
                 src/api/TaskService.cpp
                 src/memory_model/Task.cpp
@@ -78,7 +83,9 @@ add_executable(TestsExecutable
                 src/api/TaskCreationResult.cpp
                 src/memory_model/TagPriorityView.cpp
                 src/memory_model/TaskStrorage.cpp
-                src/memory_model/ReferenceHandler.cpp src/api/TaskDTOConverter.cpp src/api/TaskDTOConverter.h tests/TestTaskStorage.cpp)
+                src/memory_model/ReferenceHandler.cpp
+                src/api/TaskDTOConverter.cpp
+                )
 target_link_libraries(TestsExecutable GTest::GTest GTest::Main)
 
 gtest_discover_tests(TestsExecutable)

@@ -72,8 +72,9 @@ std::vector<TaskDTO> TaskService::getAllWithLabel(const std::string &label) {
 }
 
 
-TaskDTO TaskService::getTaskByID(TaskID id) {
-    return TaskDTOConverter::getDTO(storage_->getTaskByID(id));
+std::optional<TaskDTO> TaskService::getTaskByID(TaskID id) {
+    auto node = storage_->getTaskByID(id);
+    return node ? std::make_optional(TaskDTOConverter::getDTO(node)) : std::nullopt;
 }
 
 void TaskService::complete(TaskID id) {

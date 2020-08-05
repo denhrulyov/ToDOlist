@@ -46,3 +46,7 @@ TEST_F(TaskNodeTest, correctCloning) {
     EXPECT_EQ(tst.getSubtasks().size(), 0);
 }
 
+TEST_F(TaskNodeTest, correct) {
+
+}
+
