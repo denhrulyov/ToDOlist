@@ -62,12 +62,12 @@ void TaskService::postponeTask(TaskID id, time_t date_postpone) {
 }
 
 std::vector<TaskDTO> TaskService::getAllTasks() {
-    auto result_set = by_time_->getAll(std::numeric_limits<time_t>::max());
+    auto result_set = by_time_->getAllWithConstraint(std::numeric_limits<time_t>::max());
     return convertAll(result_set);
 }
 
 std::vector<TaskDTO> TaskService::getAllWithLabel(const std::string &label) {
-    auto result_set = by_label_->getAll(label);
+    auto result_set = by_label_->getAllWithConstraint(label);
     return convertAll(result_set);
 }
 

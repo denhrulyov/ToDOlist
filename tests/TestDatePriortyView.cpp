@@ -39,7 +39,7 @@ TEST_F(PriorityViewTest, AllTasksAdded) {
     tw.addToView(node2);
     tw.addToView(node3);
     tw.addToView(node4);
-    EXPECT_EQ(tw.getAll(date_infinity).size(), 4);
+    EXPECT_EQ(tw.getAllWithConstraint(date_infinity).size(), 4);
 }
 
 TEST_F(PriorityViewTest, AllTasksSortedByPrior) {
@@ -48,7 +48,7 @@ TEST_F(PriorityViewTest, AllTasksSortedByPrior) {
     tw.addToView(node2);
     tw.addToView(node3);
     tw.addToView(node4);
-    auto result_set = tw.getAll(date_infinity);
+    auto result_set = tw.getAllWithConstraint(date_infinity);
     for (std::size_t i = 0; i < result_set.size() - 1; ++i) {
         EXPECT_GE(result_set[i + 1].lock()->getTask().getPriority(),
                   result_set[i].lock()->getTask().getPriority()      );
@@ -61,7 +61,7 @@ TEST_F(PriorityViewTest, AllTasksSortedByDate) {
     tw.addToView(node2);
     tw.addToView(node3);
     tw.addToView(node4);
-    auto result_set = tw.getAll(date_infinity);
+    auto result_set = tw.getAllWithConstraint(date_infinity);
     for (std::size_t i = 0; i < result_set.size() - 1; ++i) {
         EXPECT_GE(result_set[i + 1].lock()->getTask().getPriority(),
                   result_set[i].lock()->getTask().getPriority()      );
@@ -79,14 +79,14 @@ TEST_F(PriorityViewTest, DateConstraintIsWorkingProperly) {
             [] (const auto& lhs, const auto& rhs) {
                 return lhs->getTask().getDate() < rhs->getTask().getDate();
     });
-    ASSERT_EQ(tw.getAll(nodes[0]->getTask().getDate()).size(), 1);
-    ASSERT_EQ(tw.getAll(nodes[0]->getTask().getDate() + 1).size(), 1);
-    ASSERT_EQ(tw.getAll(nodes[1]->getTask().getDate()).size(), 2);
-    ASSERT_EQ(tw.getAll(nodes[1]->getTask().getDate() + 1).size(), 2);
-    ASSERT_EQ(tw.getAll(nodes[2]->getTask().getDate()).size(), 3);
-    ASSERT_EQ(tw.getAll(nodes[2]->getTask().getDate() + 1).size(), 3);
-    ASSERT_EQ(tw.getAll(nodes[3]->getTask().getDate()).size(), 4);
-    ASSERT_EQ(tw.getAll(nodes[3]->getTask().getDate() + 1).size(), 4);
+    ASSERT_EQ(tw.getAllWithConstraint(nodes[0]->getTask().getDate()).size(), 1);
+    ASSERT_EQ(tw.getAllWithConstraint(nodes[0]->getTask().getDate() + 1).size(), 1);
+    ASSERT_EQ(tw.getAllWithConstraint(nodes[1]->getTask().getDate()).size(), 2);
+    ASSERT_EQ(tw.getAllWithConstraint(nodes[1]->getTask().getDate() + 1).size(), 2);
+    ASSERT_EQ(tw.getAllWithConstraint(nodes[2]->getTask().getDate()).size(), 3);
+    ASSERT_EQ(tw.getAllWithConstraint(nodes[2]->getTask().getDate() + 1).size(), 3);
+    ASSERT_EQ(tw.getAllWithConstraint(nodes[3]->getTask().getDate()).size(), 4);
+    ASSERT_EQ(tw.getAllWithConstraint(nodes[3]->getTask().getDate() + 1).size(), 4);
 }
 
 TEST_F(PriorityViewTest, PartialResultSetSortedByPriority) {
@@ -101,7 +101,7 @@ TEST_F(PriorityViewTest, PartialResultSetSortedByPriority) {
                   return lhs->getTask().getDate() < rhs->getTask().getDate();
               });
     for (std::size_t j = 0; j < nodes.size(); ++j) {
-        auto result_set = tw.getAll(nodes[j]->getTask().getDate());
+        auto result_set = tw.getAllWithConstraint(nodes[j]->getTask().getDate());
         for (std::size_t i = 0; i < result_set.size() - 1; ++i) {
             EXPECT_GE(result_set[i + 1].lock()->getTask().getPriority(),
                       result_set[i].lock()->getTask().getPriority()      );

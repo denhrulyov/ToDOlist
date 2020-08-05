@@ -65,8 +65,8 @@ TEST_F(ReferenceHandlerTest, TestSetReferencesInView) {
             TaskID(1),
             Task::create("t1", Task::Priority::THIRD, "tg", 3000));
     rh.setReferences(node1);
-    EXPECT_EQ(by_date->getAll(3001).size(), 1);
-    EXPECT_EQ(by_tag->getAll("tg").size(), 1);
+    EXPECT_EQ(by_date->getAllWithConstraint(3001).size(), 1);
+    EXPECT_EQ(by_tag->getAllWithConstraint("tg").size(), 1);
 }
 
 TEST_F(ReferenceHandlerTest, TestSubtaskAddedToParentIfParentStillDoesNotContainIt) {
@@ -148,11 +148,11 @@ TEST_F(ReferenceHandlerTest, MoveInternalReferencesMethodSetLinksCorrect) {
     EXPECT_EQ(child1->getParent().get(), node2.get());
     EXPECT_EQ(child2->getParent().get(), node2.get());
     // check if view was updated
-    auto with_node2_tag =  by_tag->getAll(
-                                        node2
-                                          ->getTask()
-                                          .getLabel()
-                                          );
+    auto with_node2_tag = by_tag->getAllWithConstraint(
+            node2
+                    ->getTask()
+                    .getLabel()
+    );
     EXPECT_EQ(with_node2_tag.size(), 1);
     EXPECT_EQ(with_node2_tag[0]
                                  .lock()
