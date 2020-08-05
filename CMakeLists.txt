@@ -69,6 +69,9 @@ add_executable(TestsExecutable
                 tests/TestDatePriortyView.cpp
                 tests/TestTaskService.cpp
                 tests/TestReferenceHandler.cpp
+                tests/TestTaskStorage.cpp
+                tests/TestTaskID.cpp
+                tests/TestTaskIDFactory.cpp
 
                 src/api/TaskService.cpp
                 src/memory_model/Task.cpp
@@ -80,7 +83,9 @@ add_executable(TestsExecutable
                 src/api/TaskCreationResult.cpp
                 src/memory_model/TagPriorityView.cpp
                 src/memory_model/TaskStrorage.cpp
-                src/memory_model/ReferenceHandler.cpp src/api/TaskDTOConverter.cpp src/api/TaskDTOConverter.h tests/TestTaskStorage.cpp)
+                src/memory_model/ReferenceHandler.cpp
+                src/api/TaskDTOConverter.cpp
+                )
 target_link_libraries(TestsExecutable GTest::GTest GTest::Main)
 
 gtest_discover_tests(TestsExecutable)
