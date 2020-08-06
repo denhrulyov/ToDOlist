@@ -114,21 +114,3 @@ TEST_F(PriorityViewTest, PartialResultSetSortedByPriority) {
         }
     }
 }
-
-TEST_F(PriorityViewTest, AllSortedByDate) {
-    DatePriorityView tw;
-    tw.addToView(node1);
-    tw.addToView(node2);
-    tw.addToView(node3);
-    tw.addToView(node4);
-    std::vector nodes = {node1, node2, node3, node4};
-    std::sort(nodes.begin(), nodes.end(),
-              [] (const auto& lhs, const auto& rhs) {
-                  return lhs->getTask().getDate() < rhs->getTask().getDate();
-              });
-    auto result_set = tw.getAllSortedByFirstParam();
-    for (std::size_t i = 0; i < result_set.size() - 1; ++i) {
-        EXPECT_GE(result_set[i + 1].lock()->getTask().getDate(),
-                  result_set[i].lock()->getTask().getDate()      );
-    }
-}

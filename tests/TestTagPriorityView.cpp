@@ -61,18 +61,3 @@ TEST_F(TestTagPriorityView, AllTasksSorted) {
         }
     }
 }
-
-TEST_F(TestTagPriorityView, AllTasksSortedByFirstParam) {
-    TagPriorityView tw;
-    tw.addToView(node1);
-    tw.addToView(node2);
-    tw.addToView(node3);
-    tw.addToView(node4);
-    for (auto node : {node1, node2, node3, node4}) {
-        auto result_set = tw.getAllSortedByFirstParam();
-        for (std::size_t i = 0; i < result_set.size() - 1; ++i) {
-            EXPECT_GE(result_set[i + 1].lock()->getTask().getLabel(),
-                      result_set[i].lock()->getTask().getLabel());
-        }
-    }
-}

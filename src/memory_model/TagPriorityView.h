@@ -24,9 +24,7 @@ public:
     void                                        addToView(const std::weak_ptr<TaskNode>&) override;
     std::vector<std::weak_ptr<TaskNode>>        getAllWithConstraint(const std::string& tag) override;
     void                                        removeFromView(TaskID id) override;
-    std::vector<std::weak_ptr<TaskNode>>        getAllSortedByFirstParam() override;
-
-    ~TagPriorityView() =                        default;
+    ~TagPriorityView() = default;
 
 private:
     tag_view::tag_map                           view_;
