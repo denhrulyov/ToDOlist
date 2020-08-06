@@ -15,19 +15,23 @@ public:
     void SetUp() override {
         node1 = std::make_shared<TaskNode>(
                 TaskID(1),
-                Task::create("t1", Task::Priority::FIRST, "lbl1", 2000)
+                Task::create("t1", Task::Priority::FIRST, "lbl1",
+                        boost::gregorian::day_clock::local_day())
         );
         node2 = std::make_shared<TaskNode>(
                 TaskID(2),
-                Task::create("t2", Task::Priority::SECOND, "lbl2", 2000)
+                Task::create("t2", Task::Priority::SECOND,
+                        "lbl2", boost::gregorian::day_clock::local_day())
         );
         node3 = std::make_shared<TaskNode>(
                 TaskID(3),
-                Task::create("t3", Task::Priority::THIRD, "lbl1", 2000)
+                Task::create("t3", Task::Priority::THIRD,
+                        "lbl1", boost::gregorian::day_clock::local_day())
         );
         node4 = std::make_shared<TaskNode>(
                 TaskID(4),
-                Task::create("t4", Task::Priority::NONE, "lbl2", 2000)
+                Task::create("t4", Task::Priority::NONE,
+                        "lbl2", boost::gregorian::day_clock::local_day())
         );
     }
 };
@@ -39,8 +43,8 @@ TEST_F(TestTagPriorityView, AllTasksAdded) {
     tw.addToView(node2);
     tw.addToView(node3);
     tw.addToView(node4);
-    EXPECT_EQ(tw.getAll("lbl1").size(), 2);
-    EXPECT_EQ(tw.getAll("lbl2").size(), 2);
+    EXPECT_EQ(tw.getAllWithConstraint("lbl1").size(), 2);
+    EXPECT_EQ(tw.getAllWithConstraint("lbl2").size(), 2);
 }
 
 TEST_F(TestTagPriorityView, AllTasksSorted) {
@@ -50,7 +54,7 @@ TEST_F(TestTagPriorityView, AllTasksSorted) {
     tw.addToView(node3);
     tw.addToView(node4);
     for (auto node : {node1, node2, node3, node4}) {
-        auto result_set = tw.getAll(node->getTask().getLabel());
+        auto result_set = tw.getAllWithConstraint(node->getTask().getLabel());
         for (std::size_t i = 0; i < result_set.size() - 1; ++i) {
             EXPECT_GE(result_set[i + 1].lock()->getTask().getPriority(),
                       result_set[i].lock()->getTask().getPriority());

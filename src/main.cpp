@@ -6,22 +6,24 @@
 #include <boost/date_time.hpp>
 #include <boost/regex.hpp>
 
+using namespace boost::gregorian;
+
 int main() {
-    auto re = boost::regex("ff");
+    auto today = day_clock::local_day();
     TaskService service = task_api::createService();
     TaskCreationResult id = service.addTask(
-            TaskDTO("T1", Task::Priority::FIRST, "tag1", 2020)
+            TaskDTO("T1", Task::Priority::FIRST, "tag1", today + days(2))
             );
     TaskCreationResult id2 = service.addSubTask(
-            id.getCreatedTaskID().value(), TaskDTO("T2", Task::Priority::NONE, "tag2", 2021)
+            id.getCreatedTaskID().value(), TaskDTO("T2", Task::Priority::NONE, "tag2", today + days(2))
             );
     TaskCreationResult id3 = service.addSubTask(
-            id2.getCreatedTaskID().value(), TaskDTO("T3", Task::Priority::THIRD, "tag3", 2022)
+            id2.getCreatedTaskID().value(), TaskDTO("T3", Task::Priority::THIRD, "tag3", today + days(1))
             );
-    service.postponeTask(id2.getCreatedTaskID().value(), 4000);
+    service.postponeTask(id2.getCreatedTaskID().value(), today + days(10));
    // service.deleteTask(id3.getCreatedTaskID().value());
     TaskCreationResult id4 = service.addSubTask(
-            id2.getCreatedTaskID().value(), TaskDTO("T3", Task::Priority::THIRD, "tag3", 2022)
+            id2.getCreatedTaskID().value(), TaskDTO("T3", Task::Priority::THIRD, "tag3", today + days(20))
     );
     service.deleteTask(id2.getCreatedTaskID().value());
     service.complete(id.getCreatedTaskID().value());

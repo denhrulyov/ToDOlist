@@ -6,7 +6,7 @@
 
 
 
-Task getPostponedTask(const Task& task, time_t date_postpone) {
+Task getPostponedTask(const Task& task, Gregorian date_postpone) {
     return Task::create(task.getName(), task.getPriority(), task.getLabel(), date_postpone);
 }
 
@@ -51,7 +51,7 @@ void TaskService::deleteTask(TaskID id) {
     storage_->eraseTask(id);
 }
 
-void TaskService::postponeTask(TaskID id, time_t date_postpone) {
+void TaskService::postponeTask(TaskID id, Gregorian date_postpone) {
     auto old_node = storage_->getTaskByID(id);
     auto new_node =
             storage_->recreateTask(id, getPostponedTask(old_node->getTask(), date_postpone));
@@ -62,12 +62,13 @@ void TaskService::postponeTask(TaskID id, time_t date_postpone) {
 }
 
 std::vector<TaskDTO> TaskService::getAllTasks() {
-    auto result_set = by_time_->getAll(std::numeric_limits<time_t>::max());
+    using namespace boost::gregorian;
+    auto result_set = by_time_->getAllWithConstraint(day_clock::local_day() + years(100));
     return convertAll(result_set);
 }
 
 std::vector<TaskDTO> TaskService::getAllWithLabel(const std::string &label) {
-    auto result_set = by_label_->getAll(label);
+    auto result_set = by_label_->getAllWithConstraint(label);
     return convertAll(result_set);
 }
 

@@ -21,7 +21,7 @@ void DatePriorityView::addToView(const std::weak_ptr<TaskNode>& pnode) {
     place_of_[id] = {&map_to_insert, inserted_entry};
 }
 
-std::vector<std::weak_ptr<TaskNode>> DatePriorityView::getAll(const time_t& date) {
+std::vector<std::weak_ptr<TaskNode>> DatePriorityView::getAllWithConstraint(const Gregorian& date) {
     std::vector<std::weak_ptr<TaskNode>> result_set;
     time_t current_time;
     time(&current_time); //  get current time
