@@ -11,7 +11,7 @@
 class ReferenceHandler {
 
 public:
-    ReferenceHandler(PriorityViewInterface<time_t>& by_time,
+    ReferenceHandler(PriorityViewInterface<Gregorian>& by_time,
                      PriorityViewInterface<std::string>& by_label);
 
 public:
@@ -22,7 +22,7 @@ public:
     void copyExternalReferences(const std::shared_ptr<TaskNode>& from, const std::shared_ptr<TaskNode>& to);
 
 private:
-    PriorityViewInterface<time_t> &by_time_;
+    PriorityViewInterface<Gregorian> &by_time_;
     PriorityViewInterface<std::string> &by_label_;
 };
 

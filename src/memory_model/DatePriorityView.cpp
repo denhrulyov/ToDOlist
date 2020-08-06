@@ -21,7 +21,7 @@ void DatePriorityView::addToView(const std::weak_ptr<TaskNode>& pnode) {
     place_of_[id] = {&map_to_insert, inserted_entry};
 }
 
-std::vector<std::weak_ptr<TaskNode>> DatePriorityView::getAllWithConstraint(const time_t& date) {
+std::vector<std::weak_ptr<TaskNode>> DatePriorityView::getAllWithConstraint(const Gregorian& date) {
     std::vector<std::weak_ptr<TaskNode>> result_set;
     time_t current_time;
     time(&current_time); //  get current time
@@ -43,14 +43,15 @@ void DatePriorityView::removeFromView(TaskID id) {
 
 std::vector<std::weak_ptr<TaskNode>> DatePriorityView::getAllSortedByFirstParam() {
     std::vector<std::weak_ptr<TaskNode>> result_set;
-    std::map<Task::Priority, std::multimap<time_t, std::weak_ptr<TaskNode>>::iterator> prior_iterators;
+    std::map<Task::Priority, multimap_by_date::iterator> prior_iterators;
     for (Task::Priority prior : priorities_by_order) {
         prior_iterators[prior] = view[prior].begin();
     }
     bool any_item_left = true;
     while (any_item_left) {
         any_item_left = false;
-        time_t min_date = std::numeric_limits<time_t>::max();
+        Gregorian min_date = boost::gregorian::day_clock::local_day() +
+                             boost::gregorian::years(100);
         Task::Priority best = Task::Priority::NONE;
         for (auto cur_prior : priorities_by_order) {
             auto cur = prior_iterators[cur_prior];

@@ -12,7 +12,7 @@ std::string TaskDTO::getName() const {
     return name_;
 }
 
-time_t TaskDTO::getDate() const {
+Gregorian TaskDTO::getDate() const {
     return date_;
 }
 
@@ -27,7 +27,7 @@ Task::Priority TaskDTO::getPriority() const {
 TaskDTO::TaskDTO(const std::string &name,
                  Task::Priority priority,
                  const std::string &label,
-                 time_t date) :
+                 Gregorian date) :
         name_(name),
         date_(date),
         label_(label),
@@ -38,7 +38,7 @@ TaskDTO::TaskDTO(TaskID id,
                  const std::string &name,
                  Task::Priority priority,
                  const std::string &label,
-                 time_t date) :
+                 Gregorian date) :
                  TaskDTO(name, priority, label, date) {
                     id_ = id;
                  }
@@ -46,7 +46,7 @@ TaskDTO::TaskDTO(TaskID id,
 
 TaskDTO::TaskDTO(TaskID id,
                  const std::string &name,
-                 Task::Priority priority, const std::string &label, time_t date,
+                 Task::Priority priority, const std::string &label, Gregorian date,
                  bool comlete) :
         TaskDTO(id, name, priority, label, date) {
             complete_ = comlete;

@@ -43,7 +43,7 @@ void ReferenceHandler::moveInboundRefrences(const std::shared_ptr<TaskNode> &fro
     setReferences(to);
 }
 
-ReferenceHandler::ReferenceHandler(PriorityViewInterface<time_t>& by_time,
+ReferenceHandler::ReferenceHandler(PriorityViewInterface<Gregorian>& by_time,
                                    PriorityViewInterface<std::string>& by_label)
                                    : by_time_(by_time), by_label_(by_label)
                                    {}

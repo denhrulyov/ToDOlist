@@ -17,7 +17,7 @@ const std::vector<Task::Priority> priorities_by_order = { Task::Priority::FIRST,
                                                           Task::Priority::NONE };
 
 using multimap_by_date = std::multimap<
-        time_t,
+        Gregorian,
         std::weak_ptr<TaskNode>
 >;
 
@@ -28,14 +28,14 @@ using id_map =          std::map<TaskID, std::pair<multimap_by_date*, multimap_i
 
 /********************************************************************************************/
 
-class DatePriorityView : public PriorityViewInterface<time_t> {
+class DatePriorityView : public PriorityViewInterface<Gregorian> {
 
 public:
     DatePriorityView();
 
 public:
     void                                        addToView(const std::weak_ptr<TaskNode>& pnode) override ;
-    std::vector<std::weak_ptr<TaskNode>>        getAllWithConstraint(const time_t& date) override;
+    std::vector<std::weak_ptr<TaskNode>>        getAllWithConstraint(const Gregorian& date) override;
     std::vector<std::weak_ptr<TaskNode>>        getAllSortedByFirstParam() override;
     void                                        removeFromView(TaskID id) override;
     ~DatePriorityView() =                       default;

@@ -3,6 +3,7 @@
 //
 
 #include <gtest/gtest.h>
+#include <boost/date_time.hpp>
 #include "api/TaskDTO.h"
 
 class TestTaskDTO : public ::testing::Test {
@@ -11,11 +12,12 @@ class TestTaskDTO : public ::testing::Test {
 
 
 TEST_F(TestTaskDTO, correctCopy) {
-    TaskDTO x(TaskID(1), "name", Task::Priority::NONE, "lbl", 2020);
+    TaskDTO x(TaskID(1), "name", Task::Priority::NONE,
+            "lbl", boost::gregorian::day_clock::local_day());
     auto y = x;
     EXPECT_EQ(y.getId(), 1);
     EXPECT_EQ(y.getName(), "name");
     EXPECT_EQ(y.getPriority(), Task::Priority::NONE);
     EXPECT_EQ(y.getLabel(), "lbl");
-    EXPECT_EQ(y.getDate(), 2020);
+    EXPECT_EQ(y.getDate(), boost::gregorian::day_clock::local_day());
 }
