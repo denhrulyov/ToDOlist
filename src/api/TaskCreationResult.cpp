@@ -11,14 +11,19 @@ TaskCreationResult TaskCreationResult::taskNotFound() {
     return TaskCreationResult(std::nullopt, false, "Task not found");
 }
 
-bool TaskCreationResult::getSuccessStatus() {
-    return success_;
+TaskCreationResult TaskCreationResult::error(const std::string &message) {
+    return TaskCreationResult(std::nullopt, false, message);
 }
+
 
 std::optional<TaskID> TaskCreationResult::getCreatedTaskID() {
     return created_id_;
 }
 
-std::optional<std::string> TaskCreationResult::getErrorMessage() {
-    return error_message_;
-}
+TaskCreationResult::TaskCreationResult(const std::optional<TaskID> &created_id, bool success,
+                                       const std::optional<std::string> &error_message) :
+        RequestResult(success, error_message),
+        created_id_(created_id)
+        {}
+
+

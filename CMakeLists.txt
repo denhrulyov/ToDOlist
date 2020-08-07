@@ -73,6 +73,9 @@ add_executable(TestsExecutable
                 tests/TestTaskID.cpp
                 tests/TestTaskIDFactory.cpp
 
+                src/api/RequestResult.cpp
+                src/api/TaskModificationResult.cpp
+                src/api/TaskCreationResult.cpp
                 src/api/TaskService.cpp
                 src/memory_model/Task.cpp
                 src/memory_model/TaskNode.cpp

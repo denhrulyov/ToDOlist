@@ -9,6 +9,15 @@ class TaskCreationResultTest : public ::testing::Test {
 
 };
 
+
+TEST_F(TaskCreationResultTest, CorrectConstructor) {
+    TaskCreationResult rr(TaskID(2), false, "good");
+    ASSERT_EQ(TaskID(2), rr.getCreatedTaskID().value());
+    ASSERT_EQ(false, rr.getSuccessStatus());
+    ASSERT_EQ("good", rr.getErrorMessage().value());
+}
+
+
 TEST_F(TaskCreationResultTest, TestSuccessValue) {
     EXPECT_FALSE(TaskCreationResult::taskNotFound().getSuccessStatus());
     EXPECT_TRUE(TaskCreationResult::success(TaskID(1)).getSuccessStatus());
