@@ -21,10 +21,21 @@ std::vector<TaskDTO> convertAll(const std::vector<std::weak_ptr<TaskNode>>& all)
     return user_result_set;
 }
 
+std::shared_ptr<TaskNode> createNode(TaskID id, const Task& task) {
+    return std::make_shared<TaskNode>(id, task);
+}
+
 /**********************************************************************/
 
 TaskCreationResult TaskService::addTask(const TaskDTO &task_data) {
-    auto created_node = storage_->createTask(TaskDTOConverter::getTask(task_data));
+    auto created_node = createNode(
+            id_generator_.generateID(),
+            TaskDTOConverter::getTask(task_data)
+    );
+    TaskStrorageInterface::Result::onAdd result = storage_->addTask(created_node);
+    if (result != TaskStrorageInterface::Result::onAdd::SUCCESS) {
+        return TaskCreationResult::error("Storage error");
+    }
     reference_handler_.setReferences(created_node);
 
     return TaskCreationResult::success(created_node->getId());
@@ -53,12 +64,12 @@ void TaskService::deleteTask(TaskID id) {
 
 void TaskService::postponeTask(TaskID id, Gregorian date_postpone) {
     auto old_node = storage_->getTaskByID(id);
-    auto new_node =
-            storage_->recreateTask(id, getPostponedTask(old_node->getTask(), date_postpone));
-
+    auto new_node = old_node->clone(getPostponedTask(old_node->getTask(), date_postpone));
     reference_handler_.moveInboundRefrences(old_node, new_node);
     reference_handler_.removeRefrences(old_node);
     reference_handler_.setReferences(new_node);
+    storage_->eraseTask(id);
+    storage_->addTask(new_node);
 }
 
 std::vector<TaskDTO> TaskService::getAllTasks() {

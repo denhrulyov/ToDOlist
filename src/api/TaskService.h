@@ -43,6 +43,7 @@ public:
     void                                                    complete(TaskID id);
 
 private:
+    TaskIDFactory                                           id_generator_;
     std::unique_ptr<TaskStrorageInterface>                  storage_;
     std::unique_ptr<PriorityViewInterface<Gregorian>>       by_time_;
     std::unique_ptr<PriorityViewInterface<std::string>>     by_label_;

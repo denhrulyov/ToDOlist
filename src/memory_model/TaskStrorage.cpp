@@ -4,26 +4,28 @@
 
 #include "TaskStrorage.h"
 
-TaskStrorage::TaskStrorage(std::unique_ptr<TaskIDFactoryInterface> id_generator) :
-id_generator_(std::move(id_generator)) {}
 
-std::shared_ptr<TaskNode> TaskStrorage::createTask(const Task& task) {
-    TaskID generated_id = id_generator_->generateID();
-    return nodes_[generated_id] = std::make_shared<TaskNode>(generated_id, task);
+TaskStrorageInterface::Result::onAdd
+TaskStrorage::addTask(const std::shared_ptr<TaskNode> & node) {
+    if (nodes_.count(node->getId())) {
+        return Result::onAdd::TASK_ALREADY_EXIST;
+    }
+    nodes_[node->getId()] = node;
+    return Result::onAdd::SUCCESS;
 }
 
-void TaskStrorage::eraseTask(TaskID id) {
+TaskStrorageInterface::Result::onDelete
+TaskStrorage::eraseTask(TaskID id) {
+    if (nodes_.count(id) == 0) {
+        return Result::onDelete::TASK_NOT_EXIST;
+    }
     nodes_.erase(id);
+    return Result::onDelete::SUCCESS;
 }
 
 std::shared_ptr<TaskNode> TaskStrorage::getTaskByID(TaskID id) {
     return nodes_.count(id) ? nodes_[id] : nullptr;
 }
 
-std::shared_ptr<TaskNode> TaskStrorage::recreateTask(TaskID id, const Task& new_data) {
-    auto old = nodes_[id];
-    auto new_node = old->clone(new_data);
-    return nodes_.count(id) ? (nodes_[id] = new_node) : nullptr;
-}
 
 

@@ -17,11 +17,11 @@
 namespace task_api {
 
     TaskService createService() {
-        auto id_generator = std::make_unique<TaskStrorage>(std::make_unique<TaskIDFactory>());
+        auto storage =      std::make_unique<TaskStrorage>();
         auto view_time =    std::make_unique<DatePriorityView>();
         auto view_label =   std::make_unique<TagPriorityView>();
         auto handler =      ReferenceHandler(*view_time, *view_label);
-        return TaskService(std::move(id_generator), std::move(view_time), std::move(view_label), handler);
+        return TaskService(std::move(storage), std::move(view_time), std::move(view_label), handler);
     }
 
 }
