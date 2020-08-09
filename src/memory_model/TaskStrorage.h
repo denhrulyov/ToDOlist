@@ -9,11 +9,9 @@
 
 class TaskStrorage : public TaskStrorageInterface {
 
-
-
 public:
-    Result::onAdd                                   addTask(const std::shared_ptr<TaskNode>&) override;
-    Result::onDelete                                eraseTask(TaskID id) override;
+    Result                                          addTask(const std::shared_ptr<TaskNode>&) override;
+    Result                                          eraseTask(TaskID id) override;
     std::shared_ptr<TaskNode>                       getTaskByID(TaskID id) override;
 
 private:

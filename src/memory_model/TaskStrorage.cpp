@@ -5,22 +5,22 @@
 #include "TaskStrorage.h"
 
 
-TaskStrorageInterface::Result::onAdd
+TaskStrorageInterface::Result
 TaskStrorage::addTask(const std::shared_ptr<TaskNode> & node) {
     if (nodes_.count(node->getId())) {
-        return Result::onAdd::TASK_ALREADY_EXIST;
+        return Result::FAILURE;
     }
     nodes_[node->getId()] = node;
-    return Result::onAdd::SUCCESS;
+    return Result::SUCCESS;
 }
 
-TaskStrorageInterface::Result::onDelete
+TaskStrorageInterface::Result
 TaskStrorage::eraseTask(TaskID id) {
     if (nodes_.count(id) == 0) {
-        return Result::onDelete::TASK_NOT_EXIST;
+        return Result::FAILURE;
     }
     nodes_.erase(id);
-    return Result::onDelete::SUCCESS;
+    return Result::SUCCESS;
 }
 
 std::shared_ptr<TaskNode> TaskStrorage::getTaskByID(TaskID id) {

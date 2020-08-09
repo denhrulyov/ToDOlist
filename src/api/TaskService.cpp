@@ -32,8 +32,8 @@ TaskCreationResult TaskService::addTask(const TaskDTO &task_data) {
             id_generator_.generateID(),
             TaskDTOConverter::getTask(task_data)
     );
-    TaskStrorageInterface::Result::onAdd result = storage_->addTask(created_node);
-    if (result != TaskStrorageInterface::Result::onAdd::SUCCESS) {
+    TaskStrorageInterface::Result result = storage_->addTask(created_node);
+    if (result != TaskStrorageInterface::Result::SUCCESS) {
         return TaskCreationResult::error("Storage error");
     }
     reference_handler_.setReferences(created_node);
@@ -46,7 +46,11 @@ TaskCreationResult TaskService::addSubTask(TaskID parent, const TaskDTO &task_da
     if (!parent_node) {
         return TaskCreationResult::taskNotFound();
     }
-    auto generated_id = addTask(task_data).getCreatedTaskID().value();
+    auto add_result = addTask(task_data);
+    if (add_result.getSuccessStatus() == false) {
+        return add_result;
+    }
+    auto generated_id = add_result.getCreatedTaskID().value();
     auto created_node = storage_->getTaskByID(generated_id);
     reference_handler_.linkSubTask(parent_node, created_node);
 

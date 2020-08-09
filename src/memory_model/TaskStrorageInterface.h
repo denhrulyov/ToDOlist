@@ -10,22 +10,15 @@
 class TaskStrorageInterface {
 
 public:
-    class Result {
 
-    public:
-        enum class onAdd {
-            SUCCESS,
-            TASK_ALREADY_EXIST
-        };
-        enum class onDelete {
-            SUCCESS,
-            TASK_NOT_EXIST
-        };
+    enum class Result {
+        SUCCESS,
+        FAILURE
     };
 
 public:
-    virtual Result::onAdd               addTask(const std::shared_ptr<TaskNode>&) = 0;
-    virtual Result::onDelete            eraseTask(TaskID id_erase) = 0;
+    virtual Result                      addTask(const std::shared_ptr<TaskNode>&) = 0;
+    virtual Result                      eraseTask(TaskID id_erase) = 0;
     virtual std::shared_ptr<TaskNode>   getTaskByID(TaskID id) = 0;
 
     virtual                             ~TaskStrorageInterface() = default;
