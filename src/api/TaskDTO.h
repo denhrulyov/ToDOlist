@@ -12,9 +12,14 @@
 class TaskDTO {
 
 public:
-    TaskDTO(TaskID, const std::string& name, Task::Priority, const std::string& label, Gregorian);
-    TaskDTO(        const std::string& name, Task::Priority, const std::string& label, Gregorian);
+    static TaskDTO create(TaskID, const std::string& name, Task::Priority, const std::string& label, Gregorian);
+    static TaskDTO create(        const std::string& name, Task::Priority, const std::string& label, Gregorian);
+    static TaskDTO create(TaskID, const std::string& name, Task::Priority, const std::string& label, Gregorian, bool);
+
+private:
     TaskDTO(TaskID, const std::string& name, Task::Priority, const std::string& label, Gregorian, bool);
+
+public:
     TaskDTO(const TaskDTO&) = default;
 
 public:
@@ -23,7 +28,7 @@ public:
     Task::Priority          getPriority() const ;
     std::string             getLabel() const ;
     Gregorian               getDate() const ;
-    bool                    isComplete() const ;
+    bool                    isCompleted() const ;
 
 
 private:
@@ -32,7 +37,7 @@ private:
     Task::Priority priority_;
     std::string label_;
     Gregorian date_;
-    bool complete_;
+    bool completed_;
 };
 
 

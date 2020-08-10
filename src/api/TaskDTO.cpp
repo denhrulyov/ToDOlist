@@ -24,34 +24,49 @@ Task::Priority TaskDTO::getPriority() const {
     return priority_;
 }
 
-TaskDTO::TaskDTO(const std::string &name,
-                 Task::Priority priority,
-                 const std::string &label,
-                 Gregorian date) :
-        name_(name),
-        date_(date),
-        label_(label),
-        priority_(priority)
-        {}
 
 TaskDTO::TaskDTO(TaskID id,
+                const std::string &name,
+                Task::Priority priority, const std::string &label, Gregorian date,
+                bool completed)
+                :
+    id_(id),
+    name_(name),
+    priority_(priority),
+    label_(label),
+    date_(date),
+    completed_(completed)
+{}
+
+TaskDTO
+TaskDTO::create( const std::string &name,
+                         Task::Priority priority,
+                         const std::string &label,
+                         Gregorian date)
+{
+    return TaskDTO(TaskID(), name, priority, label, date, false);
+}
+
+TaskDTO
+TaskDTO::create( TaskID id,
                  const std::string &name,
                  Task::Priority priority,
                  const std::string &label,
-                 Gregorian date) :
-                 TaskDTO(name, priority, label, date) {
-                    id_ = id;
-                 }
+                 Gregorian date)
+{
+    return TaskDTO(id, name, priority, label, date, false);
+}
 
 
-TaskDTO::TaskDTO(TaskID id,
+TaskDTO
+TaskDTO::create(TaskID id,
                  const std::string &name,
                  Task::Priority priority, const std::string &label, Gregorian date,
-                 bool comlete) :
-        TaskDTO(id, name, priority, label, date) {
-            complete_ = comlete;
-        }
+                 bool completed)
+{
+    return TaskDTO(id, name, priority, label, date, completed);
+}
 
-bool TaskDTO::isComplete() const {
-    return complete_;
+bool TaskDTO::isCompleted() const {
+    return completed_;
 }

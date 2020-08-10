@@ -30,7 +30,6 @@ add_executable(ToDOList src/main.cpp
         src/api/RequestResult.cpp src/api/RequestResult.h
         src/api/TaskModificationResult.cpp src/api/TaskModificationResult.h
         src/api/TaskCreationResult.cpp src/api/TaskCreationResult.h)
-find_package(Boost 1.70.0 REQUIRED system)
 
 # boost #####################################################
 set(Boost_USE_STATIC_LIBS        ON)  # only find static libs
@@ -39,11 +38,12 @@ set(Boost_USE_RELEASE_LIBS       ON)  # only find release libs
 set(Boost_USE_MULTITHREADED      ON)
 set(Boost_USE_STATIC_RUNTIME     OFF)
 
+find_package(Boost REQUIRED COMPONENTS date_time)
+
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
 endif()
-find_package(Boost REQUIRED COMPONENTS date_time)
-find_package(Boost REQUIRED COMPONENTS regex)
+
 
 target_link_libraries(ToDOList -static)
 target_link_libraries(ToDOList ${Boost_LIBRARIES})
@@ -79,6 +79,9 @@ add_executable(TestsExecutable
                 tests/TestTaskStorage.cpp
                 tests/TestTaskID.cpp
                 tests/TestTaskIDFactory.cpp
+                tests/TestTaskCreationResult.cpp
+                tests/TestTaskModificationResult.cpp
+                tests/TestRequestResult.cpp
 
                 src/api/RequestResult.cpp
                 src/api/TaskModificationResult.cpp

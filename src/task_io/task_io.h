@@ -27,7 +27,7 @@ std::ostream& operator << (std::ostream& out, TaskDTO task) {
     out << "  priority : " << task_io::priorty_repr.at(task.getPriority()) << std::endl;
     out << "  date : " << task.getDate() << std::endl;
     out << "  label : " << task.getLabel() << std::endl;
-    out << "  complete : " << std::boolalpha << task.isComplete() << std::endl;
+    out << "  complete : " << std::boolalpha << task.isCompleted() << std::endl;
     return out;
 }
 
