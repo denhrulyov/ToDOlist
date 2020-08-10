@@ -89,11 +89,6 @@ TaskService::postponeTask(TaskID id, Gregorian date_postpone) {
     return TaskModificationResult::success(id);
 }
 
-std::vector<TaskDTO> TaskService::getAllTasks() {
-    using namespace boost::gregorian;
-    auto result_set = by_time_->getAllWithConstraint(day_clock::local_day() + years(100));
-    return convertAll(result_set);
-}
 
 std::vector<TaskDTO> TaskService::getAllWithLabel(const std::string &label) {
     auto result_set = by_label_->getAllWithConstraint(label);
@@ -113,5 +108,23 @@ RequestResult TaskService::complete(TaskID id) {
         complete(child);
     }
     return RequestResult::success();
+}
+
+std::vector<TaskDTO> TaskService::getToday() {
+    using namespace boost::gregorian;
+    auto result_set = by_time_->getAllWithConstraint(day_clock::local_day());
+    return convertAll(result_set);
+}
+
+std::vector<TaskDTO> TaskService::getThisWeek() {
+    using namespace boost::gregorian;
+    auto result_set = by_time_->getAllWithConstraint(day_clock::local_day() + days(6));
+    return convertAll(result_set);
+}
+
+std::vector<TaskDTO> TaskService::getAllTasks() {
+    using namespace boost::gregorian;
+    auto result_set = by_time_->getAllWithConstraint(day_clock::local_day() + years(100));
+    return convertAll(result_set);
 }
 

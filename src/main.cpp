@@ -11,7 +11,7 @@ int main() {
     auto today = day_clock::local_day();
     TaskService service = task_api::createService();
     TaskCreationResult id = service.addTask(
-            TaskDTO::create("T1", Task::Priority::FIRST, "tag1", today + days(2))
+            TaskDTO::create("T1", Task::Priority::FIRST, "tag1", today + days(6))
             );
     TaskCreationResult id2 = service.addSubTask(
             id.getCreatedTaskID().value(), TaskDTO::create("T2", Task::Priority::NONE, "tag2", today + days(2))
@@ -24,7 +24,7 @@ int main() {
     TaskCreationResult id4 = service.addSubTask(
             id2.getCreatedTaskID().value(), TaskDTO::create("T3", Task::Priority::THIRD, "tag3", today + days(20))
     );
-    service.deleteTask(id2.getCreatedTaskID().value());
+    //service.deleteTask(id2.getCreatedTaskID().value());
     service.complete(id.getCreatedTaskID().value());
     //UserTaskID id4 = service.addTask("T5", Task::Priority::FIRST, "tag4", 2020);
     /*service.inspectRoot();
@@ -43,7 +43,8 @@ int main() {
     UserTaskID id7 = service.addSubTask(<#initializer#>);
     service.inspectRoot();
      */
-    auto tsk = service.getAllWithLabel("tag1");
+    //auto tsk = service.getAllWithLabel("tag1");
+    auto tsk = service.getThisWeek();
     for (auto ts : tsk) {
         std::cout << ts;
     }

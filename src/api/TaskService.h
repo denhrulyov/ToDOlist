@@ -32,6 +32,8 @@ public:
     {}
 
 public:
+    std::vector<TaskDTO>                                    getToday();
+    std::vector<TaskDTO>                                    getThisWeek();
     std::vector<TaskDTO>                                    getAllTasks();
     std::vector<TaskDTO>                                    getAllWithLabel(const std::string& label);
     std::optional<TaskDTO>                                  getTaskByID(TaskID id_task);
