@@ -42,7 +42,7 @@ TaskCreationResult TaskService::addTask(const TaskDTO &task_data) {
 }
 
 TaskCreationResult TaskService::addSubTask(TaskID parent, const TaskDTO &task_data) {
-    auto parent_node = storage_->getTaskByID(parent);
+    auto parent_node = storage_->getTaskByID(parent).lock();
     if (!parent_node) {
         return TaskCreationResult::taskNotFound();
     }
@@ -51,7 +51,7 @@ TaskCreationResult TaskService::addSubTask(TaskID parent, const TaskDTO &task_da
         return add_result;
     }
     auto generated_id = add_result.getCreatedTaskID().value();
-    auto created_node = storage_->getTaskByID(generated_id);
+    auto created_node = storage_->getTaskByID(generated_id).lock();
     reference_handler_.linkSubTask(parent_node, created_node);
 
     return TaskCreationResult::success(generated_id);
@@ -59,7 +59,7 @@ TaskCreationResult TaskService::addSubTask(TaskID parent, const TaskDTO &task_da
 
 TaskModificationResult
 TaskService::deleteTask(TaskID id) {
-    auto shared_node = storage_->getTaskByID(id);
+    auto shared_node = storage_->getTaskByID(id).lock();
     if (!shared_node) {
         return TaskModificationResult::taskNotFound();
     }
@@ -76,7 +76,7 @@ TaskService::deleteTask(TaskID id) {
 
 TaskModificationResult
 TaskService::postponeTask(TaskID id, Gregorian date_postpone) {
-    auto old_node = storage_->getTaskByID(id);
+    auto old_node = storage_->getTaskByID(id).lock();
     if (!old_node) {
         return TaskModificationResult::taskNotFound();
     }
@@ -97,12 +97,12 @@ std::vector<TaskDTO> TaskService::getAllWithLabel(const std::string &label) {
 
 
 std::optional<TaskDTO> TaskService::getTaskByID(TaskID id) {
-    auto node = storage_->getTaskByID(id);
+    auto node = storage_->getTaskByID(id).lock();
     return node ? std::make_optional(TaskDTOConverter::getDTO(node)) : std::nullopt;
 }
 
 RequestResult TaskService::complete(TaskID id) {
-    auto shared_node = storage_->getTaskByID(id);
+    auto shared_node = storage_->getTaskByID(id).lock();
     shared_node->complete();
     for (TaskID child : shared_node->getSubtasks()) {
         complete(child);

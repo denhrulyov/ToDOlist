@@ -27,7 +27,7 @@ TEST_F(TaskStorageTest, TestTasksSaved) {
     for (auto task : sample_tasks) {
         TaskID id(i++);
         ts.addTask(std::make_shared<TaskNode>(id, task));
-        EXPECT_TRUE(ts.getTaskByID(id));
+        EXPECT_TRUE(ts.getTaskByID(id).lock());
     }
 }
 
@@ -42,8 +42,8 @@ TEST_F(TaskStorageTest, TestCorrectNodeErased) {
     }
     TaskID id_erase = ids[1];
     ts.eraseTask(id_erase);
-    EXPECT_FALSE(ts.getTaskByID(id_erase));
-    EXPECT_TRUE(ts.getTaskByID(ids[0]));
+    EXPECT_FALSE(ts.getTaskByID(id_erase).lock());
+    EXPECT_TRUE(ts.getTaskByID(ids[0]).lock());
 }
 
 

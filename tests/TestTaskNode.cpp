@@ -52,7 +52,7 @@ TEST_F(TaskNodeTest, correctCloning) {
     EXPECT_EQ(tst.getTask().getPriority(), TaskPriority::FIRST);
     EXPECT_EQ(tst.getTask().getLabel(), "lbl");
     EXPECT_EQ(tst.getTask().getDate(), day_clock::local_day() + days(202));
-    EXPECT_EQ(tst.getParent(), sample_parent);
+    EXPECT_EQ(tst.getParent().lock(), sample_parent);
     EXPECT_EQ(tst.getSubtasks().size(), 0);
 }
 

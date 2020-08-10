@@ -15,11 +15,11 @@ public:
                      PriorityViewInterface<std::string>& by_label);
 
 public:
-    void linkSubTask(const std::shared_ptr<TaskNode>& main_task, const std::shared_ptr<TaskNode>& sub_task);
-    void setReferences(const std::shared_ptr<TaskNode>& node);
-    void removeRefrences(const std::shared_ptr<TaskNode>& node);
-    void moveInboundRefrences(const std::shared_ptr<TaskNode>& from, const std::shared_ptr<TaskNode>& to);
-    void copyExternalReferences(const std::shared_ptr<TaskNode>& from, const std::shared_ptr<TaskNode>& to);
+    void linkSubTask(const std::weak_ptr<TaskNode>& main_task, const std::weak_ptr<TaskNode>& sub_task);
+    void setReferences(const std::weak_ptr<TaskNode>& node);
+    void removeRefrences(const std::weak_ptr<TaskNode>& node);
+    void moveInboundRefrences(const std::weak_ptr<TaskNode>& from, const std::weak_ptr<TaskNode>& to);
+    void copyExternalReferences(const std::weak_ptr<TaskNode>& from, const std::weak_ptr<TaskNode>& to);
 
 private:
     PriorityViewInterface<Gregorian> &by_time_;

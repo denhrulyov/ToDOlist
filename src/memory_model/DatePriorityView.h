@@ -11,7 +11,7 @@
 
 
 
-const std::vector<TaskPriority> priorities_by_order = { TaskPriority::FIRST,
+const std::vector<TaskPriority> priorities_by_order = {   TaskPriority::FIRST,
                                                           TaskPriority::SECOND,
                                                           TaskPriority::THIRD,
                                                           TaskPriority::NONE };

@@ -38,30 +38,11 @@ TEST_F(ReferenceHandlerTest, TestChildLinkedToParent) {
             Task::create("t2", TaskPriority::SECOND, "tg2",
                     day_clock::local_day() + days(31)));
     rh.linkSubTask(node1, node2);
-    EXPECT_EQ(node1.get(), node2->getParent().get());
-    EXPECT_EQ(  node1->getSubtaskByID(node2->getId()).get(),
+    EXPECT_EQ(node1.get(), node2->getParent().lock().get());
+    EXPECT_EQ(  node1->getSubtaskByID(node2->getId()).lock().get(),
                 node2.get());
 }
 
-TEST_F(ReferenceHandlerTest, TestLinkedNull) {
-    auto rh = defaultRefernceHandler(this);
-    auto node1 = std::make_shared<TaskNode>(
-            TaskID(1),
-            Task::create("t1", TaskPriority::THIRD, "tg",
-                         day_clock::local_day() + days(30)));
-    auto node2 = std::make_shared<TaskNode>(
-            TaskID(2),
-            Task::create("t2", TaskPriority::SECOND, "tg2",
-                         day_clock::local_day() + days(31)));
-    rh.linkSubTask(node1, nullptr);
-    rh.linkSubTask(node2, nullptr);
-    rh.linkSubTask(nullptr, node1);
-    rh.linkSubTask(nullptr, nullptr);
-    ASSERT_EXIT ((rh.linkSubTask(node1, nullptr), exit(0)), ::testing::ExitedWithCode(0), "");
-    ASSERT_EXIT ((rh.linkSubTask(node2, nullptr), exit(0)), ::testing::ExitedWithCode(0), "");
-    ASSERT_EXIT ((rh.linkSubTask(nullptr, node1), exit(0));, ::testing::ExitedWithCode(0), "");
-    ASSERT_EXIT ((rh.linkSubTask(nullptr, nullptr), exit(0)), ::testing::ExitedWithCode(0), "");
-}
 
 TEST_F(ReferenceHandlerTest, TestSetReferencesInView) {
     auto by_date = std::make_unique<DatePriorityView>();
@@ -122,9 +103,9 @@ TEST_F(ReferenceHandlerTest, TestAllLinksAreSet) {
     rh.setReferences(child2);
     EXPECT_EQ(parent->getSubNodes().size(), 1);
     EXPECT_EQ(node->getSubNodes().size(), 2);
-    ASSERT_EQ(node->getParent(), parent);
-    ASSERT_EQ(child1->getParent(), node);
-    ASSERT_EQ(child2->getParent(), node);
+    ASSERT_EQ(node->getParent().lock().get(), parent.get());
+    ASSERT_EQ(child1->getParent().lock().get(), node.get());
+    ASSERT_EQ(child2->getParent().lock().get(), node.get());
 }
 
 TEST_F(ReferenceHandlerTest, MoveInternalReferencesMethodSetLinksCorrect) {
@@ -162,9 +143,9 @@ TEST_F(ReferenceHandlerTest, MoveInternalReferencesMethodSetLinksCorrect) {
     rh.moveInboundRefrences(node, node2);
     EXPECT_EQ(parent->getSubNodes().size(), 1);
     EXPECT_EQ(node2->getSubNodes().size(), 2);
-    EXPECT_EQ(node2->getParent().get(), parent.get());
-    EXPECT_EQ(child1->getParent().get(), node2.get());
-    EXPECT_EQ(child2->getParent().get(), node2.get());
+    EXPECT_EQ(node2->getParent().lock().get(), parent.get());
+    EXPECT_EQ(child1->getParent().lock().get(), node2.get());
+    EXPECT_EQ(child2->getParent().lock().get(), node2.get());
     // check if view was updated
     auto with_node2_tag = by_tag->getAllWithConstraint(
             node2

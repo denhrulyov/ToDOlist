@@ -12,7 +12,7 @@ class TaskStrorage : public TaskStrorageInterface {
 public:
     Result                                          addTask(const std::shared_ptr<TaskNode>&) override;
     Result                                          eraseTask(TaskID id) override;
-    std::shared_ptr<TaskNode>                       getTaskByID(TaskID id) override;
+    std::weak_ptr<TaskNode>                         getTaskByID(TaskID id) override;
 
 private:
     std::map<TaskID, std::shared_ptr<TaskNode>>     nodes_;

@@ -23,7 +23,7 @@ TaskStrorage::eraseTask(TaskID id) {
     return Result::SUCCESS;
 }
 
-std::shared_ptr<TaskNode> TaskStrorage::getTaskByID(TaskID id) {
+std::weak_ptr<TaskNode> TaskStrorage::getTaskByID(TaskID id) {
     return nodes_.count(id) ? nodes_[id] : nullptr;
 }
 
