@@ -25,21 +25,7 @@ public:
     }
 
 public:
-    bool operator < (TaskID rhs) const {
-        return id_ < rhs.id_;
-    }
-    bool operator > (TaskID rhs) const {
-        return id_ > rhs.id_;
-    }
-    bool operator <= (TaskID rhs) const {
-        return id_ <= rhs.id_;
-    }
-    bool operator >= (TaskID rhs) const {
-        return id_ >= rhs.id_;
-    }
-    bool operator == (TaskID rhs) const {
-        return id_ == rhs.id_;
-    }
+
     // ??????????????
     operator unsigned int () const {
         return id_;
@@ -50,5 +36,11 @@ private:
 
 };
 
+
+bool operator < (const TaskID&, const TaskID& );
+bool operator > (const TaskID&, const TaskID& );
+bool operator <= (const TaskID&, const TaskID& );
+bool operator >= (const TaskID&, const TaskID& );
+bool operator == (const TaskID&, const TaskID& );
 
 #endif //TODOLIST_TASKID_H
