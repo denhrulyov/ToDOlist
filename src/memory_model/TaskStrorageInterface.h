@@ -10,10 +10,16 @@
 class TaskStrorageInterface {
 
 public:
-    virtual std::shared_ptr<TaskNode>   createTask(const Task&) = 0;
-    virtual void                        eraseTask(TaskID id_erase) = 0;
+
+    enum class Result {
+        SUCCESS,
+        FAILURE
+    };
+
+public:
+    virtual Result                      addTask(const std::shared_ptr<TaskNode>&) = 0;
+    virtual Result                      eraseTask(TaskID id_erase) = 0;
     virtual std::shared_ptr<TaskNode>   getTaskByID(TaskID id) = 0;
-    virtual std::shared_ptr<TaskNode>   recreateTask(TaskID, const Task&) = 0;
 
     virtual                             ~TaskStrorageInterface() = default;
 };
