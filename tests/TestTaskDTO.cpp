@@ -12,7 +12,7 @@ class TestTaskDTO : public ::testing::Test {
 
 
 TEST_F(TestTaskDTO, correctCopy) {
-    TaskDTO x(TaskID(1), "name", Task::Priority::NONE,
+    TaskDTO x = TaskDTO::create(TaskID(1), "name", Task::Priority::NONE,
             "lbl", boost::gregorian::day_clock::local_day());
     auto y = x;
     EXPECT_EQ(y.getId(), 1);

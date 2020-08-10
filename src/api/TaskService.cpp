@@ -57,30 +57,38 @@ TaskCreationResult TaskService::addSubTask(TaskID parent, const TaskDTO &task_da
     return TaskCreationResult::success(generated_id);
 }
 
-void TaskService::deleteTask(TaskID id) {
+TaskModificationResult
+TaskService::deleteTask(TaskID id) {
     auto shared_node = storage_->getTaskByID(id);
+    if (!shared_node) {
+        return TaskModificationResult::taskNotFound();
+    }
     for (TaskID subtask : shared_node->getSubtasks()) {
-        deleteTask(subtask);
+        auto result = deleteTask(subtask);
+        if (result.getSuccessStatus() == false) {
+            return result;
+        }
     }
     reference_handler_.removeRefrences(shared_node);
     storage_->eraseTask(id);
+    return TaskModificationResult::success(id);
 }
 
-void TaskService::postponeTask(TaskID id, Gregorian date_postpone) {
+TaskModificationResult
+TaskService::postponeTask(TaskID id, Gregorian date_postpone) {
     auto old_node = storage_->getTaskByID(id);
+    if (!old_node) {
+        return TaskModificationResult::taskNotFound();
+    }
     auto new_node = old_node->clone(getPostponedTask(old_node->getTask(), date_postpone));
     reference_handler_.moveInboundRefrences(old_node, new_node);
     reference_handler_.removeRefrences(old_node);
     reference_handler_.setReferences(new_node);
     storage_->eraseTask(id);
     storage_->addTask(new_node);
+    return TaskModificationResult::success(id);
 }
 
-std::vector<TaskDTO> TaskService::getAllTasks() {
-    using namespace boost::gregorian;
-    auto result_set = by_time_->getAllWithConstraint(day_clock::local_day() + years(100));
-    return convertAll(result_set);
-}
 
 std::vector<TaskDTO> TaskService::getAllWithLabel(const std::string &label) {
     auto result_set = by_label_->getAllWithConstraint(label);
@@ -93,11 +101,30 @@ std::optional<TaskDTO> TaskService::getTaskByID(TaskID id) {
     return node ? std::make_optional(TaskDTOConverter::getDTO(node)) : std::nullopt;
 }
 
-void TaskService::complete(TaskID id) {
+RequestResult TaskService::complete(TaskID id) {
     auto shared_node = storage_->getTaskByID(id);
     shared_node->complete();
     for (TaskID child : shared_node->getSubtasks()) {
         complete(child);
     }
+    return RequestResult::success();
+}
+
+std::vector<TaskDTO> TaskService::getToday() {
+    using namespace boost::gregorian;
+    auto result_set = by_time_->getAllWithConstraint(day_clock::local_day());
+    return convertAll(result_set);
+}
+
+std::vector<TaskDTO> TaskService::getThisWeek() {
+    using namespace boost::gregorian;
+    auto result_set = by_time_->getAllWithConstraint(day_clock::local_day() + days(6));
+    return convertAll(result_set);
+}
+
+std::vector<TaskDTO> TaskService::getAllTasks() {
+    using namespace boost::gregorian;
+    auto result_set = by_time_->getAllWithConstraint(day_clock::local_day() + years(100));
+    return convertAll(result_set);
 }
 

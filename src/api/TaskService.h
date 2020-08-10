@@ -10,6 +10,7 @@
 #include "memory_model/TaskIDFactory.h"
 #include "memory_model/ReferenceHandler.h"
 #include "TaskDTOConverter.h"
+#include "TaskModificationResult.h"
 #include <unordered_map>
 #include <algorithm>
 #include <memory>
@@ -22,15 +23,17 @@ public:
             std::unique_ptr<TaskStrorageInterface>                  storage,
             std::unique_ptr<PriorityViewInterface<Gregorian>>       view_time,
             std::unique_ptr<PriorityViewInterface<std::string>>     view_label,
-            const ReferenceHandler&                                 reference_handler
-            ) :
-            storage_(std::move(storage)),
-            by_time_(std::move(view_time)),
-            by_label_(std::move(view_label)),
-            reference_handler_(reference_handler)
+            const ReferenceHandler&                                 reference_handler)
+    :
+    storage_(std::move(storage)),
+    by_time_(std::move(view_time)),
+    by_label_(std::move(view_label)),
+    reference_handler_(reference_handler)
     {}
 
 public:
+    std::vector<TaskDTO>                                    getToday();
+    std::vector<TaskDTO>                                    getThisWeek();
     std::vector<TaskDTO>                                    getAllTasks();
     std::vector<TaskDTO>                                    getAllWithLabel(const std::string& label);
     std::optional<TaskDTO>                                  getTaskByID(TaskID id_task);
@@ -38,9 +41,9 @@ public:
 public:
     TaskCreationResult                                      addTask(const TaskDTO &user_data);
     TaskCreationResult                                      addSubTask(TaskID parent, const TaskDTO &user_data);
-    void                                                    deleteTask(TaskID id);
-    void                                                    postponeTask(TaskID id, Gregorian);
-    void                                                    complete(TaskID id);
+    TaskModificationResult                                  deleteTask(TaskID id);
+    TaskModificationResult                                  postponeTask(TaskID id, Gregorian);
+    RequestResult                                           complete(TaskID id);
 
 private:
     TaskIDFactory                                           id_generator_;
