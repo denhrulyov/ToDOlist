@@ -7,38 +7,30 @@
 
 #include <string>
 #include <boost/date_time.hpp>
+#include "TaskPriority.h"
 
 using Gregorian = boost::gregorian::date;
 
 class Task {
-public:
-
-    enum class Priority {
-
-        FIRST,
-        SECOND,
-        THIRD,
-        NONE
-    };
 
 public:
-    static Task create(std::string name, Task::Priority priority, std::string label, Gregorian date);
+    static Task create(std::string name, TaskPriority priority, std::string label, Gregorian date);
 
 public:
 
 
 private:
-    Task(std::string name, Task::Priority priority, std::string label, Gregorian date);
+    Task(const std::string& name, TaskPriority priority, const std::string& label, Gregorian date);
 
     std::string       name_;
 public:
     std::string       getName() const;
-    Priority          getPriority() const;
+    TaskPriority      getPriority() const;
     std::string       getLabel() const;
     Gregorian         getDate() const;
 
 private:
-    Task::Priority    priority_;
+    TaskPriority      priority_;
     std::string       label_;
     Gregorian         date_;
 };

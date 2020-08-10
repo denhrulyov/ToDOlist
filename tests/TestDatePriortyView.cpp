@@ -17,22 +17,22 @@ protected:
     void SetUp() override {
         node1 = std::make_shared<TaskNode>(
                 TaskID(1),
-                Task::create("t1", Task::Priority::FIRST, "lbl1",
+                Task::create("t1", TaskPriority::FIRST, "lbl1",
                         day_clock::local_day() + days(10))
         );
         node2 = std::make_shared<TaskNode>(
                 TaskID(2),
-                Task::create("t2", Task::Priority::SECOND, "lbl2",
+                Task::create("t2", TaskPriority::SECOND, "lbl2",
                         day_clock::local_day() + days(20))
         );
         node3 = std::make_shared<TaskNode>(
                 TaskID(3),
-                Task::create("t3", Task::Priority::THIRD, "lbl1",
+                Task::create("t3", TaskPriority::THIRD, "lbl1",
                         day_clock::local_day() + days(1))
         );
         node4 = std::make_shared<TaskNode>(
                 TaskID(4),
-                Task::create("t4", Task::Priority::NONE, "lbl2",
+                Task::create("t4", TaskPriority::NONE, "lbl2",
                              day_clock::local_day() + days(100))
         );
     }

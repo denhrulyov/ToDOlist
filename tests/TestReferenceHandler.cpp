@@ -31,11 +31,11 @@ TEST_F(ReferenceHandlerTest, TestChildLinkedToParent) {
     auto rh = defaultRefernceHandler(this);
     auto node1 = std::make_shared<TaskNode>(
             TaskID(1),
-            Task::create("t1", Task::Priority::THIRD, "tg",
+            Task::create("t1", TaskPriority::THIRD, "tg",
                     day_clock::local_day() + days(30)));
     auto node2 = std::make_shared<TaskNode>(
             TaskID(2),
-            Task::create("t2", Task::Priority::SECOND, "tg2",
+            Task::create("t2", TaskPriority::SECOND, "tg2",
                     day_clock::local_day() + days(31)));
     rh.linkSubTask(node1, node2);
     EXPECT_EQ(node1.get(), node2->getParent().get());
@@ -47,11 +47,11 @@ TEST_F(ReferenceHandlerTest, TestLinkedNull) {
     auto rh = defaultRefernceHandler(this);
     auto node1 = std::make_shared<TaskNode>(
             TaskID(1),
-            Task::create("t1", Task::Priority::THIRD, "tg",
+            Task::create("t1", TaskPriority::THIRD, "tg",
                          day_clock::local_day() + days(30)));
     auto node2 = std::make_shared<TaskNode>(
             TaskID(2),
-            Task::create("t2", Task::Priority::SECOND, "tg2",
+            Task::create("t2", TaskPriority::SECOND, "tg2",
                          day_clock::local_day() + days(31)));
     rh.linkSubTask(node1, nullptr);
     rh.linkSubTask(node2, nullptr);
@@ -69,7 +69,7 @@ TEST_F(ReferenceHandlerTest, TestSetReferencesInView) {
     ReferenceHandler rh(*by_date, *by_tag);
     auto node1 = std::make_shared<TaskNode>(
             TaskID(1),
-            Task::create("t1", Task::Priority::THIRD, "tg",
+            Task::create("t1", TaskPriority::THIRD, "tg",
                     day_clock::local_day() + days(30)));
     rh.setReferences(node1);
     EXPECT_EQ(by_date->getAllWithConstraint(day_clock::local_day() + days(31)).size(), 1);
@@ -82,11 +82,11 @@ TEST_F(ReferenceHandlerTest, TestSubtaskAddedToParentIfParentStillDoesNotContain
     ReferenceHandler rh(*by_date, *by_tag);
     auto parent = std::make_shared<TaskNode>(
             TaskID(1),
-            Task::create("t1", Task::Priority::THIRD, "tg",
+            Task::create("t1", TaskPriority::THIRD, "tg",
                     day_clock::local_day() + days(30)));
     auto node2 = std::make_shared<TaskNode>(
             TaskID(2),
-            Task::create("t2", Task::Priority::SECOND, "tg2",
+            Task::create("t2", TaskPriority::SECOND, "tg2",
                     day_clock::local_day() + days(31)));
     node2->setParent(parent);
     rh.setReferences(node2);
@@ -99,19 +99,19 @@ TEST_F(ReferenceHandlerTest, TestAllLinksAreSet) {
     ReferenceHandler rh(*by_date, *by_tag);
     auto parent = std::make_shared<TaskNode>(
             TaskID(1),
-            Task::create("t1", Task::Priority::THIRD, "tg",
+            Task::create("t1", TaskPriority::THIRD, "tg",
                     day_clock::local_day() + days(30)));
     auto node = std::make_shared<TaskNode>(
             TaskID(2),
-            Task::create("t2", Task::Priority::SECOND, "tg2",
+            Task::create("t2", TaskPriority::SECOND, "tg2",
                     day_clock::local_day() + days(31)));
     auto child1 = std::make_shared<TaskNode>(
             TaskID(3),
-            Task::create("t3", Task::Priority::FIRST, "tg2",
+            Task::create("t3", TaskPriority::FIRST, "tg2",
                     day_clock::local_day() + days(21)));
     auto child2 = std::make_shared<TaskNode>(
             TaskID(4),
-            Task::create("t4", Task::Priority::NONE, "tg2",
+            Task::create("t4", TaskPriority::NONE, "tg2",
                     day_clock::local_day() + days(51)));
     rh.linkSubTask(parent, node);
     rh.linkSubTask(node, child1);
@@ -133,19 +133,19 @@ TEST_F(ReferenceHandlerTest, MoveInternalReferencesMethodSetLinksCorrect) {
     ReferenceHandler rh(*by_date, *by_tag);
     auto parent = std::make_shared<TaskNode>(
             TaskID(1),
-            Task::create("t1", Task::Priority::THIRD, "tg",
+            Task::create("t1", TaskPriority::THIRD, "tg",
                     day_clock::local_day() + days(30)));
     auto node = std::make_shared<TaskNode>(
             TaskID(2),
-            Task::create("t2", Task::Priority::SECOND, "tg2",
+            Task::create("t2", TaskPriority::SECOND, "tg2",
                     day_clock::local_day() + days(31)));
     auto child1 = std::make_shared<TaskNode>(
             TaskID(3),
-            Task::create("t3", Task::Priority::FIRST, "tg3",
+            Task::create("t3", TaskPriority::FIRST, "tg3",
                     day_clock::local_day() + days(21)));
     auto child2 = std::make_shared<TaskNode>(
             TaskID(4),
-            Task::create("t4", Task::Priority::NONE, "tg4",
+            Task::create("t4", TaskPriority::NONE, "tg4",
                     day_clock::local_day() + days(51)));
     rh.linkSubTask(parent, node);
     rh.linkSubTask(node, child1);
@@ -156,7 +156,7 @@ TEST_F(ReferenceHandlerTest, MoveInternalReferencesMethodSetLinksCorrect) {
     rh.setReferences(child2);
     auto node2 = std::make_shared<TaskNode>(
             TaskID(2),
-            Task::create("t2_copy", Task::Priority::SECOND, "tg5",
+            Task::create("t2_copy", TaskPriority::SECOND, "tg5",
                 day_clock::local_day() + days(31)));
     rh.copyExternalReferences(node, node2);
     rh.moveInboundRefrences(node, node2);

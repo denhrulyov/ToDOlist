@@ -13,11 +13,11 @@ class TaskStorageTest : public ::testing::Test {
 };
 
 const std::vector<Task> sample_tasks {
-    Task::create("t1", Task::Priority::FIRST, "lbl1",
+    Task::create("t1", TaskPriority::FIRST, "lbl1",
             day_clock::local_day() + days(200)),
-    Task::create("t2", Task::Priority::NONE, "lbl2",
+    Task::create("t2", TaskPriority::NONE, "lbl2",
             day_clock::local_day() + days(200)),
-    Task::create("t3", Task::Priority::SECOND, "lbl3",
+    Task::create("t3", TaskPriority::SECOND, "lbl3",
                  day_clock::local_day() + days(210))
 };
 

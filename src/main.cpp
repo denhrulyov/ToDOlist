@@ -11,22 +11,22 @@ int main() {
     auto today = day_clock::local_day();
     TaskService service = task_api::createService();
     TaskCreationResult id = service.addTask(
-            TaskDTO::create("T1", Task::Priority::FIRST, "tag1", today + days(6))
+            TaskDTO::create("T1", TaskPriority::FIRST, "tag1", today + days(6))
             );
     TaskCreationResult id2 = service.addSubTask(
-            id.getCreatedTaskID().value(), TaskDTO::create("T2", Task::Priority::NONE, "tag2", today + days(2))
+            id.getCreatedTaskID().value(), TaskDTO::create("T2", TaskPriority::NONE, "tag2", today + days(2))
             );
     TaskCreationResult id3 = service.addSubTask(
-            id2.getCreatedTaskID().value(), TaskDTO::create("T3", Task::Priority::THIRD, "tag3", today + days(1))
+            id2.getCreatedTaskID().value(), TaskDTO::create("T3", TaskPriority::THIRD, "tag3", today + days(1))
             );
     service.postponeTask(id2.getCreatedTaskID().value(), today + days(10));
    // service.deleteTask(id3.getCreatedTaskID().value());
     TaskCreationResult id4 = service.addSubTask(
-            id2.getCreatedTaskID().value(), TaskDTO::create("T3", Task::Priority::THIRD, "tag3", today + days(20))
+            id2.getCreatedTaskID().value(), TaskDTO::create("T3", TaskPriority::THIRD, "tag3", today + days(20))
     );
     //service.deleteTask(id2.getCreatedTaskID().value());
     service.complete(id.getCreatedTaskID().value());
-    //UserTaskID id4 = service.addTask("T5", Task::Priority::FIRST, "tag4", 2020);
+    //UserTaskID id4 = service.addTask("T5", TaskPriority::FIRST, "tag4", 2020);
     /*service.inspectRoot();
     //service.deleteTask(id2);
     service.inspectRoot();

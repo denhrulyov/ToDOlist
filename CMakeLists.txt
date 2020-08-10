@@ -29,7 +29,7 @@ add_executable(ToDOList src/main.cpp
         src/api/TaskDTOConverter.h
         src/api/RequestResult.cpp src/api/RequestResult.h
         src/api/TaskModificationResult.cpp src/api/TaskModificationResult.h
-        src/api/TaskCreationResult.cpp src/api/TaskCreationResult.h)
+        src/api/TaskCreationResult.cpp src/api/TaskCreationResult.h src/memory_model/TaskPriority.h)
 
 # boost #####################################################
 set(Boost_USE_STATIC_LIBS        ON)  # only find static libs
@@ -98,7 +98,7 @@ add_executable(TestsExecutable
                 src/memory_model/TaskStrorage.cpp
                 src/memory_model/ReferenceHandler.cpp
                 src/api/TaskDTOConverter.cpp
-        )
+        src/memory_model/TaskPriority.h)
 target_link_libraries(TestsExecutable GTest::GTest GTest::Main)
 
 gtest_discover_tests(TestsExecutable)
