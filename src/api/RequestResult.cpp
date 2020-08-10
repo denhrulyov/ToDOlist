@@ -15,3 +15,7 @@ std::optional<std::string> RequestResult::getErrorMessage() {
 RequestResult::RequestResult(bool success, const std::optional<std::string>& error_message) :
 success_(success), error_message_(error_message)
 {}
+
+RequestResult RequestResult::success() {
+    return RequestResult(true, "Success");
+}

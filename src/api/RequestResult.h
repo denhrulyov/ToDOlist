@@ -10,6 +10,10 @@
 #include "memory_model/TaskID.h"
 
 class RequestResult {
+
+public:
+    static RequestResult success();
+
 public:
     RequestResult(bool success, const std::optional<std::string>& error_message);
 
