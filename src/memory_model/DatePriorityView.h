@@ -5,7 +5,6 @@
 #ifndef TODOLIST_DATEPRIORITYVIEW_H
 #define TODOLIST_DATEPRIORITYVIEW_H
 #include "PriorityViewInterface.h"
-#include "api/TaskDTO.h"
 #include <functional>
 #include <set>
 
