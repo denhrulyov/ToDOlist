@@ -23,12 +23,12 @@ public:
             std::unique_ptr<TaskStrorageInterface>                  storage,
             std::unique_ptr<PriorityViewInterface<BoostDate>>       view_time,
             std::unique_ptr<PriorityViewInterface<std::string>>     view_label,
-            const LinkManager&                                 reference_handler)
+            std::unique_ptr<LinkManagerInterface>                   link_manger)
     :
             storage_(std::move(storage)),
             by_time_(std::move(view_time)),
             by_label_(std::move(view_label)),
-            link_manager_(reference_handler)
+            link_manager_(std::move(link_manger))
     {}
 
 public:
@@ -50,7 +50,7 @@ private:
     std::unique_ptr<TaskStrorageInterface>                  storage_;
     std::unique_ptr<PriorityViewInterface<BoostDate>>       by_time_;
     std::unique_ptr<PriorityViewInterface<std::string>>     by_label_;
-    LinkManager                                             link_manager_;
+    std::unique_ptr<LinkManagerInterface>                   link_manager_;
 };
 
 

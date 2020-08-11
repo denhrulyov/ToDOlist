@@ -14,6 +14,8 @@ public:
     virtual void setLinks(const std::weak_ptr<TaskNode>& node) = 0;
     virtual void removeLinks(const std::weak_ptr<TaskNode>& node) = 0;
     virtual void moveInboundLinks(const std::weak_ptr<TaskNode>& from, const std::weak_ptr<TaskNode>& to) = 0;
+
+    virtual ~LinkManagerInterface() = default;
 };
 
 
