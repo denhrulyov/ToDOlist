@@ -3,9 +3,9 @@
 //
 
 #include <gtest/gtest.h>
-#include "memory_model/LinkManager.h"
-#include "memory_model/DatePriorityView.h"
-#include "memory_model/TagPriorityView.h"
+#include "memory_model/structure/LinkManager.h"
+#include "memory_model/view/DatePriorityView.h"
+#include "memory_model/view/TagPriorityView.h"
 
 using namespace boost::gregorian;
 

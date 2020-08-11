@@ -2,21 +2,21 @@
 // Created by denis on 23.07.20.
 //
 
-#ifndef TODOLIST_TASKAPI_H
-#define TODOLIST_TASKAPI_H
+#ifndef TODOLIST_SERVICE_H
+#define TODOLIST_SERVICE_H
 
 #include "TaskService.h"
-#include "memory_model/DatePriorityView.h"
-#include "memory_model/TagPriorityView.h"
-#include "memory_model/TaskStorage.h"
-#include "memory_model/TaskIDFactory.h"
+#include "memory_model/view/DatePriorityView.h"
+#include "memory_model/view/TagPriorityView.h"
+#include "memory_model/data/TaskStorage.h"
+#include "memory_model/data/TaskIDFactory.h"
 
 /*
  * TaskService injector
  *
  */
 
-namespace task_api {
+namespace service {
 
 
     /*
@@ -34,4 +34,4 @@ namespace task_api {
 
 }
 
-#endif //TODOLIST_TASKAPI_H
+#endif //TODOLIST_SERVICE_H

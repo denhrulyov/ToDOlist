@@ -5,9 +5,9 @@
 #ifndef TODOLIST_TASKDTOCONVERTER_H
 #define TODOLIST_TASKDTOCONVERTER_H
 
-#include "TaskDTO.h"
-#include "memory_model/Task.h"
-#include "memory_model/TaskNode.h"
+#include "api/TaskDTO.h"
+#include "memory_model/data/Task.h"
+#include "memory_model/structure/TaskNode.h"
 
 /*
  * Class providing some conversions between Task, TaskNode, TaskDTO objects.
