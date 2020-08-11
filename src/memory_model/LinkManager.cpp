@@ -54,15 +54,4 @@ LinkManager::LinkManager(PriorityViewInterface<BoostDate>& by_time,
                                    : by_time_(by_time), by_label_(by_label)
                                    {}
 
-void
-LinkManager::copyOutboundLinks(const std::weak_ptr<TaskNode> &from,
-                               const std::weak_ptr<TaskNode> &to ) {
-    auto ptr_from = from.lock();
-    auto ptr_to = to.lock();
-    ptr_to->setParent(ptr_from->getParent());
-    for (const auto& child : ptr_from->getSubNodes()) {
-        ptr_to->addSubtask(child);
-    }
-}
-
 

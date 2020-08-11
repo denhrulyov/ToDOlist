@@ -135,11 +135,8 @@ TEST_F(ReferenceHandlerTest, MoveInternalReferencesMethodSetLinksCorrect) {
     rh.setLinks(node);
     rh.setLinks(child1);
     rh.setLinks(child2);
-    auto node2 = std::make_shared<TaskNode>(
-            TaskID(2),
-            Task::create("t2_copy", TaskPriority::SECOND, "tg5",
-                day_clock::local_day() + days(31)));
-    rh.copyOutboundLinks(node, node2);
+    auto node2 = node->clone(Task::create("t2_copy", TaskPriority::SECOND, "tg5",
+                                          day_clock::local_day() + days(31)));
     rh.moveInboundLinks(node, node2);
     EXPECT_EQ(parent->getSubNodes().size(), 1);
     EXPECT_EQ(node2->getSubNodes().size(), 2);

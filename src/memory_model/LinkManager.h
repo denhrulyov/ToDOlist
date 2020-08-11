@@ -19,7 +19,6 @@ public:
     void setLinks(const std::weak_ptr<TaskNode>& node);
     void removeLinks(const std::weak_ptr<TaskNode>& node);
     void moveInboundLinks(const std::weak_ptr<TaskNode>& from, const std::weak_ptr<TaskNode>& to);
-    void copyOutboundLinks(const std::weak_ptr<TaskNode>& from, const std::weak_ptr<TaskNode>& to);
 
 private:
     PriorityViewInterface<BoostDate> &by_time_;
