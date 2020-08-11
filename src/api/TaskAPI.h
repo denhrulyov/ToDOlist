@@ -17,7 +17,6 @@
  */
 
 namespace task_api {
-namespace task_api {
 
 
     /*
