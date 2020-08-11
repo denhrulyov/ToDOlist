@@ -16,10 +16,10 @@ public:
 
 public:
     void linkSubTask(const std::weak_ptr<TaskNode>& main_task, const std::weak_ptr<TaskNode>& sub_task);
-    void setReferences(const std::weak_ptr<TaskNode>& node);
-    void removeRefrences(const std::weak_ptr<TaskNode>& node);
-    void moveInboundRefrences(const std::weak_ptr<TaskNode>& from, const std::weak_ptr<TaskNode>& to);
-    void copyExternalReferences(const std::weak_ptr<TaskNode>& from, const std::weak_ptr<TaskNode>& to);
+    void setLinks(const std::weak_ptr<TaskNode>& node);
+    void removeLinks(const std::weak_ptr<TaskNode>& node);
+    void moveInboundLinks(const std::weak_ptr<TaskNode>& from, const std::weak_ptr<TaskNode>& to);
+    void copyOutboundLinks(const std::weak_ptr<TaskNode>& from, const std::weak_ptr<TaskNode>& to);
 
 private:
     PriorityViewInterface<BoostDate> &by_time_;

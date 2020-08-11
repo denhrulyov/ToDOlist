@@ -52,7 +52,7 @@ TEST_F(ReferenceHandlerTest, TestSetReferencesInView) {
             TaskID(1),
             Task::create("t1", TaskPriority::THIRD, "tg",
                     day_clock::local_day() + days(30)));
-    rh.setReferences(node1);
+    rh.setLinks(node1);
     EXPECT_EQ(by_date->getAllWithConstraint(day_clock::local_day() + days(31)).size(), 1);
     EXPECT_EQ(by_tag->getAllWithConstraint("tg").size(), 1);
 }
@@ -70,7 +70,7 @@ TEST_F(ReferenceHandlerTest, TestSubtaskAddedToParentIfParentStillDoesNotContain
             Task::create("t2", TaskPriority::SECOND, "tg2",
                     day_clock::local_day() + days(31)));
     node2->setParent(parent);
-    rh.setReferences(node2);
+    rh.setLinks(node2);
     EXPECT_EQ(parent->getSubtasks().size(), 1);
 }
 
@@ -97,10 +97,10 @@ TEST_F(ReferenceHandlerTest, TestAllLinksAreSet) {
     rh.linkSubTask(parent, node);
     rh.linkSubTask(node, child1);
     rh.linkSubTask(node, child2);
-    rh.setReferences(parent);
-    rh.setReferences(node);
-    rh.setReferences(child1);
-    rh.setReferences(child2);
+    rh.setLinks(parent);
+    rh.setLinks(node);
+    rh.setLinks(child1);
+    rh.setLinks(child2);
     EXPECT_EQ(parent->getSubNodes().size(), 1);
     EXPECT_EQ(node->getSubNodes().size(), 2);
     ASSERT_EQ(node->getParent().lock().get(), parent.get());
@@ -131,16 +131,16 @@ TEST_F(ReferenceHandlerTest, MoveInternalReferencesMethodSetLinksCorrect) {
     rh.linkSubTask(parent, node);
     rh.linkSubTask(node, child1);
     rh.linkSubTask(node, child2);
-    rh.setReferences(parent);
-    rh.setReferences(node);
-    rh.setReferences(child1);
-    rh.setReferences(child2);
+    rh.setLinks(parent);
+    rh.setLinks(node);
+    rh.setLinks(child1);
+    rh.setLinks(child2);
     auto node2 = std::make_shared<TaskNode>(
             TaskID(2),
             Task::create("t2_copy", TaskPriority::SECOND, "tg5",
                 day_clock::local_day() + days(31)));
-    rh.copyExternalReferences(node, node2);
-    rh.moveInboundRefrences(node, node2);
+    rh.copyOutboundLinks(node, node2);
+    rh.moveInboundLinks(node, node2);
     EXPECT_EQ(parent->getSubNodes().size(), 1);
     EXPECT_EQ(node2->getSubNodes().size(), 2);
     EXPECT_EQ(node2->getParent().lock().get(), parent.get());

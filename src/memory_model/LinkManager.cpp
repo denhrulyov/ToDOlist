@@ -17,7 +17,7 @@ void LinkManager::linkSubTask(const std::weak_ptr<TaskNode> &main_task,
     }
 }
 
-void LinkManager::setReferences(const std::weak_ptr<TaskNode> &node) {
+void LinkManager::setLinks(const std::weak_ptr<TaskNode> &node) {
     by_time_.addToView(node);
     by_label_.addToView(node);
     auto shared_node = node.lock();
@@ -27,7 +27,7 @@ void LinkManager::setReferences(const std::weak_ptr<TaskNode> &node) {
     }
 }
 
-void LinkManager::removeRefrences(const std::weak_ptr<TaskNode> &node) {
+void LinkManager::removeLinks(const std::weak_ptr<TaskNode> &node) {
     auto shared_node = node.lock();
     TaskID id = shared_node->getId();
     by_time_.removeFromView(id);
@@ -40,13 +40,13 @@ void LinkManager::removeRefrences(const std::weak_ptr<TaskNode> &node) {
     }
 }
 
-void LinkManager::moveInboundRefrences(const std::weak_ptr<TaskNode> &from, const std::weak_ptr<TaskNode> &to) {
+void LinkManager::moveInboundLinks(const std::weak_ptr<TaskNode> &from, const std::weak_ptr<TaskNode> &to) {
     auto ptr_from = from.lock();
     for (const auto& subnode : ptr_from->getSubNodes()) {
         subnode.lock()->setParent(to);
     }
-    removeRefrences(from);
-    setReferences(to);
+    removeLinks(from);
+    setLinks(to);
 }
 
 LinkManager::LinkManager(PriorityViewInterface<BoostDate>& by_time,
@@ -55,8 +55,8 @@ LinkManager::LinkManager(PriorityViewInterface<BoostDate>& by_time,
                                    {}
 
 void
-LinkManager::copyExternalReferences(const std::weak_ptr<TaskNode> &from,
-                                    const std::weak_ptr<TaskNode> &to ) {
+LinkManager::copyOutboundLinks(const std::weak_ptr<TaskNode> &from,
+                               const std::weak_ptr<TaskNode> &to ) {
     auto ptr_from = from.lock();
     auto ptr_to = to.lock();
     ptr_to->setParent(ptr_from->getParent());

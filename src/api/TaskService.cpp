@@ -36,7 +36,7 @@ TaskCreationResult TaskService::addTask(const TaskDTO &task_data) {
     if (result != TaskStrorageInterface::Result::SUCCESS) {
         return TaskCreationResult::error("Storage error");
     }
-    link_manager_.setReferences(created_node);
+    link_manager_.setLinks(created_node);
 
     return TaskCreationResult::success(created_node->getId());
 }
@@ -69,7 +69,7 @@ TaskService::deleteTask(TaskID id) {
             return result;
         }
     }
-    link_manager_.removeRefrences(shared_node);
+    link_manager_.removeLinks(shared_node);
     storage_->eraseTask(id);
     return TaskModificationResult::success(id);
 }
@@ -81,9 +81,9 @@ TaskService::postponeTask(TaskID id, BoostDate date_postpone) {
         return TaskModificationResult::taskNotFound();
     }
     auto new_node = old_node->clone(getPostponedTask(old_node->getTask(), date_postpone));
-    link_manager_.moveInboundRefrences(old_node, new_node);
-    link_manager_.removeRefrences(old_node);
-    link_manager_.setReferences(new_node);
+    link_manager_.moveInboundLinks(old_node, new_node);
+    link_manager_.removeLinks(old_node);
+    link_manager_.setLinks(new_node);
     storage_->eraseTask(id);
     storage_->addTask(new_node);
     return TaskModificationResult::success(id);
