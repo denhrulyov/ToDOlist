@@ -9,7 +9,7 @@
 
 
 /*
- * Class containing info about result of executing service request when performing task modification.
+ * Class containing info about the result of executing service request when performing task modification.
  *
  * @author Denys Hrulov
  */

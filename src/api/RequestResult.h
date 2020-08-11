@@ -11,7 +11,7 @@
 
 
 /*
- * Class containing info about result of executing service request.
+ * Class containing info about the result of executing service request.
  *
  * @author Denys Hrulov
  */

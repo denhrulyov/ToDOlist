@@ -9,7 +9,7 @@
 #include "memory_model/TaskID.h"
 
 /*
- * Class containing info about result of executing service request when performing task creation
+ * Class containing info about the result of executing service request when performing task creation
  *
  * @author Denys Hrulov
  */
