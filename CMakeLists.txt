@@ -29,7 +29,7 @@ add_executable(ToDOList src/main.cpp
         src/api/TaskDTOConverter.h
         src/api/RequestResult.cpp src/api/RequestResult.h
         src/api/TaskModificationResult.cpp src/api/TaskModificationResult.h
-        src/api/TaskCreationResult.cpp src/api/TaskCreationResult.h src/memory_model/TaskPriority.h)
+        src/api/TaskCreationResult.cpp src/api/TaskCreationResult.h src/memory_model/TaskPriority.h src/memory_model/LinkManagerInterface.h)
 
 # boost #####################################################
 set(Boost_USE_STATIC_LIBS        ON)  # only find static libs
