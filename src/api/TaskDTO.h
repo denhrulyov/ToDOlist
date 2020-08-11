@@ -9,6 +9,12 @@
 #include "memory"
 #include "memory_model/TaskID.h"
 
+
+/*
+ * Data Transfer Object containing fields representing task.
+ *
+ * @author Denys Hrulov
+ */
 class TaskDTO {
 
 public:
