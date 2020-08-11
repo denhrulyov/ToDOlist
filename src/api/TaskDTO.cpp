@@ -12,7 +12,7 @@ std::string TaskDTO::getName() const {
     return name_;
 }
 
-Gregorian TaskDTO::getDate() const {
+BoostDate TaskDTO::getDate() const {
     return date_;
 }
 
@@ -20,15 +20,15 @@ std::string TaskDTO::getLabel() const {
     return label_;
 }
 
-Task::Priority TaskDTO::getPriority() const {
+TaskPriority TaskDTO::getPriority() const {
     return priority_;
 }
 
 
 TaskDTO::TaskDTO(TaskID id,
-                const std::string &name,
-                Task::Priority priority, const std::string &label, Gregorian date,
-                bool completed)
+                 const std::string &name,
+                 TaskPriority priority, const std::string &label, BoostDate date,
+                 bool completed)
                 :
     id_(id),
     name_(name),
@@ -39,20 +39,20 @@ TaskDTO::TaskDTO(TaskID id,
 {}
 
 TaskDTO
-TaskDTO::create( const std::string &name,
-                         Task::Priority priority,
-                         const std::string &label,
-                         Gregorian date)
+TaskDTO::create(const std::string &name,
+                TaskPriority priority,
+                const std::string &label,
+                BoostDate date)
 {
     return TaskDTO(TaskID(), name, priority, label, date, false);
 }
 
 TaskDTO
-TaskDTO::create( TaskID id,
-                 const std::string &name,
-                 Task::Priority priority,
-                 const std::string &label,
-                 Gregorian date)
+TaskDTO::create(TaskID id,
+                const std::string &name,
+                TaskPriority priority,
+                const std::string &label,
+                BoostDate date)
 {
     return TaskDTO(id, name, priority, label, date, false);
 }
@@ -60,9 +60,9 @@ TaskDTO::create( TaskID id,
 
 TaskDTO
 TaskDTO::create(TaskID id,
-                 const std::string &name,
-                 Task::Priority priority, const std::string &label, Gregorian date,
-                 bool completed)
+                const std::string &name,
+                TaskPriority priority, const std::string &label, BoostDate date,
+                bool completed)
 {
     return TaskDTO(id, name, priority, label, date, completed);
 }

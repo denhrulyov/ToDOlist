@@ -2,11 +2,11 @@
 // Created by denis on 31.07.20.
 //
 
-#include "TaskStrorage.h"
+#include "TaskStorage.h"
 
 
-TaskStrorageInterface::Result
-TaskStrorage::addTask(const std::shared_ptr<TaskNode> & node) {
+TaskStorageInterface::Result
+TaskStorage::addTask(const std::shared_ptr<TaskNode> & node) {
     if (nodes_.count(node->getId())) {
         return Result::FAILURE;
     }
@@ -14,8 +14,8 @@ TaskStrorage::addTask(const std::shared_ptr<TaskNode> & node) {
     return Result::SUCCESS;
 }
 
-TaskStrorageInterface::Result
-TaskStrorage::eraseTask(TaskID id) {
+TaskStorageInterface::Result
+TaskStorage::eraseTask(TaskID id) {
     if (nodes_.count(id) == 0) {
         return Result::FAILURE;
     }
@@ -23,7 +23,7 @@ TaskStrorage::eraseTask(TaskID id) {
     return Result::SUCCESS;
 }
 
-std::shared_ptr<TaskNode> TaskStrorage::getTaskByID(TaskID id) {
+std::weak_ptr<TaskNode> TaskStorage::getTaskByID(TaskID id) {
     return nodes_.count(id) ? nodes_[id] : nullptr;
 }
 

@@ -12,11 +12,11 @@
 
 namespace task_io {
 
-    const std::unordered_map<Task::Priority, std::string> priorty_repr = {
-            {Task::Priority::FIRST, "first"},
-            {Task::Priority::SECOND, "second"},
-            {Task::Priority::THIRD, "third"},
-            {Task::Priority::NONE, "none"},
+    const std::unordered_map<TaskPriority, std::string> priorty_repr = {
+            {TaskPriority::FIRST, "first"},
+            {TaskPriority::SECOND, "second"},
+            {TaskPriority::THIRD, "third"},
+            {TaskPriority::NONE, "none"},
     };
 
 }

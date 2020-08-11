@@ -6,14 +6,14 @@
 
 #include "Task.h"
 
-Task::Task(std::string name, Task::Priority priority, std::string label, Gregorian date) :
+Task::Task(const std::string& name, TaskPriority priority, const std::string& label, BoostDate date) :
         name_(name),
         priority_(priority),
         label_(label),
         date_(date)
         {}
 
-Task Task::create(std::string name, Task::Priority priority, std::string label, Gregorian date) {
+Task Task::create(std::string name, TaskPriority priority, std::string label, BoostDate date) {
     return Task(name, priority, label, date);
 }
 
@@ -21,7 +21,7 @@ std::string Task::getName() const {
     return name_;
 }
 
-Task::Priority Task::getPriority() const {
+TaskPriority Task::getPriority() const {
     return priority_;
 }
 
@@ -29,6 +29,6 @@ std::string Task::getLabel() const {
     return label_;
 }
 
-Gregorian Task::getDate() const {
+BoostDate Task::getDate() const {
     return date_;
 }

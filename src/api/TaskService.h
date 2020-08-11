@@ -5,10 +5,10 @@
 #ifndef EVAL_TASKSERVICE_H
 #define EVAL_TASKSERVICE_H
 #include "memory_model/TaskNode.h"
-#include "memory_model/TaskStrorageInterface.h"
+#include "memory_model/TaskStorageInterface.h"
 #include "TaskCreationResult.h"
 #include "memory_model/TaskIDFactory.h"
-#include "memory_model/ReferenceHandler.h"
+#include "memory_model/LinkManager.h"
 #include "TaskDTOConverter.h"
 #include "TaskModificationResult.h"
 #include <unordered_map>
@@ -20,15 +20,15 @@ class TaskService {
 
 public:
     TaskService(
-            std::unique_ptr<TaskStrorageInterface>                  storage,
-            std::unique_ptr<PriorityViewInterface<Gregorian>>       view_time,
+            std::unique_ptr<TaskStorageInterface>                  storage,
+            std::unique_ptr<PriorityViewInterface<BoostDate>>       view_time,
             std::unique_ptr<PriorityViewInterface<std::string>>     view_label,
-            const ReferenceHandler&                                 reference_handler)
+            std::unique_ptr<LinkManagerInterface>                   link_manger)
     :
-    storage_(std::move(storage)),
-    by_time_(std::move(view_time)),
-    by_label_(std::move(view_label)),
-    reference_handler_(reference_handler)
+            storage_(std::move(storage)),
+            by_time_(std::move(view_time)),
+            by_label_(std::move(view_label)),
+            link_manager_(std::move(link_manger))
     {}
 
 public:
@@ -42,15 +42,15 @@ public:
     TaskCreationResult                                      addTask(const TaskDTO &user_data);
     TaskCreationResult                                      addSubTask(TaskID parent, const TaskDTO &user_data);
     TaskModificationResult                                  deleteTask(TaskID id);
-    TaskModificationResult                                  postponeTask(TaskID id, Gregorian);
+    TaskModificationResult                                  postponeTask(TaskID id, BoostDate);
     RequestResult                                           complete(TaskID id);
 
 private:
     TaskIDFactory                                           id_generator_;
-    std::unique_ptr<TaskStrorageInterface>                  storage_;
-    std::unique_ptr<PriorityViewInterface<Gregorian>>       by_time_;
+    std::unique_ptr<TaskStorageInterface>                  storage_;
+    std::unique_ptr<PriorityViewInterface<BoostDate>>       by_time_;
     std::unique_ptr<PriorityViewInterface<std::string>>     by_label_;
-    ReferenceHandler                                        reference_handler_;
+    std::unique_ptr<LinkManagerInterface>                   link_manager_;
 };
 
 

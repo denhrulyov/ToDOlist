@@ -5,14 +5,14 @@
 #include "TagPriorityView.h"
 
 using namespace tag_view;
-using Prior = Task::Priority;
+using Prior = TaskPriority;
 
 const simple_priority_view blank_priority_container =
         {
-          {Task::Priority::FIRST    , task_list()   },
-          {Task::Priority::SECOND   , task_list()   },
-          {Task::Priority::THIRD    , task_list()   },
-          {Task::Priority::NONE     , task_list()   }
+          {Prior::FIRST    , task_list()   },
+          {Prior::SECOND   , task_list()   },
+          {Prior::THIRD    , task_list()   },
+          {Prior::NONE     , task_list()   }
         };
 
 

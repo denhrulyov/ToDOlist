@@ -3,7 +3,7 @@
 //
 
 #include <gtest/gtest.h>
-#include "memory_model/TaskStrorage.h"
+#include "memory_model/TaskStorage.h"
 #include "memory_model/TaskIDFactory.h"
 
 using namespace boost::gregorian;
@@ -13,26 +13,26 @@ class TaskStorageTest : public ::testing::Test {
 };
 
 const std::vector<Task> sample_tasks {
-    Task::create("t1", Task::Priority::FIRST, "lbl1",
+    Task::create("t1", TaskPriority::FIRST, "lbl1",
             day_clock::local_day() + days(200)),
-    Task::create("t2", Task::Priority::NONE, "lbl2",
+    Task::create("t2", TaskPriority::NONE, "lbl2",
             day_clock::local_day() + days(200)),
-    Task::create("t3", Task::Priority::SECOND, "lbl3",
+    Task::create("t3", TaskPriority::SECOND, "lbl3",
                  day_clock::local_day() + days(210))
 };
 
 TEST_F(TaskStorageTest, TestTasksSaved) {
-    TaskStrorage ts;
+    TaskStorage ts;
     int i = 1;
     for (auto task : sample_tasks) {
         TaskID id(i++);
         ts.addTask(std::make_shared<TaskNode>(id, task));
-        EXPECT_TRUE(ts.getTaskByID(id));
+        EXPECT_TRUE(ts.getTaskByID(id).lock());
     }
 }
 
 TEST_F(TaskStorageTest, TestCorrectNodeErased) {
-    TaskStrorage ts;
+    TaskStorage ts;
     std::vector<TaskID> ids;
     int i = 0;
     for (auto task : sample_tasks) {
@@ -42,8 +42,8 @@ TEST_F(TaskStorageTest, TestCorrectNodeErased) {
     }
     TaskID id_erase = ids[1];
     ts.eraseTask(id_erase);
-    EXPECT_FALSE(ts.getTaskByID(id_erase));
-    EXPECT_TRUE(ts.getTaskByID(ids[0]));
+    EXPECT_FALSE(ts.getTaskByID(id_erase).lock());
+    EXPECT_TRUE(ts.getTaskByID(ids[0]).lock());
 }
 
 

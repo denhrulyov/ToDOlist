@@ -9,7 +9,7 @@ using namespace boost::gregorian;
 
 class PriorityViewTest : public ::testing::Test {
 protected:
-    const Gregorian date_infinity = day_clock::local_day() + years(100);
+    const BoostDate date_infinity = day_clock::local_day() + years(100);
     std::shared_ptr<TaskNode>  node1;
     std::shared_ptr<TaskNode>  node2;
     std::shared_ptr<TaskNode>  node3;
@@ -17,22 +17,22 @@ protected:
     void SetUp() override {
         node1 = std::make_shared<TaskNode>(
                 TaskID(1),
-                Task::create("t1", Task::Priority::FIRST, "lbl1",
+                Task::create("t1", TaskPriority::FIRST, "lbl1",
                         day_clock::local_day() + days(10))
         );
         node2 = std::make_shared<TaskNode>(
                 TaskID(2),
-                Task::create("t2", Task::Priority::SECOND, "lbl2",
+                Task::create("t2", TaskPriority::SECOND, "lbl2",
                         day_clock::local_day() + days(20))
         );
         node3 = std::make_shared<TaskNode>(
                 TaskID(3),
-                Task::create("t3", Task::Priority::THIRD, "lbl1",
+                Task::create("t3", TaskPriority::THIRD, "lbl1",
                         day_clock::local_day() + days(1))
         );
         node4 = std::make_shared<TaskNode>(
                 TaskID(4),
-                Task::create("t4", Task::Priority::NONE, "lbl2",
+                Task::create("t4", TaskPriority::NONE, "lbl2",
                              day_clock::local_day() + days(100))
         );
     }

@@ -18,7 +18,8 @@ class TaskNode {
 public:
     TaskNode(TaskID id, const Task& tptr) :
     id(id), root_task_(tptr), subtasks_() {}
-    TaskNode(TaskID id, const Task& tptr, const std::map<TaskID, std::shared_ptr<TaskNode>>& subtasks):
+
+    TaskNode(TaskID id, const Task& tptr, const std::map<TaskID, std::weak_ptr<TaskNode>>& subtasks):
     id(id), root_task_(tptr), subtasks_(subtasks)
     {}
 
@@ -27,9 +28,9 @@ public:
     TaskID                                      getId() const;
     bool                                        isComplete() const;
     std::vector<TaskID>                         getSubtasks() const;
-    std::vector<std::shared_ptr<TaskNode>>      getSubNodes() const;
-    std::shared_ptr<TaskNode>                   getParent() const ;
-    std::shared_ptr<TaskNode>                   getSubtaskByID(TaskID id);
+    std::vector<std::weak_ptr<TaskNode>>        getSubNodes() const;
+    std::weak_ptr<TaskNode>                     getParent() const ;
+    std::weak_ptr<TaskNode>                     getSubtaskByID(TaskID id);
     void                                        setParent(std::weak_ptr<TaskNode>);
 
 public:
@@ -37,7 +38,7 @@ public:
     void                                        complete();
 
 public:
-    void addSubtask(std::shared_ptr<TaskNode> subtask);
+    void addSubtask(const std::weak_ptr<TaskNode>&);
     void eraseSubtask(TaskID id_erase);
 
     //testing
@@ -48,7 +49,7 @@ private:
     Task                                            root_task_;
     bool                                            complete_ = false;
     std::weak_ptr<TaskNode>                         parent_;
-    std::map<TaskID, std::shared_ptr<TaskNode>>     subtasks_;
+    std::map<TaskID, std::weak_ptr<TaskNode>>       subtasks_;
 };
 
 
