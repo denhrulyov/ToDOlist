@@ -9,30 +9,30 @@
 #include <boost/date_time.hpp>
 #include "TaskPriority.h"
 
-using Gregorian = boost::gregorian::date;
+using BoostDate = boost::gregorian::date;
 
 class Task {
 
 public:
-    static Task create(std::string name, TaskPriority priority, std::string label, Gregorian date);
+    static Task create(std::string name, TaskPriority priority, std::string label, BoostDate date);
 
 public:
 
 
 private:
-    Task(const std::string& name, TaskPriority priority, const std::string& label, Gregorian date);
+    Task(const std::string& name, TaskPriority priority, const std::string& label, BoostDate date);
 
     std::string       name_;
 public:
     std::string       getName() const;
     TaskPriority      getPriority() const;
     std::string       getLabel() const;
-    Gregorian         getDate() const;
+    BoostDate         getDate() const;
 
 private:
     TaskPriority      priority_;
     std::string       label_;
-    Gregorian         date_;
+    BoostDate         date_;
 };
 
 

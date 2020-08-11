@@ -11,7 +11,7 @@
 class ReferenceHandler {
 
 public:
-    ReferenceHandler(PriorityViewInterface<Gregorian>& by_time,
+    ReferenceHandler(PriorityViewInterface<BoostDate>& by_time,
                      PriorityViewInterface<std::string>& by_label);
 
 public:
@@ -22,7 +22,7 @@ public:
     void copyExternalReferences(const std::weak_ptr<TaskNode>& from, const std::weak_ptr<TaskNode>& to);
 
 private:
-    PriorityViewInterface<Gregorian> &by_time_;
+    PriorityViewInterface<BoostDate> &by_time_;
     PriorityViewInterface<std::string> &by_label_;
 };
 

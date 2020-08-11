@@ -6,7 +6,7 @@
 
 
 
-Task getPostponedTask(const Task& task, Gregorian date_postpone) {
+Task getPostponedTask(const Task& task, BoostDate date_postpone) {
     return Task::create(task.getName(), task.getPriority(), task.getLabel(), date_postpone);
 }
 
@@ -75,7 +75,7 @@ TaskService::deleteTask(TaskID id) {
 }
 
 TaskModificationResult
-TaskService::postponeTask(TaskID id, Gregorian date_postpone) {
+TaskService::postponeTask(TaskID id, BoostDate date_postpone) {
     auto old_node = storage_->getTaskByID(id).lock();
     if (!old_node) {
         return TaskModificationResult::taskNotFound();

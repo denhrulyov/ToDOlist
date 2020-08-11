@@ -21,7 +21,7 @@ class TaskService {
 public:
     TaskService(
             std::unique_ptr<TaskStrorageInterface>                  storage,
-            std::unique_ptr<PriorityViewInterface<Gregorian>>       view_time,
+            std::unique_ptr<PriorityViewInterface<BoostDate>>       view_time,
             std::unique_ptr<PriorityViewInterface<std::string>>     view_label,
             const ReferenceHandler&                                 reference_handler)
     :
@@ -42,13 +42,13 @@ public:
     TaskCreationResult                                      addTask(const TaskDTO &user_data);
     TaskCreationResult                                      addSubTask(TaskID parent, const TaskDTO &user_data);
     TaskModificationResult                                  deleteTask(TaskID id);
-    TaskModificationResult                                  postponeTask(TaskID id, Gregorian);
+    TaskModificationResult                                  postponeTask(TaskID id, BoostDate);
     RequestResult                                           complete(TaskID id);
 
 private:
     TaskIDFactory                                           id_generator_;
     std::unique_ptr<TaskStrorageInterface>                  storage_;
-    std::unique_ptr<PriorityViewInterface<Gregorian>>       by_time_;
+    std::unique_ptr<PriorityViewInterface<BoostDate>>       by_time_;
     std::unique_ptr<PriorityViewInterface<std::string>>     by_label_;
     ReferenceHandler                                        reference_handler_;
 };

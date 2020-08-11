@@ -9,7 +9,7 @@ using namespace boost::gregorian;
 
 class PriorityViewTest : public ::testing::Test {
 protected:
-    const Gregorian date_infinity = day_clock::local_day() + years(100);
+    const BoostDate date_infinity = day_clock::local_day() + years(100);
     std::shared_ptr<TaskNode>  node1;
     std::shared_ptr<TaskNode>  node2;
     std::shared_ptr<TaskNode>  node3;

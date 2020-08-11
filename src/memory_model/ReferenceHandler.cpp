@@ -49,7 +49,7 @@ void ReferenceHandler::moveInboundRefrences(const std::weak_ptr<TaskNode> &from,
     setReferences(to);
 }
 
-ReferenceHandler::ReferenceHandler(PriorityViewInterface<Gregorian>& by_time,
+ReferenceHandler::ReferenceHandler(PriorityViewInterface<BoostDate>& by_time,
                                    PriorityViewInterface<std::string>& by_label)
                                    : by_time_(by_time), by_label_(by_label)
                                    {}
