@@ -5,7 +5,7 @@
 #ifndef TODOLIST_PRIORITYVIEWINTERFACE_H
 #define TODOLIST_PRIORITYVIEWINTERFACE_H
 
-#include "TaskNode.h"
+#include "memory_model/structure/TaskNode.h"
 
 template<class T>
 class PriorityViewInterface {

@@ -9,27 +9,27 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-instr-generate -fcoverage-mapp
 #set(CMAKE_CXX_FLAGS "-D_GLIBCXX_DEBUG")
 add_executable(ToDOList src/main.cpp
         src/api/TaskService.cpp src/api/TaskService.h
-        src/memory_model/Task.h
-        src/memory_model/Task.cpp
-        src/memory_model/TaskNode.cpp src/memory_model/TaskNode.h
-        src/memory_model/DatePriorityView.cpp src/memory_model/DatePriorityView.h
+        src/memory_model/data/Task.h
+        src/memory_model/data/Task.cpp
+        src/memory_model/structure/TaskNode.cpp src/memory_model/structure/TaskNode.h
+        src/memory_model/view/DatePriorityView.cpp src/memory_model/view/DatePriorityView.h
         src/api/TaskDTO.cpp src/api/TaskDTO.h
-        src/task_io/task_io.h
-        src/memory_model/TaskID.cpp src/memory_model/TaskID.h
-        src/memory_model/PriorityViewInterface.h
-        src/api/TaskAPI.h
-        src/memory_model/TaskIDFactory.cpp src/memory_model/TaskIDFactory.h
-        src/memory_model/TagPriorityView.cpp src/memory_model/TagPriorityView.h
-        src/memory_model/TaskStorageInterface.h
-        src/memory_model/TaskStorage.cpp
-        src/memory_model/TaskStorage.h
-        src/memory_model/LinkManager.cpp
-        src/memory_model/LinkManager.h
-        src/api/TaskDTOConverter.cpp
-        src/api/TaskDTOConverter.h
+        src/utils/task_io/ConsoleTaskIO.h
+        src/memory_model/data/TaskID.cpp src/memory_model/data/TaskID.h
+        src/memory_model/view/PriorityViewInterface.h
+        src/api/Service.h
+        src/memory_model/data/TaskIDFactory.cpp src/memory_model/data/TaskIDFactory.h
+        src/memory_model/view/TagPriorityView.cpp src/memory_model/view/TagPriorityView.h
+        src/memory_model/data/TaskStorageInterface.h
+        src/memory_model/data/TaskStorage.cpp
+        src/memory_model/data/TaskStorage.h
+        src/memory_model/structure/LinkManager.cpp
+        src/memory_model/structure/LinkManager.h
+        src/utils/data_transfer/TaskDTOConverter.cpp
+        src/utils/data_transfer/TaskDTOConverter.h
         src/api/RequestResult.cpp src/api/RequestResult.h
         src/api/TaskModificationResult.cpp src/api/TaskModificationResult.h
-        src/api/TaskCreationResult.cpp src/api/TaskCreationResult.h src/memory_model/TaskPriority.h src/memory_model/LinkManagerInterface.h)
+        src/api/TaskCreationResult.cpp src/api/TaskCreationResult.h src/memory_model/data/TaskPriority.h src/memory_model/structure/LinkManagerInterface.h)
 
 # boost #####################################################
 set(Boost_USE_STATIC_LIBS        ON)  # only find static libs
@@ -87,18 +87,18 @@ add_executable(TestsExecutable
                 src/api/TaskModificationResult.cpp
                 src/api/TaskCreationResult.cpp
                 src/api/TaskService.cpp
-                src/memory_model/Task.cpp
-                src/memory_model/TaskNode.cpp
-                src/memory_model/DatePriorityView.cpp
+        src/memory_model/data/Task.cpp
+        src/memory_model/structure/TaskNode.cpp
+        src/memory_model/view/DatePriorityView.cpp
                 src/api/TaskDTO.cpp
-                src/memory_model/TaskID.cpp
-                src/memory_model/TaskIDFactory.cpp
+        src/memory_model/data/TaskID.cpp
+        src/memory_model/data/TaskIDFactory.cpp
                 src/api/TaskCreationResult.cpp
-                src/memory_model/TagPriorityView.cpp
-        src/memory_model/TaskStorage.cpp
-        src/memory_model/LinkManager.cpp
-                src/api/TaskDTOConverter.cpp
-        src/memory_model/TaskPriority.h)
+        src/memory_model/view/TagPriorityView.cpp
+        src/memory_model/data/TaskStorage.cpp
+        src/memory_model/structure/LinkManager.cpp
+        src/utils/data_transfer/TaskDTOConverter.cpp
+        src/memory_model/data/TaskPriority.h)
 target_link_libraries(TestsExecutable GTest::GTest GTest::Main)
 
 gtest_discover_tests(TestsExecutable)

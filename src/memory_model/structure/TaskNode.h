@@ -4,8 +4,8 @@
 
 #ifndef EVAL_TASKNODE_H
 #define EVAL_TASKNODE_H
-#include "Task.h"
-#include "TaskID.h"
+#include "memory_model/data/Task.h"
+#include "memory_model/data/TaskID.h"
 #include <list>
 #include <memory>
 #include <iostream>

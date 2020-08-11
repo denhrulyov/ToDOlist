@@ -3,7 +3,7 @@
 //
 
 #include <gtest/gtest.h>
-#include "memory_model/TagPriorityView.h"
+#include "memory_model/view/TagPriorityView.h"
 
 class TestTagPriorityView : public ::testing::Test {
 

@@ -3,8 +3,8 @@
 //
 
 #include <gtest/gtest.h>
-#include "memory_model/TaskStorage.h"
-#include "memory_model/TaskIDFactory.h"
+#include "memory_model/data/TaskStorage.h"
+#include "memory_model/data/TaskIDFactory.h"
 
 using namespace boost::gregorian;
 

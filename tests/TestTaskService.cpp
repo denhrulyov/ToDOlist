@@ -3,7 +3,7 @@
 //
 
 #include <gtest/gtest.h>
-#include <api/TaskAPI.h>
+#include <api/Service.h>
 
 using namespace boost::gregorian;
 

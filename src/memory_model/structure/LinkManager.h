@@ -6,7 +6,7 @@
 #define TODOLIST_LINKMANAGER_H
 
 #include "LinkManagerInterface.h"
-#include "PriorityViewInterface.h"
+#include "memory_model/view/PriorityViewInterface.h"
 
 class LinkManager : public LinkManagerInterface {
 
