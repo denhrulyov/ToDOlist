@@ -8,7 +8,7 @@
 #include "TaskService.h"
 #include "memory_model/DatePriorityView.h"
 #include "memory_model/TagPriorityView.h"
-#include "memory_model/TaskStrorage.h"
+#include "memory_model/TaskStorage.h"
 #include "memory_model/TaskIDFactory.h"
 
 // TaskService injector
@@ -17,7 +17,7 @@
 namespace task_api {
 
     TaskService createService() {
-        auto storage =      std::make_unique<TaskStrorage>();
+        auto storage =      std::make_unique<TaskStorage>();
         auto view_time =    std::make_unique<DatePriorityView>();
         auto view_label =   std::make_unique<TagPriorityView>();
         auto handler =       std::make_unique<LinkManager>(*view_time, *view_label);

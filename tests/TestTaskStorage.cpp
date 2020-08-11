@@ -3,7 +3,7 @@
 //
 
 #include <gtest/gtest.h>
-#include "memory_model/TaskStrorage.h"
+#include "memory_model/TaskStorage.h"
 #include "memory_model/TaskIDFactory.h"
 
 using namespace boost::gregorian;
@@ -22,7 +22,7 @@ const std::vector<Task> sample_tasks {
 };
 
 TEST_F(TaskStorageTest, TestTasksSaved) {
-    TaskStrorage ts;
+    TaskStorage ts;
     int i = 1;
     for (auto task : sample_tasks) {
         TaskID id(i++);
@@ -32,7 +32,7 @@ TEST_F(TaskStorageTest, TestTasksSaved) {
 }
 
 TEST_F(TaskStorageTest, TestCorrectNodeErased) {
-    TaskStrorage ts;
+    TaskStorage ts;
     std::vector<TaskID> ids;
     int i = 0;
     for (auto task : sample_tasks) {

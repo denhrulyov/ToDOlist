@@ -2,12 +2,12 @@
 // Created by denis on 31.07.20.
 //
 
-#ifndef TODOLIST_TASKSTRORAGE_H
-#define TODOLIST_TASKSTRORAGE_H
+#ifndef TODOLIST_TASKSTORAGE_H
+#define TODOLIST_TASKSTORAGE_H
 
-#include "TaskStrorageInterface.h"
+#include "TaskStorageInterface.h"
 
-class TaskStrorage : public TaskStrorageInterface {
+class TaskStorage : public TaskStorageInterface {
 
 public:
     Result                                          addTask(const std::shared_ptr<TaskNode>&) override;
@@ -19,4 +19,4 @@ private:
 };
 
 
-#endif //TODOLIST_TASKSTRORAGE_H
+#endif //TODOLIST_TASKSTORAGE_H

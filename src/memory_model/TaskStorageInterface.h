@@ -2,12 +2,12 @@
 // Created by denis on 31.07.20.
 //
 
-#ifndef TODOLIST_TASKSTRORAGEINTERFACE_H
-#define TODOLIST_TASKSTRORAGEINTERFACE_H
+#ifndef TODOLIST_TASKSTORAGEINTERFACE_H
+#define TODOLIST_TASKSTORAGEINTERFACE_H
 
 #include "TaskNode.h"
 
-class TaskStrorageInterface {
+class TaskStorageInterface {
 
 public:
 
@@ -21,8 +21,8 @@ public:
     virtual Result                      eraseTask(TaskID id_erase) = 0;
     virtual std::weak_ptr<TaskNode>     getTaskByID(TaskID id) = 0;
 
-    virtual                             ~TaskStrorageInterface() = default;
+    virtual                             ~TaskStorageInterface() = default;
 };
 
 
-#endif //TODOLIST_TASKSTRORAGEINTERFACE_H
+#endif //TODOLIST_TASKSTORAGEINTERFACE_H

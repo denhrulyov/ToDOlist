@@ -5,7 +5,7 @@
 #ifndef EVAL_TASKSERVICE_H
 #define EVAL_TASKSERVICE_H
 #include "memory_model/TaskNode.h"
-#include "memory_model/TaskStrorageInterface.h"
+#include "memory_model/TaskStorageInterface.h"
 #include "TaskCreationResult.h"
 #include "memory_model/TaskIDFactory.h"
 #include "memory_model/LinkManager.h"
@@ -20,7 +20,7 @@ class TaskService {
 
 public:
     TaskService(
-            std::unique_ptr<TaskStrorageInterface>                  storage,
+            std::unique_ptr<TaskStorageInterface>                  storage,
             std::unique_ptr<PriorityViewInterface<BoostDate>>       view_time,
             std::unique_ptr<PriorityViewInterface<std::string>>     view_label,
             std::unique_ptr<LinkManagerInterface>                   link_manger)
@@ -47,7 +47,7 @@ public:
 
 private:
     TaskIDFactory                                           id_generator_;
-    std::unique_ptr<TaskStrorageInterface>                  storage_;
+    std::unique_ptr<TaskStorageInterface>                  storage_;
     std::unique_ptr<PriorityViewInterface<BoostDate>>       by_time_;
     std::unique_ptr<PriorityViewInterface<std::string>>     by_label_;
     std::unique_ptr<LinkManagerInterface>                   link_manager_;

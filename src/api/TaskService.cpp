@@ -32,8 +32,8 @@ TaskCreationResult TaskService::addTask(const TaskDTO &task_data) {
             id_generator_.generateID(),
             TaskDTOConverter::getTask(task_data)
     );
-    TaskStrorageInterface::Result result = storage_->addTask(created_node);
-    if (result != TaskStrorageInterface::Result::SUCCESS) {
+    TaskStorageInterface::Result result = storage_->addTask(created_node);
+    if (result != TaskStorageInterface::Result::SUCCESS) {
         return TaskCreationResult::error("Storage error");
     }
     link_manager_->setLinks(created_node);

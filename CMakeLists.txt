@@ -20,9 +20,9 @@ add_executable(ToDOList src/main.cpp
         src/api/TaskAPI.h
         src/memory_model/TaskIDFactory.cpp src/memory_model/TaskIDFactory.h
         src/memory_model/TagPriorityView.cpp src/memory_model/TagPriorityView.h
-        src/memory_model/TaskStrorageInterface.h
-        src/memory_model/TaskStrorage.cpp
-        src/memory_model/TaskStrorage.h
+        src/memory_model/TaskStorageInterface.h
+        src/memory_model/TaskStorage.cpp
+        src/memory_model/TaskStorage.h
         src/memory_model/LinkManager.cpp
         src/memory_model/LinkManager.h
         src/api/TaskDTOConverter.cpp
@@ -95,7 +95,7 @@ add_executable(TestsExecutable
                 src/memory_model/TaskIDFactory.cpp
                 src/api/TaskCreationResult.cpp
                 src/memory_model/TagPriorityView.cpp
-                src/memory_model/TaskStrorage.cpp
+        src/memory_model/TaskStorage.cpp
         src/memory_model/LinkManager.cpp
                 src/api/TaskDTOConverter.cpp
         src/memory_model/TaskPriority.h)
