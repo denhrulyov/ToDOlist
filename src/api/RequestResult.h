@@ -9,9 +9,21 @@
 #include <optional>
 #include "memory_model/TaskID.h"
 
+
+/*
+ * Class containing info about result of executing service request.
+ *
+ * @author Denys Hrulov
+ */
+
 class RequestResult {
 
 public:
+    /*
+     * Creates result representing successful execution.
+     *
+     * @return RequestResult instance with positive success status and null error message.
+     */
     static RequestResult success();
 
 public:
