@@ -63,7 +63,7 @@ public:
      */
     std::vector<TaskDTO>                                    getAllWithLabel(const std::string& label);
     /*
-     * Gives all tasks with given label already sorted by priority.
+     * Gives task with given id if such exists in system.
      *
      * @param task id.
      * @return task DTO if such task exists otherwise nullopt.

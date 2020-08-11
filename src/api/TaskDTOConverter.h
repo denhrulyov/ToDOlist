@@ -26,7 +26,7 @@ public:
      */
     static Task     getTask(const TaskDTO& dto);
     /*
-     * Method to create Task instance from DTO fields.
+     * Method to create TaskDTO instance from TaskNode.
      *
      * @param TaskNode to extract data.
      *
