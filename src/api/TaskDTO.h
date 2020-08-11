@@ -11,7 +11,7 @@
 
 
 /*
- * Data Transfer Object containing fields
+ * Data Transfer Object containing fields representing task.
  *
  * @author Denys Hrulov
  */
