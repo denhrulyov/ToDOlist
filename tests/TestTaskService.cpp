@@ -29,7 +29,7 @@ TEST_F(TaskServiceTest, TestAllSubtasksComplete) {
     };
     auto root_task = TaskDTO::create("t1", TaskPriority::THIRD, "lbl5",
                              day_clock::local_day() + days(3000));
-    TaskService ts = task_api::createService();
+    TaskService ts = service::createService();
     TaskID id_root = ts.addTask(root_task).getCreatedTaskID().value();
     TaskID parent =  id_root;
     for (const auto& dto : tasks) {
@@ -42,7 +42,7 @@ TEST_F(TaskServiceTest, TestAllSubtasksComplete) {
 }
 
 TEST_F(TaskServiceTest, TestTaskAdded) {
-    TaskService ts = task_api::createService();
+    TaskService ts = service::createService();
     TaskID id = ts.addTask(
             TaskDTO::create("t1", TaskPriority::THIRD, "lbl5",
                     day_clock::local_day() + days(3000))
@@ -51,7 +51,7 @@ TEST_F(TaskServiceTest, TestTaskAdded) {
 }
 
 TEST_F(TaskServiceTest, TestSubTaskAdded) {
-    TaskService ts = task_api::createService();
+    TaskService ts = service::createService();
     TaskID id = ts.addTask(
             TaskDTO::create("t1", TaskPriority::THIRD, "lbl5",
                     day_clock::local_day() + days(3000))
@@ -65,7 +65,7 @@ TEST_F(TaskServiceTest, TestSubTaskAdded) {
 }
 
 TEST_F(TaskServiceTest, TestDeleteTask) {
-    TaskService ts = task_api::createService();
+    TaskService ts = service::createService();
     TaskID id = ts.addTask(
             TaskDTO::create("t1", TaskPriority::THIRD, "lbl5",
                     day_clock::local_day() + days(3000))
@@ -75,7 +75,7 @@ TEST_F(TaskServiceTest, TestDeleteTask) {
 }
 
 TEST_F(TaskServiceTest, TestPostponeTask) {
-    TaskService ts = task_api::createService();
+    TaskService ts = service::createService();
     TaskDTO task = TaskDTO::create("t1", TaskPriority::THIRD, "lbl5",
                            day_clock::local_day() + days(3000));
     TaskID id = ts.addTask(task).getCreatedTaskID().value();
@@ -90,7 +90,7 @@ TEST_F(TaskServiceTest, TestPostponeTask) {
 }
 
 TEST_F(TaskServiceTest, TestPostponeSubTask) {
-    TaskService ts = task_api::createService();
+    TaskService ts = service::createService();
     TaskDTO task = TaskDTO::create("t1", TaskPriority::THIRD, "lbl5",
             day_clock::local_day() + days(3000));
     TaskDTO subtask = TaskDTO::create("t2", TaskPriority::SECOND, "lbls",
@@ -107,7 +107,7 @@ TEST_F(TaskServiceTest, TestPostponeSubTask) {
 }
 
 TEST_F(TaskServiceTest, TestPostponeSUBTaskDoesNotBreaksPARENT) {
-    TaskService ts = task_api::createService();
+    TaskService ts = service::createService();
     TaskDTO task = TaskDTO::create("t1", TaskPriority::THIRD, "lbl5",
                            day_clock::local_day() + days(3000));
     TaskDTO subtask = TaskDTO::create("t2", TaskPriority::SECOND, "lbls",
@@ -123,7 +123,7 @@ TEST_F(TaskServiceTest, TestPostponeSUBTaskDoesNotBreaksPARENT) {
 }
 
 TEST_F(TaskServiceTest, TestPostponeSUBTaskDoesNotBreaksSUBTask) {
-    TaskService ts = task_api::createService();
+    TaskService ts = service::createService();
     TaskDTO task = TaskDTO::create("t1", TaskPriority::THIRD, "lbl5",
                            day_clock::local_day() + days(3000));
     TaskDTO subtask = TaskDTO::create("t2", TaskPriority::SECOND, "lbls",
