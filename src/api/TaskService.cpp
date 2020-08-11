@@ -36,7 +36,7 @@ TaskCreationResult TaskService::addTask(const TaskDTO &task_data) {
     if (result != TaskStrorageInterface::Result::SUCCESS) {
         return TaskCreationResult::error("Storage error");
     }
-    reference_handler_.setReferences(created_node);
+    link_manager_.setReferences(created_node);
 
     return TaskCreationResult::success(created_node->getId());
 }
@@ -52,7 +52,7 @@ TaskCreationResult TaskService::addSubTask(TaskID parent, const TaskDTO &task_da
     }
     auto generated_id = add_result.getCreatedTaskID().value();
     auto created_node = storage_->getTaskByID(generated_id).lock();
-    reference_handler_.linkSubTask(parent_node, created_node);
+    link_manager_.linkSubTask(parent_node, created_node);
 
     return TaskCreationResult::success(generated_id);
 }
@@ -69,7 +69,7 @@ TaskService::deleteTask(TaskID id) {
             return result;
         }
     }
-    reference_handler_.removeRefrences(shared_node);
+    link_manager_.removeRefrences(shared_node);
     storage_->eraseTask(id);
     return TaskModificationResult::success(id);
 }
@@ -81,9 +81,9 @@ TaskService::postponeTask(TaskID id, BoostDate date_postpone) {
         return TaskModificationResult::taskNotFound();
     }
     auto new_node = old_node->clone(getPostponedTask(old_node->getTask(), date_postpone));
-    reference_handler_.moveInboundRefrences(old_node, new_node);
-    reference_handler_.removeRefrences(old_node);
-    reference_handler_.setReferences(new_node);
+    link_manager_.moveInboundRefrences(old_node, new_node);
+    link_manager_.removeRefrences(old_node);
+    link_manager_.setReferences(new_node);
     storage_->eraseTask(id);
     storage_->addTask(new_node);
     return TaskModificationResult::success(id);

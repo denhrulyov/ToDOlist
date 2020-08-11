@@ -3,7 +3,7 @@
 //
 
 #include <gtest/gtest.h>
-#include "memory_model/ReferenceHandler.h"
+#include "memory_model/LinkManager.h"
 #include "memory_model/DatePriorityView.h"
 #include "memory_model/TagPriorityView.h"
 
@@ -18,10 +18,10 @@ public:
     }
 };
 
-ReferenceHandler defaultRefernceHandler(ReferenceHandlerTest* test) {
+LinkManager defaultRefernceHandler(ReferenceHandlerTest* test) {
     auto by_date = std::make_unique<DatePriorityView>();
     auto by_tag = std::make_unique<TagPriorityView>();
-    ReferenceHandler rh(*by_date, *by_tag);
+    LinkManager rh(*by_date, *by_tag);
     test->all_view1_.push_back(std::move(by_date));
     test->all_view2_.push_back(std::move(by_tag));
     return rh;
@@ -47,7 +47,7 @@ TEST_F(ReferenceHandlerTest, TestChildLinkedToParent) {
 TEST_F(ReferenceHandlerTest, TestSetReferencesInView) {
     auto by_date = std::make_unique<DatePriorityView>();
     auto by_tag = std::make_unique<TagPriorityView>();
-    ReferenceHandler rh(*by_date, *by_tag);
+    LinkManager rh(*by_date, *by_tag);
     auto node1 = std::make_shared<TaskNode>(
             TaskID(1),
             Task::create("t1", TaskPriority::THIRD, "tg",
@@ -60,7 +60,7 @@ TEST_F(ReferenceHandlerTest, TestSetReferencesInView) {
 TEST_F(ReferenceHandlerTest, TestSubtaskAddedToParentIfParentStillDoesNotContainIt) {
     auto by_date = std::make_unique<DatePriorityView>();
     auto by_tag = std::make_unique<TagPriorityView>();
-    ReferenceHandler rh(*by_date, *by_tag);
+    LinkManager rh(*by_date, *by_tag);
     auto parent = std::make_shared<TaskNode>(
             TaskID(1),
             Task::create("t1", TaskPriority::THIRD, "tg",
@@ -77,7 +77,7 @@ TEST_F(ReferenceHandlerTest, TestSubtaskAddedToParentIfParentStillDoesNotContain
 TEST_F(ReferenceHandlerTest, TestAllLinksAreSet) {
     auto by_date = std::make_unique<DatePriorityView>();
     auto by_tag = std::make_unique<TagPriorityView>();
-    ReferenceHandler rh(*by_date, *by_tag);
+    LinkManager rh(*by_date, *by_tag);
     auto parent = std::make_shared<TaskNode>(
             TaskID(1),
             Task::create("t1", TaskPriority::THIRD, "tg",
@@ -111,7 +111,7 @@ TEST_F(ReferenceHandlerTest, TestAllLinksAreSet) {
 TEST_F(ReferenceHandlerTest, MoveInternalReferencesMethodSetLinksCorrect) {
     auto by_date = std::make_unique<DatePriorityView>();
     auto by_tag = std::make_unique<TagPriorityView>();
-    ReferenceHandler rh(*by_date, *by_tag);
+    LinkManager rh(*by_date, *by_tag);
     auto parent = std::make_shared<TaskNode>(
             TaskID(1),
             Task::create("t1", TaskPriority::THIRD, "tg",

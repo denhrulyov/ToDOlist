@@ -2,10 +2,10 @@
 // Created by denis on 03.08.20.
 //
 
-#include "ReferenceHandler.h"
+#include "LinkManager.h"
 
-void ReferenceHandler::linkSubTask( const std::weak_ptr<TaskNode> &main_task,
-                                    const std::weak_ptr<TaskNode> &sub_task  ) {
+void LinkManager::linkSubTask(const std::weak_ptr<TaskNode> &main_task,
+                              const std::weak_ptr<TaskNode> &sub_task  ) {
     auto shared_sub_task = sub_task.lock();
     auto shared_main_task = main_task.lock();
     if (!shared_sub_task) {
@@ -17,7 +17,7 @@ void ReferenceHandler::linkSubTask( const std::weak_ptr<TaskNode> &main_task,
     }
 }
 
-void ReferenceHandler::setReferences(const std::weak_ptr<TaskNode> &node) {
+void LinkManager::setReferences(const std::weak_ptr<TaskNode> &node) {
     by_time_.addToView(node);
     by_label_.addToView(node);
     auto shared_node = node.lock();
@@ -27,7 +27,7 @@ void ReferenceHandler::setReferences(const std::weak_ptr<TaskNode> &node) {
     }
 }
 
-void ReferenceHandler::removeRefrences(const std::weak_ptr<TaskNode> &node) {
+void LinkManager::removeRefrences(const std::weak_ptr<TaskNode> &node) {
     auto shared_node = node.lock();
     TaskID id = shared_node->getId();
     by_time_.removeFromView(id);
@@ -40,7 +40,7 @@ void ReferenceHandler::removeRefrences(const std::weak_ptr<TaskNode> &node) {
     }
 }
 
-void ReferenceHandler::moveInboundRefrences(const std::weak_ptr<TaskNode> &from, const std::weak_ptr<TaskNode> &to) {
+void LinkManager::moveInboundRefrences(const std::weak_ptr<TaskNode> &from, const std::weak_ptr<TaskNode> &to) {
     auto ptr_from = from.lock();
     for (const auto& subnode : ptr_from->getSubNodes()) {
         subnode.lock()->setParent(to);
@@ -49,14 +49,14 @@ void ReferenceHandler::moveInboundRefrences(const std::weak_ptr<TaskNode> &from,
     setReferences(to);
 }
 
-ReferenceHandler::ReferenceHandler(PriorityViewInterface<BoostDate>& by_time,
-                                   PriorityViewInterface<std::string>& by_label)
+LinkManager::LinkManager(PriorityViewInterface<BoostDate>& by_time,
+                         PriorityViewInterface<std::string>& by_label)
                                    : by_time_(by_time), by_label_(by_label)
                                    {}
 
 void
-ReferenceHandler::copyExternalReferences(   const std::weak_ptr<TaskNode> &from,
-                                            const std::weak_ptr<TaskNode> &to ) {
+LinkManager::copyExternalReferences(const std::weak_ptr<TaskNode> &from,
+                                    const std::weak_ptr<TaskNode> &to ) {
     auto ptr_from = from.lock();
     auto ptr_to = to.lock();
     ptr_to->setParent(ptr_from->getParent());

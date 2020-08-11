@@ -2,17 +2,17 @@
 // Created by denis on 03.08.20.
 //
 
-#ifndef TODOLIST_REFERENCEHANDLER_H
-#define TODOLIST_REFERENCEHANDLER_H
+#ifndef TODOLIST_LINKMANAGER_H
+#define TODOLIST_LINKMANAGER_H
 
 #include "TaskNode.h"
 #include "PriorityViewInterface.h"
 
-class ReferenceHandler {
+class LinkManager {
 
 public:
-    ReferenceHandler(PriorityViewInterface<BoostDate>& by_time,
-                     PriorityViewInterface<std::string>& by_label);
+    LinkManager(PriorityViewInterface<BoostDate>& by_time,
+                PriorityViewInterface<std::string>& by_label);
 
 public:
     void linkSubTask(const std::weak_ptr<TaskNode>& main_task, const std::weak_ptr<TaskNode>& sub_task);
@@ -27,4 +27,4 @@ private:
 };
 
 
-#endif //TODOLIST_REFERENCEHANDLER_H
+#endif //TODOLIST_LINKMANAGER_H

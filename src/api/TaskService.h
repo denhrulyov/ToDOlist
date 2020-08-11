@@ -8,7 +8,7 @@
 #include "memory_model/TaskStrorageInterface.h"
 #include "TaskCreationResult.h"
 #include "memory_model/TaskIDFactory.h"
-#include "memory_model/ReferenceHandler.h"
+#include "memory_model/LinkManager.h"
 #include "TaskDTOConverter.h"
 #include "TaskModificationResult.h"
 #include <unordered_map>
@@ -23,12 +23,12 @@ public:
             std::unique_ptr<TaskStrorageInterface>                  storage,
             std::unique_ptr<PriorityViewInterface<BoostDate>>       view_time,
             std::unique_ptr<PriorityViewInterface<std::string>>     view_label,
-            const ReferenceHandler&                                 reference_handler)
+            const LinkManager&                                 reference_handler)
     :
-    storage_(std::move(storage)),
-    by_time_(std::move(view_time)),
-    by_label_(std::move(view_label)),
-    reference_handler_(reference_handler)
+            storage_(std::move(storage)),
+            by_time_(std::move(view_time)),
+            by_label_(std::move(view_label)),
+            link_manager_(reference_handler)
     {}
 
 public:
@@ -50,7 +50,7 @@ private:
     std::unique_ptr<TaskStrorageInterface>                  storage_;
     std::unique_ptr<PriorityViewInterface<BoostDate>>       by_time_;
     std::unique_ptr<PriorityViewInterface<std::string>>     by_label_;
-    ReferenceHandler                                        reference_handler_;
+    LinkManager                                             link_manager_;
 };
 
 

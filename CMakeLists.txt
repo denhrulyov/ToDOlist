@@ -23,8 +23,8 @@ add_executable(ToDOList src/main.cpp
         src/memory_model/TaskStrorageInterface.h
         src/memory_model/TaskStrorage.cpp
         src/memory_model/TaskStrorage.h
-        src/memory_model/ReferenceHandler.cpp
-        src/memory_model/ReferenceHandler.h
+        src/memory_model/LinkManager.cpp
+        src/memory_model/LinkManager.h
         src/api/TaskDTOConverter.cpp
         src/api/TaskDTOConverter.h
         src/api/RequestResult.cpp src/api/RequestResult.h
@@ -96,7 +96,7 @@ add_executable(TestsExecutable
                 src/api/TaskCreationResult.cpp
                 src/memory_model/TagPriorityView.cpp
                 src/memory_model/TaskStrorage.cpp
-                src/memory_model/ReferenceHandler.cpp
+        src/memory_model/LinkManager.cpp
                 src/api/TaskDTOConverter.cpp
         src/memory_model/TaskPriority.h)
 target_link_libraries(TestsExecutable GTest::GTest GTest::Main)
