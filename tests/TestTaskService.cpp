@@ -3,7 +3,13 @@
 //
 
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 #include <api/Service.h>
+#include "utils/data_transfer/TaskDTOConverter.h"
+#include "utils/task_io/ConsoleTaskIO.h"
+
+using ::testing::Return;
+using ::testing::NiceMock;
 
 using namespace boost::gregorian;
 
@@ -16,26 +22,92 @@ public:
     }
 };
 
+class MockStorage : public TaskStorageInterface {
+
+public:
+  MOCK_METHOD(std::weak_ptr<TaskNode>, getTaskByID, (TaskID), (override));
+  MOCK_METHOD(Result, addTask, (const std::shared_ptr<TaskNode>&), (override));
+  MOCK_METHOD(Result, eraseTask, (TaskID), (override));
+};
+
+template<class T>
+class MockView : public PriorityViewInterface<T> {
+
+public:
+    MOCK_METHOD(void, addToView, (const std::weak_ptr<TaskNode>&), (override));
+    MOCK_METHOD(std::vector<std::weak_ptr<TaskNode>>, getAllWithConstraint, (const T&), (override));
+    MOCK_METHOD(void, removeFromView, (TaskID), (override));
+};
+
+class MockLinkManager : public LinkManagerInterface {
+public:
+    MOCK_METHOD(void, linkSubTask, (const std::weak_ptr<TaskNode>&, const std::weak_ptr<TaskNode>&), (override));
+    MOCK_METHOD(void, setLinks, (const std::weak_ptr<TaskNode>&), (override));
+    MOCK_METHOD(void, removeLinks, (const std::weak_ptr<TaskNode>&), (override));
+    MOCK_METHOD(void, moveInboundLinks, (const std::weak_ptr<TaskNode>&, const std::weak_ptr<TaskNode>&), (override));
+};
+
+
+
 TEST_F(TaskServiceTest, TestAllSubtasksComplete) {
-    std::vector<TaskDTO> tasks {
-            TaskDTO::create("t1", TaskPriority::FIRST, "lbl1",
-                    day_clock::local_day() + days(2020)),
-            TaskDTO::create("t1", TaskPriority::SECOND, "lbl2",
-                    day_clock::local_day() + days(2021)),
-            TaskDTO::create("t3", TaskPriority::FIRST, "lbl3",
-                    day_clock::local_day() + days(2024)),
-            TaskDTO::create("t1", TaskPriority::NONE, "lbl1",
-                    day_clock::local_day() + days(2020))
+    std::vector ids = {TaskID(0), TaskID(2), TaskID(3), TaskID(4)};
+    std::vector<std::shared_ptr<TaskNode>> tasks {
+            std::make_shared<TaskNode>(
+                    ids[0],
+                    Task::create("t1", TaskPriority::FIRST, "lbl1",
+                            day_clock::local_day() + days(2020))
+                            ),
+            std::make_shared<TaskNode>(
+                    ids[1],
+                    Task::create("t1", TaskPriority::SECOND, "lbl2",
+                            day_clock::local_day() + days(2021))
+                            ),
+            std::make_shared<TaskNode>(
+                    ids[2],
+                    Task::create("t3", TaskPriority::FIRST, "lbl3",
+                            day_clock::local_day() + days(2024))
+                            ),
+            std::make_shared<TaskNode>(
+                    ids[3],
+                    Task::create("t1", TaskPriority::NONE, "lbl1",
+                            day_clock::local_day() + days(2020))
+                            )
     };
+
+
+    MockStorage* ms = new NiceMock<MockStorage>;
+    for (auto node : tasks) {
+        ON_CALL(*ms, getTaskByID(node->getId()))
+                .WillByDefault(Return(
+                        std::weak_ptr(node)
+                ));
+    }
+    MockView<date>* mw = new MockView<date>;
+    ON_CALL(*mw, getAllWithConstraint(day_clock::local_day() + years(100)))
+            .WillByDefault(Return(
+                    std::vector<std::weak_ptr<TaskNode>>
+                                {tasks[0],
+                                 tasks[1],
+                                 tasks[2],
+                                 tasks[3]}
+            ));
+    EXPECT_CALL(*mw, getAllWithConstraint(day_clock::local_day() + years(100)));
+
     auto root_task = TaskDTO::create("t1", TaskPriority::THIRD, "lbl5",
                              day_clock::local_day() + days(3000));
-    TaskService ts = service::createService();
-    TaskID id_root = ts.addTask(root_task).getCreatedTaskID().value();
-    TaskID parent =  id_root;
-    for (const auto& dto : tasks) {
-        parent = ts.addSubTask(parent, dto).getCreatedTaskID().value();
+    TaskService ts = TaskService(   std::unique_ptr<MockStorage>(ms),
+                                    std::unique_ptr<MockView<boost::gregorian::date>>(mw),
+                                    std::make_unique<MockView<std::string>>(),
+                                    std::make_unique<MockLinkManager>());
+    auto parent = std::shared_ptr<TaskNode>(nullptr);
+    for (const auto& task : tasks) {
+        if (parent) {
+            parent->addSubtask(task);
+            task->setParent(parent);
+        }
+        parent = task;
     }
-    ts.complete(id_root);
+    ts.complete(tasks[0]->getId());
     for (const auto& dto : ts.getAllTasks()) {
         EXPECT_TRUE(dto.isCompleted());
     }
