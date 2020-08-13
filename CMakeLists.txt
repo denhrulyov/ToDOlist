@@ -59,7 +59,7 @@ include_directories(tests)
 #find_package(Threads REQUIRED)
 
 #thread
-target_link_libraries(ToDOList Threads::Threads)
+#target_link_libraries(ToDOList Threads::Threads)
 
 #############################################
 
@@ -67,6 +67,7 @@ target_link_libraries(ToDOList Threads::Threads)
 
 include(GoogleTest)
 find_package(GTest REQUIRED)
+include_directories(${GMOCK_INCLUDE_DIR})
 enable_testing()
 
 add_executable(TestsExecutable
@@ -87,19 +88,19 @@ add_executable(TestsExecutable
                 src/api/TaskModificationResult.cpp
                 src/api/TaskCreationResult.cpp
                 src/api/TaskService.cpp
-        src/memory_model/data/Task.cpp
-        src/memory_model/structure/TaskNode.cpp
-        src/memory_model/view/DatePriorityView.cpp
+                src/memory_model/data/Task.cpp
+                src/memory_model/structure/TaskNode.cpp
+                src/memory_model/view/DatePriorityView.cpp
                 src/api/TaskDTO.cpp
-        src/memory_model/data/TaskID.cpp
-        src/memory_model/data/TaskIDFactory.cpp
+                src/memory_model/data/TaskID.cpp
+                src/memory_model/data/TaskIDFactory.cpp
                 src/api/TaskCreationResult.cpp
-        src/memory_model/view/TagPriorityView.cpp
-        src/memory_model/data/TaskStorage.cpp
-        src/memory_model/structure/LinkManager.cpp
-        src/utils/data_transfer/TaskDTOConverter.cpp
-        src/memory_model/data/TaskPriority.h)
-target_link_libraries(TestsExecutable GTest::GTest GTest::Main)
+                src/memory_model/view/TagPriorityView.cpp
+                src/memory_model/data/TaskStorage.cpp
+                src/memory_model/structure/LinkManager.cpp
+                src/utils/data_transfer/TaskDTOConverter.cpp
+                src/memory_model/data/TaskPriority.h)
+target_link_libraries(TestsExecutable GTest::GTest GTest::Main ${GMOCK_LIBRARY} ${GMOCK_MAIN_LIBRARY})
 
 gtest_discover_tests(TestsExecutable)
 
