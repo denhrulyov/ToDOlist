@@ -82,8 +82,6 @@ TaskService::postponeTask(TaskID id, BoostDate date_postpone) {
     }
     auto new_node = old_node->clone(getPostponedTask(old_node->getTask(), date_postpone));
     link_manager_->moveInboundLinks(old_node, new_node);
-    link_manager_->removeLinks(old_node);
-    link_manager_->setLinks(new_node);
     storage_->eraseTask(id);
     storage_->addTask(new_node);
     return TaskModificationResult::success(id);
