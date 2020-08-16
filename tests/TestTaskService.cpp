@@ -361,6 +361,34 @@ TEST_F(TaskServiceTest, TestDeleteTaskDeletesAllChildrenLinks) {
     ts.deleteTask(sample_parent->getId());
 }
 
+TEST_F(TaskServiceTest, TestDeleteTaskReturnsErrorIfNoSuchTask) {
+    auto tasks = sample_nodes(1);
+    auto ms = std::make_unique<MockStorage>();
+    ON_CALL(*ms, getTaskByID)
+        .WillByDefault(Return(std::shared_ptr<TaskNode> {nullptr}));
+    TaskService ts = TaskService(   std::move(ms),
+                                    std::make_unique<MockView<date>>(),
+                                    std::make_unique<MockView<std::string>>(),
+                                    std::make_unique<MockLinkManager>());
+    EXPECT_FALSE(ts.deleteTask(tasks[0]->getId()).getSuccessStatus());
+}
+
+TEST_F(TaskServiceTest, TestPostponeTaskReturnsErrorIfNoSuchTask) {
+    auto tasks = sample_nodes(1);
+    auto ms = std::make_unique<MockStorage>();
+    ON_CALL(*ms, getTaskByID)
+            .WillByDefault(Return(std::shared_ptr<TaskNode> {nullptr}));
+    TaskService ts = TaskService(   std::move(ms),
+                                    std::make_unique<MockView<date>>(),
+                                    std::make_unique<MockView<std::string>>(),
+                                    std::make_unique<MockLinkManager>());
+    EXPECT_FALSE(
+            ts.postponeTask(tasks[0]->getId(),
+                    tasks[0]->getTask().getDate() + boost::gregorian::days(1))
+                        .getSuccessStatus()
+                    );
+}
+
 TEST_F(TaskServiceTest, TestPostponeTask) {
     TaskService ts = service::createService();
     TaskDTO task = TaskDTO::create("t1", TaskPriority::THIRD, "lbl5",
