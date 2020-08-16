@@ -76,7 +76,7 @@ add_executable(TestsExecutable
                 tests/TestTagPriorityView.cpp
                 tests/TestDatePriortyView.cpp
                 tests/TestTaskService.cpp
-                tests/TestReferenceHandler.cpp
+        tests/TestLinkManager.cpp
                 tests/TestTaskStorage.cpp
                 tests/TestTaskID.cpp
                 tests/TestTaskIDFactory.cpp
