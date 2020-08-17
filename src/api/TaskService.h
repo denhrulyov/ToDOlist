@@ -11,6 +11,7 @@
 #include "memory_model/structure/LinkManager.h"
 #include "utils/data_transfer/TaskDTOConverter.h"
 #include "TaskModificationResult.h"
+#include "TaskServiceInterface.h"
 #include <unordered_map>
 #include <algorithm>
 #include <memory>
@@ -21,7 +22,7 @@
  *
  * @author Denys Hrulov
  */
-class TaskService {
+class TaskService : public TaskServiceInterface {
 
 public:
     TaskService(
@@ -37,82 +38,21 @@ public:
     {}
 
 public:
-    /*
-     * Gives tasks for today already sorted by priority
-     *
-     * @return vector of TaskDTO
-     */
     std::vector<TaskDTO>                                    getToday();
-    /*
-     * Gives tasks for this week already sorted by priority
-     *
-     * @return vector of TaskDTO
-     */
     std::vector<TaskDTO>                                    getThisWeek();
-    /*
-     * Gives all tasks already sorted by priority.
-     *
-     * @return vector of TaskDTO.
-     */
     std::vector<TaskDTO>                                    getAllTasks();
-    /*
-     * Gives all tasks with given label already sorted by priority.
-     *
-     * @param task label.
-     * @return vector of TaskDTO.
-     */
     std::vector<TaskDTO>                                    getAllWithLabel(const std::string& label);
-    /*
-     * Gives task with given id if such exists in system.
-     *
-     * @param task id.
-     * @return task DTO if such task exists otherwise nullopt.
-     */
     std::optional<TaskDTO>                                  getTaskByID(TaskID id);
 
 public:
-    /*
-     * Adds single task to system. It will not belong to any other task.
-     *
-     * @param DTO representing the task. ID will be ignored.
-     *
-     * @return object containing id of new created task or info about possible errors.
-     */
     TaskCreationResult                                      addTask(const TaskDTO &task_data);
-    /*
-     * Adds single task to system. It will belong to task with specified id.
-     *
-     * @param id of task, which will include the given as subtask.
-     * @param DTO representing the task. ID will be ignored.
-     *
-     * @return object containing id of new created task or info about possible errors occurred.
-     */
     TaskCreationResult                                      addSubTask(TaskID parent, const TaskDTO &task_data);
-    /*
-     * Deletes task from system. All subtasks will be deleted recursively.
-     *
-     * @param id of task to delete.
-     *
-     * @return object containing id of new created task or info about possible error occurred.
-     */
     TaskModificationResult                                  deleteTask(TaskID id);
-    /*
-     * Postpones the task, changing its date to given.
-     *
-     * @param id of task to postpone.
-     * @param new date to assign task.
-     *
-     * @return object containing id of modified task or info about possible error occurred.
-     */
     TaskModificationResult                                  postponeTask(TaskID id, BoostDate);
-    /*
-     * Mark task as completed. All subtasks will be deleted recursively.
-     *
-     * @param id of task to delete.
-     *
-     * @return object info about success or possible error occurred
-     */
     RequestResult                                           complete(TaskID id);
+
+public:
+    ~TaskService() override =                               default;
 
 private:
     TaskIDFactory                                           id_generator_;

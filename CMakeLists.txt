@@ -99,7 +99,7 @@ add_executable(TestsExecutable
                 src/memory_model/data/TaskStorage.cpp
                 src/memory_model/structure/LinkManager.cpp
                 src/utils/data_transfer/TaskDTOConverter.cpp
-                src/memory_model/data/TaskPriority.h tests/test_main.cpp)
+                src/memory_model/data/TaskPriority.h tests/test_main.cpp src/api/TaskServiceInterface.h)
 target_link_libraries(TestsExecutable GTest::GTest GTest::Main ${GMOCK_LIBRARY} ${GMOCK_MAIN_LIBRARY})
 
 gtest_discover_tests(TestsExecutable)
