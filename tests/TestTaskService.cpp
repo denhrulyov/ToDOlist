@@ -137,7 +137,7 @@ TEST_F(TaskServiceTest, TestAllSubtasksComplete) {
                 ));
     }
     auto mw = std::make_unique<MockView<date>>();
-    ON_CALL(*mw, getAllWithConstraint(day_clock::local_day() + years(100)))
+    ON_CALL(*mw, getAllWithConstraint(service::max_date))
             .WillByDefault(Return(
                     std::vector<std::weak_ptr<TaskNode>>
                                 {tasks[0],
@@ -147,7 +147,7 @@ TEST_F(TaskServiceTest, TestAllSubtasksComplete) {
             ));
     // ___________
     // Mock Expectations
-    EXPECT_CALL(*mw, getAllWithConstraint(day_clock::local_day() + years(100)));
+    EXPECT_CALL(*mw, getAllWithConstraint(service::max_date));
     //____________
     // Build structure
     auto root_task = TaskDTO::create("t1", TaskPriority::THIRD, "lbl5",
@@ -172,6 +172,28 @@ TEST_F(TaskServiceTest, TestAllSubtasksComplete) {
     for (const auto& dto : ts.getAllTasks()) {
         EXPECT_TRUE(dto.isCompleted());
     }
+}
+
+TEST_F(TaskServiceTest, TestTaskWithDateBiggerThenMaxNotAdded) {
+    // Sample data
+    TaskID id(0);
+    auto sample_task = TaskDTO::create("t1", TaskPriority::FIRST, "lbl1", service::max_date + days(1));
+    auto sample_node = std::make_shared<TaskNode>(
+            id,
+            TaskDTOConverter::getTask(sample_task)
+    );
+    // ___________
+    // Mocks
+    auto ms = std::make_unique<MockStorage>();
+    EXPECT_CALL(*ms, addTask).Times(0);
+
+    TaskService ts = TaskService(   std::move(ms),
+                                    std::make_unique<MockView<date>>(),
+                                    std::make_unique<MockView<std::string>>(),
+                                    std::make_unique<MockLinkManager>());
+    //___________
+    // Exercise mehod testing
+    EXPECT_FALSE(ts.addTask(sample_task).getSuccessStatus());
 }
 
 TEST_F(TaskServiceTest, TestTaskAddedToStorage) {

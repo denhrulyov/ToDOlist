@@ -11,6 +11,11 @@
 
 #include <vector>
 
+namespace service {
+
+    const BoostDate max_date(BoostDate::year_type(3000), BoostDate::month_type(1), BoostDate::day_type(1));
+}
+
 class TaskServiceInterface {
 
 
