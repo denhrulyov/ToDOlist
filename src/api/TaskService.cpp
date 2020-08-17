@@ -71,7 +71,7 @@ TaskService::deleteTask(TaskID id) {
     }
     link_manager_->removeLinks(shared_node);
     storage_->eraseTask(id);
-    return TaskModificationResult::success(id);
+    return TaskModificationResult::success();
 }
 
 TaskModificationResult
@@ -84,7 +84,7 @@ TaskService::postponeTask(TaskID id, BoostDate date_postpone) {
     link_manager_->moveInboundLinks(old_node, new_node);
     storage_->eraseTask(id);
     storage_->addTask(new_node);
-    return TaskModificationResult::success(id);
+    return TaskModificationResult::success();
 }
 
 
