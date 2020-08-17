@@ -41,9 +41,6 @@ public:
     void addSubtask(const std::weak_ptr<TaskNode>&);
     void eraseSubtask(TaskID id_erase);
 
-    //testing
-    ~TaskNode() {std::cout << "Delete task node\n"; }
-
 private:
     TaskID                                          id;
     Task                                            root_task_;
