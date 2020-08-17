@@ -2,8 +2,8 @@
 // Created by denis on 23.07.20.
 //
 
-#ifndef TODOLIST_SERVICE_H
-#define TODOLIST_SERVICE_H
+#ifndef TODOLIST_TODOLIST_H
+#define TODOLIST_TODOLIST_H
 
 #include "TaskService.h"
 #include "memory_model/view/DatePriorityView.h"
@@ -16,7 +16,7 @@
  *
  */
 
-namespace service {
+namespace todo_list {
 
 
     /*
@@ -34,4 +34,4 @@ namespace service {
 
 }
 
-#endif //TODOLIST_SERVICE_H
+#endif //TODOLIST_TODOLIST_H

@@ -2,14 +2,14 @@
 
 #include "api/TaskService.h"
 #include "utils/task_io/ConsoleTaskIO.h"
-#include "api/Service.h"
+#include "api/TODOList.h"
 #include <boost/date_time.hpp>
 
 using namespace boost::gregorian;
 
 int main() {
     auto today = day_clock::local_day();
-    TaskService service = service::createService();
+    TaskService service = todo_list::createService();
     TaskCreationResult id = service.addTask(
             TaskDTO::create("T1", TaskPriority::FIRST, "tag1", today + days(6))
             );

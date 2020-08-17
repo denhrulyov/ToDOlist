@@ -4,7 +4,7 @@
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include <api/Service.h>
+#include <api/TODOList.h>
 #include "utils/data_transfer/TaskDTOConverter.h"
 #include "utils/task_io/ConsoleTaskIO.h"
 
@@ -390,7 +390,7 @@ TEST_F(TaskServiceTest, TestPostponeTaskReturnsErrorIfNoSuchTask) {
 }
 
 TEST_F(TaskServiceTest, TestPostponeTask) {
-    TaskService ts = service::createService();
+    TaskService ts = todo_list::createService();
     TaskDTO task = TaskDTO::create("t1", TaskPriority::THIRD, "lbl5",
                            day_clock::local_day() + days(3000));
     TaskID id = ts.addTask(task).getCreatedTaskID().value();
@@ -405,7 +405,7 @@ TEST_F(TaskServiceTest, TestPostponeTask) {
 }
 
 TEST_F(TaskServiceTest, TestPostponeSubTask) {
-    TaskService ts = service::createService();
+    TaskService ts = todo_list::createService();
     TaskDTO task = TaskDTO::create("t1", TaskPriority::THIRD, "lbl5",
             day_clock::local_day() + days(3000));
     TaskDTO subtask = TaskDTO::create("t2", TaskPriority::SECOND, "lbls",
@@ -422,7 +422,7 @@ TEST_F(TaskServiceTest, TestPostponeSubTask) {
 }
 
 TEST_F(TaskServiceTest, TestPostponeSUBTaskDoesNotBreaksPARENT) {
-    TaskService ts = service::createService();
+    TaskService ts = todo_list::createService();
     TaskDTO task = TaskDTO::create("t1", TaskPriority::THIRD, "lbl5",
                            day_clock::local_day() + days(3000));
     TaskDTO subtask = TaskDTO::create("t2", TaskPriority::SECOND, "lbls",
@@ -438,7 +438,7 @@ TEST_F(TaskServiceTest, TestPostponeSUBTaskDoesNotBreaksPARENT) {
 }
 
 TEST_F(TaskServiceTest, TestPostponeSUBTaskDoesNotBreaksSUBTask) {
-    TaskService ts = service::createService();
+    TaskService ts = todo_list::createService();
     TaskDTO task = TaskDTO::create("t1", TaskPriority::THIRD, "lbl5",
                            day_clock::local_day() + days(3000));
     TaskDTO subtask = TaskDTO::create("t2", TaskPriority::SECOND, "lbls",
