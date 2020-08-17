@@ -89,7 +89,7 @@ auto sample_nodes(const std::size_t slice = 4) {
                 day_clock::local_day() + days(1999))
             )
     };
-    return std::vector(tasks.begin(), tasks.begin() + slice);
+    return std::vector<std::shared_ptr<TaskNode>>(tasks.begin(), tasks.begin() + slice);
 }
 
 template<class collection>
@@ -119,7 +119,7 @@ create_sample_structure_1 (const collection& tasks) {
         tasks.back()->setParent(*(tasks.end() - 2));
     }
     TaskID parent(sample_parent->getId());
-    return {sample_parent, std::vector(tasks.begin() + 1, tasks.end())};
+    return {sample_parent, std::vector<std::shared_ptr<TaskNode>>(tasks.begin() + 1, tasks.end())};
 }
 
 
