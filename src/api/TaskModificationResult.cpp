@@ -5,7 +5,7 @@
 #include "TaskModificationResult.h"
 
 TaskModificationResult TaskModificationResult::success(const TaskID &id_modified) {
-    return TaskModificationResult(std::make_optional(id_modified), false, std::nullopt);
+    return TaskModificationResult(std::make_optional(id_modified), true, std::nullopt);
 }
 
 std::optional<TaskID> TaskModificationResult::getModifiedTaskID() {

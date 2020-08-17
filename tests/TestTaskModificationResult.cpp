@@ -26,7 +26,7 @@ TEST_F(TestTaskModificationResult, CorrectConstructorNullopt) {
 
 TEST_F(TestTaskModificationResult, TestResultTypeCorrect) {
     auto rr = TaskModificationResult::success(TaskID(1));
-    ASSERT_FALSE(rr.getSuccessStatus());
+    ASSERT_TRUE(rr.getSuccessStatus());
     ASSERT_FALSE( rr.getErrorMessage().has_value());
     ASSERT_TRUE( rr.getModifiedTaskID().has_value());
     ASSERT_EQ( rr.getModifiedTaskID().value(), TaskID(1));
