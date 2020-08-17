@@ -6,10 +6,10 @@
 #define TODOLIST_TODOLIST_H
 
 #include "TaskService.h"
-#include "memory_model/view/DatePriorityView.h"
-#include "memory_model/view/TagPriorityView.h"
-#include "memory_model/data/TaskStorage.h"
-#include "memory_model/data/TaskIDFactory.h"
+#include "todo_list/memory_model/view/DatePriorityView.h"
+#include "todo_list/memory_model/view/TagPriorityView.h"
+#include "todo_list/memory_model/data/TaskStorage.h"
+#include "todo_list/memory_model/data/TaskIDFactory.h"
 
 /*
  * TaskService injector

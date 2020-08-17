@@ -5,9 +5,9 @@
 #ifndef TODOLIST_TASKDTO_H
 #define TODOLIST_TASKDTO_H
 
-#include "memory_model/data/Task.h"
+#include "todo_list/memory_model/data/Task.h"
 #include "memory"
-#include "memory_model/data/TaskID.h"
+#include "todo_list/memory_model/data/TaskID.h"
 
 
 /*
