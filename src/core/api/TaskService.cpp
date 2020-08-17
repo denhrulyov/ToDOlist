@@ -28,6 +28,12 @@ std::shared_ptr<TaskNode> createNode(TaskID id, const Task& task) {
 /**********************************************************************/
 
 TaskCreationResult TaskService::addTask(const TaskDTO &task_data) {
+    if (task_data.getDate() > service::max_date) {
+        std::string message;
+        std::stringstream ss(message);
+        ss << "Given date is bigger then " << service::max_date;
+        return TaskCreationResult::error(message);
+    }
     auto created_node = createNode(
             id_generator_.generateID(),
             TaskDTOConverter::getTask(task_data)
@@ -71,7 +77,7 @@ TaskService::deleteTask(TaskID id) {
     }
     link_manager_->removeLinks(shared_node);
     storage_->eraseTask(id);
-    return TaskModificationResult::success(id);
+    return TaskModificationResult::success();
 }
 
 TaskModificationResult
@@ -84,7 +90,7 @@ TaskService::postponeTask(TaskID id, BoostDate date_postpone) {
     link_manager_->moveInboundLinks(old_node, new_node);
     storage_->eraseTask(id);
     storage_->addTask(new_node);
-    return TaskModificationResult::success(id);
+    return TaskModificationResult::success();
 }
 
 
@@ -122,7 +128,7 @@ std::vector<TaskDTO> TaskService::getThisWeek() {
 
 std::vector<TaskDTO> TaskService::getAllTasks() {
     using namespace boost::gregorian;
-    auto result_set = by_time_->getAllWithConstraint(day_clock::local_day() + years(100));
+    auto result_set = by_time_->getAllWithConstraint(service::max_date);
     return convertAll(result_set);
 }
 

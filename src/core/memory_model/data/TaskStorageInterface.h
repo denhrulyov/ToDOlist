@@ -5,7 +5,7 @@
 #ifndef TODOLIST_TASKSTORAGEINTERFACE_H
 #define TODOLIST_TASKSTORAGEINTERFACE_H
 
-#include "memory_model/structure/TaskNode.h"
+#include "core/memory_model/structure/TaskNode.h"
 
 class TaskStorageInterface {
 

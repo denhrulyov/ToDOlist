@@ -4,8 +4,8 @@
 
 #ifndef EVAL_TASKNODE_H
 #define EVAL_TASKNODE_H
-#include "memory_model/data/Task.h"
-#include "memory_model/data/TaskID.h"
+#include "core/memory_model/data/Task.h"
+#include "core/memory_model/data/TaskID.h"
 #include <list>
 #include <memory>
 #include <iostream>
@@ -40,9 +40,6 @@ public:
 public:
     void addSubtask(const std::weak_ptr<TaskNode>&);
     void eraseSubtask(TaskID id_erase);
-
-    //testing
-    ~TaskNode() {std::cout << "Delete task node\n"; }
 
 private:
     TaskID                                          id;

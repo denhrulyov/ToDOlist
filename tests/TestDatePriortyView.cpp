@@ -3,7 +3,7 @@
 //
 
 #include <gtest/gtest.h>
-#include "memory_model/view/DatePriorityView.h"
+#include "core/memory_model/view/DatePriorityView.h"
 
 using namespace boost::gregorian;
 

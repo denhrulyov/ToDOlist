@@ -3,7 +3,7 @@
 //
 
 #include <gtest/gtest.h>
-#include "memory_model/data/TaskIDFactory.h"
+#include "core/memory_model/data/TaskIDFactory.h"
 
 class TaskIDTest : public ::testing::Test {
 

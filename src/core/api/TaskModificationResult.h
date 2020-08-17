@@ -16,19 +16,16 @@
 class TaskModificationResult : public RequestResult {
 
 public:
-    TaskModificationResult( const std::optional<TaskID>& modified_id,
-                            bool success,
+    TaskModificationResult( bool success,
                             const std::optional<std::string>& error_message);
 
 public:
     /*
      * Creates result representing successful execution of task modification.
      *
-     * @param id of successfully modified task.
-     *
-     * @return RequestResult instance with id of modified task, positive success status and null error message.
+     * @return RequestResult instance with positive success status and null error message.
      */
-    static TaskModificationResult success(const TaskID &id_modified);
+    static TaskModificationResult success();
     /*
      * Creates result representing situation when task to modify does not exist in system.
      *
@@ -43,13 +40,6 @@ public:
      * @return RequestResult instance with id of null, negative success status and error message specified as parameter.
      */
     static TaskModificationResult error(const std::string& message);
-
-public:
-    std::optional<TaskID>           getModifiedTaskID();
-
-
-private:
-    std::optional<TaskID>           modified_id_;
 
 };
 

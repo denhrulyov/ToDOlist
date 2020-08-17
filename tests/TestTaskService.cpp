@@ -4,9 +4,9 @@
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include <api/Service.h>
-#include "utils/data_transfer/TaskDTOConverter.h"
-#include "utils/task_io/ConsoleTaskIO.h"
+#include <core/api/TODOList.h>
+#include "core/utils/data_transfer/TaskDTOConverter.h"
+#include "core/utils/task_io/ConsoleTaskIO.h"
 
 using ::testing::AnyNumber;
 using ::testing::Return;
@@ -89,7 +89,7 @@ auto sample_nodes(const std::size_t slice = 4) {
                 day_clock::local_day() + days(1999))
             )
     };
-    return std::vector(tasks.begin(), tasks.begin() + slice);
+    return std::vector<std::shared_ptr<TaskNode>>(tasks.begin(), tasks.begin() + slice);
 }
 
 template<class collection>
@@ -119,7 +119,7 @@ create_sample_structure_1 (const collection& tasks) {
         tasks.back()->setParent(*(tasks.end() - 2));
     }
     TaskID parent(sample_parent->getId());
-    return {sample_parent, std::vector(tasks.begin() + 1, tasks.end())};
+    return {sample_parent, std::vector<std::shared_ptr<TaskNode>>(tasks.begin() + 1, tasks.end())};
 }
 
 
@@ -137,7 +137,7 @@ TEST_F(TaskServiceTest, TestAllSubtasksComplete) {
                 ));
     }
     auto mw = std::make_unique<MockView<date>>();
-    ON_CALL(*mw, getAllWithConstraint(day_clock::local_day() + years(100)))
+    ON_CALL(*mw, getAllWithConstraint(service::max_date))
             .WillByDefault(Return(
                     std::vector<std::weak_ptr<TaskNode>>
                                 {tasks[0],
@@ -147,7 +147,7 @@ TEST_F(TaskServiceTest, TestAllSubtasksComplete) {
             ));
     // ___________
     // Mock Expectations
-    EXPECT_CALL(*mw, getAllWithConstraint(day_clock::local_day() + years(100)));
+    EXPECT_CALL(*mw, getAllWithConstraint(service::max_date));
     //____________
     // Build structure
     auto root_task = TaskDTO::create("t1", TaskPriority::THIRD, "lbl5",
@@ -172,6 +172,28 @@ TEST_F(TaskServiceTest, TestAllSubtasksComplete) {
     for (const auto& dto : ts.getAllTasks()) {
         EXPECT_TRUE(dto.isCompleted());
     }
+}
+
+TEST_F(TaskServiceTest, TestTaskWithDateBiggerThenMaxNotAdded) {
+    // Sample data
+    TaskID id(0);
+    auto sample_task = TaskDTO::create("t1", TaskPriority::FIRST, "lbl1", service::max_date + days(1));
+    auto sample_node = std::make_shared<TaskNode>(
+            id,
+            TaskDTOConverter::getTask(sample_task)
+    );
+    // ___________
+    // Mocks
+    auto ms = std::make_unique<MockStorage>();
+    EXPECT_CALL(*ms, addTask).Times(0);
+
+    TaskService ts = TaskService(   std::move(ms),
+                                    std::make_unique<MockView<date>>(),
+                                    std::make_unique<MockView<std::string>>(),
+                                    std::make_unique<MockLinkManager>());
+    //___________
+    // Exercise mehod testing
+    EXPECT_FALSE(ts.addTask(sample_task).getSuccessStatus());
 }
 
 TEST_F(TaskServiceTest, TestTaskAddedToStorage) {
@@ -390,70 +412,70 @@ TEST_F(TaskServiceTest, TestPostponeTaskReturnsErrorIfNoSuchTask) {
 }
 
 TEST_F(TaskServiceTest, TestPostponeTask) {
-    TaskService ts = service::createService();
+    auto ts = todo_list::createService();
     TaskDTO task = TaskDTO::create("t1", TaskPriority::THIRD, "lbl5",
                            day_clock::local_day() + days(3000));
-    TaskID id = ts.addTask(task).getCreatedTaskID().value();
-    ts.postponeTask(id,
+    TaskID id = ts->addTask(task).getCreatedTaskID().value();
+    ts->postponeTask(id,
                     day_clock::local_day() + days(4000));
-    ASSERT_TRUE(ts.getTaskByID(id).has_value());
-    EXPECT_EQ(ts.getTaskByID(id)->getDate(),
+    ASSERT_TRUE(ts->getTaskByID(id).has_value());
+    EXPECT_EQ(ts->getTaskByID(id)->getDate(),
               day_clock::local_day() + days(4000));
-    EXPECT_EQ(ts.getTaskByID(id)->getLabel(), task.getLabel());
-    EXPECT_EQ(ts.getTaskByID(id)->getPriority(), task.getPriority());
-    EXPECT_EQ(ts.getTaskByID(id)->getName(), task.getName());
+    EXPECT_EQ(ts->getTaskByID(id)->getLabel(), task.getLabel());
+    EXPECT_EQ(ts->getTaskByID(id)->getPriority(), task.getPriority());
+    EXPECT_EQ(ts->getTaskByID(id)->getName(), task.getName());
 }
 
 TEST_F(TaskServiceTest, TestPostponeSubTask) {
-    TaskService ts = service::createService();
+    auto ts = todo_list::createService();
     TaskDTO task = TaskDTO::create("t1", TaskPriority::THIRD, "lbl5",
             day_clock::local_day() + days(3000));
     TaskDTO subtask = TaskDTO::create("t2", TaskPriority::SECOND, "lbls",
                               day_clock::local_day() + days(3200));
-    TaskID id = ts.addTask(task).getCreatedTaskID().value();
-    TaskID id_subtask = ts.addSubTask(id, subtask).getCreatedTaskID().value();
-    ts.postponeTask(id_subtask, day_clock::local_day() + days(4000));
-    ASSERT_TRUE(ts.getTaskByID(id_subtask).has_value());
-    EXPECT_EQ(ts.getTaskByID(id_subtask)->getDate(),
+    TaskID id = ts->addTask(task).getCreatedTaskID().value();
+    TaskID id_subtask = ts->addSubTask(id, subtask).getCreatedTaskID().value();
+    ts->postponeTask(id_subtask, day_clock::local_day() + days(4000));
+    ASSERT_TRUE(ts->getTaskByID(id_subtask).has_value());
+    EXPECT_EQ(ts->getTaskByID(id_subtask)->getDate(),
               day_clock::local_day() + days(4000));
-    EXPECT_EQ(ts.getTaskByID(id_subtask)->getLabel(), subtask.getLabel());
-    EXPECT_EQ(ts.getTaskByID(id_subtask)->getPriority(), subtask.getPriority());
-    EXPECT_EQ(ts.getTaskByID(id_subtask)->getName(), subtask.getName());
+    EXPECT_EQ(ts->getTaskByID(id_subtask)->getLabel(), subtask.getLabel());
+    EXPECT_EQ(ts->getTaskByID(id_subtask)->getPriority(), subtask.getPriority());
+    EXPECT_EQ(ts->getTaskByID(id_subtask)->getName(), subtask.getName());
 }
 
 TEST_F(TaskServiceTest, TestPostponeSUBTaskDoesNotBreaksPARENT) {
-    TaskService ts = service::createService();
+    auto ts = todo_list::createService();
     TaskDTO task = TaskDTO::create("t1", TaskPriority::THIRD, "lbl5",
                            day_clock::local_day() + days(3000));
     TaskDTO subtask = TaskDTO::create("t2", TaskPriority::SECOND, "lbls",
                               day_clock::local_day() + days(3200));
-    TaskID id = ts.addTask(task).getCreatedTaskID().value();
-    TaskID id_subtask = ts.addSubTask(id, subtask).getCreatedTaskID().value();
-    ts.postponeTask(id_subtask, day_clock::local_day() + days(4000));
-    ASSERT_TRUE(ts.getTaskByID(id).has_value());
-    EXPECT_EQ(ts.getTaskByID(id)->getDate(), task.getDate());
-    EXPECT_EQ(ts.getTaskByID(id)->getLabel(), task.getLabel());
-    EXPECT_EQ(ts.getTaskByID(id)->getPriority(), task.getPriority());
-    EXPECT_EQ(ts.getTaskByID(id)->getName(), task.getName());
+    TaskID id = ts->addTask(task).getCreatedTaskID().value();
+    TaskID id_subtask = ts->addSubTask(id, subtask).getCreatedTaskID().value();
+    ts->postponeTask(id_subtask, day_clock::local_day() + days(4000));
+    ASSERT_TRUE(ts->getTaskByID(id).has_value());
+    EXPECT_EQ(ts->getTaskByID(id)->getDate(), task.getDate());
+    EXPECT_EQ(ts->getTaskByID(id)->getLabel(), task.getLabel());
+    EXPECT_EQ(ts->getTaskByID(id)->getPriority(), task.getPriority());
+    EXPECT_EQ(ts->getTaskByID(id)->getName(), task.getName());
 }
 
 TEST_F(TaskServiceTest, TestPostponeSUBTaskDoesNotBreaksSUBTask) {
-    TaskService ts = service::createService();
+    auto ts = todo_list::createService();
     TaskDTO task = TaskDTO::create("t1", TaskPriority::THIRD, "lbl5",
                            day_clock::local_day() + days(3000));
     TaskDTO subtask = TaskDTO::create("t2", TaskPriority::SECOND, "lbls",
                               day_clock::local_day() + days(3200));
     TaskDTO subsubtask = TaskDTO::create("t3", TaskPriority::FIRST, "lblss",
                                  day_clock::local_day() + days(2800));
-    TaskID id = ts.addTask(task).getCreatedTaskID().value();
-    TaskID id_subtask = ts.addSubTask(id, subtask).getCreatedTaskID().value();
-    TaskID id_subsubtask = ts.addSubTask(id_subtask, subsubtask).getCreatedTaskID().value();
-    ts.postponeTask(id_subtask,
+    TaskID id = ts->addTask(task).getCreatedTaskID().value();
+    TaskID id_subtask = ts->addSubTask(id, subtask).getCreatedTaskID().value();
+    TaskID id_subsubtask = ts->addSubTask(id_subtask, subsubtask).getCreatedTaskID().value();
+    ts->postponeTask(id_subtask,
                     day_clock::local_day() + days(4000));
-    ASSERT_TRUE(ts.getTaskByID(id_subsubtask).has_value());
-    EXPECT_EQ(ts.getTaskByID(id_subsubtask)->getDate(), subsubtask.getDate());
-    EXPECT_EQ(ts.getTaskByID(id_subsubtask)->getLabel(), subsubtask.getLabel());
-    EXPECT_EQ(ts.getTaskByID(id_subsubtask)->getPriority(), subsubtask.getPriority());
-    EXPECT_EQ(ts.getTaskByID(id_subsubtask)->getName(), subsubtask.getName());
+    ASSERT_TRUE(ts->getTaskByID(id_subsubtask).has_value());
+    EXPECT_EQ(ts->getTaskByID(id_subsubtask)->getDate(), subsubtask.getDate());
+    EXPECT_EQ(ts->getTaskByID(id_subsubtask)->getLabel(), subsubtask.getLabel());
+    EXPECT_EQ(ts->getTaskByID(id_subsubtask)->getPriority(), subsubtask.getPriority());
+    EXPECT_EQ(ts->getTaskByID(id_subsubtask)->getName(), subsubtask.getName());
 }
 

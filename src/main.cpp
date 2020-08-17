@@ -1,31 +1,31 @@
 #include <iostream>
 
-#include "api/TaskService.h"
-#include "utils/task_io/ConsoleTaskIO.h"
-#include "api/Service.h"
+#include "core/api/TaskService.h"
+#include "core/utils/task_io/ConsoleTaskIO.h"
+#include "core/api/TODOList.h"
 #include <boost/date_time.hpp>
 
 using namespace boost::gregorian;
 
 int main() {
     auto today = day_clock::local_day();
-    TaskService service = service::createService();
-    TaskCreationResult id = service.addTask(
+    auto service = todo_list::createService();
+    TaskCreationResult id = service->addTask(
             TaskDTO::create("T1", TaskPriority::FIRST, "tag1", today + days(6))
             );
-    TaskCreationResult id2 = service.addSubTask(
+    TaskCreationResult id2 = service->addSubTask(
             id.getCreatedTaskID().value(), TaskDTO::create("T2", TaskPriority::NONE, "tag2", today + days(2))
             );
-    TaskCreationResult id3 = service.addSubTask(
+    TaskCreationResult id3 = service->addSubTask(
             id2.getCreatedTaskID().value(), TaskDTO::create("T3", TaskPriority::THIRD, "tag3", today + days(1))
             );
-    service.postponeTask(id2.getCreatedTaskID().value(), today + days(10));
+    service->postponeTask(id2.getCreatedTaskID().value(), today + days(10));
    // service.deleteTask(id3.getCreatedTaskID().value());
-    TaskCreationResult id4 = service.addSubTask(
+    TaskCreationResult id4 = service->addSubTask(
             id2.getCreatedTaskID().value(), TaskDTO::create("T3", TaskPriority::THIRD, "tag3", today + days(20))
     );
     //service.deleteTask(id2.getCreatedTaskID().value());
-    service.complete(id.getCreatedTaskID().value());
+    service->complete(id.getCreatedTaskID().value());
     //UserTaskID id4 = service.addTask("T5", TaskPriority::FIRST, "tag4", 2020);
     /*service.inspectRoot();
     //service.deleteTask(id2);
@@ -44,7 +44,7 @@ int main() {
     service.inspectRoot();
      */
     //auto tsk = service.getAllWithLabel("tag1");
-    auto tsk = service.getThisWeek();
+    auto tsk = service->getThisWeek();
     for (auto ts : tsk) {
         std::cout << ts;
     }
