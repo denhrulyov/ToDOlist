@@ -38,18 +38,18 @@ public:
     {}
 
 public:
-    std::vector<TaskDTO>                                    getToday();
-    std::vector<TaskDTO>                                    getThisWeek();
-    std::vector<TaskDTO>                                    getAllTasks();
-    std::vector<TaskDTO>                                    getAllWithLabel(const std::string& label);
-    std::optional<TaskDTO>                                  getTaskByID(TaskID id);
+    std::vector<TaskDTO>                                    getToday() override;
+    std::vector<TaskDTO>                                    getThisWeek() override;
+    std::vector<TaskDTO>                                    getAllTasks() override;
+    std::vector<TaskDTO>                                    getAllWithLabel(const std::string& label) override;
+    std::optional<TaskDTO>                                  getTaskByID(TaskID id) override;
 
 public:
-    TaskCreationResult                                      addTask(const TaskDTO &task_data);
-    TaskCreationResult                                      addSubTask(TaskID parent, const TaskDTO &task_data);
-    TaskModificationResult                                  deleteTask(TaskID id);
-    TaskModificationResult                                  postponeTask(TaskID id, BoostDate);
-    RequestResult                                           complete(TaskID id);
+    TaskCreationResult                                      addTask(const TaskDTO &task_data) override;
+    TaskCreationResult                                      addSubTask(TaskID parent, const TaskDTO &task_data) override;
+    TaskModificationResult                                  deleteTask(TaskID id) override;
+    TaskModificationResult                                  postponeTask(TaskID id, BoostDate) override;
+    RequestResult                                           complete(TaskID id) override;
 
 public:
     ~TaskService() override =                               default;
