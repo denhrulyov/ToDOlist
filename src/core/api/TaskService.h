@@ -4,12 +4,12 @@
 
 #ifndef EVAL_TASKSERVICE_H
 #define EVAL_TASKSERVICE_H
-#include "todo_list/memory_model/structure/TaskNode.h"
-#include "todo_list/memory_model/data/TaskStorageInterface.h"
+#include "core/memory_model/structure/TaskNode.h"
+#include "core/memory_model/data/TaskStorageInterface.h"
 #include "TaskCreationResult.h"
-#include "todo_list/memory_model/data/TaskIDFactory.h"
-#include "todo_list/memory_model/structure/LinkManager.h"
-#include "todo_list/utils/data_transfer/TaskDTOConverter.h"
+#include "core/memory_model/data/TaskIDFactory.h"
+#include "core/memory_model/structure/LinkManager.h"
+#include "core/utils/data_transfer/TaskDTOConverter.h"
 #include "TaskModificationResult.h"
 #include "TaskServiceInterface.h"
 #include <unordered_map>

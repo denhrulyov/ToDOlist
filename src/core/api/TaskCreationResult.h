@@ -6,7 +6,7 @@
 #define TODOLIST_TASKCREATIONRESULT_H
 
 #include "RequestResult.h"
-#include "todo_list/memory_model/data/TaskID.h"
+#include "core/memory_model/data/TaskID.h"
 
 /*
  * Class containing info about the result of executing service request when performing task creation

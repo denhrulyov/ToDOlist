@@ -4,9 +4,9 @@
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include <api/TODOList.h>
-#include "utils/data_transfer/TaskDTOConverter.h"
-#include "utils/task_io/ConsoleTaskIO.h"
+#include <core/api/TODOList.h>
+#include "core/utils/data_transfer/TaskDTOConverter.h"
+#include "core/utils/task_io/ConsoleTaskIO.h"
 
 using ::testing::AnyNumber;
 using ::testing::Return;

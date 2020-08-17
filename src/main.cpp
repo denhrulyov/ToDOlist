@@ -1,8 +1,8 @@
 #include <iostream>
 
-#include "api/TaskService.h"
-#include "utils/task_io/ConsoleTaskIO.h"
-#include "api/TODOList.h"
+#include "core/api/TaskService.h"
+#include "core/utils/task_io/ConsoleTaskIO.h"
+#include "core/api/TODOList.h"
 #include <boost/date_time.hpp>
 
 using namespace boost::gregorian;

@@ -3,7 +3,7 @@
 //
 
 #include <gtest/gtest.h>
-#include "api/TaskModificationResult.h"
+#include "core/api/TaskModificationResult.h"
 
 class TestTaskModificationResult : public ::testing::Test {
 

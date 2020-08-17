@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "memory_model/structure/TaskNode.h"
+#include "core/memory_model/structure/TaskNode.h"
 
 using namespace boost::gregorian;
 
