@@ -29,7 +29,7 @@ add_executable(ToDOList src/main.cpp
         src/core/utils/data_transfer/TaskDTOConverter.h
         src/core/api/RequestResult.cpp src/core/api/RequestResult.h
         src/core/api/TaskModificationResult.cpp src/core/api/TaskModificationResult.h
-        src/core/api/TaskCreationResult.cpp src/core/api/TaskCreationResult.h src/core/memory_model/data/TaskPriority.h src/core/memory_model/structure/LinkManagerInterface.h)
+        src/core/api/TaskCreationResult.cpp src/core/api/TaskCreationResult.h src/core/memory_model/data/TaskPriority.h src/core/memory_model/structure/LinkManagerInterface.h src/cli/states/State.h src/cli/states/ParseState.cpp src/cli/states/ParseState.h src/cli/states/ParseID.cpp src/cli/states/ParseID.h src/cli/states/ShowState.h src/cli/get_commands/GetCommand.h src/cli/get_commands/GetAll.cpp src/cli/get_commands/GetAll.h src/cli/get_commands/GetToday.cpp src/cli/get_commands/GetToday.h src/cli/get_commands/GetThisWeek.cpp src/cli/get_commands/GetThisWeek.h src/cli/get_commands/GetByLabel.cpp src/cli/get_commands/GetByLabel.h src/cli/states/StartState.cpp src/cli/states/StartState.h src/cli/Console.cpp src/cli/Console.h src/cli/CLI.h)
 
 # boost #####################################################
 set(Boost_USE_STATIC_LIBS        ON)  # only find static libs
@@ -99,7 +99,7 @@ add_executable(TestsExecutable
         src/core/memory_model/data/TaskStorage.cpp
         src/core/memory_model/structure/LinkManager.cpp
         src/core/utils/data_transfer/TaskDTOConverter.cpp
-        src/core/memory_model/data/TaskPriority.h tests/test_main.cpp src/core/api/TaskServiceInterface.h)
+        src/core/memory_model/data/TaskPriority.h tests/test_main.cpp src/core/api/TaskServiceInterface.h src/cli/states/State.h src/cli/states/ParseState.cpp src/cli/states/ParseState.h src/cli/states/ParseGetParem.cpp src/cli/states/ParseGetParem.h src/cli/states/ParseTask.cpp src/cli/states/ParseTask.h src/cli/states/ParseAddType.cpp src/cli/states/ParseAddType.h src/cli/states/ParseID.cpp src/cli/states/ParseID.h src/cli/states/ShowState.h src/cli/get_commands/GetCommand.h src/cli/get_commands/GetAll.cpp src/cli/get_commands/GetAll.h src/cli/get_commands/GetToday.cpp src/cli/get_commands/GetToday.h src/cli/get_commands/GetThisWeek.cpp src/cli/get_commands/GetThisWeek.h src/cli/get_commands/GetByLabel.cpp src/cli/get_commands/GetByLabel.h src/cli/states/StartState.cpp src/cli/states/StartState.h src/cli/Console.cpp src/cli/Console.h)
 target_link_libraries(TestsExecutable GTest::GTest GTest::Main ${GMOCK_LIBRARY} ${GMOCK_MAIN_LIBRARY})
 
 gtest_discover_tests(TestsExecutable)
