@@ -4,6 +4,6 @@
 
 #include "ParseState.h"
 
-ParseState::ParseState(Console &console)
-: State(console)
+ParseState::ParseState(const std::shared_ptr<State>& next_state)
+: State(next_state)
 {}

@@ -5,17 +5,17 @@
 #ifndef TODOLIST_PARSEADDTYPE_H
 #define TODOLIST_PARSEADDTYPE_H
 
-class Console;
-#include "State.h"
+class ConsoleContext;
+#include "ParseState.h"
 
-class ParseAddType : public State {
-
-public:
-    explicit ParseAddType(Console&);
+class ParseAddType : public ParseState {
 
 public:
-    void                    print();
-    std::shared_ptr<State>  read();
+    explicit ParseAddType(const std::shared_ptr<State>&);
+
+public:
+    void                    print(ConsoleContext& context) override;
+    std::shared_ptr<State>  execute(ConsoleContext& context) override;
 };
 
 

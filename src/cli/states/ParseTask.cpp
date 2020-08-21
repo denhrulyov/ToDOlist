@@ -3,3 +3,10 @@
 //
 
 #include "ParseTask.h"
+#include "cli/ConsoleContext.h"
+
+ParseTask::ParseTask(const std::shared_ptr<State>& next_state)
+:
+ParseState(next_state)
+{}
+

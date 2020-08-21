@@ -7,17 +7,17 @@
 
 #include "State.h"
 
-class Console;
+class ConsoleContext;
 
 class ParseState : public State {
 
 public:
     explicit
-    ParseState(Console&);
+    ParseState(const std::shared_ptr<State>&);
 
 public:
-    virtual void                    print() = 0;
-    virtual std::shared_ptr<State>  read() = 0;
+    virtual void                    print(ConsoleContext&) = 0;
+    virtual std::shared_ptr<State>  execute(ConsoleContext&) = 0;
 };
 
 

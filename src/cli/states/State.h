@@ -8,23 +8,28 @@
 #include <memory>
 #include <iostream>
 
-class Console;
+class ConsoleContext;
+
+
 
 class State {
 
 public:
-    State(Console& console) : console_(console) {};
+    State(const std::shared_ptr<State>& next_state) : next_state_(next_state) {};
 
 public:
-    virtual void                     print()                         = 0;
-    virtual std::shared_ptr<State>   read()             = 0;
+    virtual void                     print(ConsoleContext&)                             = 0;
+    virtual std::shared_ptr<State>   execute(ConsoleContext&)                           = 0;
 
 public:
-    virtual                          ~State()           = default;
+    virtual                          ~State()                                   = default;
 
 protected:
-    Console& console_;
+    std::shared_ptr<State> next_state_;
+
 };
+
+
 
 
 
