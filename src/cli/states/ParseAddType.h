@@ -14,8 +14,9 @@ public:
     explicit ParseAddType(const std::shared_ptr<State>&);
 
 public:
-    void                    print(ConsoleContext& context) override;
-    std::shared_ptr<State>  execute(ConsoleContext& context) override;
+    void                print(ConsoleContext& context) override;
+    void                execute(ConsoleContext& context) override;
+    void                help(ConsoleContext&) override;
 };
 
 

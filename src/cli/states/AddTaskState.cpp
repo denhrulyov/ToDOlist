@@ -29,17 +29,28 @@ AddTaskState::print(ConsoleContext& context) {
     context.getIO().log(std::string("priority : ") + field_repr(buffer.priority_));
     context.getIO().log(std::string("label :    ") + field_repr(buffer.label_));
     context.getIO().log(std::string("date :     ") + field_repr(buffer.date_));
+    context.getIO().log("Y - accept, n - decline");
 }
 
 
-std::shared_ptr<State>
+void
 AddTaskState::execute(ConsoleContext& context) {
+    std::string input = context.getIO().read();
+    if (input != "Y") {
+        context.getIO().log("aborting...");
+        next_state_ = std::make_shared<StartState>(nullptr);
+        return;
+    }
     if (!context.getTaskBuffer().filled()) {
         context.getIO().log("Some fields were not set correctly. Task can't be added!");
     } else {
         context.getIO().log("Task added successfully.");
     }
-    return std::make_shared<StartState>(nullptr);
+    next_state_ = std::make_shared<StartState>(nullptr);
+}
+
+void AddTaskState::help(ConsoleContext &) {
+
 }
 
 

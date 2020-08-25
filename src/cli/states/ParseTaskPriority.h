@@ -17,7 +17,8 @@ public:
 public:
 
     void                    print(ConsoleContext&) override;
-    std::shared_ptr<State>  execute(ConsoleContext&) override;
+    void                    execute(ConsoleContext&) override;
+    void                    help(ConsoleContext&) override;
 };
 
 

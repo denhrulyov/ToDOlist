@@ -16,8 +16,9 @@ public:
     ParseState(const std::shared_ptr<State>&);
 
 public:
-    virtual void                    print(ConsoleContext&) = 0;
-    virtual std::shared_ptr<State>  execute(ConsoleContext&) = 0;
+    virtual void        print(ConsoleContext&) = 0;
+    virtual void        execute(ConsoleContext&) = 0;
+    virtual void        help(ConsoleContext&) = 0;
 };
 
 

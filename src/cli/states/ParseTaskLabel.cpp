@@ -15,14 +15,19 @@ void ParseTaskLabel::print(ConsoleContext& context) {
     context.getIO().log("Label:");
 }
 
-std::shared_ptr<State> ParseTaskLabel::execute(ConsoleContext& context) {
-    std::string input = context.getIO().read();
+void ParseTaskLabel::execute(ConsoleContext& context) {
+    std::string input = context.getIO().readLine();
     if (input.empty()) {
         context.getIO().log("Task label must not be empty!");
-        return std::make_shared<StartState>(nullptr);
+        next_state_ = std::make_shared<ParseTaskLabel>(next_state_);
+        return;
     }
     context.getTaskBuffer().label_ = input;
-    return next_state_;
+
+}
+
+void ParseTaskLabel::help(ConsoleContext &) {
+
 }
 
 

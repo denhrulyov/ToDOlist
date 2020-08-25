@@ -15,19 +15,24 @@ void ParseTaskDate::print(ConsoleContext& context) {
     context.getIO().log("Date in format yyyy-mm-dd:");
 }
 
-std::shared_ptr<State> ParseTaskDate::execute(ConsoleContext& context) {
+void ParseTaskDate::execute(ConsoleContext& context) {
 
-    std::string input = context.getIO().read();
+    std::string input = context.getIO().readLine();
     if (input.empty()) {
         context.getIO().log("Task date must not be empty!");
-        return std::make_shared<StartState>(nullptr);
+        next_state_ = std::make_shared<ParseTaskDate>(next_state_);
+        return;
     }
     using namespace boost::gregorian;
     try {
         context.getTaskBuffer().date_ = BoostDate(from_string(input));
     } catch (...) {
         context.getIO().log("Incorrect date!");
-        return std::make_shared<StartState>(nullptr);
+        next_state_ = std::make_shared<ParseTaskDate>(next_state_);
     }
-    return next_state_;
+
+}
+
+void ParseTaskDate::help(ConsoleContext &) {
+
 }

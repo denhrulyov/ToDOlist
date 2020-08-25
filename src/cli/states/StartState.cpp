@@ -3,7 +3,7 @@
 //
 
 #include "StartState.h"
-#include "ParseAddType.h"
+#include "ParseCommand.h"
 #include "cli/ConsoleContext.h"
 
 StartState::StartState(const std::shared_ptr<State>& next_state)
@@ -12,19 +12,23 @@ State(next_state)
 {}
 
 
-std::shared_ptr<State>
+void
 StartState::execute(ConsoleContext& context) {
-    std::string input = context.getIO().read();
-    if (input == "add") {
-        return std::make_shared<ParseAddType>(nullptr);
-    } else {
-        context.getIO().log("Unknown command!");
-        return std::make_shared<StartState>(nullptr);
-    }
+    next_state_ = std::make_shared<ParseCommand>(nullptr);
 }
 
 void
 StartState::print(ConsoleContext& context) {
-    context.getIO().log("Input command to execute");
+    context.getIO().log("Welcome to TODO list CLI.");
+    help(context);
+}
+
+void StartState::help(ConsoleContext& context) {
+    context.getIO().log("   Type  ");
+    context.getIO().log("|   __help__  to get see available options");
+    context.getIO().log("|   __abort__  to abort executing current command");
+    context.getIO().log("|   __exit__  to exit");
+    context.getIO().log("THESE WORDS ARE RESERVED ");
+    context.getIO().log("AND MUST NOT BE A PART OF PARAMETER!");
 }
 

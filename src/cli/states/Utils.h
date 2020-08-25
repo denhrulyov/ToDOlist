@@ -5,6 +5,7 @@
 #ifndef TODOLIST_UTILS_H
 #define TODOLIST_UTILS_H
 
+#include <boost/algorithm/string/split.hpp>
 #include "State.h"
 #include "core/utils/task_io/ConsoleTaskIO.h"
 
@@ -39,8 +40,11 @@ std::string field_repr(const std::optional<T>& field) {
     return result;
 }
 
+std::string field_repr(const std::optional<std::string>& field);
+
+
 std::string field_repr(const std::optional<TaskPriority>& field);
 
-
+std::vector<std::string> split(const std::string& str,const std::string& by = " ");
 #endif //TODOLIST_UTILS_H
 

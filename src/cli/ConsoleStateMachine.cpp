@@ -5,11 +5,10 @@
 #include "ConsoleStateMachine.h"
 
 void ConsoleStateMachine::run() {
-    context_->getIO().log("Welcome to TODO list CLI.");
     while (current_state_) {
         current_state_->print(*context_);
-        auto next_state = current_state_->execute(*context_);
-        current_state_ = next_state;
+        current_state_->execute(*context_);
+        current_state_ = current_state_->switchState(*context_);
     }
 }
 

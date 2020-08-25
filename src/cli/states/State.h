@@ -15,11 +15,15 @@ class ConsoleContext;
 class State {
 
 public:
-    State(const std::shared_ptr<State>& next_state) : next_state_(next_state) {};
+    explicit
+    State(const std::shared_ptr<State>& next_state);
 
 public:
     virtual void                     print(ConsoleContext&)                             = 0;
-    virtual std::shared_ptr<State>   execute(ConsoleContext&)                           = 0;
+    virtual void                     help(ConsoleContext&)                              = 0;
+    virtual void                     execute(ConsoleContext&)                           = 0;
+    virtual std::shared_ptr<State>   switchState(ConsoleContext&);
+
 
 public:
     virtual                          ~State()                                   = default;

@@ -10,8 +10,20 @@
 class ConsoleIO {
 
 public:
-    void log(const std::string& message);
-    std::string read();
+    void            log(const std::string& message);
+    std::string     read();
+    std::string     readLine();
+    std::string     readRestBuffer();
+
+public:
+    bool            isEmpty();
+    void            clear();
+
+private:
+    void            clearPrefixSpaces();
+
+private:
+    std::string buffer_;
 };
 
 

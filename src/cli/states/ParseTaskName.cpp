@@ -15,12 +15,17 @@ void ParseTaskName::print(ConsoleContext& context) {
     context.getIO().log("Task name:");
 }
 
-std::shared_ptr<State> ParseTaskName::execute(ConsoleContext& context) {
-    std::string input = context.getIO().read();
+void ParseTaskName::execute(ConsoleContext& context) {
+    std::string input = context.getIO().readLine();
     if (input.empty()) {
         context.getIO().log("Task name must not be empty!");
-        return std::make_shared<StartState>(nullptr);
+        next_state_ = std::make_shared<ParseTaskName>(next_state_);
+        return;
     }
     context.getTaskBuffer().name_ = input;
-    return next_state_;
+
+}
+
+void ParseTaskName::help(ConsoleContext &) {
+
 }

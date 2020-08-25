@@ -15,11 +15,12 @@ void ParseTaskPriority::print(ConsoleContext& context) {
     context.getIO().log("Task priority:");
 }
 
-std::shared_ptr<State> ParseTaskPriority::execute(ConsoleContext& context) {
-    std::string input = context.getIO().read();
+void ParseTaskPriority::execute(ConsoleContext& context) {
+    std::string input = context.getIO().readLine();
     if (input.empty()) {
         context.getIO().log("Task priority must not be empty");
-        return std::make_shared<StartState>(nullptr);
+        next_state_ = std::make_shared<ParseTaskPriority>(next_state_);
+        return;
     }
     for (auto &symbol : input) {
         symbol = std::tolower(symbol);
@@ -33,13 +34,17 @@ std::shared_ptr<State> ParseTaskPriority::execute(ConsoleContext& context) {
     } else if (input == "none" || input == "0") {
                context.getTaskBuffer().priority_ = TaskPriority::NONE;
     } else {
-               context.getIO().log("Incorrect priority!");
-               context.getIO().log("Possible : ");
-               context.getIO().log("first    (1)");
-               context.getIO().log("second   (2)");
-               context.getIO().log("third    (3)");
-               context.getIO().log("none     (0)");
-               return std::make_shared<StartState>(nullptr);
+               help(context);
+               next_state_ = std::make_shared<ParseTaskPriority>(next_state_);
     }
-    return next_state_;
+
+}
+
+void ParseTaskPriority::help(ConsoleContext& context) {
+    context.getIO().log("Incorrect priority!");
+    context.getIO().log("Possible : ");
+    context.getIO().log("first    (1)");
+    context.getIO().log("second   (2)");
+    context.getIO().log("third    (3)");
+    context.getIO().log("none     (0)");
 }

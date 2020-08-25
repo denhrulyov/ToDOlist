@@ -16,3 +16,13 @@ std::string field_repr(const std::optional<TaskPriority>& field) {
     ss >> result;
     return result;
 }
+
+std::string field_repr(const std::optional<std::string>& field) {
+    return field.has_value() ? field.value() : "### unknown ###";
+}
+
+std::vector<std::string> split(const std::string& str,const std::string& by) {
+    std::vector<std::string> args;
+    boost::algorithm::split(args, str, boost::is_any_of(by));
+    return args;
+}

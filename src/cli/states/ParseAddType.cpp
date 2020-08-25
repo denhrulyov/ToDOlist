@@ -12,6 +12,7 @@
 #include "ParseTaskDate.h"
 #include "ParseTaskLabel.h"
 #include "ParseTaskPriority.h"
+#include "ParseCommand.h"
 #include "ParseID.h"
 #include "Utils.h"
 
@@ -21,22 +22,27 @@ ParseState(next_state)
 {}
 
 void ParseAddType::print(ConsoleContext& context) {
-    context.getIO().log("Specify what to add");
+
 }
 
-std::shared_ptr<State> ParseAddType::execute(ConsoleContext& context) {
+void ParseAddType::execute(ConsoleContext& context) {
+    if (context.getIO().isEmpty()) {
+        context.getIO().log("Specify what to add!");
+        help(context);
+        next_state_ = std::make_shared<ParseCommand>(nullptr);
+        return;
+    }
     std::string input = context.getIO().read();
     if (input == "task") {
-        auto next_state =
+        next_state_ =
                 create_chain<
                         ParseTaskName,
                         ParseTaskPriority,
                         ParseTaskLabel,
                         ParseTaskDate,
                         AddTaskState>();
-        return next_state;
     } else if (input == "subtask") {
-        auto next_state =
+        next_state_ =
                 create_chain<
                         ParseID,
                         ParseTaskName,
@@ -44,9 +50,15 @@ std::shared_ptr<State> ParseAddType::execute(ConsoleContext& context) {
                         ParseTaskLabel,
                         ParseTaskDate,
                         AddSubTaskState>();
-        return next_state;
     } else {
-        context.getIO().log("Invalid add argument!");
-        return std::make_shared<StartState>(nullptr);
+        context.getIO().log("Invalid add parameter!");
+        help(context);
+        next_state_ = std::make_shared<ParseCommand>(nullptr);
     }
+}
+
+void ParseAddType::help(ConsoleContext &context) {
+    context.getIO().log("Available parameters:");
+    context.getIO().log("-  task");
+    context.getIO().log("-  subtask");
 }
