@@ -10,13 +10,13 @@
 #include "core/utils/task_io/ConsoleTaskIO.h"
 
 template <class FirstState>
-std::shared_ptr<State> create_chain_impl() {
+static std::shared_ptr<State> create_chain_impl() {
     return std::make_shared<FirstState>(nullptr);
 }
 
 template <class FirstState, class ...RestStates,
         typename std::enable_if<0 < sizeof...(RestStates), int>::type = 0>
-std::shared_ptr<State> create_chain_impl() {
+static std::shared_ptr<State> create_chain_impl() {
     auto tail = create_chain_impl<RestStates...>();
     return std::make_shared<FirstState>(tail);
 }

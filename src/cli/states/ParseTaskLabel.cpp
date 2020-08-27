@@ -6,16 +6,21 @@
 #include "StartState.h"
 #include "ParseTaskLabel.h"
 #include "ParseTaskDate.h"
+#include "AddTaskState.h"
+#include "AddSubTaskState.h"
 
-ParseTaskLabel::ParseTaskLabel(const std::shared_ptr<State>& next_state)
+template<class T_next, class T_exit>
+ParseTaskLabel<T_next, T_exit>::ParseTaskLabel(const std::shared_ptr<State>& next_state)
 : ParseTask(next_state)
 {}
 
-void ParseTaskLabel::print(ConsoleContext& context) {
+template<class T_next, class T_exit>
+void ParseTaskLabel<T_next, T_exit>::print(ConsoleContext& context) {
     context.getIO().log("Label:");
 }
 
-void ParseTaskLabel::execute(ConsoleContext& context) {
+template<class T_next, class T_exit>
+void ParseTaskLabel<T_next, T_exit>::execute(ConsoleContext& context) {
     std::string input = context.getIO().readLine();
     if (input.empty()) {
         context.getIO().log("Task label must not be empty!");
@@ -26,8 +31,19 @@ void ParseTaskLabel::execute(ConsoleContext& context) {
 
 }
 
-void ParseTaskLabel::help(ConsoleContext &) {
+template<class T_next, class T_exit>
+void ParseTaskLabel<T_next, T_exit>::help(ConsoleContext &) {
 
 }
 
+template class ParseTaskLabel<
+                    ParseTaskDate<
+                            AddTaskState,
+                            StartState>,
+                    StartState>;
 
+template class ParseTaskLabel<
+                    ParseTaskDate<
+                            AddSubTaskState,
+                            StartState>,
+                    StartState>;

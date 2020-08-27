@@ -4,18 +4,24 @@
 
 #include "cli/ConsoleContext.h"
 #include "AddTaskState.h"
+#include "AddSubTaskState.h"
 #include "ParseTaskDate.h"
 #include "StartState.h"
 
-ParseTaskDate::ParseTaskDate(const std::shared_ptr<State>& next_state)
+
+
+template<class T_next, class T_exit>
+ParseTaskDate<T_next, T_exit>::ParseTaskDate(const std::shared_ptr<State>& next_state)
 : ParseTask(next_state)
 {}
 
-void ParseTaskDate::print(ConsoleContext& context) {
+template<class T_next, class T_exit>
+void ParseTaskDate<T_next, T_exit>::print(ConsoleContext& context) {
     context.getIO().log("Date in format yyyy-mm-dd:");
 }
 
-void ParseTaskDate::execute(ConsoleContext& context) {
+template<class T_next, class T_exit>
+void ParseTaskDate<T_next, T_exit>::execute(ConsoleContext& context) {
 
     std::string input = context.getIO().readLine();
     if (input.empty()) {
@@ -33,6 +39,14 @@ void ParseTaskDate::execute(ConsoleContext& context) {
 
 }
 
-void ParseTaskDate::help(ConsoleContext &) {
+template<class T_next, class T_exit>
+void ParseTaskDate<T_next, T_exit>::help(ConsoleContext &) {
 
 }
+
+template class ParseTaskDate<
+                    AddTaskState,
+                    StartState>;
+template class ParseTaskDate<
+                    AddSubTaskState,
+                    StartState>;

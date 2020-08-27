@@ -9,7 +9,7 @@
 //
 
 #include "core/utils/task_io/ConsoleTaskIO.h"
-#include "StartState.h"
+#include "ParseCommand.h"
 #include "cli/ConsoleContext.h"
 #include "Utils.h"
 
@@ -35,10 +35,10 @@ AddTaskState::print(ConsoleContext& context) {
 
 void
 AddTaskState::execute(ConsoleContext& context) {
+    next_state_ = std::make_shared<ParseCommand>(nullptr);
     std::string input = context.getIO().read();
     if (input != "Y") {
         context.getIO().log("aborting...");
-        next_state_ = std::make_shared<StartState>(nullptr);
         return;
     }
     if (!context.getTaskBuffer().filled()) {
@@ -46,7 +46,6 @@ AddTaskState::execute(ConsoleContext& context) {
     } else {
         context.getIO().log("Task added successfully.");
     }
-    next_state_ = std::make_shared<StartState>(nullptr);
 }
 
 void AddTaskState::help(ConsoleContext &) {

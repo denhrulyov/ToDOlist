@@ -4,18 +4,24 @@
 
 #include "ParseTaskPriority.h"
 #include "ParseTaskLabel.h"
+#include "AddTaskState.h"
+#include "AddSubTaskState.h"
 #include "StartState.h"
 #include "cli/ConsoleContext.h"
+#include "ParseTaskDate.h"
 
-ParseTaskPriority::ParseTaskPriority(const std::shared_ptr<State>& next_state) :
+template<class T_next, class T_exit>
+ParseTaskPriority<T_next, T_exit>::ParseTaskPriority(const std::shared_ptr<State>& next_state) :
         ParseTask(next_state)
 {}
 
-void ParseTaskPriority::print(ConsoleContext& context) {
+template<class T_next, class T_exit>
+void ParseTaskPriority<T_next, T_exit>::print(ConsoleContext& context) {
     context.getIO().log("Task priority:");
 }
 
-void ParseTaskPriority::execute(ConsoleContext& context) {
+template<class T_next, class T_exit>
+void ParseTaskPriority<T_next, T_exit>::execute(ConsoleContext& context) {
     std::string input = context.getIO().readLine();
     if (input.empty()) {
         context.getIO().log("Task priority must not be empty");
@@ -40,7 +46,8 @@ void ParseTaskPriority::execute(ConsoleContext& context) {
 
 }
 
-void ParseTaskPriority::help(ConsoleContext& context) {
+template<class T_next, class T_exit>
+void ParseTaskPriority<T_next, T_exit>::help(ConsoleContext& context) {
     context.getIO().log("Incorrect priority!");
     context.getIO().log("Possible : ");
     context.getIO().log("first    (1)");
@@ -48,3 +55,18 @@ void ParseTaskPriority::help(ConsoleContext& context) {
     context.getIO().log("third    (3)");
     context.getIO().log("none     (0)");
 }
+
+
+template class ParseTaskPriority<   ParseTaskLabel<
+                                            ParseTaskDate<
+                                                    AddTaskState,
+                                                    StartState>,
+                                            StartState>,
+                                    StartState>;
+
+template class ParseTaskPriority<   ParseTaskLabel<
+                                        ParseTaskDate<
+                                                AddSubTaskState,
+                                                StartState>,
+                                        StartState>,
+                                    StartState>;

@@ -16,6 +16,8 @@
 #include "ParseID.h"
 #include "Utils.h"
 
+
+
 ParseAddType::ParseAddType(const std::shared_ptr<State>& next_state)
 :
 ParseState(next_state)
@@ -36,19 +38,19 @@ void ParseAddType::execute(ConsoleContext& context) {
     if (input == "task") {
         next_state_ =
                 create_chain<
-                        ParseTaskName,
-                        ParseTaskPriority,
-                        ParseTaskLabel,
-                        ParseTaskDate,
+                        ParseTaskName<StartState, StartState>,
+                        ParseTaskPriority<StartState, StartState>,
+                        ParseTaskLabel<StartState, StartState>,
+                        ParseTaskDate<StartState, StartState>,
                         AddTaskState>();
     } else if (input == "subtask") {
         next_state_ =
                 create_chain<
                         ParseID,
-                        ParseTaskName,
-                        ParseTaskPriority,
-                        ParseTaskLabel,
-                        ParseTaskDate,
+                        ParseTaskName<StartState, StartState>,
+                        ParseTaskPriority<StartState, StartState>,
+                        ParseTaskLabel<StartState, StartState>,
+                        ParseTaskDate<StartState, StartState>,
                         AddSubTaskState>();
     } else {
         context.getIO().log("Invalid add parameter!");

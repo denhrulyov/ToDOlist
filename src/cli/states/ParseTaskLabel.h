@@ -7,6 +7,7 @@
 
 #include "ParseTask.h"
 
+template<class T_next, class T_exit>
 class ParseTaskLabel : public ParseTask {
 
 public:
