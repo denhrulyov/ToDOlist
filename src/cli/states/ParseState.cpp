@@ -4,6 +4,6 @@
 
 #include "ParseState.h"
 
-ParseState::ParseState(const std::shared_ptr<State>& next_state)
-: State(next_state)
+ParseState::ParseState()
+: State()
 {}

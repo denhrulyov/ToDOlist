@@ -8,31 +8,31 @@
 #include "ShowState.h"
 #include "ParseID.h"
 #include "DeleteTaskState.h"
-#include "Utils.h"
+#include "cli/states/utils/Utils.h"
 
-ParseCommand::ParseCommand(const std::shared_ptr<State> & next_state)
-: ParseState(next_state)
+ParseCommand::ParseCommand()
+: ParseState()
 {}
 
 void ParseCommand::print(ConsoleContext &context) {
     context.getIO().log("Input command to execute");;
 }
 
-void ParseCommand::execute(ConsoleContext &context) {
+std::shared_ptr<State> ParseCommand::execute(ConsoleContext &context) {
     context.getIO().clear();
     std::string input = context.getIO().read();
     if (input == "add") {
-        next_state_ = std::make_shared<ParseAddType>(nullptr);
+        return std::make_shared<ParseAddType>();
     }
     else if (input == "show") {
-        next_state_ = std::make_shared<ShowState>(nullptr);
+        return std::make_shared<ShowState>();
     } else if (input == "delete") {
-        next_state_ = create_chain<ParseID, DeleteTaskState>();
+        return std::make_shared<InputChain<pack<ParseID>, DeleteTaskState, ParseCommand>>();
     } else {
         context.getIO().log("Unknown command!");
         help(context);
         context.getIO().clear();
-        next_state_ = std::make_shared<ParseCommand>(nullptr);
+        return std::make_shared<ParseCommand>();
     }
 }
 

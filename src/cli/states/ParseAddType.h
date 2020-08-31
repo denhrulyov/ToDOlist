@@ -11,11 +11,11 @@ class ConsoleContext;
 class ParseAddType : public ParseState {
 
 public:
-    explicit ParseAddType(const std::shared_ptr<State>&);
+    explicit ParseAddType();
 
 public:
     void                print(ConsoleContext& context) override;
-    void                execute(ConsoleContext& context) override;
+    std::shared_ptr<State>               execute(ConsoleContext& context) override;
     void                help(ConsoleContext&) override;
 };
 

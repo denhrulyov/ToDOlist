@@ -7,12 +7,12 @@
 #include "core/utils/task_io/ConsoleTaskIO.h"
 #include "StartState.h"
 #include "cli/ConsoleContext.h"
-#include "Utils.h"
+#include "cli/states/utils/Utils.h"
 
 
-AddSubTaskState::AddSubTaskState(const std::shared_ptr<State>& next_state)
+AddSubTaskState::AddSubTaskState()
         :
-        State(next_state)
+        State()
 {}
 
 void
@@ -32,20 +32,19 @@ AddSubTaskState::print(ConsoleContext& context) {
 }
 
 
-void
+std::shared_ptr<State>
 AddSubTaskState::execute(ConsoleContext& context) {
     std::string input = context.getIO().read();
     if (input != "Y") {
         context.getIO().log("aborting...");
-        next_state_ = std::make_shared<StartState>(nullptr);
-        return;
+        return std::make_shared<StartState>();
     }
     if (!context.getTaskBuffer().filled()) {
         context.getIO().log("Some fields were not set correctly. Task can't be added!");
     } else {
         context.getIO().log("Task added successfully.");
     }
-    next_state_ = std::make_shared<StartState>(nullptr);
+    return std::make_shared<StartState>();
 }
 
 void AddSubTaskState::help(ConsoleContext &) {

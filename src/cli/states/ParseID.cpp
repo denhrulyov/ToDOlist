@@ -3,7 +3,8 @@
 //
 
 #include "cli/ConsoleContext.h"
-#include "StartState.h"
+#include "DeleteTaskState.h"
+#include "ParseCommand.h"
 #include "ParseID.h"
 #include "ParseTaskName.h"
 #include "ParseTaskPriority.h"
@@ -14,8 +15,8 @@
 #include "cli/TaskTableIO.h"
 
 template<class T_next, class T_exit>
-ParseID<T_next, T_exit>::ParseID(const std::shared_ptr<State>& next_state)
-: ParseState(next_state)
+ParseID<T_next, T_exit>::ParseID()
+: ParseState()
 {}
 
 template<class T_next, class T_exit>
@@ -24,11 +25,10 @@ void ParseID<T_next, T_exit>::print(ConsoleContext& context) {
 }
 
 template<class T_next, class T_exit>
-void ParseID<T_next, T_exit>::execute(ConsoleContext& context) {
+std::shared_ptr<State> ParseID<T_next, T_exit>::execute(ConsoleContext& context) {
     if (context.getTaskTable().empty()) {
         context.getIO().log("Task table is now empty. Make get command to gain some set of tasks.");
-        next_state_ = std::make_shared<StartState>(nullptr);
-        return;
+        return std::make_shared<T_exit>();
     }
     std::string input = context.getIO().readLine();
     TaskNumber task_number = -1;
@@ -36,23 +36,21 @@ void ParseID<T_next, T_exit>::execute(ConsoleContext& context) {
         task_number = std::stoi(input);
     } catch (...) {
         context.getIO().log("Incorrect number!");
-        next_state_ = std::make_shared<ParseID>(nullptr);
-        return;
+        return std::make_shared<ParseID>();
     }
     if (task_number < 1 || task_number > (--context.getTaskTable().end())->first) {
         context.getIO().log("Index is out of table!");
         context.getIO().log("Current table is:");
         task_table_io::print(context);
-        next_state_ = std::make_shared<ParseID>(nullptr);
-        return;
+        return std::make_shared<ParseID>();
     }
     if (context.getTaskTable().count(task_number) == 0) {
         context.getIO().log("This task was deleted.");
         context.getIO().log("Current table is:");
         task_table_io::print(context);
-        next_state_ = std::make_shared<ParseID>(nullptr);
+        return std::make_shared<ParseID>();
     }
-
+    return std::make_shared<T_next>();
 }
 
 template<class T_next, class T_exit>
@@ -65,9 +63,11 @@ template class ParseID<
                         ParseTaskPriority<
                             ParseTaskLabel<
                                 ParseTaskDate<
-                                    AddTaskState,
-                                    StartState>,
-                                StartState>,
-                            StartState>,
-                        StartState>,
-                    StartState>;
+                                    AddSubTaskState,
+                                        ParseCommand>,
+                                    ParseCommand>,
+                                ParseCommand>,
+                            ParseCommand>,
+                    ParseCommand>;
+
+template class ParseID<DeleteTaskState, ParseCommand>;

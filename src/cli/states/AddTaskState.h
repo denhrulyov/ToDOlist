@@ -11,11 +11,11 @@ class AddTaskState : public State {
 
 public:
     explicit
-    AddTaskState(const std::shared_ptr<State>&);
+    AddTaskState();
 
 public:
     void                print(ConsoleContext& context) override;
-    void                execute(ConsoleContext& context) override;
+    std::shared_ptr<State>               execute(ConsoleContext& context) override;
     void                help(ConsoleContext&) override;
 };
 

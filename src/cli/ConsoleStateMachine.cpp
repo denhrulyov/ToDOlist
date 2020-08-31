@@ -7,8 +7,7 @@
 void ConsoleStateMachine::run() {
     while (current_state_) {
         current_state_->print(*context_);
-        current_state_->execute(*context_);
-        current_state_ = current_state_->switchState(*context_);
+        current_state_ = current_state_->execute(*context_);
     }
 }
 

@@ -14,11 +14,11 @@ class ParseTaskDate : public ParseTask {
 
 public:
     explicit
-    ParseTaskDate(const std::shared_ptr<State>&);
+    ParseTaskDate();
 
 public:
     void                print(ConsoleContext& context) override;
-    void                execute(ConsoleContext&) override;
+    std::shared_ptr<State>               execute(ConsoleContext&) override;
     void                help(ConsoleContext&) override;
 };
 

@@ -12,7 +12,7 @@ class ParseGetParam : public ParseState {
 
 public:
     explicit
-    ParseGetParam(const std::shared_ptr<State>&);
+    ParseGetParam();
 };
 
 

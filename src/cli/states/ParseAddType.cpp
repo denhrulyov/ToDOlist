@@ -14,48 +14,53 @@
 #include "ParseTaskPriority.h"
 #include "ParseCommand.h"
 #include "ParseID.h"
-#include "Utils.h"
+#include "cli/states/utils/Utils.h"
 
 
 
-ParseAddType::ParseAddType(const std::shared_ptr<State>& next_state)
+ParseAddType::ParseAddType()
 :
-ParseState(next_state)
+ParseState()
 {}
 
 void ParseAddType::print(ConsoleContext& context) {
 
 }
 
-void ParseAddType::execute(ConsoleContext& context) {
+std::shared_ptr<State> ParseAddType::execute(ConsoleContext& context) {
     if (context.getIO().isEmpty()) {
         context.getIO().log("Specify what to add!");
         help(context);
-        next_state_ = std::make_shared<ParseCommand>(nullptr);
-        return;
+        return std::make_shared<ParseCommand>();
     }
     std::string input = context.getIO().read();
     if (input == "task") {
-        next_state_ =
-                create_chain<
-                        ParseTaskName<StartState, StartState>,
-                        ParseTaskPriority<StartState, StartState>,
-                        ParseTaskLabel<StartState, StartState>,
-                        ParseTaskDate<StartState, StartState>,
-                        AddTaskState>();
+        return std::make_shared<
+                InputChain<
+                        pack<ParseTaskName,
+                             ParseTaskPriority,
+                             ParseTaskLabel,
+                             ParseTaskDate>,
+                        AddTaskState,
+                        ParseCommand
+                >
+         >();
     } else if (input == "subtask") {
-        next_state_ =
-                create_chain<
-                        ParseID,
-                        ParseTaskName<StartState, StartState>,
-                        ParseTaskPriority<StartState, StartState>,
-                        ParseTaskLabel<StartState, StartState>,
-                        ParseTaskDate<StartState, StartState>,
-                        AddSubTaskState>();
+        return std::make_shared<
+                InputChain<
+                        pack<ParseID,
+                             ParseTaskName,
+                             ParseTaskPriority,
+                             ParseTaskLabel,
+                             ParseTaskDate>,
+                        AddSubTaskState,
+                        ParseCommand
+                >
+        >();
     } else {
         context.getIO().log("Invalid add parameter!");
         help(context);
-        next_state_ = std::make_shared<ParseCommand>(nullptr);
+        return std::make_shared<ParseCommand>();
     }
 }
 

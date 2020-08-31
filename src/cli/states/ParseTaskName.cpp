@@ -2,6 +2,7 @@
 // Created by denis on 19.08.20.
 //
 
+#include "ParseCommand.h"
 #include "StartState.h"
 #include "ParseTaskName.h"
 #include "ParseTaskPriority.h"
@@ -12,8 +13,8 @@
 #include "cli/ConsoleContext.h"
 
 template<class T_next, class T_exit>
-ParseTaskName<T_next, T_exit>::ParseTaskName(const std::shared_ptr<State>& next_state) :
-ParseTask(next_state)
+ParseTaskName<T_next, T_exit>::ParseTaskName() :
+ParseTask()
 {}
 
 template<class T_next, class T_exit>
@@ -22,15 +23,14 @@ void ParseTaskName<T_next, T_exit>::print(ConsoleContext& context) {
 }
 
 template<class T_next, class T_exit>
-void ParseTaskName<T_next, T_exit>::execute(ConsoleContext& context) {
+std::shared_ptr<State> ParseTaskName<T_next, T_exit>::execute(ConsoleContext& context) {
     std::string input = context.getIO().readLine();
     if (input.empty()) {
         context.getIO().log("Task name must not be empty!");
-        next_state_ = std::make_shared<ParseTaskName>(next_state_);
-        return;
+        return std::make_shared<ParseTaskName>();
     }
     context.getTaskBuffer().name_ = input;
-
+    return std::make_shared<T_next>();
 }
 
 template<class T_next, class T_exit>
@@ -43,10 +43,10 @@ template class ParseTaskName<
                             ParseTaskLabel<
                                 ParseTaskDate<
                                     AddTaskState,
-                                    StartState>,
-                                StartState>,
-                            StartState>,
-                    StartState>;
+                                    ParseCommand>,
+                                ParseCommand>,
+                        ParseCommand>,
+                    ParseCommand>;
 
 
 template class ParseTaskName<
@@ -54,7 +54,7 @@ template class ParseTaskName<
                             ParseTaskLabel<
                                     ParseTaskDate<
                                             AddSubTaskState,
-                                            StartState>,
-                                    StartState>,
-                            StartState>,
-                    StartState>;
+                                            ParseCommand>,
+                                    ParseCommand>,
+                            ParseCommand>,
+                    ParseCommand>;

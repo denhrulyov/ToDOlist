@@ -6,12 +6,13 @@
 #define TODOLIST_UTILS_H
 
 #include <boost/algorithm/string/split.hpp>
-#include "State.h"
+#include "cli/states/utils/Metaprog.h"
+#include "cli/states/State.h"
 #include "core/utils/task_io/ConsoleTaskIO.h"
 
 template <class FirstState>
 static std::shared_ptr<State> create_chain_impl() {
-    return std::make_shared<FirstState>(nullptr);
+    return std::make_shared<FirstState>();
 }
 
 template <class FirstState, class ...RestStates,
@@ -42,9 +43,10 @@ std::string field_repr(const std::optional<T>& field) {
 
 std::string field_repr(const std::optional<std::string>& field);
 
-
 std::string field_repr(const std::optional<TaskPriority>& field);
 
-std::vector<std::string> split(const std::string& str,const std::string& by = " ");
+template <class P, class N, class E>
+using InputChain = typename nest<P, N, E>::type;
+
 #endif //TODOLIST_UTILS_H
 

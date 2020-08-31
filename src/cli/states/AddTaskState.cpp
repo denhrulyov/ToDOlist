@@ -11,14 +11,14 @@
 #include "core/utils/task_io/ConsoleTaskIO.h"
 #include "ParseCommand.h"
 #include "cli/ConsoleContext.h"
-#include "Utils.h"
+#include "cli/states/utils/Utils.h"
 
 
 
 
-AddTaskState::AddTaskState(const std::shared_ptr<State>& next_state)
+AddTaskState::AddTaskState()
 :
-State(next_state)
+State()
 {}
 
 void
@@ -33,19 +33,19 @@ AddTaskState::print(ConsoleContext& context) {
 }
 
 
-void
+std::shared_ptr<State>
 AddTaskState::execute(ConsoleContext& context) {
-    next_state_ = std::make_shared<ParseCommand>(nullptr);
     std::string input = context.getIO().read();
     if (input != "Y") {
         context.getIO().log("aborting...");
-        return;
+        return std::make_shared<ParseCommand>();
     }
     if (!context.getTaskBuffer().filled()) {
         context.getIO().log("Some fields were not set correctly. Task can't be added!");
     } else {
         context.getIO().log("Task added successfully.");
     }
+    return std::make_shared<ParseCommand>();
 }
 
 void AddTaskState::help(ConsoleContext &) {

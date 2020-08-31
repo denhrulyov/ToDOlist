@@ -5,8 +5,8 @@
 #include "ParseTask.h"
 #include "cli/ConsoleContext.h"
 
-ParseTask::ParseTask(const std::shared_ptr<State>& next_state)
+ParseTask::ParseTask()
 :
-ParseState(next_state)
+ParseState()
 {}
 

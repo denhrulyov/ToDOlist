@@ -12,11 +12,11 @@ class ParseTaskLabel : public ParseTask {
 
 public:
     explicit
-    ParseTaskLabel(const std::shared_ptr<State>&);
+    ParseTaskLabel();
 
 public:
     void                print(ConsoleContext& context) override;
-    void                execute(ConsoleContext&) override;
+    std::shared_ptr<State>               execute(ConsoleContext&) override;
     void                help(ConsoleContext&) override;
 };
 

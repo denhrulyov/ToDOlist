@@ -2,6 +2,7 @@
 // Created by denis on 19.08.20.
 //
 
+#include "ParseCommand.h"
 #include "ParseTaskPriority.h"
 #include "ParseTaskLabel.h"
 #include "AddTaskState.h"
@@ -11,8 +12,8 @@
 #include "ParseTaskDate.h"
 
 template<class T_next, class T_exit>
-ParseTaskPriority<T_next, T_exit>::ParseTaskPriority(const std::shared_ptr<State>& next_state) :
-        ParseTask(next_state)
+ParseTaskPriority<T_next, T_exit>::ParseTaskPriority() :
+        ParseTask()
 {}
 
 template<class T_next, class T_exit>
@@ -21,12 +22,11 @@ void ParseTaskPriority<T_next, T_exit>::print(ConsoleContext& context) {
 }
 
 template<class T_next, class T_exit>
-void ParseTaskPriority<T_next, T_exit>::execute(ConsoleContext& context) {
+std::shared_ptr<State> ParseTaskPriority<T_next, T_exit>::execute(ConsoleContext& context) {
     std::string input = context.getIO().readLine();
     if (input.empty()) {
         context.getIO().log("Task priority must not be empty");
-        next_state_ = std::make_shared<ParseTaskPriority>(next_state_);
-        return;
+        return std::make_shared<ParseTaskPriority>();
     }
     for (auto &symbol : input) {
         symbol = std::tolower(symbol);
@@ -41,9 +41,9 @@ void ParseTaskPriority<T_next, T_exit>::execute(ConsoleContext& context) {
                context.getTaskBuffer().priority_ = TaskPriority::NONE;
     } else {
                help(context);
-               next_state_ = std::make_shared<ParseTaskPriority>(next_state_);
+               return std::make_shared<ParseTaskPriority>();
     }
-
+    return std::make_shared<T_next>();
 }
 
 template<class T_next, class T_exit>
@@ -60,13 +60,13 @@ void ParseTaskPriority<T_next, T_exit>::help(ConsoleContext& context) {
 template class ParseTaskPriority<   ParseTaskLabel<
                                             ParseTaskDate<
                                                     AddTaskState,
-                                                    StartState>,
-                                            StartState>,
-                                    StartState>;
+                                                    ParseCommand>,
+                                            ParseCommand>,
+                                    ParseCommand>;
 
 template class ParseTaskPriority<   ParseTaskLabel<
                                         ParseTaskDate<
                                                 AddSubTaskState,
-                                                StartState>,
-                                        StartState>,
-                                    StartState>;
+                                                ParseCommand>,
+                                        ParseCommand>,
+                                    ParseCommand>;

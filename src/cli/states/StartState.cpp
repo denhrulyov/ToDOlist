@@ -6,15 +6,13 @@
 #include "ParseCommand.h"
 #include "cli/ConsoleContext.h"
 
-StartState::StartState(const std::shared_ptr<State>& next_state)
-:
-State(next_state)
+StartState::StartState()
 {}
 
 
-void
+std::shared_ptr<State>
 StartState::execute(ConsoleContext& context) {
-    next_state_ = std::make_shared<ParseCommand>(nullptr);
+    return std::make_shared<ParseCommand>();
 }
 
 void

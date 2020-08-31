@@ -12,10 +12,10 @@ class StartState : public State {
 
 public:
     explicit
-    StartState(const std::shared_ptr<State>&);
+    StartState();
 
 public:
-    void                            execute(ConsoleContext&) override;
+    std::shared_ptr<State>                           execute(ConsoleContext&) override;
     void                            print(ConsoleContext&) override;
     void                            help(ConsoleContext&) override;
 

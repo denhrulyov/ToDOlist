@@ -6,13 +6,12 @@
 #include "AddTaskState.h"
 #include "AddSubTaskState.h"
 #include "ParseTaskDate.h"
-#include "StartState.h"
-
+#include "ParseCommand.h"
 
 
 template<class T_next, class T_exit>
-ParseTaskDate<T_next, T_exit>::ParseTaskDate(const std::shared_ptr<State>& next_state)
-: ParseTask(next_state)
+ParseTaskDate<T_next, T_exit>::ParseTaskDate()
+: ParseTask()
 {}
 
 template<class T_next, class T_exit>
@@ -21,22 +20,21 @@ void ParseTaskDate<T_next, T_exit>::print(ConsoleContext& context) {
 }
 
 template<class T_next, class T_exit>
-void ParseTaskDate<T_next, T_exit>::execute(ConsoleContext& context) {
+std::shared_ptr<State> ParseTaskDate<T_next, T_exit>::execute(ConsoleContext& context) {
 
     std::string input = context.getIO().readLine();
     if (input.empty()) {
         context.getIO().log("Task date must not be empty!");
-        next_state_ = std::make_shared<ParseTaskDate>(next_state_);
-        return;
+        return std::make_shared<ParseTaskDate>();
     }
     using namespace boost::gregorian;
     try {
         context.getTaskBuffer().date_ = BoostDate(from_string(input));
     } catch (...) {
         context.getIO().log("Incorrect date!");
-        next_state_ = std::make_shared<ParseTaskDate>(next_state_);
+        return std::make_shared<ParseTaskDate>();
     }
-
+    return std::make_shared<T_next>();
 }
 
 template<class T_next, class T_exit>
@@ -46,7 +44,7 @@ void ParseTaskDate<T_next, T_exit>::help(ConsoleContext &) {
 
 template class ParseTaskDate<
                     AddTaskState,
-                    StartState>;
+                    ParseCommand>;
 template class ParseTaskDate<
                     AddSubTaskState,
-                    StartState>;
+                    ParseCommand>;

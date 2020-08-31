@@ -12,12 +12,12 @@ class ParseID : public ParseState {
 
 public:
     explicit
-    ParseID(const std::shared_ptr<State>&);
+    ParseID();
 
 public:
-    void                print(ConsoleContext& context) override;
-    void                execute(ConsoleContext& context) override;
-    void                help(ConsoleContext&) override;
+    void                        print(ConsoleContext& context) override;
+    std::shared_ptr<State>      execute(ConsoleContext& context) override;
+    void                        help(ConsoleContext&) override;
 };
 
 

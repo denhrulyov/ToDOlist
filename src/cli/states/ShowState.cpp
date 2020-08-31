@@ -7,27 +7,24 @@
 #include "ParseShowTag.h"
 #include "ParseCommand.h"
 #include "cli/ConsoleContext.h"
-#include "Utils.h"
 
-ShowState::ShowState(const std::shared_ptr<State> &next_state) :
-State(next_state)
+ShowState::ShowState() :
+State()
 {}
 
 void ShowState::print(ConsoleContext &context) {
 
 }
 
-void ShowState::execute(ConsoleContext &context) {
-    next_state_ = std::make_shared<ParseCommand>(nullptr);
+std::shared_ptr<State> ShowState::execute(ConsoleContext &context) {
     if (context.getIO().isEmpty()) {
         context.getIO().log("No show option specified!");
         help(context);
-        return;
+        return std::make_shared<ParseCommand>();
     }
     std::string input = context.getIO().read();
     if (input.empty()) {
         context.getIO().log("Argument line is empty!");
-        return;
     }
     if (input == "today") {
         context.getIO().log("Tasks for today:");
@@ -36,7 +33,7 @@ void ShowState::execute(ConsoleContext &context) {
     } else if (input == "all") {
         context.getIO().log("All tasks:");
     } else if (input == "tag") {
-        next_state_ = std::make_shared<ParseShowTag>(nullptr);
+        return std::make_shared<ParseShowTag>();
     }
     else if (input == "current_list") {
         context.getIO().log("Active list of tasks:");
@@ -44,6 +41,7 @@ void ShowState::execute(ConsoleContext &context) {
         context.getIO().log("Incorrect show options!");
         help(context);
     }
+    return std::make_shared<ParseCommand>();
 }
 
 void ShowState::help(ConsoleContext& context) {

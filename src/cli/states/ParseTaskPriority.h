@@ -13,12 +13,12 @@ class ParseTaskPriority : public ParseTask {
 
 public:
     explicit
-    ParseTaskPriority(const std::shared_ptr<State>&);
+    ParseTaskPriority();
 
 public:
 
     void                    print(ConsoleContext&) override;
-    void                    execute(ConsoleContext&) override;
+    std::shared_ptr<State>                   execute(ConsoleContext&) override;
     void                    help(ConsoleContext&) override;
 };
 

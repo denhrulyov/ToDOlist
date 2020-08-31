@@ -5,9 +5,9 @@
 #include "State.h"
 #include "cli/ConsoleContext.h"
 
-State::State(const std::shared_ptr<State>& next_state)
-: next_state_(next_state) {};
+State::State()
+ {};
 
 std::shared_ptr<State> State::switchState(ConsoleContext& context) {
-    return next_state_;
+    return nullptr;
 }

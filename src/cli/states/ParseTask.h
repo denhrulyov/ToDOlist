@@ -10,11 +10,11 @@
 class ParseTask : public ParseState {
 
 public:
-    explicit ParseTask(const std::shared_ptr<State>& next_state);
+    explicit ParseTask();
 
 public:
     virtual void        print(ConsoleContext& context) = 0;
-    virtual void        execute(ConsoleContext&) = 0;
+    virtual std::shared_ptr<State>       execute(ConsoleContext&) = 0;
 
 public:
     virtual ~ParseTask() = default;
