@@ -16,7 +16,7 @@
 
 template<class T_next, class T_exit>
 ParseID<T_next, T_exit>::ParseID()
-: ParseState()
+: ParseTask()
 {}
 
 template<class T_next, class T_exit>
@@ -30,7 +30,8 @@ std::shared_ptr<State> ParseID<T_next, T_exit>::execute(ConsoleContext& context)
         context.getIO().log("Task table is now empty. Make get command to gain some set of tasks.");
         return std::make_shared<T_exit>();
     }
-    std::string input = context.getIO().readLine();
+    context.getIO().requestInputLine();
+    std::string input = tokenizer_->read(context.getIO()).getData().value();
     TaskNumber task_number = -1;
     try {
         task_number = std::stoi(input);

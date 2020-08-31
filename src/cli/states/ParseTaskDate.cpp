@@ -22,7 +22,8 @@ void ParseTaskDate<T_next, T_exit>::print(ConsoleContext& context) {
 template<class T_next, class T_exit>
 std::shared_ptr<State> ParseTaskDate<T_next, T_exit>::execute(ConsoleContext& context) {
 
-    std::string input = context.getIO().readLine();
+    context.getIO().requestInputLine();
+    std::string input = tokenizer_->read(context.getIO()).getData().value();
     if (input.empty()) {
         context.getIO().log("Task date must not be empty!");
         return std::make_shared<ParseTaskDate>();

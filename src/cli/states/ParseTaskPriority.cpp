@@ -10,10 +10,11 @@
 #include "StartState.h"
 #include "cli/ConsoleContext.h"
 #include "ParseTaskDate.h"
+#include "cli/tokenization/MultiwordDataTokenizerInterface.h"
 
 template<class T_next, class T_exit>
 ParseTaskPriority<T_next, T_exit>::ParseTaskPriority() :
-        ParseTask()
+ParseTask()
 {}
 
 template<class T_next, class T_exit>
@@ -23,7 +24,8 @@ void ParseTaskPriority<T_next, T_exit>::print(ConsoleContext& context) {
 
 template<class T_next, class T_exit>
 std::shared_ptr<State> ParseTaskPriority<T_next, T_exit>::execute(ConsoleContext& context) {
-    std::string input = context.getIO().readLine();
+    context.getIO().requestInputLine();
+    std::string input = tokenizer_->read(context.getIO()).getData().value();
     if (input.empty()) {
         context.getIO().log("Task priority must not be empty");
         return std::make_shared<ParseTaskPriority>();

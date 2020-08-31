@@ -8,6 +8,7 @@
 #include "ParseTaskDate.h"
 #include "AddTaskState.h"
 #include "AddSubTaskState.h"
+#include "cli/tokenization/MultiwordDataTokenizerInterface.h"
 
 template<class T_next, class T_exit>
 ParseTaskLabel<T_next, T_exit>::ParseTaskLabel()
@@ -21,7 +22,8 @@ void ParseTaskLabel<T_next, T_exit>::print(ConsoleContext& context) {
 
 template<class T_next, class T_exit>
 std::shared_ptr<State> ParseTaskLabel<T_next, T_exit>::execute(ConsoleContext& context) {
-    std::string input = context.getIO().readLine();
+    context.getIO().requestInputLine();
+    std::string input = tokenizer_->read(context.getIO()).getData().value();
     if (input.empty()) {
         context.getIO().log("Task label must not be empty!");
         return std::make_shared<ParseTaskLabel>();

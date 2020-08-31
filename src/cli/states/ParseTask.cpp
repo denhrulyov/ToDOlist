@@ -4,9 +4,11 @@
 
 #include "ParseTask.h"
 #include "cli/ConsoleContext.h"
+#include "cli/tokenization/MultiwordDataTokenizer.h"
 
 ParseTask::ParseTask()
 :
-ParseState()
+ParseState(),
+tokenizer_(std::move(std::make_unique<MultiwordDataTokenizer>()))
 {}
 

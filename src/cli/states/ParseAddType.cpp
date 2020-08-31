@@ -15,12 +15,13 @@
 #include "ParseCommand.h"
 #include "ParseID.h"
 #include "cli/states/utils/Utils.h"
-
+#include "cli/tokenization/KeywordTokenizer.h"
 
 
 ParseAddType::ParseAddType()
 :
-ParseState()
+ParseState(),
+tokenizer_(std::move(std::make_unique<KeywordTokenizer>()))
 {}
 
 void ParseAddType::print(ConsoleContext& context) {
@@ -33,8 +34,8 @@ std::shared_ptr<State> ParseAddType::execute(ConsoleContext& context) {
         help(context);
         return std::make_shared<ParseCommand>();
     }
-    std::string input = context.getIO().read();
-    if (input == "task") {
+    Token token = tokenizer_->read(context.getIO());
+    if (token.getType() == TypeToken::TASK) {
         return std::make_shared<
                 InputChain<
                         pack<ParseTaskName,
@@ -45,7 +46,7 @@ std::shared_ptr<State> ParseAddType::execute(ConsoleContext& context) {
                         ParseCommand
                 >
          >();
-    } else if (input == "subtask") {
+    } else if (token.getType() == TypeToken::SUBTASK) {
         return std::make_shared<
                 InputChain<
                         pack<ParseID,

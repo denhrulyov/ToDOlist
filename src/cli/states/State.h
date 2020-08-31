@@ -9,7 +9,7 @@
 #include <iostream>
 
 class ConsoleContext;
-
+class Tokenizer;
 
 
 class State {
@@ -21,7 +21,7 @@ public:
 public:
     virtual void                     print(ConsoleContext&)                             = 0;
     virtual void                     help(ConsoleContext&)                              = 0;
-    virtual std::shared_ptr<State>                    execute(ConsoleContext&)                           = 0;
+    virtual std::shared_ptr<State>   execute(ConsoleContext&)                           = 0;
     virtual std::shared_ptr<State>   switchState(ConsoleContext&);
 
 

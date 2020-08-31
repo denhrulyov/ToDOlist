@@ -23,11 +23,11 @@ std::string ConsoleIO::read() {
     return input;
 }
 
-std::string ConsoleIO::readLine() {
+void ConsoleIO::requestInputLine() {
     clear();
     std::string input;
     std:getline(std::cin, input);
-    return input;
+    buffer_ = input;
 }
 
 void ConsoleIO::clear() {
@@ -46,6 +46,7 @@ std::string ConsoleIO::readRestBuffer() {
     return input;
 }
 
+
 void ConsoleIO::clearPrefixSpaces() {
     auto buf_iter = buffer_.begin();
     while (buf_iter != buffer_.end() && *buf_iter == ' ') {
@@ -53,3 +54,4 @@ void ConsoleIO::clearPrefixSpaces() {
     }
     buffer_ = std::string(buf_iter, buffer_.end());
 }
+

@@ -6,7 +6,7 @@ include_directories(tests)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-instr-generate -fcoverage-mapping")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-instr-generate -fcoverage-mapping")
-#set(CMAKE_CXX_FLAGS "-D_GLIBCXX_DEBUG")
+set(CMAKE_CXX_FLAGS "-D_GLIBCXX_DEBUG")
 
 file( GLOB_RECURSE CLI_SOURCES src/cli/*.cpp)
 file( GLOB_RECURSE CLI_HEADERS src/cli/*.h)

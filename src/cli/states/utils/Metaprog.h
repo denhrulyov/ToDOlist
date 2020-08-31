@@ -22,11 +22,15 @@ struct pack<T> {
 
 template <typename P, typename N, typename E>
 struct nest {
+    // induction :
+    // nest<P, N, E> = P.head<nest<P.tail, N, E>, E>
     using type = typename P::template head<typename nest<typename P::tail, N, E>::type, E>;
 };
 
 template <template <typename...> typename T, typename N, typename E>
 struct nest<pack<T>, N, E> {
+    // base case :
+    // nest<pack<T>, N, E> = T<N, E>
     using type = typename pack<T>::template head<N, E>;
 };
 

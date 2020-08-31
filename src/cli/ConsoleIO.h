@@ -12,9 +12,8 @@ class ConsoleIO {
 public:
     void            log(const std::string& message);
     std::string     read();
-    std::string     readLine();
     std::string     readRestBuffer();
-
+    void            requestInputLine();
 public:
     bool            isEmpty();
     void            clear();

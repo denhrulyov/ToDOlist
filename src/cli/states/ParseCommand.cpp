@@ -8,25 +8,26 @@
 #include "ShowState.h"
 #include "ParseID.h"
 #include "DeleteTaskState.h"
+#include "cli/tokenization/KeywordTokenizer.h"
 #include "cli/states/utils/Utils.h"
 
 ParseCommand::ParseCommand()
-: ParseState()
+: ParseState(),
+tokenizer_(std::move(std::make_unique<KeywordTokenizer>()))
 {}
 
 void ParseCommand::print(ConsoleContext &context) {
-    context.getIO().log("Input command to execute");;
+    context.getIO().log("Input command to execute");
 }
 
 std::shared_ptr<State> ParseCommand::execute(ConsoleContext &context) {
-    context.getIO().clear();
-    std::string input = context.getIO().read();
-    if (input == "add") {
+    Token token = tokenizer_->read(context.getIO());
+    if (token.getType() == TypeToken::ADD) {
         return std::make_shared<ParseAddType>();
     }
-    else if (input == "show") {
+    else if (token.getType() == TypeToken::SHOW) {
         return std::make_shared<ShowState>();
-    } else if (input == "delete") {
+    } else if (token.getType() == TypeToken::DELETE) {
         return std::make_shared<InputChain<pack<ParseID>, DeleteTaskState, ParseCommand>>();
     } else {
         context.getIO().log("Unknown command!");

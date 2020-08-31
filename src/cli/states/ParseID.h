@@ -5,10 +5,10 @@
 #ifndef TODOLIST_PARSEID_H
 #define TODOLIST_PARSEID_H
 
-#include "ParseState.h"
+#include "ParseTask.h"
 
 template<class T_next, class T_exit>
-class ParseID : public ParseState {
+class ParseID : public ParseTask {
 
 public:
     explicit

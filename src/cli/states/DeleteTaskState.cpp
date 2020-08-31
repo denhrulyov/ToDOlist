@@ -19,6 +19,7 @@ void DeleteTaskState::print(ConsoleContext &context) {
 
 
 std::shared_ptr<State> DeleteTaskState::execute(ConsoleContext &context) {
+    context.getIO().clear();
     return std::make_shared<ParseCommand>();
 }
 

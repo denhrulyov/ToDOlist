@@ -7,9 +7,11 @@
 #include "ParseShowTag.h"
 #include "ParseCommand.h"
 #include "cli/ConsoleContext.h"
+#include "cli/tokenization/KeywordTokenizer.h"
 
 ShowState::ShowState() :
-State()
+State(),
+tokenizer_(std::move(std::make_unique<KeywordTokenizer>()))
 {}
 
 void ShowState::print(ConsoleContext &context) {
@@ -22,20 +24,17 @@ std::shared_ptr<State> ShowState::execute(ConsoleContext &context) {
         help(context);
         return std::make_shared<ParseCommand>();
     }
-    std::string input = context.getIO().read();
-    if (input.empty()) {
-        context.getIO().log("Argument line is empty!");
-    }
-    if (input == "today") {
+    Token token = tokenizer_->read(context.getIO());
+    TypeToken type_token = token.getType();
+    if (type_token == TypeToken::TODAY) {
         context.getIO().log("Tasks for today:");
-    } else if (input == "this_week") {
+    } else if (type_token == TypeToken::THIS_WEEK) {
         context.getIO().log("Tasks for this week:");
-    } else if (input == "all") {
+    } else if (type_token == TypeToken::ALL) {
         context.getIO().log("All tasks:");
-    } else if (input == "tag") {
+    } else if (type_token == TypeToken::TAG) {
         return std::make_shared<ParseShowTag>();
-    }
-    else if (input == "current_list") {
+    } else if (type_token == TypeToken::CURRENT_LIST) {
         context.getIO().log("Active list of tasks:");
     } else {
         context.getIO().log("Incorrect show options!");
