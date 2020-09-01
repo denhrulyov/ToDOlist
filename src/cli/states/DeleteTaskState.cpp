@@ -11,7 +11,7 @@ DeleteTaskState::DeleteTaskState()
 {}
 
 void DeleteTaskState::print(ConsoleContext &context) {
-    context.getIO().log("You want to delete task: ");
+    context.getIO().putLine("You want to delete task: ");
     // 1. get task from context.getService().getTaskByID()
     // 2. print task fields
 

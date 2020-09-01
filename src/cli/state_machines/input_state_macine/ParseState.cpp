@@ -5,5 +5,4 @@
 #include "ParseState.h"
 
 ParseState::ParseState()
-: State()
 {}

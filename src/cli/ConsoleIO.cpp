@@ -4,22 +4,17 @@
 
 #include "ConsoleIO.h"
 
-void ConsoleIO::log(const std::string& message) {
+void ConsoleIO::putLine(const std::string& message) {
     std::cout << message << std::endl;
 }
-std::string ConsoleIO::read() {
+std::string ConsoleIO::readWord() {
     clearPrefixSpaces();
     auto buf_iter = buffer_.begin();
     while (buf_iter != buffer_.end() && *buf_iter != ' ') {
         ++buf_iter;
     }
     auto input = std::string(buffer_.begin(), buf_iter);
-    if (input.empty()) {
-        std::getline(std::cin, buffer_);
-        input = read();
-    } else {
-        buffer_ = std::string(buf_iter, buffer_.end());
-    }
+    buffer_ = std::string(buf_iter, buffer_.end());
     return input;
 }
 

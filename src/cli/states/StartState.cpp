@@ -17,16 +17,16 @@ StartState::execute(ConsoleContext& context) {
 
 void
 StartState::print(ConsoleContext& context) {
-    context.getIO().log("Welcome to TODO list CLI.");
+    context.getIO().putLine("Welcome to TODO list CLI.");
     help(context);
 }
 
 void StartState::help(ConsoleContext& context) {
-    context.getIO().log("   Type  ");
-    context.getIO().log("|   __help__  to get see available options");
-    context.getIO().log("|   __abort__  to abort executing current command");
-    context.getIO().log("|   __exit__  to exit");
-    context.getIO().log("THESE WORDS ARE RESERVED ");
-    context.getIO().log("AND MUST NOT BE A PART OF PARAMETER!");
+    context.getIO().putLine("   Type  ");
+    context.getIO().putLine("|   __help__  to get see available options");
+    context.getIO().putLine("|   __abort__  to abort executing current command");
+    context.getIO().putLine("|   __exit__  to exit");
+    context.getIO().putLine("THESE WORDS ARE RESERVED ");
+    context.getIO().putLine("AND MUST NOT BE A PART OF PARAMETER!");
 }
 

@@ -6,31 +6,43 @@
 #include "ParseCommand.h"
 #include "ParseAddType.h"
 #include "ShowState.h"
-#include "ParseID.h"
+#include "InputState.h"
+#include "cli/state_machines/input_state_macine/InputStateMachine.h"
 #include "DeleteTaskState.h"
 #include "cli/tokenization/KeywordTokenizer.h"
 #include "cli/states/utils/Utils.h"
 
 ParseCommand::ParseCommand()
-: ParseState(),
+: State(),
 tokenizer_(std::move(std::make_unique<KeywordTokenizer>()))
 {}
 
 void ParseCommand::print(ConsoleContext &context) {
-    context.getIO().log("Input command to execute");
+    context.getIO().putLine("Input command to execute");
 }
 
 std::shared_ptr<State> ParseCommand::execute(ConsoleContext &context) {
+    context.getIO().requestInputLine();
     Token token = tokenizer_->read(context.getIO());
     if (token.getType() == TypeToken::ADD) {
         return std::make_shared<ParseAddType>();
-    }
-    else if (token.getType() == TypeToken::SHOW) {
+    } else if (token.getType() == TypeToken::SHOW) {
         return std::make_shared<ShowState>();
     } else if (token.getType() == TypeToken::DELETE) {
-        return std::make_shared<InputChain<pack<ParseID>, DeleteTaskState, ParseCommand>>();
+        return std::make_shared<
+                InputState<DeleteTaskState, ParseCommand>
+                    >(
+                        std::move(
+                            std::make_unique<InputStateMachine>(
+                                    std::vector<std::shared_ptr<ParseState>> {
+                                        std::make_shared<ParseID>()
+                                        },
+                                    context
+                                    )
+                                )
+                            );
     } else {
-        context.getIO().log("Unknown command!");
+        context.getIO().putLine("Unknown command!");
         help(context);
         context.getIO().clear();
         return std::make_shared<ParseCommand>();
@@ -38,9 +50,9 @@ std::shared_ptr<State> ParseCommand::execute(ConsoleContext &context) {
 }
 
 void ParseCommand::help(ConsoleContext &context) {
-    context.getIO().log("Available commands:");
-    context.getIO().log("-  add");
-    context.getIO().log("-  show");
-    context.getIO().log("-  postpone");
-    context.getIO().log("-  delete");
+    context.getIO().putLine("Available commands:");
+    context.getIO().putLine("-  add");
+    context.getIO().putLine("-  show");
+    context.getIO().putLine("-  postpone");
+    context.getIO().putLine("-  delete");
 }

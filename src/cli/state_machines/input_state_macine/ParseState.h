@@ -5,20 +5,27 @@
 #ifndef TODOLIST_PARSESTATE_H
 #define TODOLIST_PARSESTATE_H
 
-#include "State.h"
 
 class ConsoleContext;
 
-class ParseState : public State {
+class ParseState {
 
 public:
-    explicit
-    ParseState();
+    enum class Event {
+        SUCCESS,
+        FAIL,
+        EXIT
+    };
+
+public:
+    explicit ParseState();
 
 public:
     virtual void                         print(ConsoleContext&) = 0;
-    virtual std::shared_ptr<State>       execute(ConsoleContext&) = 0;
+    virtual Event                        execute(ConsoleContext&) = 0;
     virtual void                         help(ConsoleContext&) = 0;
+
+    virtual ~ParseState() = default;
 };
 
 

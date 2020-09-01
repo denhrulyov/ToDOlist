@@ -6,10 +6,10 @@
 #define TODOLIST_PARSEADDTYPE_H
 
 class ConsoleContext;
-class KeywordTokenizerInterface;
-#include "ParseState.h"
+class Tokenizer;
+#include "State.h"
 
-class ParseAddType : public ParseState {
+class ParseAddType : public State {
 
 public:
     explicit ParseAddType();
@@ -20,7 +20,7 @@ public:
     void                            help(ConsoleContext&) override;
 
 private:
-    std::unique_ptr<KeywordTokenizerInterface> tokenizer_;
+    std::unique_ptr<Tokenizer>      tokenizer_;
 };
 
 

@@ -7,7 +7,6 @@
 
 #include "State.h"
 
-class KeywordTokenizerInterface;
 
 class ShowState : public State {
 
@@ -20,7 +19,7 @@ public:
     void                     help(ConsoleContext&)     override;
 
 private:
-    std::unique_ptr<KeywordTokenizerInterface> tokenizer_;
+    std::unique_ptr<Tokenizer> tokenizer_;
 };
 
 

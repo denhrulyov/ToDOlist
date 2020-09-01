@@ -5,10 +5,10 @@
 #ifndef TODOLIST_PARSECOMMAND_H
 #define TODOLIST_PARSECOMMAND_H
 
-#include "ParseState.h"
-#include "cli/tokenization/KeywordTokenizerInterface.h"
+#include "State.h"
+class Tokenizer;
 
-class ParseCommand : public ParseState {
+class ParseCommand : public State {
 
 public:
     explicit
@@ -20,7 +20,7 @@ public:
     void                                help(ConsoleContext&) override;
 
 private:
-    std::unique_ptr<KeywordTokenizerInterface> tokenizer_;
+    std::unique_ptr<Tokenizer>          tokenizer_;
 };
 
 

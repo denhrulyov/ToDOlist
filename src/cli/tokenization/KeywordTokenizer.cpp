@@ -7,7 +7,7 @@
 #include <map>
 
 Token KeywordTokenizer::read(ConsoleIO &io) {
-    std::string input = io.read();
+    std::string input = io.readWord();
     std::map<std::string, TypeToken> match
     {
             {"add", TypeToken::ADD},

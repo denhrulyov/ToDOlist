@@ -7,9 +7,9 @@
 
 #include <memory>
 #include <iostream>
+#include "cli/tokenization/Tokenizer.h"
 
 class ConsoleContext;
-class Tokenizer;
 
 
 class State {
@@ -22,7 +22,6 @@ public:
     virtual void                     print(ConsoleContext&)                             = 0;
     virtual void                     help(ConsoleContext&)                              = 0;
     virtual std::shared_ptr<State>   execute(ConsoleContext&)                           = 0;
-    virtual std::shared_ptr<State>   switchState(ConsoleContext&);
 
 
 public:

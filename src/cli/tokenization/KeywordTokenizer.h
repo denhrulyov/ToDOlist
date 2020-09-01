@@ -5,9 +5,9 @@
 #ifndef TODOLIST_KEYWORDTOKENIZER_H
 #define TODOLIST_KEYWORDTOKENIZER_H
 
-#include "KeywordTokenizerInterface.h"
+#include "Tokenizer.h"
 
-class KeywordTokenizer : public KeywordTokenizerInterface {
+class KeywordTokenizer : public Tokenizer {
 
 public:
     Token read(ConsoleIO&) override;

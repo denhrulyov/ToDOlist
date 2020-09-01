@@ -6,7 +6,6 @@
 #define TODOLIST_UTILS_H
 
 #include <boost/algorithm/string/split.hpp>
-#include "cli/states/utils/Metaprog.h"
 #include "cli/states/State.h"
 #include "core/utils/task_io/ConsoleTaskIO.h"
 
@@ -44,9 +43,6 @@ std::string field_repr(const std::optional<T>& field) {
 std::string field_repr(const std::optional<std::string>& field);
 
 std::string field_repr(const std::optional<TaskPriority>& field);
-
-template <class P, class N, class E>
-using InputChain = typename nest<P, N, E>::type;
 
 #endif //TODOLIST_UTILS_H
 

@@ -7,7 +7,3 @@
 
 State::State()
  {};
-
-std::shared_ptr<State> State::switchState(ConsoleContext& context) {
-    return nullptr;
-}

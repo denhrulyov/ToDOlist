@@ -15,11 +15,11 @@ void ParseShowTag::print(ConsoleContext &context) {
 
 std::shared_ptr<State> ParseShowTag::execute(ConsoleContext &context) {
     if (context.getIO().isEmpty()) {
-        context.getIO().log("\nNo tag specified!");
+        context.getIO().putLine("\nNo tag specified!");
         return std::make_shared<ParseCommand>();
     }
     std::string tag = context.getIO().readRestBuffer();
-    context.getIO().log(std::string("Tasks with tag \"") + tag + "\" : ");
+    context.getIO().putLine(std::string("Tasks with tag \"") + tag + "\" : ");
     return std::make_shared<ParseCommand>();
 }
 

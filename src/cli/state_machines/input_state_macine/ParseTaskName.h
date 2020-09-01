@@ -5,10 +5,9 @@
 #ifndef TODOLIST_PARSETASKNAME_H
 #define TODOLIST_PARSETASKNAME_H
 
-#include "ParseTask.h"
+#include "ParseState.h"
 
-template<class T_next, class T_exit>
-class ParseTaskName : public ParseTask {
+class ParseTaskName : public ParseState {
 
 public:
     explicit
@@ -16,7 +15,7 @@ public:
 
 public:
     void                    print(ConsoleContext& context) override;
-    std::shared_ptr<State>  execute(ConsoleContext&) override;
+    ParseState::Event       execute(ConsoleContext&) override;
     void                    help(ConsoleContext&) override;
 };
 

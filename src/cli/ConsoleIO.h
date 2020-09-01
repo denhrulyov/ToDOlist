@@ -10,8 +10,8 @@
 class ConsoleIO {
 
 public:
-    void            log(const std::string& message);
-    std::string     read();
+    void            putLine(const std::string& message);
+    std::string     readWord();
     std::string     readRestBuffer();
     void            requestInputLine();
 public:
