@@ -6,7 +6,7 @@
 #define TODOLIST_INPUTSTATE_H
 
 #include "State.h"
-#include "cli/state_machines/input_state_macine/InputStateMachine.h"
+#include "cli/state_machines/input/InputStateMachine.h"
 #include "cli/ConsoleContext.h"
 
 template<class T_next, class T_exit>

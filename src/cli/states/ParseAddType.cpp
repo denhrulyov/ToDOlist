@@ -8,7 +8,7 @@
 #include "ParseCommand.h"
 #include "cli/tokenization/KeywordTokenizer.h"
 #include "InputState.h"
-#include "cli/state_machines/input_state_macine/InputStateMachine.h"
+#include "cli/state_machines/input/InputStateMachine.h"
 #include "AddTaskState.h"
 #include "AddSubTaskState.h"
 

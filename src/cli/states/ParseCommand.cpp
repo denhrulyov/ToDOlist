@@ -7,7 +7,7 @@
 #include "ParseAddType.h"
 #include "ShowState.h"
 #include "InputState.h"
-#include "cli/state_machines/input_state_macine/InputStateMachine.h"
+#include "cli/state_machines/input/InputStateMachine.h"
 #include "DeleteTaskState.h"
 #include "cli/tokenization/KeywordTokenizer.h"
 #include "cli/states/utils/Utils.h"
