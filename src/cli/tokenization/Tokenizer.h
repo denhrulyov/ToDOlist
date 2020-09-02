@@ -5,13 +5,13 @@
 #ifndef TODOLIST_TOKENIZER_H
 #define TODOLIST_TOKENIZER_H
 
-#include "Token.h"
+#include "Keyword.h"
 class ConsoleIO;
 
 class Tokenizer {
 
 public:
-    virtual Token read(ConsoleIO&) = 0;
+    virtual Keyword  read(ConsoleIO&) = 0;
     virtual ~Tokenizer() = default;
 };
 

@@ -5,12 +5,13 @@
 #ifndef TODOLIST_KEYWORDTOKENIZER_H
 #define TODOLIST_KEYWORDTOKENIZER_H
 
+#include "Keyword.h"
 #include "Tokenizer.h"
 
 class KeywordTokenizer : public Tokenizer {
 
 public:
-    Token read(ConsoleIO&) override;
+    Keyword  read(ConsoleIO&) override;
     ~KeywordTokenizer() = default;
 };
 

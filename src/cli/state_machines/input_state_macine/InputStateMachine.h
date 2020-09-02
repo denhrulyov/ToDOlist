@@ -31,8 +31,8 @@ public:
     Result            run();
 
 private:
-    ConsoleContext&                             context_;
-    std::tuple<std::shared_ptr<ParseState>>     state_sequence_;
+    ConsoleContext&                              context_;
+    std::vector<std::shared_ptr<ParseState>>     state_sequence_;
 };
 
 

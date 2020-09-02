@@ -23,12 +23,12 @@ void ParseCommand::print(ConsoleContext &context) {
 
 std::shared_ptr<State> ParseCommand::execute(ConsoleContext &context) {
     context.getIO().requestInputLine();
-    Token token = tokenizer_->read(context.getIO());
-    if (token.getType() == Keyword::ADD) {
+    Keyword token = tokenizer_->read(context.getIO());
+    if (token == Keyword::ADD) {
         return std::make_shared<ParseAddType>();
-    } else if (token.getType() == Keyword::SHOW) {
+    } else if (token == Keyword::SHOW) {
         return std::make_shared<ShowState>();
-    } else if (token.getType() == Keyword::DELETE) {
+    } else if (token == Keyword::DELETE) {
         return std::make_shared<
                 InputState<DeleteTaskState, ParseCommand>
                     >(
@@ -40,7 +40,7 @@ std::shared_ptr<State> ParseCommand::execute(ConsoleContext &context) {
                                     context
                                     )
                                 )
-                            );
+                     );
     } else {
         context.getIO().putLine("Unknown command!");
         help(context);

@@ -6,7 +6,7 @@
 #define TODOLIST_KEYWORD_H
 
 
-enum class Keyword {
+enum class Keyword  {
     ADD,
     TASK,
     SUBTASK,

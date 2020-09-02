@@ -4,11 +4,12 @@
 
 #include "cli/ConsoleIO.h"
 #include "KeywordTokenizer.h"
+#include "Keyword.h"
 #include <map>
 
-Token KeywordTokenizer::read(ConsoleIO &io) {
+Keyword  KeywordTokenizer::read(ConsoleIO &io) {
     std::string input = io.readWord();
-    std::map<std::string, Keyword> match
+    std::map<std::string, Keyword > match
     {
             {"add",       Keyword::ADD},
             {"show",      Keyword::SHOW},
@@ -22,8 +23,8 @@ Token KeywordTokenizer::read(ConsoleIO &io) {
             {"subtask",   Keyword::SUBTASK}
     };
     if (match.count(input)) {
-        return Token::create(match[input]);
+        return match[input];
     } else {
-        return Token::create(Keyword::UNKNOWN);
+        return Keyword::UNKNOWN;
     }
 }

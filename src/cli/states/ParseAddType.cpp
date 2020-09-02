@@ -26,10 +26,10 @@ std::shared_ptr<State> ParseAddType::execute(ConsoleContext& context) {
     if (context.getIO().isEmpty()) {
         context.getIO().putLine("Specify what to add!");
         help(context);
-
+        return std::make_shared<ParseCommand>();
     }
-    Token token = tokenizer_->read(context.getIO());
-    if (token.getType() == Keyword::TASK) {
+    Keyword token = tokenizer_->read(context.getIO());
+    if (token == Keyword::TASK) {
         return std::make_shared<
                 InputState<AddTaskState, ParseCommand>
                     >(std::move(
@@ -44,7 +44,7 @@ std::shared_ptr<State> ParseAddType::execute(ConsoleContext& context) {
                             )
                       )
                 );
-    } else if (token.getType() == Keyword::SUBTASK) {
+    } else if (token == Keyword::SUBTASK) {
         return std::make_shared<
                 InputState<AddSubTaskState, ParseCommand>
                     >(std::move(
