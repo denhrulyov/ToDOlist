@@ -29,7 +29,7 @@ std::shared_ptr<State> ParseAddType::execute(ConsoleContext& context) {
 
     }
     Token token = tokenizer_->read(context.getIO());
-    if (token.getType() == TypeToken::TASK) {
+    if (token.getType() == Keyword::TASK) {
         return std::make_shared<
                 InputState<AddTaskState, ParseCommand>
                     >(std::move(
@@ -44,7 +44,7 @@ std::shared_ptr<State> ParseAddType::execute(ConsoleContext& context) {
                             )
                       )
                 );
-    } else if (token.getType() == TypeToken::SUBTASK) {
+    } else if (token.getType() == Keyword::SUBTASK) {
         return std::make_shared<
                 InputState<AddSubTaskState, ParseCommand>
                     >(std::move(

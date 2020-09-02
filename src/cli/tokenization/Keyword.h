@@ -2,11 +2,11 @@
 // Created by denis on 31.08.20.
 //
 
-#ifndef TODOLIST_TYPETOKEN_H
-#define TODOLIST_TYPETOKEN_H
+#ifndef TODOLIST_KEYWORD_H
+#define TODOLIST_KEYWORD_H
 
 
-enum class TypeToken {
+enum class Keyword {
     ADD,
     TASK,
     SUBTASK,
@@ -26,4 +26,4 @@ enum class TypeToken {
 };
 
 
-#endif //TODOLIST_TYPETOKEN_H
+#endif //TODOLIST_KEYWORD_H

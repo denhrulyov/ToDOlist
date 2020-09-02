@@ -4,21 +4,21 @@
 
 #include "Token.h"
 
-Token Token::create(TypeToken tp) {
+Token Token::create(Keyword tp) {
     return Token(tp, std::nullopt);
 }
 
-Token Token::create(TypeToken tp, const std::string &data) {
+Token Token::create(Keyword tp, const std::string &data) {
     return Token(tp, data);
 }
 
-Token::Token(TypeToken tp, const std::optional<std::string> &data)
+Token::Token(Keyword tp, const std::optional<std::string> &data)
 :
 type_(tp),
 data_(data)
 {}
 
-TypeToken Token::getType() {
+Keyword Token::getType() {
     return type_;
 }
 

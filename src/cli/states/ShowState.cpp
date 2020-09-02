@@ -25,16 +25,16 @@ std::shared_ptr<State> ShowState::execute(ConsoleContext &context) {
         return std::make_shared<ParseCommand>();
     }
     Token token = tokenizer_->read(context.getIO());
-    TypeToken type_token = token.getType();
-    if (type_token == TypeToken::TODAY) {
+    Keyword type_token = token.getType();
+    if (type_token == Keyword::TODAY) {
         context.getIO().putLine("Tasks for today:");
-    } else if (type_token == TypeToken::THIS_WEEK) {
+    } else if (type_token == Keyword::THIS_WEEK) {
         context.getIO().putLine("Tasks for this week:");
-    } else if (type_token == TypeToken::ALL) {
+    } else if (type_token == Keyword::ALL) {
         context.getIO().putLine("All tasks:");
-    } else if (type_token == TypeToken::TAG) {
+    } else if (type_token == Keyword::TAG) {
         return std::make_shared<ParseShowTag>();
-    } else if (type_token == TypeToken::CURRENT_LIST) {
+    } else if (type_token == Keyword::CURRENT_LIST) {
         context.getIO().putLine("Active list of tasks:");
     } else {
         context.getIO().putLine("Incorrect show options!");

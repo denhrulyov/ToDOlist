@@ -24,11 +24,11 @@ void ParseCommand::print(ConsoleContext &context) {
 std::shared_ptr<State> ParseCommand::execute(ConsoleContext &context) {
     context.getIO().requestInputLine();
     Token token = tokenizer_->read(context.getIO());
-    if (token.getType() == TypeToken::ADD) {
+    if (token.getType() == Keyword::ADD) {
         return std::make_shared<ParseAddType>();
-    } else if (token.getType() == TypeToken::SHOW) {
+    } else if (token.getType() == Keyword::SHOW) {
         return std::make_shared<ShowState>();
-    } else if (token.getType() == TypeToken::DELETE) {
+    } else if (token.getType() == Keyword::DELETE) {
         return std::make_shared<
                 InputState<DeleteTaskState, ParseCommand>
                     >(

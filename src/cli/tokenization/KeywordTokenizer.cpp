@@ -8,22 +8,22 @@
 
 Token KeywordTokenizer::read(ConsoleIO &io) {
     std::string input = io.readWord();
-    std::map<std::string, TypeToken> match
+    std::map<std::string, Keyword> match
     {
-            {"add", TypeToken::ADD},
-            {"show", TypeToken::SHOW},
-            {"delete", TypeToken::DELETE},
-            {"postpone", TypeToken::POSTPONE},
-            {"today",    TypeToken::TODAY},
-            {"this_week",TypeToken::THIS_WEEK},
-            {"all",      TypeToken::SUBTASK},
-            {"tag",      TypeToken::TAG},
-            {"task",    TypeToken::TASK},
-            {"subtask", TypeToken::SUBTASK}
+            {"add",       Keyword::ADD},
+            {"show",      Keyword::SHOW},
+            {"delete",    Keyword::DELETE},
+            {"postpone",  Keyword::POSTPONE},
+            {"today",     Keyword::TODAY},
+            {"this_week", Keyword::THIS_WEEK},
+            {"all",       Keyword::SUBTASK},
+            {"tag",       Keyword::TAG},
+            {"task",      Keyword::TASK},
+            {"subtask",   Keyword::SUBTASK}
     };
     if (match.count(input)) {
         return Token::create(match[input]);
     } else {
-        return Token::create(TypeToken::UNKNOWN);
+        return Token::create(Keyword::UNKNOWN);
     }
 }

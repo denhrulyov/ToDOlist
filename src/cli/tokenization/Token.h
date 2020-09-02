@@ -7,24 +7,24 @@
 
 #include <string>
 #include <optional>
-#include "TypeToken.h"
+#include "Keyword.h"
 
 
 class Token {
 
 public:
-    static Token create(TypeToken tp);
-    static Token create(TypeToken tp, const std::string&);
+    static Token create(Keyword tp);
+    static Token create(Keyword tp, const std::string&);
 
 public:
-    TypeToken getType();
+    Keyword getType();
     std::optional<std::string> getData();
 
 private:
-    Token(TypeToken, const std::optional<std::string>&);
+    Token(Keyword, const std::optional<std::string>&);
 
 private:
-    TypeToken type_;
+    Keyword type_;
     std::optional<std::string> data_;
 };
 
