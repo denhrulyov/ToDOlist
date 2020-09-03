@@ -21,7 +21,7 @@ std::string ConsoleIO::readWord() {
 void ConsoleIO::requestInputLine() {
     clear();
     std::string input;
-    std:getline(std::cin, input);
+    std::getline(std::cin, input);
     buffer_ = input;
 }
 

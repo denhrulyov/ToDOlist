@@ -6,11 +6,11 @@
 #include "cli/states/DeleteTaskState.h"
 #include "cli/states/ParseCommand.h"
 #include "ParseID.h"
-#include "ParseTaskPriority.h"
-#include "ParseTaskLabel.h"
 #include "cli/states/AddTaskState.h"
 #include "cli/states/AddSubTaskState.h"
 #include "cli/TaskTableIO.h"
+#include "ParseCommand.h"
+#include "InputState.h"
 
 ParseID::ParseID()
 {}
@@ -19,10 +19,10 @@ void ParseID::print(ConsoleContext& context) {
     context.getIO().putLine("Input task number: ");
 }
 
-ParseState::Event ParseID::execute(ConsoleContext& context) {
+std::shared_ptr<State> ParseID::execute(ConsoleContext& context) {
     if (context.getTaskTable().empty()) {
         context.getIO().putLine("Task table is now empty. Make get command to gain some set of tasks.");
-        return ParseState::Event::EXIT;
+        return std::make_shared<ParseCommand>();
     }
     context.getIO().requestInputLine();
     std::string input = context.getIO().readRestBuffer();
@@ -31,21 +31,33 @@ ParseState::Event ParseID::execute(ConsoleContext& context) {
         task_number = std::stoi(input);
     } catch (...) {
         context.getIO().putLine("Incorrect number!");
-        return ParseState::Event::FAIL;
+        return std::make_shared<ParseCommand>();
     }
     if (task_number < 1 || task_number > (--context.getTaskTable().end())->first) {
         context.getIO().putLine("Index is out of table!");
         context.getIO().putLine("Current table is:");
         task_table_io::print(context);
-        return ParseState::Event::FAIL;
+        return std::make_shared<ParseCommand>();
     }
     if (context.getTaskTable().count(task_number) == 0) {
         context.getIO().putLine("This task was deleted.");
         context.getIO().putLine("Current table is:");
         task_table_io::print(context);
-        return ParseState::Event::FAIL;
+        return std::make_shared<ParseCommand>();
     }
-    return ParseState::Event::SUCCESS;
+    return std::make_shared<InputState<AddTaskState, ParseCommand>>(
+            std::move(
+            std::make_unique<InputTaskStateMachine>(
+                    std::vector<std::shared_ptr<ParseState>> {
+                            std::make_shared<ParseTaskName>(),
+                            std::make_shared<ParseTaskPriority>(),
+                            std::make_shared<ParseTaskLabel>(),
+                            std::make_shared<ParseTaskDate>()
+                    },
+                    context
+                    )
+            )
+    );
 }
 
 void ParseID::help(ConsoleContext &) {

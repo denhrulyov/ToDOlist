@@ -8,9 +8,10 @@
 #include "ParseCommand.h"
 #include "cli/tokenization/KeywordTokenizer.h"
 #include "InputState.h"
-#include "cli/state_machines/input/InputStateMachine.h"
+#include "cli/state_machines/input_task/InputTaskStateMachine.h"
 #include "AddTaskState.h"
 #include "AddSubTaskState.h"
+#include "ParseID.h"
 
 ParseAddType::ParseAddType()
 :
@@ -33,7 +34,7 @@ std::shared_ptr<State> ParseAddType::execute(ConsoleContext& context) {
         return std::make_shared<
                 InputState<AddTaskState, ParseCommand>
                     >(std::move(
-                            std::make_unique<InputStateMachine>(
+                            std::make_unique<InputTaskStateMachine>(
                                     std::vector<std::shared_ptr<ParseState>> {
                                             std::make_shared<ParseTaskName>(),
                                             std::make_shared<ParseTaskPriority>(),
@@ -45,21 +46,7 @@ std::shared_ptr<State> ParseAddType::execute(ConsoleContext& context) {
                       )
                 );
     } else if (token == Keyword::SUBTASK) {
-        return std::make_shared<
-                InputState<AddSubTaskState, ParseCommand>
-                    >(std::move(
-                            std::make_unique<InputStateMachine>(
-                                    std::vector<std::shared_ptr<ParseState>> {
-                                            std::make_shared<ParseID>(),
-                                            std::make_shared<ParseTaskName>(),
-                                            std::make_shared<ParseTaskPriority>(),
-                                            std::make_shared<ParseTaskLabel>(),
-                                            std::make_shared<ParseTaskDate>()
-                                    },
-                                    context
-                            )
-                      )
-                );
+        return std::make_shared<ParseID>();
     } else {
         context.getIO().putLine("Invalid add parameter!");
         help(context);

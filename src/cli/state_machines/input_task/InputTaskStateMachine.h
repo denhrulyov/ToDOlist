@@ -2,13 +2,12 @@
 // Created by denis on 01.09.20.
 //
 
-#ifndef TODOLIST_INPUTSTATEMACHINE_H
-#define TODOLIST_INPUTSTATEMACHINE_H
+#ifndef TODOLIST_INPUTTASKSTATEMACHINE_H
+#define TODOLIST_INPUTTASKSTATEMACHINE_H
 
 #include <vector>
 #include <memory>
 #include "ParseTaskLabel.h"
-#include "ParseID.h"
 #include "ParseTaskDate.h"
 #include "ParseTaskPriority.h"
 #include "ParseTaskName.h"
@@ -16,7 +15,7 @@
 class ConsoleContext;
 class ParseState;
 
-class InputStateMachine {
+class InputTaskStateMachine {
 
 public:
     enum class Result {
@@ -25,7 +24,7 @@ public:
     };
 
 public:
-    explicit        InputStateMachine(const std::vector<std::shared_ptr<ParseState>>&, ConsoleContext&);
+    explicit        InputTaskStateMachine(const std::vector<std::shared_ptr<ParseState>>&, ConsoleContext&);
 
 public:
     Result            run();
@@ -36,4 +35,4 @@ private:
 };
 
 
-#endif //TODOLIST_INPUTSTATEMACHINE_H
+#endif //TODOLIST_INPUTTASKSTATEMACHINE_H

@@ -5,9 +5,9 @@
 #ifndef TODOLIST_PARSEID_H
 #define TODOLIST_PARSEID_H
 
-#include "ParseState.h"
+#include "State.h"
 
-class ParseID : public ParseState {
+class ParseID : public State {
 
 public:
     explicit
@@ -15,7 +15,7 @@ public:
 
 public:
     void                        print(ConsoleContext& context) override;
-    ParseState::Event           execute(ConsoleContext& context) override;
+    std::shared_ptr<State>      execute(ConsoleContext& context) override;
     void                        help(ConsoleContext&) override;
 };
 

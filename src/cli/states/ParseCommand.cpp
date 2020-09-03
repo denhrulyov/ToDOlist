@@ -7,10 +7,11 @@
 #include "ParseAddType.h"
 #include "ShowState.h"
 #include "InputState.h"
-#include "cli/state_machines/input/InputStateMachine.h"
+#include "cli/state_machines/input_task/InputTaskStateMachine.h"
 #include "DeleteTaskState.h"
 #include "cli/tokenization/KeywordTokenizer.h"
 #include "cli/states/utils/Utils.h"
+#include "DeleteStateParseID.h"
 
 ParseCommand::ParseCommand()
 : State(),
@@ -29,18 +30,7 @@ std::shared_ptr<State> ParseCommand::execute(ConsoleContext &context) {
     } else if (token == Keyword::SHOW) {
         return std::make_shared<ShowState>();
     } else if (token == Keyword::DELETE) {
-        return std::make_shared<
-                InputState<DeleteTaskState, ParseCommand>
-                    >(
-                        std::move(
-                            std::make_unique<InputStateMachine>(
-                                    std::vector<std::shared_ptr<ParseState>> {
-                                        std::make_shared<ParseID>()
-                                        },
-                                    context
-                                    )
-                                )
-                     );
+        return std::make_shared<DeleteStateParseID>();
     } else {
         context.getIO().putLine("Unknown command!");
         help(context);
