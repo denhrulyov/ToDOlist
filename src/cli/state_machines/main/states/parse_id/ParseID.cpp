@@ -3,14 +3,14 @@
 //
 
 #include "cli/state_machines/main/ConsoleContext.h"
-#include "DeleteTaskState.h"
-#include "ParseCommand.h"
+#include "cli/state_machines/main/states/DeleteTaskState.h"
+#include "cli/state_machines/main/states/ParseCommand.h"
 #include "ParseID.h"
-#include "AddTaskState.h"
-#include "AddSubTaskState.h"
+#include "cli/state_machines/main/states/AddTaskState.h"
+#include "cli/state_machines/main/states/AddSubTaskState.h"
 #include "cli/state_machines/main/TaskTableIO.h"
-#include "ParseCommand.h"
-#include "InputState.h"
+#include "cli/state_machines/main/states/ParseCommand.h"
+#include "cli/state_machines/main/states/InputState.h"
 
 ParseID::ParseID()
 {}
@@ -45,19 +45,7 @@ std::shared_ptr<State> ParseID::execute(ConsoleContext& context) {
         task_table_io::print(context);
         return std::make_shared<ParseCommand>();
     }
-    return std::make_shared<InputState<AddTaskState, ParseCommand>>(
-            std::move(
-            std::make_unique<InputTaskStateMachine>(
-                    std::vector<std::shared_ptr<ParseState>> {
-                            std::make_shared<ParseTaskName>(),
-                            std::make_shared<ParseTaskPriority>(),
-                            std::make_shared<ParseTaskLabel>(),
-                            std::make_shared<ParseTaskDate>()
-                    },
-                    context
-                    )
-            )
-    );
+    return switchGood(context);
 }
 
 void ParseID::help(ConsoleContext &) {

@@ -11,7 +11,7 @@
 #include "DeleteTaskState.h"
 #include "cli/state_machines/main/tokenization/KeywordTokenizer.h"
 #include "cli/state_machines/main/states/utils/Utils.h"
-#include "DeleteStateParseID.h"
+#include "cli/state_machines/main/states/parse_id/DeleteStateParseID.h"
 
 ParseCommand::ParseCommand()
 : State(),

@@ -11,7 +11,8 @@
 #include "cli/state_machines/input_task/InputTaskStateMachine.h"
 #include "AddTaskState.h"
 #include "AddSubTaskState.h"
-#include "ParseID.h"
+#include "cli/state_machines/main/states/parse_id/ParseID.h"
+#include "cli/state_machines/main/states/parse_id/InputTaskParseID.h"
 
 ParseAddType::ParseAddType()
 :
@@ -46,7 +47,7 @@ std::shared_ptr<State> ParseAddType::execute(ConsoleContext& context) {
                       )
                 );
     } else if (token == Keyword::SUBTASK) {
-        return std::make_shared<ParseID>();
+        return std::make_shared<InputTaskParseID>();
     } else {
         context.getIO().putLine("Invalid add parameter!");
         help(context);
