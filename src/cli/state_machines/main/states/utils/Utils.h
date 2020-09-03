@@ -6,7 +6,7 @@
 #define TODOLIST_UTILS_H
 
 #include <boost/algorithm/string/split.hpp>
-#include "cli/states/State.h"
+#include "cli/state_machines/main/states/State.h"
 #include "core/utils/task_io/ConsoleTaskIO.h"
 
 template <class FirstState>

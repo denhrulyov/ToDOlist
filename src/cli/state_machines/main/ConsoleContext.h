@@ -7,7 +7,7 @@
 
 
 #include "core/api/TaskServiceInterface.h"
-#include "ConsoleIO.h"
+#include "cli/ConsoleIO.h"
 class State;
 
 typedef uint32_t TaskNumber;

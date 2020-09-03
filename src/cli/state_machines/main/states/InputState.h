@@ -7,7 +7,7 @@
 
 #include "State.h"
 #include "cli/state_machines/input_task/InputTaskStateMachine.h"
-#include "cli/ConsoleContext.h"
+#include "cli/state_machines/main/ConsoleContext.h"
 
 template<class T_next, class T_exit>
 class InputState : public State {

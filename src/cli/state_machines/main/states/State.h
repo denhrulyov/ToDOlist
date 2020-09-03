@@ -7,7 +7,7 @@
 
 #include <memory>
 #include <iostream>
-#include "cli/tokenization/Tokenizer.h"
+#include "cli/state_machines/main/tokenization/Tokenizer.h"
 
 class ConsoleContext;
 

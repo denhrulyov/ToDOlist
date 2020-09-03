@@ -2,12 +2,9 @@
 // Created by denis on 20.08.20.
 //
 
-#include "cli/ConsoleContext.h"
-#include "cli/states/ParseCommand.h"
+#include "cli/state_machines/main/ConsoleContext.h"
 #include "ParseTaskLabel.h"
 #include "ParseTaskDate.h"
-#include "cli/states/AddTaskState.h"
-#include "cli/states/AddSubTaskState.h"
 
 
 ParseTaskLabel::ParseTaskLabel()

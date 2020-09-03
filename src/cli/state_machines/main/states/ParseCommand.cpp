@@ -2,15 +2,15 @@
 // Created by denis on 25.08.20.
 //
 
-#include "cli/ConsoleContext.h"
+#include "cli/state_machines/main/ConsoleContext.h"
 #include "ParseCommand.h"
 #include "ParseAddType.h"
 #include "ShowState.h"
 #include "InputState.h"
 #include "cli/state_machines/input_task/InputTaskStateMachine.h"
 #include "DeleteTaskState.h"
-#include "cli/tokenization/KeywordTokenizer.h"
-#include "cli/states/utils/Utils.h"
+#include "cli/state_machines/main/tokenization/KeywordTokenizer.h"
+#include "cli/state_machines/main/states/utils/Utils.h"
 #include "DeleteStateParseID.h"
 
 ParseCommand::ParseCommand()

@@ -2,13 +2,13 @@
 // Created by denis on 18.08.20.
 //
 
-#include "cli/ConsoleContext.h"
-#include "cli/states/DeleteTaskState.h"
-#include "cli/states/ParseCommand.h"
+#include "cli/state_machines/main/ConsoleContext.h"
+#include "DeleteTaskState.h"
+#include "ParseCommand.h"
 #include "ParseID.h"
-#include "cli/states/AddTaskState.h"
-#include "cli/states/AddSubTaskState.h"
-#include "cli/TaskTableIO.h"
+#include "AddTaskState.h"
+#include "AddSubTaskState.h"
+#include "cli/state_machines/main/TaskTableIO.h"
 #include "ParseCommand.h"
 #include "InputState.h"
 

@@ -10,8 +10,8 @@
 
 #include "core/utils/task_io/ConsoleTaskIO.h"
 #include "ParseCommand.h"
-#include "cli/ConsoleContext.h"
-#include "cli/states/utils/Utils.h"
+#include "cli/state_machines/main/ConsoleContext.h"
+#include "cli/state_machines/main/states/utils/Utils.h"
 
 
 

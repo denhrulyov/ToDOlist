@@ -6,8 +6,8 @@
 #include "StartState.h"
 #include "ParseShowTag.h"
 #include "ParseCommand.h"
-#include "cli/ConsoleContext.h"
-#include "cli/tokenization/KeywordTokenizer.h"
+#include "cli/state_machines/main/ConsoleContext.h"
+#include "cli/state_machines/main/tokenization/KeywordTokenizer.h"
 
 ShowState::ShowState() :
 State(),

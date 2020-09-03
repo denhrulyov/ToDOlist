@@ -4,7 +4,7 @@
 
 #include "InputTaskStateMachine.h"
 #include "ParseState.h"
-#include "cli/ConsoleContext.h"
+#include "cli/state_machines/main/ConsoleContext.h"
 
 InputTaskStateMachine::InputTaskStateMachine(const std::vector<std::shared_ptr<ParseState>> &state_sequence, ConsoleContext& context)
 :

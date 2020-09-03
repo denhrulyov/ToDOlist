@@ -2,11 +2,11 @@
 // Created by denis on 18.08.20.
 //
 
-#include "cli/ConsoleContext.h"
+#include "cli/state_machines/main/ConsoleContext.h"
 #include "ParseAddType.h"
 #include "State.h"
 #include "ParseCommand.h"
-#include "cli/tokenization/KeywordTokenizer.h"
+#include "cli/state_machines/main/tokenization/KeywordTokenizer.h"
 #include "InputState.h"
 #include "cli/state_machines/input_task/InputTaskStateMachine.h"
 #include "AddTaskState.h"

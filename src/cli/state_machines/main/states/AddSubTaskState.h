@@ -6,7 +6,7 @@
 #define TODOLIST_ADDSUBTASKSTATE_H
 
 #include "State.h"
-#include "cli/ConsoleContext.h"
+#include "cli/state_machines/main/ConsoleContext.h"
 
 class AddSubTaskState : public State {
 

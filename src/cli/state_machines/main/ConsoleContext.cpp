@@ -3,7 +3,7 @@
 //
 
 #include "ConsoleContext.h"
-#include "states/State.h"
+#include "cli/state_machines/main/states/State.h"
 
 ConsoleContext::ConsoleContext(
         std::unique_ptr<TaskServiceInterface> service)

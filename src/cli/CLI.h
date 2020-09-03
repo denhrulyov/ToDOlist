@@ -5,8 +5,8 @@
 #ifndef TODOLIST_CLI_H
 #define TODOLIST_CLI_H
 
-#include "ConsoleStateMachine.h"
-#include "states/StartState.h"
+#include "cli/state_machines/main/ConsoleStateMachine.h"
+#include "cli/state_machines/main/states/StartState.h"
 #include "core/api/TODOList.h"
 
 namespace todo_list_cli {

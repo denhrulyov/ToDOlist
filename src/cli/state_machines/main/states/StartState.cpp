@@ -4,7 +4,7 @@
 
 #include "StartState.h"
 #include "ParseCommand.h"
-#include "cli/ConsoleContext.h"
+#include "cli/state_machines/main/ConsoleContext.h"
 
 StartState::StartState()
 {}

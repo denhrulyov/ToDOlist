@@ -1,7 +1,7 @@
 // Created by denis on 25.08.20.
 //
 
-#include "cli/ConsoleContext.h"
+#include "cli/state_machines/main/ConsoleContext.h"
 #include "ParseShowTag.h"
 #include "ParseCommand.h"
 

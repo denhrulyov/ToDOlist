@@ -3,13 +3,13 @@
 //
 #include "DeleteStateParseID.h"
 
-#include "cli/ConsoleContext.h"
+#include "cli/state_machines/main/ConsoleContext.h"
 #include "DeleteTaskState.h"
 #include "ParseCommand.h"
 #include "AddTaskState.h"
 #include "InputState.h"
 #include "DeleteTaskState.h"
-#include "cli/TaskTableIO.h"
+#include "cli/state_machines/main/TaskTableIO.h"
 
 
 DeleteStateParseID::DeleteStateParseID()

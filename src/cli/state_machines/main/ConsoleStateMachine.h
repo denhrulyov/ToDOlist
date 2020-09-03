@@ -6,7 +6,7 @@
 #define TODOLIST_CONSOLESTATEMACHINE_H
 
 #include "ConsoleContext.h"
-#include "states/State.h"
+#include "cli/state_machines/main/states/State.h"
 
 class ConsoleStateMachine {
 

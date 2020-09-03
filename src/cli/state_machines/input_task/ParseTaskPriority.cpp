@@ -4,7 +4,7 @@
 
 #include "ParseTaskPriority.h"
 #include "ParseState.h"
-#include "cli/ConsoleContext.h"
+#include "cli/state_machines/main/ConsoleContext.h"
 #include "InputTaskContext.h"
 
 

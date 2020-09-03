@@ -2,7 +2,7 @@
 // Created by denis on 20.08.20.
 //
 
-#include "cli/ConsoleContext.h"
+#include "cli/state_machines/main/ConsoleContext.h"
 #include "ParseTaskDate.h"
 #include "InputTaskContext.h"
 
