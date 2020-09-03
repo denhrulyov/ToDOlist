@@ -4,16 +4,17 @@
 
 #include "cli/ConsoleContext.h"
 #include "ParseTaskDate.h"
+#include "InputTaskContext.h"
 
 
 ParseTaskDate::ParseTaskDate()
 {}
 
-void ParseTaskDate::print(ConsoleContext& context) {
+void ParseTaskDate::print(InputTaskContext &context) {
     context.getIO().putLine("Date in format yyyy-mm-dd:");
 }
 
-ParseState::Event ParseTaskDate::execute(ConsoleContext& context) {
+ParseState::Event ParseTaskDate::execute(InputTaskContext &context) {
     context.getIO().requestInputLine();
     std::string input = context.getIO().readRestBuffer();
     if (input.empty()) {
@@ -22,7 +23,7 @@ ParseState::Event ParseTaskDate::execute(ConsoleContext& context) {
     }
     using namespace boost::gregorian;
     try {
-        context.getTaskBuffer().date_ = BoostDate(from_string(input));
+        context.setDate(BoostDate(from_string(input)));
     } catch (...) {
         context.getIO().putLine("Incorrect date!");
         return ParseState::Event::FAIL;
@@ -30,6 +31,6 @@ ParseState::Event ParseTaskDate::execute(ConsoleContext& context) {
     return ParseState::Event::SUCCESS;
 }
 
-void ParseTaskDate::help(ConsoleContext &) {
+void ParseTaskDate::help(InputTaskContext &) {
 
 }

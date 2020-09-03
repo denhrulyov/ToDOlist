@@ -6,6 +6,7 @@
 #define TODOLIST_PARSETASKDATE_H
 
 #include "ParseState.h"
+#include "InputTaskContext.h"
 
 
 class ParseTaskDate : public ParseState {
@@ -15,9 +16,9 @@ public:
     ParseTaskDate();
 
 public:
-    void                        print(ConsoleContext& context) override;
-    ParseState::Event           execute(ConsoleContext&) override;
-    void                        help(ConsoleContext&) override;
+    void                        print(InputTaskContext &context) override;
+    ParseState::Event           execute(InputTaskContext &) override;
+    void                        help(InputTaskContext &) override;
 };
 
 

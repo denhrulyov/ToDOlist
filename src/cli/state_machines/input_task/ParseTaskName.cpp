@@ -16,21 +16,21 @@ ParseTaskName::ParseTaskName() :
 ParseState()
 {}
 
-void ParseTaskName::print(ConsoleContext& context) {
+void ParseTaskName::print(InputTaskContext &context) {
     context.getIO().putLine("Task name:");
 }
 
-ParseState::Event ParseTaskName::execute(ConsoleContext& context) {
+ParseState::Event ParseTaskName::execute(InputTaskContext &context) {
     context.getIO().requestInputLine();
     std::string input = context.getIO().readRestBuffer();
     if (input.empty()) {
         context.getIO().putLine("Task name must not be empty!");
         return ParseState::Event::FAIL;
     }
-    context.getTaskBuffer().name_ = input;
+    context.setName(input);
     return ParseState::Event::SUCCESS;
 }
 
-void ParseTaskName::help(ConsoleContext &) {
+void ParseTaskName::help(InputTaskContext &) {
 
 }

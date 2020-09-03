@@ -13,21 +13,21 @@
 ParseTaskLabel::ParseTaskLabel()
 {}
 
-void ParseTaskLabel::print(ConsoleContext& context) {
+void ParseTaskLabel::print(InputTaskContext &context) {
     context.getIO().putLine("Label:");
 }
 
-ParseState::Event ParseTaskLabel::execute(ConsoleContext& context) {
+ParseState::Event ParseTaskLabel::execute(InputTaskContext &context) {
     context.getIO().requestInputLine();
     std::string input = context.getIO().readRestBuffer();
     if (input.empty()) {
         context.getIO().putLine("Task label must not be empty!");
         return ParseState::Event::FAIL;
     }
-    context.getTaskBuffer().label_ = input;
+    context.setLabel(input);
     return ParseState::Event::SUCCESS;
 }
 
-void ParseTaskLabel::help(ConsoleContext &) {
+void ParseTaskLabel::help(InputTaskContext &) {
 
 }

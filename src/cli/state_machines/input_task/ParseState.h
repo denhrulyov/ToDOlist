@@ -6,6 +6,8 @@
 #define TODOLIST_PARSESTATE_H
 
 
+#include "InputTaskContext.h"
+
 class ConsoleContext;
 
 class ParseState {
@@ -21,9 +23,9 @@ public:
     explicit ParseState();
 
 public:
-    virtual void                         print(ConsoleContext&) = 0;
-    virtual Event                        execute(ConsoleContext&) = 0;
-    virtual void                         help(ConsoleContext&) = 0;
+    virtual void                         print(InputTaskContext &) = 0;
+    virtual Event                        execute(InputTaskContext &) = 0;
+    virtual void                         help(InputTaskContext &) = 0;
 
     virtual ~ParseState() = default;
 };

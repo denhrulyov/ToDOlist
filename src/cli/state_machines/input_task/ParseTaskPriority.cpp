@@ -5,17 +5,18 @@
 #include "ParseTaskPriority.h"
 #include "ParseState.h"
 #include "cli/ConsoleContext.h"
+#include "InputTaskContext.h"
 
 
 ParseTaskPriority::ParseTaskPriority() :
 ParseState()
 {}
 
-void ParseTaskPriority::print(ConsoleContext& context) {
+void ParseTaskPriority::print(InputTaskContext &context) {
     context.getIO().putLine("Task priority:");
 }
 
-ParseState::Event ParseTaskPriority::execute(ConsoleContext& context) {
+ParseState::Event ParseTaskPriority::execute(InputTaskContext &context) {
     context.getIO().requestInputLine();
     std::string input = context.getIO().readRestBuffer();
     if (input.empty()) {
@@ -26,13 +27,13 @@ ParseState::Event ParseTaskPriority::execute(ConsoleContext& context) {
         symbol = std::tolower(symbol);
     }
            if (input == "first" || input == "1") {
-               context.getTaskBuffer().priority_ = TaskPriority::FIRST;
+               context.setPriority(TaskPriority::FIRST);
     } else if (input == "second" || input == "2") {
-               context.getTaskBuffer().priority_ = TaskPriority::SECOND;
+               context.setPriority(TaskPriority::SECOND);
     } else if (input == "third" || input == "3") {
-               context.getTaskBuffer().priority_ = TaskPriority::THIRD;
+               context.setPriority(TaskPriority::THIRD);
     } else if (input == "none" || input == "0") {
-               context.getTaskBuffer().priority_ = TaskPriority::NONE;
+               context.setPriority(TaskPriority::NONE);
     } else {
                help(context);
                return ParseState::Event::FAIL;
@@ -40,7 +41,7 @@ ParseState::Event ParseTaskPriority::execute(ConsoleContext& context) {
     return ParseState::Event::SUCCESS;
 }
 
-void ParseTaskPriority::help(ConsoleContext& context) {
+void ParseTaskPriority::help(InputTaskContext &context) {
     context.getIO().putLine("Incorrect priority!");
     context.getIO().putLine("Possible : ");
     context.getIO().putLine("first    (1)");

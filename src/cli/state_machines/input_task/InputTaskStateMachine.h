@@ -11,8 +11,9 @@
 #include "ParseTaskDate.h"
 #include "ParseTaskPriority.h"
 #include "ParseTaskName.h"
+#include "InputTaskContext.h"
+#include "core/api/TaskDTO.h"
 
-class ConsoleContext;
 class ParseState;
 
 class InputTaskStateMachine {
@@ -24,13 +25,14 @@ public:
     };
 
 public:
-    explicit        InputTaskStateMachine(const std::vector<std::shared_ptr<ParseState>>&, ConsoleContext&);
+    explicit          InputTaskStateMachine(const std::vector<std::shared_ptr<ParseState>>&, ConsoleContext&);
 
 public:
     Result            run();
+    TaskDTO           extractTask();
 
 private:
-    ConsoleContext&                              context_;
+    std::unique_ptr<InputTaskContext>            context_;
     std::vector<std::shared_ptr<ParseState>>     state_sequence_;
 };
 

@@ -7,6 +7,7 @@
 
 
 #include "ParseState.h"
+#include "InputTaskContext.h"
 
 class ParseTaskPriority : public ParseState {
 
@@ -16,9 +17,9 @@ public:
 
 public:
 
-    void                    print(ConsoleContext&) override;
-    ParseState::Event       execute(ConsoleContext&) override;
-    void                    help(ConsoleContext&) override;
+    void                    print(InputTaskContext &) override;
+    ParseState::Event       execute(InputTaskContext &) override;
+    void                    help(InputTaskContext &) override;
 };
 
 

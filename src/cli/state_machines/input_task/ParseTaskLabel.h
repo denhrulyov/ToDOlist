@@ -6,6 +6,7 @@
 #define TODOLIST_PARSETASKLABEL_H
 
 #include "ParseState.h"
+#include "InputTaskContext.h"
 
 class ParseTaskLabel : public ParseState {
 
@@ -14,9 +15,9 @@ public:
     ParseTaskLabel();
 
 public:
-    void                        print(ConsoleContext& context) override;
-    ParseState::Event           execute(ConsoleContext&) override;
-    void                        help(ConsoleContext&) override;
+    void                        print(InputTaskContext &context) override;
+    ParseState::Event           execute(InputTaskContext &) override;
+    void                        help(InputTaskContext &) override;
 };
 
 
