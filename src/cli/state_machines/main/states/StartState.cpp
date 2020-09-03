@@ -5,6 +5,8 @@
 #include "StartState.h"
 #include "ParseCommand.h"
 #include "cli/state_machines/main/ConsoleContext.h"
+#include "cli/state_machines/main/state_factory/StateFactory.h"
+#include "cli/state_machines/main/state_factory/Visitor.h"
 
 StartState::StartState()
 {}
@@ -12,7 +14,8 @@ StartState::StartState()
 
 std::shared_ptr<State>
 StartState::execute(ConsoleContext& context) {
-    return std::make_shared<ParseCommand>();
+    StateFactory factory;
+    return Visitor<ParseCommand>().visit(factory);
 }
 
 void
