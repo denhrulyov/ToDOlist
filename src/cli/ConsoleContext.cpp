@@ -12,8 +12,8 @@ ConsoleContext::ConsoleContext(
 {}
 
 
-TaskBuffer &ConsoleContext::getTaskBuffer() {
-    return task_buffer_;
+std::optional<TaskDTO> ConsoleContext::getTaskBuffer() {
+    return task_buffer_.value();
 }
 
 TaskServiceInterface &ConsoleContext::getTaskService() {
@@ -34,6 +34,10 @@ std::map<TaskID, TaskNumber> &ConsoleContext::getIDTable() {
 
 std::optional<TaskID> ConsoleContext::getBufferedId() const {
     return id_buffer_;
+}
+
+void ConsoleContext::fillTaskBuffer(const TaskDTO& dto) {
+    task_buffer_ = dto;
 }
 
 

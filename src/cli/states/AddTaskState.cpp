@@ -23,12 +23,16 @@ State()
 
 void
 AddTaskState::print(ConsoleContext& context) {
-    auto& buffer = context.getTaskBuffer();
+    auto dto = context.getTaskBuffer().value();
     context.getIO().putLine("You specified task with following parameters:");
-    context.getIO().putLine(std::string("name :     ") + field_repr(buffer.name_));
-    context.getIO().putLine(std::string("priority : ") + field_repr(buffer.priority_));
-    context.getIO().putLine(std::string("label :    ") + field_repr(buffer.label_));
-    context.getIO().putLine(std::string("date :     ") + field_repr(buffer.date_));
+    context.getIO().putLine(std::string("name :     ")
+                                                + field_repr(dto.getName()));
+    context.getIO().putLine(std::string("priority : ")
+                                                + field_repr(dto.getPriority()));
+    context.getIO().putLine(std::string("label :    ")
+                                                + field_repr(dto.getLabel()));
+    context.getIO().putLine(std::string("date :     ")
+                                                + field_repr(std::optional(dto.getDate())));
     context.getIO().putLine("Y - accept, n - decline");
 }
 
@@ -41,7 +45,7 @@ AddTaskState::execute(ConsoleContext& context) {
         context.getIO().putLine("aborting...");
         return std::make_shared<ParseCommand>();
     }
-    if (!context.getTaskBuffer().filled()) {
+    if (!context.getTaskBuffer().has_value()) {
         context.getIO().putLine("Some fields were not set correctly. Task can't be added!");
     } else {
         context.getIO().putLine("Task added successfully.");

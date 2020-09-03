@@ -30,10 +30,7 @@ std::shared_ptr<State> InputState<T_next, T_exit>::execute(ConsoleContext & cont
     context.getIO().clear();
     switch (machine_->run()) {
         case InputTaskStateMachine::Result::SUCCESS:
-            context.getTaskBuffer().name_ = machine_->extractTask().getName();
-            context.getTaskBuffer().priority_ = machine_->extractTask().getPriority();
-            context.getTaskBuffer().label_ = machine_->extractTask().getLabel();
-            context.getTaskBuffer().date_ = machine_->extractTask().getDate();
+            context.fillTaskBuffer(machine_->extractTask());
             return std::make_shared<T_next>();
         case InputTaskStateMachine::Result::FAIL:
             return std::make_shared<T_exit>();

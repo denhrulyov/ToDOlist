@@ -8,8 +8,6 @@
 
 #include "core/api/TaskServiceInterface.h"
 #include "ConsoleIO.h"
-#include "TaskBuffer.h"
-
 class State;
 
 typedef uint32_t TaskNumber;
@@ -21,13 +19,14 @@ public:
     ConsoleContext(std::unique_ptr<TaskServiceInterface>);
 
 public:
-
-    TaskBuffer&                             getTaskBuffer();
     TaskServiceInterface&                   getTaskService();
     ConsoleIO&                              getIO();
     std::map<TaskNumber, TaskID>&           getTaskTable();
     std::map<TaskID, TaskNumber>&           getIDTable();
 
+public:
+    void                                    fillTaskBuffer(const TaskDTO&);
+    std::optional<TaskDTO>                  getTaskBuffer();
     std::optional<TaskID>                   getBufferedId() const;
 
 private:
@@ -39,7 +38,7 @@ private:
 
 private:
     std::optional<TaskID>                   id_buffer_;
-    TaskBuffer                              task_buffer_;
+    std::optional<TaskDTO>                  task_buffer_;
     std::unique_ptr<TaskServiceInterface>   service_;
 
 };
