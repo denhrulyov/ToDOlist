@@ -14,7 +14,7 @@ namespace todo_list_cli {
 
     ConsoleStateMachine createCLI() {
         auto context = std::make_unique<ConsoleContext>(std::move(todo_list::createService()));
-        auto factory = std::make_unique<StateFactory>();
+        auto factory = std::make_unique<StateFactory>(context->getIO());
         auto& ref_context = *context;
         ConsoleStateMachine cli(
                 std::move(context), std::move(factory), std::make_shared<StartState>()

@@ -38,7 +38,7 @@ public:
     virtual std::shared_ptr<State> getInstance(const Visitor<DeleteStateParseID>&) = 0;
     virtual std::shared_ptr<State> getInstance(const Visitor<InputTaskParseID>&) = 0;
 
-    virtual ~StateFactoryInterface() {}
+    virtual ~StateFactoryInterface() = default;
 };
 
 

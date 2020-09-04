@@ -5,6 +5,13 @@
 #include "StateFactory.h"
 #include "Visitor.h"
 #include "cli/state_machines/main/states/AllStates.h"
+#include "cli/ConsoleIO.h"
+
+StateFactory::StateFactory(ConsoleIO &io)
+:
+io_(io)
+{}
+
 
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<AddSubTaskState> &) {
     return std::make_shared<AddSubTaskState>();
@@ -19,11 +26,36 @@ std::shared_ptr<State> StateFactory::getInstance(const Visitor<DeleteTaskState> 
 }
 
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<InputState<AddTaskState, ParseCommand>> &) {
-    return std::shared_ptr<InputState<AddTaskState, ParseCommand>>();
+    return std::make_shared<
+            InputState<AddTaskState, ParseCommand>
+                >(std::move(
+                        std::make_unique<InputTaskStateMachine>(
+                                std::vector<std::shared_ptr<ParseState>> {
+                                        std::make_shared<ParseTaskName>(),
+                                        std::make_shared<ParseTaskPriority>(),
+                                        std::make_shared<ParseTaskLabel>(),
+                                        std::make_shared<ParseTaskDate>()
+                                },
+                                io_
+                        )
+                  )
+                );
 }
 
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<InputState<AddSubTaskState, ParseCommand>> &) {
-    return std::shared_ptr<InputState<AddSubTaskState, ParseCommand>>();
+    return std::make_shared<InputState<AddSubTaskState, ParseCommand>>(
+            std::move(
+            std::make_unique<InputTaskStateMachine>(
+                    std::vector<std::shared_ptr<ParseState>> {
+                            std::make_shared<ParseTaskName>(),
+                            std::make_shared<ParseTaskPriority>(),
+                            std::make_shared<ParseTaskLabel>(),
+                            std::make_shared<ParseTaskDate>()
+                    },
+                    io_
+                )
+            )
+    );
 }
 
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<ParseAddType> &) {
@@ -53,3 +85,4 @@ std::shared_ptr<State> StateFactory::getInstance(const Visitor<DeleteStateParseI
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<InputTaskParseID> &) {
     return std::make_shared<InputTaskParseID>();
 }
+

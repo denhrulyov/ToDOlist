@@ -25,7 +25,7 @@ public:
     };
 
 public:
-    explicit          InputTaskStateMachine(const std::vector<std::shared_ptr<ParseState>>&, ConsoleContext&);
+    explicit          InputTaskStateMachine(const std::vector<std::shared_ptr<ParseState>>&, ConsoleIO&);
 
 public:
     Result            run();

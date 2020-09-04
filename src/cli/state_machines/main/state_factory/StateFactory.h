@@ -7,8 +7,12 @@
 
 #include "StateFactoryInterface.h"
 
+class ConsoleIO;
+
 class StateFactory : public StateFactoryInterface {
 
+public:
+    explicit StateFactory(ConsoleIO&);
 public:
     std::shared_ptr<State> getInstance(const Visitor<AddSubTaskState>&) override;
     std::shared_ptr<State> getInstance(const Visitor<AddTaskState>&) override;
@@ -22,6 +26,9 @@ public:
     std::shared_ptr<State> getInstance(const Visitor<StartState>&) override;
     std::shared_ptr<State> getInstance(const Visitor<DeleteStateParseID>&) override ;
     std::shared_ptr<State> getInstance(const Visitor<InputTaskParseID>&) override ;
+
+private:
+    ConsoleIO& io_;
 };
 
 #endif //TODOLIST_STATEFACTORY_H

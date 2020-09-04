@@ -32,20 +32,7 @@ std::shared_ptr<State> ParseAddType::execute(ConsoleContext &context, StateFacto
     }
     Keyword token = tokenizer_->read(context.getIO());
     if (token == Keyword::TASK) {
-        return std::make_shared<
-                InputState<AddTaskState, ParseCommand>
-                    >(std::move(
-                            std::make_unique<InputTaskStateMachine>(
-                                    std::vector<std::shared_ptr<ParseState>> {
-                                            std::make_shared<ParseTaskName>(),
-                                            std::make_shared<ParseTaskPriority>(),
-                                            std::make_shared<ParseTaskLabel>(),
-                                            std::make_shared<ParseTaskDate>()
-                                    },
-                                    context
-                            )
-                      )
-                );
+        return Visitor<InputState<AddTaskState, ParseCommand>>().visit(factory);
     } else if (token == Keyword::SUBTASK) {
         return Visitor<InputTaskParseID>().visit(factory);
     } else {
