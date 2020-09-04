@@ -20,6 +20,8 @@ public:
     std::shared_ptr<State> getInstance(const Visitor<ParseShowTag>&) override;
     std::shared_ptr<State> getInstance(const Visitor<ShowState>&) override;
     std::shared_ptr<State> getInstance(const Visitor<StartState>&) override;
+    std::shared_ptr<State> getInstance(const Visitor<DeleteStateParseID>&) override ;
+    std::shared_ptr<State> getInstance(const Visitor<InputTaskParseID>&) override ;
 };
 
 #endif //TODOLIST_STATEFACTORY_H

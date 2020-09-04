@@ -43,5 +43,13 @@ std::shared_ptr<State> StateFactory::getInstance(const Visitor<ShowState> &) {
 }
 
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<StartState> &) {
-    return std::shared_ptr<State>();
+    return std::make_shared<StartState>();
+}
+
+std::shared_ptr<State> StateFactory::getInstance(const Visitor<DeleteStateParseID> &) {
+    return std::make_shared<DeleteStateParseID>();
+}
+
+std::shared_ptr<State> StateFactory::getInstance(const Visitor<InputTaskParseID> &) {
+    return std::make_shared<InputTaskParseID>();
 }

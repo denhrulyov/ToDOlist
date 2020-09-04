@@ -14,8 +14,11 @@ class ParseCommand;
 class ParseShowTag;
 class ShowState;
 class StartState;
+class State;
 
-#include "cli/state_machines/main/states/State.h"
+class DeleteStateParseID;
+class InputTaskParseID;
+#include <memory>
 
 template<class T> class Visitor;
 
@@ -32,6 +35,10 @@ public:
     virtual std::shared_ptr<State> getInstance(const Visitor<ParseShowTag>&) = 0;
     virtual std::shared_ptr<State> getInstance(const Visitor<ShowState>&) = 0;
     virtual std::shared_ptr<State> getInstance(const Visitor<StartState>&) = 0;
+    virtual std::shared_ptr<State> getInstance(const Visitor<DeleteStateParseID>&) = 0;
+    virtual std::shared_ptr<State> getInstance(const Visitor<InputTaskParseID>&) = 0;
+
+    virtual ~StateFactoryInterface() {}
 };
 
 

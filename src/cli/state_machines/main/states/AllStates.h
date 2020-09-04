@@ -15,4 +15,7 @@
 #include "ShowState.h"
 #include "StartState.h"
 
+#include "parse_id/InputTaskParseID.h"
+#include "parse_id/DeleteStateParseID.h"
+
 #endif //TODOLIST_ALLSTATES_H

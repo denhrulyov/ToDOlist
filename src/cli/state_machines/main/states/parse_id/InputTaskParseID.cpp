@@ -8,7 +8,7 @@
 #include "cli/state_machines/main/states/ParseCommand.h"
 #include "cli/state_machines/input_task/InputTaskStateMachine.h"
 
-std::shared_ptr<State> InputTaskParseID::switchGood(ConsoleContext &context) {
+std::shared_ptr<State> InputTaskParseID::switchGood(ConsoleContext &context, StateFactoryInterface &factory) {
     return std::make_shared<InputState<AddSubTaskState, ParseCommand>>(
             std::move(
                     std::make_unique<InputTaskStateMachine>(

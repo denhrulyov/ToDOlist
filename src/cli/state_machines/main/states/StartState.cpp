@@ -13,8 +13,7 @@ StartState::StartState()
 
 
 std::shared_ptr<State>
-StartState::execute(ConsoleContext& context) {
-    StateFactory factory;
+StartState::execute(ConsoleContext &context, StateFactoryInterface &factory) {
     return Visitor<ParseCommand>().visit(factory);
 }
 

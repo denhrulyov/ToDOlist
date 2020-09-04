@@ -24,11 +24,11 @@ void ParseAddType::print(ConsoleContext& context) {
 
 }
 
-std::shared_ptr<State> ParseAddType::execute(ConsoleContext& context) {
+std::shared_ptr<State> ParseAddType::execute(ConsoleContext &context, StateFactoryInterface &factory) {
     if (context.getIO().isEmpty()) {
         context.getIO().putLine("Specify what to add!");
         help(context);
-        return std::make_shared<ParseCommand>();
+        return Visitor<ParseCommand>().visit(factory);
     }
     Keyword token = tokenizer_->read(context.getIO());
     if (token == Keyword::TASK) {
@@ -47,11 +47,11 @@ std::shared_ptr<State> ParseAddType::execute(ConsoleContext& context) {
                       )
                 );
     } else if (token == Keyword::SUBTASK) {
-        return std::make_shared<InputTaskParseID>();
+        return Visitor<InputTaskParseID>().visit(factory);
     } else {
         context.getIO().putLine("Invalid add parameter!");
         help(context);
-        return std::make_shared<ParseCommand>();
+        return Visitor<ParseCommand>().visit(factory);
     }
 }
 

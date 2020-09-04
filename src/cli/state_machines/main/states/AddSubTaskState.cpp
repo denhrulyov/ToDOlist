@@ -33,19 +33,19 @@ AddSubTaskState::print(ConsoleContext& context) {
 
 
 std::shared_ptr<State>
-AddSubTaskState::execute(ConsoleContext& context) {
+AddSubTaskState::execute(ConsoleContext &context, StateFactoryInterface &factory) {
     context.getIO().requestInputLine();
     std::string input = context.getIO().readWord();
     if (input != "Y") {
         context.getIO().putLine("aborting...");
-        return std::make_shared<StartState>();
+        return Visitor<StartState>().visit(factory);
     }
     if (!context.getTaskBuffer().has_value()) {
         context.getIO().putLine("Some fields were not set correctly. Task can't be added!");
     } else {
         context.getIO().putLine("Task added successfully.");
     }
-    return std::make_shared<StartState>();
+    return Visitor<StartState>().visit(factory);
 }
 
 void AddSubTaskState::help(ConsoleContext &) {

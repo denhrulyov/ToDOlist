@@ -12,6 +12,7 @@ class ConsoleStateMachine {
 
 public:
     ConsoleStateMachine(std::unique_ptr<ConsoleContext> context,
+                        std::unique_ptr<StateFactoryInterface> factory,
                         const std::shared_ptr<State>& start_state);
 
 public:
@@ -19,6 +20,7 @@ public:
 
 
 private:
+    std::unique_ptr<StateFactoryInterface>  factory_;
     std::unique_ptr<ConsoleContext>         context_;
     std::shared_ptr<State>                  current_state_;
 };

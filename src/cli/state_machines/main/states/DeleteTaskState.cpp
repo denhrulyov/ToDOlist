@@ -18,9 +18,9 @@ void DeleteTaskState::print(ConsoleContext &context) {
 }
 
 
-std::shared_ptr<State> DeleteTaskState::execute(ConsoleContext &context) {
+std::shared_ptr<State> DeleteTaskState::execute(ConsoleContext &context, StateFactoryInterface &factory) {
     context.getIO().clear();
-    return std::make_shared<ParseCommand>();
+    return Visitor<ParseCommand>().visit(factory);
 }
 
 void DeleteTaskState::help(ConsoleContext &context) {

@@ -10,7 +10,7 @@
 class DeleteStateParseID : public ParseID {
 
 public:
-    std::shared_ptr<State>      switchGood(ConsoleContext&) override;
+    std::shared_ptr<State> switchGood(ConsoleContext &, StateFactoryInterface &) override;
 };
 
 

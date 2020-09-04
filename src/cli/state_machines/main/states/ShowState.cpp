@@ -18,11 +18,11 @@ void ShowState::print(ConsoleContext &context) {
 
 }
 
-std::shared_ptr<State> ShowState::execute(ConsoleContext &context) {
+std::shared_ptr<State> ShowState::execute(ConsoleContext &context, StateFactoryInterface &factory) {
     if (context.getIO().isEmpty()) {
         context.getIO().putLine("No show option specified!");
         help(context);
-        return std::make_shared<ParseCommand>();
+        return Visitor<ParseCommand>().visit(factory);
     }
     Keyword token = tokenizer_->read(context.getIO());
     if (token == Keyword::TODAY) {
@@ -32,14 +32,14 @@ std::shared_ptr<State> ShowState::execute(ConsoleContext &context) {
     } else if (token == Keyword::ALL) {
         context.getIO().putLine("All tasks:");
     } else if (token == Keyword::TAG) {
-        return std::make_shared<ParseShowTag>();
+        return Visitor<ParseShowTag>().visit(factory);
     } else if (token == Keyword::CURRENT_LIST) {
         context.getIO().putLine("Active list of tasks:");
     } else {
         context.getIO().putLine("Incorrect show options!");
         help(context);
     }
-    return std::make_shared<ParseCommand>();
+    return Visitor<ParseCommand>().visit(factory);
 }
 
 void ShowState::help(ConsoleContext& context) {

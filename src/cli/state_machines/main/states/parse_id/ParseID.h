@@ -15,11 +15,11 @@ public:
 
 public:
     void                        print(ConsoleContext& context) override;
-    std::shared_ptr<State>      execute(ConsoleContext& context) override;
+    std::shared_ptr<State>      execute(ConsoleContext &context, StateFactoryInterface &factory) override;
     void                        help(ConsoleContext&) override;
 
 public:
-    virtual std::shared_ptr<State> switchGood(ConsoleContext &) = 0;
+    virtual std::shared_ptr<State> switchGood(ConsoleContext &, StateFactoryInterface &) = 0;
 };
 
 
