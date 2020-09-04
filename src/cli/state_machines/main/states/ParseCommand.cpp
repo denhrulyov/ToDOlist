@@ -6,16 +6,13 @@
 #include "ParseCommand.h"
 #include "ParseAddType.h"
 #include "ShowState.h"
-#include "InputState.h"
-#include "cli/state_machines/input_task/InputTaskStateMachine.h"
 #include "DeleteTaskState.h"
-#include "cli/state_machines/main/tokenization/KeywordTokenizer.h"
-#include "cli/state_machines/main/states/utils/Utils.h"
-#include "cli/state_machines/main/states/parse_id/DeleteStateParseID.h"
+#include "cli/state_machines/main/tokenization/Tokenizer.h"
+#include "parse_id/DeleteStateParseID.h"
 
-ParseCommand::ParseCommand()
+ParseCommand::ParseCommand(std::unique_ptr<Tokenizer> tokenizer)
 : State(),
-tokenizer_(std::move(std::make_unique<KeywordTokenizer>()))
+tokenizer_(std::move(tokenizer))
 {}
 
 void ParseCommand::print(ConsoleContext &context) {

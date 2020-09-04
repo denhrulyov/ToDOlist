@@ -11,7 +11,7 @@
 class ShowState : public State {
 
 public:
-    explicit ShowState();
+    explicit ShowState(std::unique_ptr<Tokenizer>);
 
 public:
     void                     print(ConsoleContext&)    override;

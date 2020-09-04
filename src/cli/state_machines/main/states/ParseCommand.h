@@ -12,7 +12,7 @@ class ParseCommand : public State {
 
 public:
     explicit
-    ParseCommand();
+    ParseCommand(std::unique_ptr<Tokenizer>);
 
 public:
     void                                print(ConsoleContext& context) override;

@@ -12,10 +12,10 @@
 #include "AddSubTaskState.h"
 #include "cli/state_machines/main/states/parse_id/InputTaskParseID.h"
 
-ParseAddType::ParseAddType()
+ParseAddType::ParseAddType(std::unique_ptr<Tokenizer> tokenizer)
 :
 State(),
-tokenizer_(std::move(std::make_unique<KeywordTokenizer>()))
+tokenizer_(std::move(tokenizer))
 {}
 
 void ParseAddType::print(ConsoleContext& context) {

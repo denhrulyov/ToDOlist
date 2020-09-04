@@ -16,7 +16,7 @@ public:
     explicit InputState(std::unique_ptr<InputTaskStateMachine>);
 
 public:
-    std::shared_ptr<State> execute(ConsoleContext &, StateFactoryInterface &factory) override;
+    std::shared_ptr<State>          execute(ConsoleContext&, StateFactoryInterface &factory) override;
     void                            print(ConsoleContext&) override;
     void                            help(ConsoleContext&) override;
 
@@ -31,9 +31,9 @@ std::shared_ptr<State> InputState<T_next, T_exit>::execute(ConsoleContext &conte
     switch (machine_->run()) {
         case InputTaskStateMachine::Result::SUCCESS:
             context.fillTaskBuffer(machine_->extractTask());
-            return std::make_shared<T_next>();
+            return Visitor<T_next>().visit(factory);
         case InputTaskStateMachine::Result::FAIL:
-            return std::make_shared<T_exit>();
+            return Visitor<T_exit>().visit(factory);
         default:
             return nullptr;
     }

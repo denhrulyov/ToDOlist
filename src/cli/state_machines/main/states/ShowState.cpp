@@ -9,9 +9,9 @@
 #include "cli/state_machines/main/ConsoleContext.h"
 #include "cli/state_machines/main/tokenization/KeywordTokenizer.h"
 
-ShowState::ShowState() :
+ShowState::ShowState(std::unique_ptr<Tokenizer> tokenizer) :
 State(),
-tokenizer_(std::move(std::make_unique<KeywordTokenizer>()))
+tokenizer_(std::move(tokenizer))
 {}
 
 void ShowState::print(ConsoleContext &context) {

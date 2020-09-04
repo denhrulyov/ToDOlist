@@ -12,7 +12,7 @@ class Tokenizer;
 class ParseAddType : public State {
 
 public:
-    explicit ParseAddType();
+    explicit ParseAddType(std::unique_ptr<Tokenizer>);
 
 public:
     void                            print(ConsoleContext& context) override;

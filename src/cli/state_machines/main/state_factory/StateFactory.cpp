@@ -4,6 +4,7 @@
 
 #include "StateFactory.h"
 #include "Visitor.h"
+#include "cli/state_machines/main/tokenization/KeywordTokenizer.h"
 #include "cli/state_machines/main/states/AllStates.h"
 
 StateFactory::StateFactory(ConsoleIOInterface &io)
@@ -58,11 +59,11 @@ std::shared_ptr<State> StateFactory::getInstance(const Visitor<InputState<AddSub
 }
 
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<ParseAddType> &) {
-    return std::make_shared<ParseAddType>();
+    return std::make_shared<ParseAddType>(std::make_unique<KeywordTokenizer>());
 }
 
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<ParseCommand> &) {
-    return std::make_shared<ParseCommand>();
+    return std::make_shared<ParseCommand>(std::make_unique<KeywordTokenizer>());
 }
 
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<ParseShowTag> &) {
@@ -70,7 +71,7 @@ std::shared_ptr<State> StateFactory::getInstance(const Visitor<ParseShowTag> &) 
 }
 
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<ShowState> &) {
-    return std::make_shared<ShowState>();
+    return std::make_shared<ShowState>(std::make_unique<KeywordTokenizer>());
 }
 
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<StartState> &) {
