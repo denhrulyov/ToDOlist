@@ -15,11 +15,11 @@ ParseCommand::ParseCommand(std::unique_ptr<Tokenizer> tokenizer)
 tokenizer_(std::move(tokenizer))
 {}
 
-void ParseCommand::print(ConsoleContext &context) {
+void ParseCommand::print(ConsoleContextInterface &context) {
     context.getIO().putLine("Input command to execute");
 }
 
-std::shared_ptr<State> ParseCommand::execute(ConsoleContext &context, StateFactoryInterface &factory) {
+std::shared_ptr<State> ParseCommand::execute(ConsoleContextInterface &context, StateFactoryInterface &factory) {
     context.getIO().requestInputLine();
     Keyword token = tokenizer_->read(context.getIO());
     switch (token) {
@@ -37,7 +37,7 @@ std::shared_ptr<State> ParseCommand::execute(ConsoleContext &context, StateFacto
     }
 }
 
-void ParseCommand::help(ConsoleContext &context) {
+void ParseCommand::help(ConsoleContextInterface &context) {
     context.getIO().putLine("Available commands:");
     context.getIO().putLine("-  add");
     context.getIO().putLine("-  show");

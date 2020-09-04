@@ -14,9 +14,9 @@ public:
     DeleteTaskState();
 
 public:
-    void                            print(ConsoleContext&) override;
-    std::shared_ptr<State>          execute(ConsoleContext &, StateFactoryInterface &) override;
-    void                            help(ConsoleContext&) override;
+    void                            print(ConsoleContextInterface &) override;
+    std::shared_ptr<State>          execute(ConsoleContextInterface &, StateFactoryInterface &) override;
+    void                            help(ConsoleContextInterface &) override;
 
 
 };

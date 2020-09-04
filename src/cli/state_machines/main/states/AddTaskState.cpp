@@ -23,7 +23,7 @@ State()
 {}
 
 void
-AddTaskState::print(ConsoleContext& context) {
+AddTaskState::print(ConsoleContextInterface &context) {
     auto dto = context.getTaskBuffer().value();
     context.getIO().putLine("You specified task with following parameters:");
     context.getIO().putLine(std::string("name :     ")
@@ -39,7 +39,7 @@ AddTaskState::print(ConsoleContext& context) {
 
 
 std::shared_ptr<State>
-AddTaskState::execute(ConsoleContext &context, StateFactoryInterface &factory) {
+AddTaskState::execute(ConsoleContextInterface &context, StateFactoryInterface &factory) {
     context.getIO().requestInputLine();
     Keyword token = tokenizer_->read(context.getIO());
     if (token != Keyword::YES) {
@@ -54,7 +54,7 @@ AddTaskState::execute(ConsoleContext &context, StateFactoryInterface &factory) {
     return Visitor<ParseCommand>().visit(factory);
 }
 
-void AddTaskState::help(ConsoleContext &) {
+void AddTaskState::help(ConsoleContextInterface &) {
 
 }
 

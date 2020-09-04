@@ -18,11 +18,11 @@ State(),
 tokenizer_(std::move(tokenizer))
 {}
 
-void ParseAddType::print(ConsoleContext& context) {
+void ParseAddType::print(ConsoleContextInterface &context) {
 
 }
 
-std::shared_ptr<State> ParseAddType::execute(ConsoleContext &context, StateFactoryInterface &factory) {
+std::shared_ptr<State> ParseAddType::execute(ConsoleContextInterface &context, StateFactoryInterface &factory) {
     if (context.getIO().isEmpty()) {
         context.getIO().putLine("Specify what to add!");
         help(context);
@@ -41,7 +41,7 @@ std::shared_ptr<State> ParseAddType::execute(ConsoleContext &context, StateFacto
     }
 }
 
-void ParseAddType::help(ConsoleContext &context) {
+void ParseAddType::help(ConsoleContextInterface &context) {
     context.getIO().putLine("Available parameters:");
     context.getIO().putLine("-  task");
     context.getIO().putLine("-  subtask");

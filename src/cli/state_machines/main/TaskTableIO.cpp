@@ -3,9 +3,9 @@
 //
 
 #include "TaskTableIO.h"
-#include "ConsoleContext.h"
+#include "ConsoleContextInterface.h"
 
-void task_table_io::print(ConsoleContext& context) {
+void task_table_io::print(ConsoleContextInterface& context) {
     TaskNumber i = 1;
     auto map_iter = context.getTaskTable().begin();
     while (map_iter != context.getTaskTable().end()) {

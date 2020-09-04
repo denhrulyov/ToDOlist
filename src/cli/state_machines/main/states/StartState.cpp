@@ -13,17 +13,17 @@ StartState::StartState()
 
 
 std::shared_ptr<State>
-StartState::execute(ConsoleContext &context, StateFactoryInterface &factory) {
+StartState::execute(ConsoleContextInterface &context, StateFactoryInterface &factory) {
     return Visitor<ParseCommand>().visit(factory);
 }
 
 void
-StartState::print(ConsoleContext& context) {
+StartState::print(ConsoleContextInterface &context) {
     context.getIO().putLine("Welcome to TODO list CLI.");
     help(context);
 }
 
-void StartState::help(ConsoleContext& context) {
+void StartState::help(ConsoleContextInterface &context) {
     context.getIO().putLine("   Type  ");
     context.getIO().putLine("|   __help__  to get see available options");
     context.getIO().putLine("|   __abort__  to abort executing current command");

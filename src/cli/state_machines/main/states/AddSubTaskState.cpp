@@ -17,7 +17,7 @@ tokenizer_(std::move(tokenizer))
 {}
 
 void
-AddSubTaskState::print(ConsoleContext& context) {
+AddSubTaskState::print(ConsoleContextInterface &context) {
     auto buffer = context.getTaskBuffer();
     context.getIO().putLine("Main task: ");
     context.getIO().putLine(std::string("name :     ") + field_repr(buffer->getName()));
@@ -34,7 +34,7 @@ AddSubTaskState::print(ConsoleContext& context) {
 
 
 std::shared_ptr<State>
-AddSubTaskState::execute(ConsoleContext &context, StateFactoryInterface &factory) {
+AddSubTaskState::execute(ConsoleContextInterface &context, StateFactoryInterface &factory) {
     context.getIO().requestInputLine();
     Keyword token = tokenizer_->read(context.getIO());
     if (token != Keyword::YES) {
@@ -49,6 +49,6 @@ AddSubTaskState::execute(ConsoleContext &context, StateFactoryInterface &factory
     return Visitor<StartState>().visit(factory);
 }
 
-void AddSubTaskState::help(ConsoleContext &) {
+void AddSubTaskState::help(ConsoleContextInterface &) {
 
 }

@@ -9,6 +9,7 @@
 #include "cli/state_machines/main/ConsoleStateMachine.h"
 #include "cli/state_machines/main/states/StartState.h"
 #include "cli/state_machines/main/state_factory/StateFactory.h"
+#include "cli/state_machines/main/ConsoleContext.h"
 #include "core/api/TODOList.h"
 
 namespace todo_list_cli {

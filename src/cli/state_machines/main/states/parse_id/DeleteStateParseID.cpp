@@ -13,6 +13,6 @@
 
 
 
-std::shared_ptr<State> DeleteStateParseID::switchGood(ConsoleContext &, StateFactoryInterface &factory) {
+std::shared_ptr<State> DeleteStateParseID::switchGood(ConsoleContextInterface &, StateFactoryInterface &factory) {
     return Visitor<DeleteTaskState>().visit(factory);
 }

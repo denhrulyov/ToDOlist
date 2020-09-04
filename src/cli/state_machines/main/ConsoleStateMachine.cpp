@@ -11,7 +11,7 @@ void ConsoleStateMachine::run() {
     }
 }
 
-ConsoleStateMachine::ConsoleStateMachine(std::unique_ptr<ConsoleContext> context,
+ConsoleStateMachine::ConsoleStateMachine(std::unique_ptr<ConsoleContextInterface> context,
                                          std::unique_ptr<StateFactoryInterface> factory,
                                          const std::shared_ptr<State>& start_state)
 :

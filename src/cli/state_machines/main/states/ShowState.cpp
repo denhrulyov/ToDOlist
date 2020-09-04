@@ -14,11 +14,11 @@ State(),
 tokenizer_(std::move(tokenizer))
 {}
 
-void ShowState::print(ConsoleContext &context) {
+void ShowState::print(ConsoleContextInterface &context) {
 
 }
 
-std::shared_ptr<State> ShowState::execute(ConsoleContext &context, StateFactoryInterface &factory) {
+std::shared_ptr<State> ShowState::execute(ConsoleContextInterface &context, StateFactoryInterface &factory) {
     if (context.getIO().isEmpty()) {
         context.getIO().putLine("No show option specified!");
         help(context);
@@ -48,7 +48,7 @@ std::shared_ptr<State> ShowState::execute(ConsoleContext &context, StateFactoryI
     return Visitor<ParseCommand>().visit(factory);
 }
 
-void ShowState::help(ConsoleContext& context) {
+void ShowState::help(ConsoleContextInterface &context) {
     context.getIO().putLine("Available options:");
     context.getIO().putLine("-  today");
     context.getIO().putLine("-  this_week");

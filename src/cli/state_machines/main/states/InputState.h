@@ -16,9 +16,9 @@ public:
     explicit InputState(std::unique_ptr<InputTaskStateMachine>);
 
 public:
-    std::shared_ptr<State>          execute(ConsoleContext&, StateFactoryInterface &factory) override;
-    void                            print(ConsoleContext&) override;
-    void                            help(ConsoleContext&) override;
+    std::shared_ptr<State>          execute(ConsoleContextInterface &, StateFactoryInterface &factory) override;
+    void                            print(ConsoleContextInterface &) override;
+    void                            help(ConsoleContextInterface &) override;
 
 
 private:
@@ -26,7 +26,7 @@ private:
 };
 
 template<class T_next, class T_exit>
-std::shared_ptr<State> InputState<T_next, T_exit>::execute(ConsoleContext &context, StateFactoryInterface &factory) {
+std::shared_ptr<State> InputState<T_next, T_exit>::execute(ConsoleContextInterface &context, StateFactoryInterface &factory) {
     context.getIO().clear();
     switch (machine_->run()) {
         case InputTaskStateMachine::Result::SUCCESS:
@@ -40,12 +40,12 @@ std::shared_ptr<State> InputState<T_next, T_exit>::execute(ConsoleContext &conte
 }
 
 template<class T_next, class T_exit>
-void InputState<T_next, T_exit>::print(ConsoleContext &) {
+void InputState<T_next, T_exit>::print(ConsoleContextInterface &) {
 
 }
 
 template<class T_next, class T_exit>
-void InputState<T_next, T_exit>::help(ConsoleContext &) {
+void InputState<T_next, T_exit>::help(ConsoleContextInterface &) {
 
 }
 

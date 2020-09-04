@@ -8,6 +8,6 @@
 #include "cli/state_machines/main/states/ParseCommand.h"
 #include "cli/state_machines/input_task/InputTaskStateMachine.h"
 
-std::shared_ptr<State> InputTaskParseID::switchGood(ConsoleContext &context, StateFactoryInterface &factory) {
+std::shared_ptr<State> InputTaskParseID::switchGood(ConsoleContextInterface &context, StateFactoryInterface &factory) {
     return Visitor<InputState<AddSubTaskState, ParseCommand>>().visit(factory);
 }

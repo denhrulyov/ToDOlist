@@ -7,11 +7,11 @@
 
 #include <memory>
 #include <iostream>
+#include "cli/state_machines/main/ConsoleContextInterface.h"
 #include "cli/state_machines/main/tokenization/Tokenizer.h"
 #include "cli/state_machines/main/state_factory/StateFactoryInterface.h"
 #include "cli/state_machines/main/state_factory/Visitor.h"
 
-class ConsoleContext;
 
 
 class State {
@@ -21,9 +21,9 @@ public:
     State();
 
 public:
-    virtual void                     print(ConsoleContext&)                             = 0;
-    virtual void                     help(ConsoleContext&)                              = 0;
-    virtual std::shared_ptr<State>   execute(ConsoleContext &, StateFactoryInterface &) = 0;
+    virtual void                     print(ConsoleContextInterface &)                            = 0;
+    virtual void                     help(ConsoleContextInterface &)                             = 0;
+    virtual std::shared_ptr<State>   execute(ConsoleContextInterface &, StateFactoryInterface &) = 0;
 
 
 public:

@@ -15,9 +15,9 @@ public:
     explicit ParseAddType(std::unique_ptr<Tokenizer>);
 
 public:
-    void                            print(ConsoleContext& context) override;
-    std::shared_ptr<State>          execute(ConsoleContext &context, StateFactoryInterface &) override;
-    void                            help(ConsoleContext&) override;
+    void                            print(ConsoleContextInterface &context) override;
+    std::shared_ptr<State>          execute(ConsoleContextInterface &context, StateFactoryInterface &) override;
+    void                            help(ConsoleContextInterface &) override;
 
 private:
     std::unique_ptr<Tokenizer>      tokenizer_;

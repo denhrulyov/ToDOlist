@@ -14,12 +14,12 @@ public:
     ParseID();
 
 public:
-    void                        print(ConsoleContext& context) override;
-    std::shared_ptr<State>      execute(ConsoleContext &context, StateFactoryInterface &factory) override;
-    void                        help(ConsoleContext&) override;
+    void                        print(ConsoleContextInterface &context) override;
+    std::shared_ptr<State>      execute(ConsoleContextInterface &context, StateFactoryInterface &factory) override;
+    void                        help(ConsoleContextInterface &) override;
 
 public:
-    virtual std::shared_ptr<State> switchGood(ConsoleContext &, StateFactoryInterface &) = 0;
+    virtual std::shared_ptr<State> switchGood(ConsoleContextInterface &, StateFactoryInterface &) = 0;
 };
 
 

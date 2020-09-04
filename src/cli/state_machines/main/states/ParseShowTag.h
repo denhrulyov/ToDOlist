@@ -14,9 +14,9 @@ public:
     ParseShowTag();
 
 public:
-    void                            print(ConsoleContext& context) override;
-    std::shared_ptr<State>          execute(ConsoleContext &, StateFactoryInterface &) override;
-    void                            help(ConsoleContext&) override;
+    void                            print(ConsoleContextInterface &context) override;
+    std::shared_ptr<State>          execute(ConsoleContextInterface &, StateFactoryInterface &) override;
+    void                            help(ConsoleContextInterface &) override;
 };
 
 

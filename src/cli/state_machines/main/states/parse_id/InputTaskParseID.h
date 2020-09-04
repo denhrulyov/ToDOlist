@@ -10,7 +10,7 @@
 class InputTaskParseID : public ParseID {
 
 public:
-    std::shared_ptr<State> switchGood(ConsoleContext &, StateFactoryInterface &) override ;
+    std::shared_ptr<State> switchGood(ConsoleContextInterface &, StateFactoryInterface &) override ;
 };
 
 

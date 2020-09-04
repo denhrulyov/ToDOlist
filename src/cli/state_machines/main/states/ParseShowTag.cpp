@@ -8,11 +8,11 @@
 ParseShowTag::ParseShowTag()
 : State() {}
 
-void ParseShowTag::print(ConsoleContext &context) {
+void ParseShowTag::print(ConsoleContextInterface &context) {
     // must not modify output stream
 }
 
-std::shared_ptr<State> ParseShowTag::execute(ConsoleContext &context, StateFactoryInterface &factory) {
+std::shared_ptr<State> ParseShowTag::execute(ConsoleContextInterface &context, StateFactoryInterface &factory) {
     if (context.getIO().isEmpty()) {
         context.getIO().putLine("\nNo tag specified!");
         return Visitor<ParseCommand>().visit(factory);
@@ -22,6 +22,6 @@ std::shared_ptr<State> ParseShowTag::execute(ConsoleContext &context, StateFacto
     return Visitor<ParseCommand>().visit(factory);
 }
 
-void ParseShowTag::help(ConsoleContext &) {
+void ParseShowTag::help(ConsoleContextInterface &) {
 
 }

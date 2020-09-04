@@ -10,7 +10,7 @@ DeleteTaskState::DeleteTaskState()
 : State()
 {}
 
-void DeleteTaskState::print(ConsoleContext &context) {
+void DeleteTaskState::print(ConsoleContextInterface &context) {
     context.getIO().putLine("You want to delete task: ");
     // 1. get task from context.getService().getTaskByID()
     // 2. print task fields
@@ -18,11 +18,11 @@ void DeleteTaskState::print(ConsoleContext &context) {
 }
 
 
-std::shared_ptr<State> DeleteTaskState::execute(ConsoleContext &context, StateFactoryInterface &factory) {
+std::shared_ptr<State> DeleteTaskState::execute(ConsoleContextInterface &context, StateFactoryInterface &factory) {
     context.getIO().clear();
     return Visitor<ParseCommand>().visit(factory);
 }
 
-void DeleteTaskState::help(ConsoleContext &context) {
+void DeleteTaskState::help(ConsoleContextInterface &context) {
 
 }

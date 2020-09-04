@@ -6,13 +6,11 @@
 #define TODOLIST_CONSOLECONTEXT_H
 
 
-#include "core/api/TaskServiceInterface.h"
-#include "cli/ConsoleIOInterface.h"
+#include "ConsoleContextInterface.h"
 class State;
 
-typedef uint32_t TaskNumber;
 
-class ConsoleContext {
+class ConsoleContext : public ConsoleContextInterface {
 
 public:
     explicit
@@ -20,15 +18,15 @@ public:
                     std::unique_ptr<ConsoleIOInterface>);
 
 public:
-    TaskServiceInterface&                   getTaskService();
-    ConsoleIOInterface &                    getIO();
-    std::map<TaskNumber, TaskID>&           getTaskTable();
-    std::map<TaskID, TaskNumber>&           getIDTable();
+    TaskServiceInterface&                   getTaskService() override;
+    ConsoleIOInterface &                    getIO() override;
+    std::map<TaskNumber, TaskID>&           getTaskTable() override;
+    std::map<TaskID, TaskNumber>&           getIDTable() override;
 
 public:
-    void                                    fillTaskBuffer(const TaskDTO&);
-    std::optional<TaskDTO>                  getTaskBuffer();
-    std::optional<TaskID>                   getBufferedId() const;
+    void                                    fillTaskBuffer(const TaskDTO&) override;
+    std::optional<TaskDTO>                  getTaskBuffer() override;
+    std::optional<TaskID>                   getBufferedId() const override;
 
 private:
 

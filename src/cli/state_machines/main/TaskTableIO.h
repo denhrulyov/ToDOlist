@@ -5,11 +5,11 @@
 #ifndef TODOLIST_TASKTABLEIO_H
 #define TODOLIST_TASKTABLEIO_H
 
-class ConsoleContext;
+class ConsoleContextInterface;
 
 namespace task_table_io {
 
-    void print(ConsoleContext& context);
+    void print(ConsoleContextInterface& context);
 }
 
 

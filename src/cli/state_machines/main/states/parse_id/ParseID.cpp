@@ -15,11 +15,11 @@
 ParseID::ParseID()
 {}
 
-void ParseID::print(ConsoleContext& context) {
+void ParseID::print(ConsoleContextInterface &context) {
     context.getIO().putLine("Input task number: ");
 }
 
-std::shared_ptr<State> ParseID::execute(ConsoleContext &context, StateFactoryInterface &factory) {
+std::shared_ptr<State> ParseID::execute(ConsoleContextInterface &context, StateFactoryInterface &factory) {
     if (context.getTaskTable().empty()) {
         context.getIO().putLine("Task table is now empty. Make get command to gain some set of tasks.");
         return Visitor<ParseCommand>().visit(factory);
@@ -48,6 +48,6 @@ std::shared_ptr<State> ParseID::execute(ConsoleContext &context, StateFactoryInt
     return switchGood(context, factory);
 }
 
-void ParseID::help(ConsoleContext &) {
+void ParseID::help(ConsoleContextInterface &) {
 
 }

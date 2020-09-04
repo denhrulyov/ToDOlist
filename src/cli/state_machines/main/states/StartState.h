@@ -13,9 +13,9 @@ public:
     StartState();
 
 public:
-    std::shared_ptr<State> execute(ConsoleContext &, StateFactoryInterface &) override;
-    void                            print(ConsoleContext&) override;
-    void                            help(ConsoleContext&) override;
+    std::shared_ptr<State> execute(ConsoleContextInterface &, StateFactoryInterface &) override;
+    void                            print(ConsoleContextInterface &) override;
+    void                            help(ConsoleContextInterface &) override;
 
 };
 
