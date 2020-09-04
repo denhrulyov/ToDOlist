@@ -6,9 +6,11 @@
 #include "cli/state_machines/main/states/State.h"
 
 ConsoleContext::ConsoleContext(
-        std::unique_ptr<TaskServiceInterface> service)
-        :
-        service_(std::move(service))
+    std::unique_ptr<TaskServiceInterface> service,
+    std::unique_ptr<ConsoleIOInterface> io)
+:
+service_(std::move(service)),
+io_(std::move(io))
 {}
 
 
@@ -20,8 +22,8 @@ TaskServiceInterface &ConsoleContext::getTaskService() {
     return *service_;
 }
 
-ConsoleIO &ConsoleContext::getIO() {
-    return console_;
+ConsoleIOInterface & ConsoleContext::getIO() {
+    return *io_;
 }
 
 std::map<TaskNumber, TaskID> &ConsoleContext::getTaskTable() {

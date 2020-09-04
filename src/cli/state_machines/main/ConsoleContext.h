@@ -7,7 +7,7 @@
 
 
 #include "core/api/TaskServiceInterface.h"
-#include "cli/ConsoleIO.h"
+#include "cli/ConsoleIOInterface.h"
 class State;
 
 typedef uint32_t TaskNumber;
@@ -16,11 +16,12 @@ class ConsoleContext {
 
 public:
     explicit
-    ConsoleContext(std::unique_ptr<TaskServiceInterface>);
+    ConsoleContext( std::unique_ptr<TaskServiceInterface>,
+                    std::unique_ptr<ConsoleIOInterface>);
 
 public:
     TaskServiceInterface&                   getTaskService();
-    ConsoleIO&                              getIO();
+    ConsoleIOInterface &                    getIO();
     std::map<TaskNumber, TaskID>&           getTaskTable();
     std::map<TaskID, TaskNumber>&           getIDTable();
 
@@ -34,7 +35,7 @@ private:
 
     std::map<TaskNumber, TaskID>            task_table_;
     std::map<TaskID, TaskNumber>            id_table_;
-    ConsoleIO                               console_;
+    std::unique_ptr<ConsoleIOInterface>     io_;
 
 private:
     std::optional<TaskID>                   id_buffer_;

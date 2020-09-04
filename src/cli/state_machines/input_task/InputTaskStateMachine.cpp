@@ -6,7 +6,9 @@
 #include "ParseState.h"
 #include "cli/state_machines/main/ConsoleContext.h"
 
-InputTaskStateMachine::InputTaskStateMachine(const std::vector<std::shared_ptr<ParseState>> &state_sequence, ConsoleIO& io)
+InputTaskStateMachine::InputTaskStateMachine(
+        const std::vector<std::shared_ptr<ParseState>> &state_sequence,
+        ConsoleIOInterface& io)
 :
 state_sequence_(state_sequence),
 context_(std::move(std::make_unique<InputTaskContext>(io)))

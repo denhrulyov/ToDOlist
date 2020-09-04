@@ -5,6 +5,7 @@
 #ifndef TODOLIST_CLI_H
 #define TODOLIST_CLI_H
 
+#include "cli/ConsoleIO.h"
 #include "cli/state_machines/main/ConsoleStateMachine.h"
 #include "cli/state_machines/main/states/StartState.h"
 #include "cli/state_machines/main/state_factory/StateFactory.h"
@@ -13,7 +14,11 @@
 namespace todo_list_cli {
 
     ConsoleStateMachine createCLI() {
-        auto context = std::make_unique<ConsoleContext>(std::move(todo_list::createService()));
+        auto io      = std::make_unique<ConsoleIO>();
+        auto context = std::make_unique<ConsoleContext>(
+                            std::move(todo_list::createService()),
+                            std::move(io)
+                            );
         auto factory = std::make_unique<StateFactory>(context->getIO());
         auto& ref_context = *context;
         ConsoleStateMachine cli(

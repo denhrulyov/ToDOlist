@@ -6,17 +6,18 @@
 #define TODOLIST_CONSOLEIO_H
 
 #include <iostream>
+#include "ConsoleIOInterface.h"
 
-class ConsoleIO {
+class ConsoleIO : public ConsoleIOInterface {
 
 public:
-    void            putLine(const std::string& message);
-    std::string     readWord();
-    std::string     readRestBuffer();
-    void            requestInputLine();
+    void            putLine(const std::string& message) override ;
+    std::string     readWord() override ;
+    std::string     readRestBuffer() override ;
+    void            requestInputLine() override ;
 public:
-    bool            isEmpty();
-    void            clear();
+    bool            isEmpty() override ;
+    void            clear() override ;
 
 private:
     void            clearPrefixSpaces();

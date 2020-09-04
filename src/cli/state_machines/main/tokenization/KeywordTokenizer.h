@@ -11,7 +11,7 @@
 class KeywordTokenizer : public Tokenizer {
 
 public:
-    Keyword  read(ConsoleIO&) override;
+    Keyword  read(ConsoleIOInterface &) override;
     ~KeywordTokenizer() = default;
 };
 

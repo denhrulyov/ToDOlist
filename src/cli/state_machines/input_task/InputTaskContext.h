@@ -5,16 +5,16 @@
 #ifndef TODOLIST_INPUTTASKCONTEXT_H
 #define TODOLIST_INPUTTASKCONTEXT_H
 
-#include "cli/ConsoleIO.h"
+#include "cli/ConsoleIOInterface.h"
 #include "core/memory_model/data/Task.h"
 
 class InputTaskContext {
 
 public:
-    explicit InputTaskContext(ConsoleIO&);
+    explicit InputTaskContext(ConsoleIOInterface &);
 
 public:
-    ConsoleIO &getIO() const;
+    ConsoleIOInterface &getIO() const;
 
 public:
     std::optional<std::string>      getName() const;
@@ -34,7 +34,7 @@ public:
     void setDate(const std::optional<BoostDate> &date);
 
 private:
-    ConsoleIO&                      io_;
+    ConsoleIOInterface&             io_;
 
 
 private:

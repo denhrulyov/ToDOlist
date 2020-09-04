@@ -5,9 +5,8 @@
 #include "StateFactory.h"
 #include "Visitor.h"
 #include "cli/state_machines/main/states/AllStates.h"
-#include "cli/ConsoleIO.h"
 
-StateFactory::StateFactory(ConsoleIO &io)
+StateFactory::StateFactory(ConsoleIOInterface &io)
 :
 io_(io)
 {}

@@ -8,10 +8,8 @@
 #include "ParseCommand.h"
 #include "cli/state_machines/main/tokenization/KeywordTokenizer.h"
 #include "InputState.h"
-#include "cli/state_machines/input_task/InputTaskStateMachine.h"
 #include "AddTaskState.h"
 #include "AddSubTaskState.h"
-#include "cli/state_machines/main/states/parse_id/ParseID.h"
 #include "cli/state_machines/main/states/parse_id/InputTaskParseID.h"
 
 ParseAddType::ParseAddType()

@@ -38,11 +38,11 @@ void InputTaskContext::setDate(const std::optional<BoostDate> &date) {
     date_ = date;
 }
 
-ConsoleIO &InputTaskContext::getIO() const {
+ConsoleIOInterface &InputTaskContext::getIO() const {
     return io_;
 }
 
-InputTaskContext::InputTaskContext(ConsoleIO& io)
+InputTaskContext::InputTaskContext(ConsoleIOInterface &io)
 :
 io_(io)
 {}

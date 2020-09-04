@@ -2,12 +2,11 @@
 // Created by denis on 31.08.20.
 //
 
-#include "cli/ConsoleIO.h"
 #include "KeywordTokenizer.h"
 #include "Keyword.h"
 #include <map>
 
-Keyword  KeywordTokenizer::read(ConsoleIO &io) {
+Keyword  KeywordTokenizer::read(ConsoleIOInterface &io) {
     std::string input = io.readWord();
     std::map<std::string, Keyword > match
     {

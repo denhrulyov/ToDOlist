@@ -5,14 +5,13 @@
 #ifndef TODOLIST_STATEFACTORY_H
 #define TODOLIST_STATEFACTORY_H
 
+#include "cli/ConsoleIOInterface.h"
 #include "StateFactoryInterface.h"
-
-class ConsoleIO;
 
 class StateFactory : public StateFactoryInterface {
 
 public:
-    explicit StateFactory(ConsoleIO&);
+    explicit StateFactory(ConsoleIOInterface&);
 public:
     std::shared_ptr<State> getInstance(const Visitor<AddSubTaskState>&) override;
     std::shared_ptr<State> getInstance(const Visitor<AddTaskState>&) override;
@@ -28,7 +27,7 @@ public:
     std::shared_ptr<State> getInstance(const Visitor<InputTaskParseID>&) override ;
 
 private:
-    ConsoleIO& io_;
+    ConsoleIOInterface& io_;
 };
 
 #endif //TODOLIST_STATEFACTORY_H
