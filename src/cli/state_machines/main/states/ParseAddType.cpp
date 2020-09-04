@@ -29,14 +29,15 @@ std::shared_ptr<State> ParseAddType::execute(ConsoleContext &context, StateFacto
         return Visitor<ParseCommand>().visit(factory);
     }
     Keyword token = tokenizer_->read(context.getIO());
-    if (token == Keyword::TASK) {
-        return Visitor<InputState<AddTaskState, ParseCommand>>().visit(factory);
-    } else if (token == Keyword::SUBTASK) {
-        return Visitor<InputTaskParseID>().visit(factory);
-    } else {
-        context.getIO().putLine("Invalid add parameter!");
-        help(context);
-        return Visitor<ParseCommand>().visit(factory);
+    switch (token) {
+        case Keyword::TASK:
+            return Visitor<InputState<AddTaskState, ParseCommand>>().visit(factory);
+        case Keyword::SUBTASK:
+            return Visitor<InputTaskParseID>().visit(factory);
+        default:
+            context.getIO().putLine("Invalid add parameter!");
+            help(context);
+            return Visitor<ParseCommand>().visit(factory);
     }
 }
 

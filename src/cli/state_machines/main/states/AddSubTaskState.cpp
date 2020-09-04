@@ -10,9 +10,10 @@
 #include "cli/state_machines/main/states/utils/Utils.h"
 
 
-AddSubTaskState::AddSubTaskState()
-        :
-        State()
+AddSubTaskState::AddSubTaskState(std::unique_ptr<Tokenizer> tokenizer)
+:
+State(),
+tokenizer_(std::move(tokenizer))
 {}
 
 void
@@ -35,8 +36,8 @@ AddSubTaskState::print(ConsoleContext& context) {
 std::shared_ptr<State>
 AddSubTaskState::execute(ConsoleContext &context, StateFactoryInterface &factory) {
     context.getIO().requestInputLine();
-    std::string input = context.getIO().readWord();
-    if (input != "Y") {
+    Keyword token = tokenizer_->read(context.getIO());
+    if (token != Keyword::YES) {
         context.getIO().putLine("aborting...");
         return Visitor<StartState>().visit(factory);
     }

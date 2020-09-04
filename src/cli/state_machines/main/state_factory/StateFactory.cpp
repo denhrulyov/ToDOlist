@@ -14,11 +14,11 @@ io_(io)
 
 
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<AddSubTaskState> &) {
-    return std::make_shared<AddSubTaskState>();
+    return std::make_shared<AddSubTaskState>(std::make_unique<KeywordTokenizer>());
 }
 
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<AddTaskState> &) {
-    return std::make_shared<AddTaskState>();
+    return std::make_shared<AddTaskState>(std::make_unique<KeywordTokenizer>());
 }
 
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<DeleteTaskState> &) {

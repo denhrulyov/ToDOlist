@@ -19,7 +19,9 @@ Keyword  KeywordTokenizer::read(ConsoleIOInterface &io) {
             {"all",       Keyword::SUBTASK},
             {"tag",       Keyword::TAG},
             {"task",      Keyword::TASK},
-            {"subtask",   Keyword::SUBTASK}
+            {"subtask",   Keyword::SUBTASK},
+            {"Y",         Keyword::YES},
+            {"n",         Keyword::NO}
     };
     if (match.count(input)) {
         return match[input];

@@ -12,12 +12,13 @@
 #include "ParseCommand.h"
 #include "cli/state_machines/main/ConsoleContext.h"
 #include "cli/state_machines/main/states/utils/Utils.h"
+#include "cli/state_machines/main/tokenization/Tokenizer.h"
 
 
 
-
-AddTaskState::AddTaskState()
+AddTaskState::AddTaskState(std::unique_ptr<Tokenizer> tokenizer)
 :
+tokenizer_(std::move(tokenizer)),
 State()
 {}
 
@@ -40,8 +41,8 @@ AddTaskState::print(ConsoleContext& context) {
 std::shared_ptr<State>
 AddTaskState::execute(ConsoleContext &context, StateFactoryInterface &factory) {
     context.getIO().requestInputLine();
-    std::string input = context.getIO().readWord();
-    if (input != "Y") {
+    Keyword token = tokenizer_->read(context.getIO());
+    if (token != Keyword::YES) {
         context.getIO().putLine("aborting...");
         return Visitor<ParseCommand>().visit(factory);
     }

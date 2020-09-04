@@ -12,12 +12,15 @@ class AddSubTaskState : public State {
 
 public:
     explicit
-    AddSubTaskState();
+    AddSubTaskState(std::unique_ptr<Tokenizer>);
 
 public:
     void                            print(ConsoleContext& context) override;
     std::shared_ptr<State>          execute(ConsoleContext &context, StateFactoryInterface &) override;
     void                            help(ConsoleContext&) override;
+
+private:
+    std::unique_ptr<Tokenizer>      tokenizer_;
 };
 
 

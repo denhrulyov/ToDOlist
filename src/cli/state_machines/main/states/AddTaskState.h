@@ -7,16 +7,21 @@
 
 #include "State.h"
 
+class Tokenizer;
+
 class AddTaskState : public State {
 
 public:
     explicit
-    AddTaskState();
+    AddTaskState(std::unique_ptr<Tokenizer>);
 
 public:
     void                            print(ConsoleContext& context) override;
     std::shared_ptr<State>          execute(ConsoleContext &context, StateFactoryInterface &) override;
     void                            help(ConsoleContext&) override;
+
+private:
+    std::unique_ptr<Tokenizer>      tokenizer_;
 };
 
 

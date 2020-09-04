@@ -25,19 +25,25 @@ std::shared_ptr<State> ShowState::execute(ConsoleContext &context, StateFactoryI
         return Visitor<ParseCommand>().visit(factory);
     }
     Keyword token = tokenizer_->read(context.getIO());
-    if (token == Keyword::TODAY) {
-        context.getIO().putLine("Tasks for today:");
-    } else if (token == Keyword::THIS_WEEK) {
-        context.getIO().putLine("Tasks for this week:");
-    } else if (token == Keyword::ALL) {
-        context.getIO().putLine("All tasks:");
-    } else if (token == Keyword::TAG) {
-        return Visitor<ParseShowTag>().visit(factory);
-    } else if (token == Keyword::CURRENT_LIST) {
-        context.getIO().putLine("Active list of tasks:");
-    } else {
-        context.getIO().putLine("Incorrect show options!");
-        help(context);
+    switch (token) {
+        case Keyword::TODAY:
+            context.getIO().putLine("Tasks for today:");
+            break;
+        case Keyword::THIS_WEEK:
+            context.getIO().putLine("Tasks for this week:");
+            break;
+        case Keyword::ALL:
+            context.getIO().putLine("All tasks:");
+            break;
+        case Keyword::TAG:
+            return Visitor<ParseShowTag>().visit(factory);
+        case Keyword::CURRENT_LIST:
+            context.getIO().putLine("Active list of tasks:");
+            break;
+        default:
+            context.getIO().putLine("Incorrect show options!");
+            help(context);
+            break;
     }
     return Visitor<ParseCommand>().visit(factory);
 }
