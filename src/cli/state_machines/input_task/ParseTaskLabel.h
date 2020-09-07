@@ -15,9 +15,9 @@ public:
     ParseTaskLabel();
 
 public:
-    void                        print(InputTaskContext &context) override;
-    ParseState::Event           execute(InputTaskContext &) override;
-    void                        help(InputTaskContext &) override;
+    void                        print(InputTaskContextInterface &context) override;
+    Event                       execute(InputTaskContextInterface &) override;
+    void                        help(InputTaskContextInterface &) override;
 };
 
 

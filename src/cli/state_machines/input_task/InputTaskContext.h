@@ -5,33 +5,32 @@
 #ifndef TODOLIST_INPUTTASKCONTEXT_H
 #define TODOLIST_INPUTTASKCONTEXT_H
 
-#include "cli/ConsoleIOInterface.h"
-#include "core/memory_model/data/Task.h"
+#include "InputTaskContextInterface.h"
 
-class InputTaskContext {
+class InputTaskContext : public InputTaskContextInterface{
 
 public:
     explicit InputTaskContext(ConsoleIOInterface &);
 
 public:
-    ConsoleIOInterface &getIO() const;
+    ConsoleIOInterface&             getIO() const override;
 
 public:
-    std::optional<std::string>      getName() const;
+    std::optional<std::string>      getName() const override ;
 
-    std::optional<TaskPriority>     getPriority() const;
+    std::optional<TaskPriority>     getPriority() const override ;
 
-    std::optional<std::string>      getLabel() const;
+    std::optional<std::string>      getLabel() const override ;
 
-    std::optional<BoostDate>        getDate() const;
+    std::optional<BoostDate>        getDate() const override ;
 
-    void setName(const std::optional<std::string> &name);
+    void setName(const std::optional<std::string> &name) override ;
 
-    void setPriority(const std::optional<TaskPriority> &priority);
+    void setPriority(const std::optional<TaskPriority> &priority) override ;
 
-    void setLabel(const std::optional<std::string> &label);
+    void setLabel(const std::optional<std::string> &label) override ;
 
-    void setDate(const std::optional<BoostDate> &date);
+    void setDate(const std::optional<BoostDate> &date) override ;
 
 private:
     ConsoleIOInterface&             io_;

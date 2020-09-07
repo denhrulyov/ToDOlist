@@ -13,6 +13,7 @@
 #include "ParseTaskName.h"
 #include "InputTaskContext.h"
 #include "core/api/TaskDTO.h"
+#include "ParseStateFactoryInterface.h"
 
 class ParseState;
 
@@ -25,7 +26,7 @@ public:
     };
 
 public:
-    explicit          InputTaskStateMachine(const std::vector<std::shared_ptr<ParseState>>&, ConsoleIOInterface&);
+    explicit          InputTaskStateMachine(std::unique_ptr<ParseStateFactoryInterface>, ConsoleIOInterface&);
 
 public:
     Result            run();
@@ -33,7 +34,7 @@ public:
 
 private:
     std::unique_ptr<InputTaskContext>            context_;
-    std::vector<std::shared_ptr<ParseState>>     state_sequence_;
+    std::unique_ptr<ParseStateFactoryInterface>  factory_;
 };
 
 

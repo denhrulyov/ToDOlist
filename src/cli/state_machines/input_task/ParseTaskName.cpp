@@ -12,11 +12,11 @@ ParseTaskName::ParseTaskName() :
 ParseState()
 {}
 
-void ParseTaskName::print(InputTaskContext &context) {
+void ParseTaskName::print(InputTaskContextInterface &context) {
     context.getIO().putLine("Task name:");
 }
 
-ParseState::Event ParseTaskName::execute(InputTaskContext &context) {
+ParseState::Event ParseTaskName::execute(InputTaskContextInterface &context) {
     context.getIO().requestInputLine();
     std::string input = context.getIO().readRestBuffer();
     if (input.empty()) {
@@ -27,6 +27,6 @@ ParseState::Event ParseTaskName::execute(InputTaskContext &context) {
     return ParseState::Event::SUCCESS;
 }
 
-void ParseTaskName::help(InputTaskContext &) {
+void ParseTaskName::help(InputTaskContextInterface &) {
 
 }

@@ -3,6 +3,7 @@
 //
 
 #include "StateFactory.h"
+#include "cli/state_machines/input_task/ParseStateFactory.h"
 #include "Visitor.h"
 #include "cli/state_machines/main/tokenization/KeywordTokenizer.h"
 #include "cli/state_machines/main/states/AllStates.h"
@@ -26,36 +27,25 @@ std::shared_ptr<State> StateFactory::getInstance(const Visitor<DeleteTaskState> 
 }
 
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<InputState<AddTaskState, ParseCommand>> &) {
-    return std::make_shared<
-            InputState<AddTaskState, ParseCommand>
-                >(std::move(
+    return std::make_shared<InputState<AddTaskState, ParseCommand>>(
+            std::move(
                         std::make_unique<InputTaskStateMachine>(
-                                std::vector<std::shared_ptr<ParseState>> {
-                                        std::make_shared<ParseTaskName>(),
-                                        std::make_shared<ParseTaskPriority>(),
-                                        std::make_shared<ParseTaskLabel>(),
-                                        std::make_shared<ParseTaskDate>()
-                                },
+                                std::make_unique<ParseStateFactory>(),
                                 io_
                         )
-                  )
+                    )
                 );
 }
 
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<InputState<AddSubTaskState, ParseCommand>> &) {
     return std::make_shared<InputState<AddSubTaskState, ParseCommand>>(
             std::move(
-            std::make_unique<InputTaskStateMachine>(
-                    std::vector<std::shared_ptr<ParseState>> {
-                            std::make_shared<ParseTaskName>(),
-                            std::make_shared<ParseTaskPriority>(),
-                            std::make_shared<ParseTaskLabel>(),
-                            std::make_shared<ParseTaskDate>()
-                    },
-                    io_
-                )
-            )
-    );
+                std::make_unique<InputTaskStateMachine>(
+                        std::make_unique<ParseStateFactory>(),
+                        io_
+                        )
+                    )
+                );
 }
 
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<ParseAddType> &) {

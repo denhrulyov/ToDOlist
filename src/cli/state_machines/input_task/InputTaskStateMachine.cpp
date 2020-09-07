@@ -7,16 +7,16 @@
 #include "cli/state_machines/main/ConsoleContext.h"
 
 InputTaskStateMachine::InputTaskStateMachine(
-        const std::vector<std::shared_ptr<ParseState>> &state_sequence,
+        std::unique_ptr<ParseStateFactoryInterface> factory,
         ConsoleIOInterface& io)
 :
-state_sequence_(state_sequence),
+factory_(std::move(factory)),
 context_(std::move(std::make_unique<InputTaskContext>(io)))
 {}
 
 typename InputTaskStateMachine::Result InputTaskStateMachine::run() {
-
-    for (auto state : state_sequence_) {
+    auto state = factory_->getNextState();
+    while (state) {
         ParseState::Event event;
         do {
             state->print(*context_);
@@ -25,6 +25,7 @@ typename InputTaskStateMachine::Result InputTaskStateMachine::run() {
                 return Result::FAIL;
             }
         } while(event != ParseState::Event::SUCCESS);
+        state = factory_->getNextState();
     }
     return Result::SUCCESS;
 }

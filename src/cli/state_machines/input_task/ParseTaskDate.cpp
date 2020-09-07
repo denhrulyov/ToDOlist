@@ -10,11 +10,11 @@
 ParseTaskDate::ParseTaskDate()
 {}
 
-void ParseTaskDate::print(InputTaskContext &context) {
+void ParseTaskDate::print(InputTaskContextInterface &context) {
     context.getIO().putLine("Date in format yyyy-mm-dd:");
 }
 
-ParseState::Event ParseTaskDate::execute(InputTaskContext &context) {
+ParseState::Event ParseTaskDate::execute(InputTaskContextInterface &context) {
     context.getIO().requestInputLine();
     std::string input = context.getIO().readRestBuffer();
     if (input.empty()) {
@@ -31,6 +31,6 @@ ParseState::Event ParseTaskDate::execute(InputTaskContext &context) {
     return ParseState::Event::SUCCESS;
 }
 
-void ParseTaskDate::help(InputTaskContext &) {
+void ParseTaskDate::help(InputTaskContextInterface &) {
 
 }

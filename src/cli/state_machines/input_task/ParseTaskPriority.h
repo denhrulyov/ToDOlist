@@ -6,6 +6,7 @@
 #define TODOLIST_PARSETASKPRIORITY_H
 
 
+#include <cli/state_machines/main/ConsoleContextInterface.h>
 #include "ParseState.h"
 #include "InputTaskContext.h"
 
@@ -17,9 +18,9 @@ public:
 
 public:
 
-    void                    print(InputTaskContext &) override;
-    ParseState::Event       execute(InputTaskContext &) override;
-    void                    help(InputTaskContext &) override;
+    void                    print(InputTaskContextInterface &) override;
+    Event                   execute(InputTaskContextInterface &) override;
+    void                    help(InputTaskContextInterface &) override;
 };
 
 

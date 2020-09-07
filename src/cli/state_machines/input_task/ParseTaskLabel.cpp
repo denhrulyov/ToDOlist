@@ -10,11 +10,11 @@
 ParseTaskLabel::ParseTaskLabel()
 {}
 
-void ParseTaskLabel::print(InputTaskContext &context) {
+void ParseTaskLabel::print(InputTaskContextInterface &context) {
     context.getIO().putLine("Label:");
 }
 
-ParseState::Event ParseTaskLabel::execute(InputTaskContext &context) {
+ParseState::Event ParseTaskLabel::execute(InputTaskContextInterface &context) {
     context.getIO().requestInputLine();
     std::string input = context.getIO().readRestBuffer();
     if (input.empty()) {
@@ -25,6 +25,6 @@ ParseState::Event ParseTaskLabel::execute(InputTaskContext &context) {
     return ParseState::Event::SUCCESS;
 }
 
-void ParseTaskLabel::help(InputTaskContext &) {
+void ParseTaskLabel::help(InputTaskContextInterface &) {
 
 }

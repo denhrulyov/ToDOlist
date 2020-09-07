@@ -12,11 +12,11 @@ ParseTaskPriority::ParseTaskPriority() :
 ParseState()
 {}
 
-void ParseTaskPriority::print(InputTaskContext &context) {
+void ParseTaskPriority::print(InputTaskContextInterface &context) {
     context.getIO().putLine("Task priority:");
 }
 
-ParseState::Event ParseTaskPriority::execute(InputTaskContext &context) {
+ParseState::Event ParseTaskPriority::execute(InputTaskContextInterface &context) {
     context.getIO().requestInputLine();
     std::string input = context.getIO().readRestBuffer();
     if (input.empty()) {
@@ -41,7 +41,7 @@ ParseState::Event ParseTaskPriority::execute(InputTaskContext &context) {
     return ParseState::Event::SUCCESS;
 }
 
-void ParseTaskPriority::help(InputTaskContext &context) {
+void ParseTaskPriority::help(InputTaskContextInterface &context) {
     context.getIO().putLine("Incorrect priority!");
     context.getIO().putLine("Possible : ");
     context.getIO().putLine("first    (1)");

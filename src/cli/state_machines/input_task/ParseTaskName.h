@@ -5,6 +5,7 @@
 #ifndef TODOLIST_PARSETASKNAME_H
 #define TODOLIST_PARSETASKNAME_H
 
+#include <cli/state_machines/main/ConsoleContextInterface.h>
 #include "ParseState.h"
 #include "InputTaskContext.h"
 
@@ -15,9 +16,9 @@ public:
     ParseTaskName();
 
 public:
-    void                    print(InputTaskContext &context) override;
-    ParseState::Event       execute(InputTaskContext &) override;
-    void                    help(InputTaskContext &) override;
+    void                    print(InputTaskContextInterface &context) override;
+    Event                   execute(InputTaskContextInterface &) override;
+    void                    help(InputTaskContextInterface &) override;
 };
 
 
