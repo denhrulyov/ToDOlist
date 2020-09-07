@@ -7,6 +7,7 @@
 
 #include "cli/ConsoleIOInterface.h"
 #include "StateFactoryInterface.h"
+#include "cli/state_machines/utils/LazyInitializer.h"
 
 class StateFactory : public StateFactoryInterface {
 
@@ -26,8 +27,30 @@ public:
     std::shared_ptr<State> getInstance(const Visitor<DeleteStateParseID>&) override ;
     std::shared_ptr<State> getInstance(const Visitor<InputTaskParseID>&) override ;
 
+public:
+    template<class T>
+    using LazyInitializerPtr = std::unique_ptr<LazyInitializer<State, T>>;
+
+private:
+    template<class T>
+    const LazyInitializerPtr<T>& getInitializer();
+
 private:
     ConsoleIOInterface& io_;
+    std::tuple<
+        LazyInitializerPtr<AddSubTaskState>,
+        LazyInitializerPtr<AddTaskState>,
+        LazyInitializerPtr<DeleteTaskState>,
+        LazyInitializerPtr<InputState<AddTaskState, ParseCommand>>,
+        LazyInitializerPtr<InputState<AddSubTaskState, ParseCommand>>,
+        LazyInitializerPtr<ParseAddType>,
+        LazyInitializerPtr<ParseCommand>,
+        LazyInitializerPtr<ParseShowTag>,
+        LazyInitializerPtr<ShowState>,
+        LazyInitializerPtr<StartState>,
+        LazyInitializerPtr<DeleteStateParseID>,
+        LazyInitializerPtr<InputTaskParseID>
+        > states_;
 };
 
 #endif //TODOLIST_STATEFACTORY_H

@@ -6,10 +6,9 @@
 #define TODOLIST_PARSESTATEFACTORY_H
 
 #include "ParseStateFactoryInterface.h"
+#include "cli/state_machines/utils/InitializerInterface.h"
 
 class ParseStateFactory : public ParseStateFactoryInterface {
-
-
 
 public:
     explicit ParseStateFactory();
@@ -17,23 +16,14 @@ public:
 public:
     std::shared_ptr<ParseState> getNextState() override ;
 
-private:
-    struct InitializerInterface {
-        virtual std::shared_ptr<ParseState> get() = 0;
-        virtual ~InitializerInterface() = default;
-    };
-
-    template<class T>
-    struct Initializer : public InitializerInterface {
-        std::shared_ptr<ParseState> get() override {
-            return std::make_shared<T>();
-        }
-    };
 
 private:
-    using initializer_array_type =      std::array<std::unique_ptr<InitializerInterface>, 4>;
-    initializer_array_type              states_;
-    initializer_array_type::iterator    current_state_;
+    using ParseStateInitializer =       InitializerInterface<ParseState>;
+    using InitializersArray =           std::array<std::unique_ptr<ParseStateInitializer>, 4>;
+
+private:
+    InitializersArray                   states_;
+    InitializersArray::iterator         current_state_;
 };
 
 

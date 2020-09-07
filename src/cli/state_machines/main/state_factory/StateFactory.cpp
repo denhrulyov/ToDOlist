@@ -8,71 +8,121 @@
 #include "cli/state_machines/main/tokenization/KeywordTokenizer.h"
 #include "cli/state_machines/main/states/AllStates.h"
 
+template<class T>
+StateFactory::LazyInitializerPtr<T> createInitializer(const typename LazyInitializer<State, T>::Creator& init) {
+    return std::make_unique<LazyInitializer<State, T>>(init);
+}
+
 StateFactory::StateFactory(ConsoleIOInterface &io)
 :
-io_(io)
+io_(io),
+states_ {
+    createInitializer<AddSubTaskState>([] () {
+        return std::make_shared<AddSubTaskState>(std::make_unique<KeywordTokenizer>());
+    }),
+    createInitializer<AddTaskState>([] () {
+        return std::make_shared<AddTaskState>(std::make_unique<KeywordTokenizer>());
+    }),
+    createInitializer<DeleteTaskState>([] () {
+        return std::make_shared<DeleteTaskState>();
+    }),
+    createInitializer<InputState<AddTaskState, ParseCommand>>([&io] () {
+        return std::make_shared<InputState<AddTaskState, ParseCommand>>(
+                std::move(
+                        std::make_unique<InputTaskStateMachine>(
+                                std::make_unique<ParseStateFactory>(),
+                                io
+                        )
+                )
+        );
+    }),
+    createInitializer<InputState<AddSubTaskState, ParseCommand>>([&io] () {
+        return std::make_shared<InputState<AddSubTaskState, ParseCommand>>(
+                std::move(
+                        std::make_unique<InputTaskStateMachine>(
+                                std::make_unique<ParseStateFactory>(),
+                                io
+                        )
+                )
+        );
+    }),
+    createInitializer<ParseAddType>([] () {
+        return std::make_shared<ParseAddType>(std::make_unique<KeywordTokenizer>());
+    }),
+    createInitializer<ParseCommand>([] () {
+        return std::make_shared<ParseCommand>(std::make_unique<KeywordTokenizer>());
+    }),
+    createInitializer<ParseShowTag>([] () {
+        return std::make_shared<ParseShowTag>();
+    }),
+    createInitializer<ShowState>([] () {
+        return std::make_shared<ShowState>(std::make_unique<KeywordTokenizer>());
+    }),
+    createInitializer<StartState>([] () {
+        return std::make_shared<StartState>();
+    }),
+    createInitializer<DeleteStateParseID>([] () {
+        return std::make_shared<DeleteStateParseID>();
+    }),
+    createInitializer<InputTaskParseID>([] () {
+        return std::make_shared<InputTaskParseID>();
+    })
+}
 {}
 
 
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<AddSubTaskState> &) {
-    return std::make_shared<AddSubTaskState>(std::make_unique<KeywordTokenizer>());
+    return getInitializer<AddSubTaskState>()->getValue();
 }
 
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<AddTaskState> &) {
-    return std::make_shared<AddTaskState>(std::make_unique<KeywordTokenizer>());
+    return getInitializer<AddTaskState>()->getValue();
 }
 
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<DeleteTaskState> &) {
-    return std::make_shared<DeleteTaskState>();
+    return getInitializer<DeleteTaskState>()->getValue();
 }
 
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<InputState<AddTaskState, ParseCommand>> &) {
-    return std::make_shared<InputState<AddTaskState, ParseCommand>>(
-            std::move(
-                        std::make_unique<InputTaskStateMachine>(
-                                std::make_unique<ParseStateFactory>(),
-                                io_
-                        )
-                    )
-                );
+    return getInitializer<InputState<AddTaskState, ParseCommand>>()->getValue();
 }
 
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<InputState<AddSubTaskState, ParseCommand>> &) {
-    return std::make_shared<InputState<AddSubTaskState, ParseCommand>>(
-            std::move(
-                std::make_unique<InputTaskStateMachine>(
-                        std::make_unique<ParseStateFactory>(),
-                        io_
-                        )
-                    )
-                );
+    return getInitializer<InputState<AddSubTaskState, ParseCommand>>()->getValue();
 }
 
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<ParseAddType> &) {
-    return std::make_shared<ParseAddType>(std::make_unique<KeywordTokenizer>());
+    return getInitializer<ParseAddType>()->getValue();
 }
 
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<ParseCommand> &) {
-    return std::make_shared<ParseCommand>(std::make_unique<KeywordTokenizer>());
+    return getInitializer<ParseCommand>()->getValue();
 }
 
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<ParseShowTag> &) {
-    return std::make_shared<ParseShowTag>();
+    return getInitializer<ParseShowTag>()->getValue();
 }
 
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<ShowState> &) {
-    return std::make_shared<ShowState>(std::make_unique<KeywordTokenizer>());
+    return getInitializer<ShowState>()->getValue();
 }
 
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<StartState> &) {
-    return std::make_shared<StartState>();
+    return getInitializer<StartState>()->getValue();
 }
 
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<DeleteStateParseID> &) {
-    return std::make_shared<DeleteStateParseID>();
+    return getInitializer<DeleteStateParseID>()->getValue();
 }
 
 std::shared_ptr<State> StateFactory::getInstance(const Visitor<InputTaskParseID> &) {
-    return std::make_shared<InputTaskParseID>();
+    return getInitializer<InputTaskParseID>()->getValue();
+}
+
+
+
+template<class T>
+const StateFactory::LazyInitializerPtr<T>& StateFactory::getInitializer() {
+    return std::get<LazyInitializerPtr<T>>(states_);
 }
 

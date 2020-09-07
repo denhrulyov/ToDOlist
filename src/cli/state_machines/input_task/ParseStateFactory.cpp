@@ -7,21 +7,30 @@
 #include "ParseTaskPriority.h"
 #include "ParseTaskLabel.h"
 #include "ParseTaskDate.h"
+#include "cli/state_machines/utils/LazyInitializer.h"
+
+template <class T>
+using ThisLazyInitializer = LazyInitializer<ParseState, T>;
+
+template<class T>
+std::unique_ptr<ThisLazyInitializer<T>> createThisLazyInitializer() {
+    return std::make_unique<ThisLazyInitializer<T>>(ThisLazyInitializer<T>::createDefault());
+}
 
 ParseStateFactory::ParseStateFactory()
 :
 states_ {
-    std::move(std::make_unique<ParseStateFactory::Initializer<ParseTaskName>>()),
-    std::move(std::make_unique<ParseStateFactory::Initializer<ParseTaskPriority>>()),
-    std::move(std::make_unique<ParseStateFactory::Initializer<ParseTaskLabel>>()),
-    std::move(std::make_unique<ParseStateFactory::Initializer<ParseTaskDate>>())
+    std::move(createThisLazyInitializer<ParseTaskName>()),
+    std::move(createThisLazyInitializer<ParseTaskPriority>()),
+    std::move(createThisLazyInitializer<ParseTaskLabel>()),
+    std::move(createThisLazyInitializer<ParseTaskDate>())
 },
 current_state_(states_.begin())
 {}
 
 std::shared_ptr<ParseState> ParseStateFactory::getNextState() {
     if (current_state_ != states_.end()) {
-        return (*(current_state_++))->get();
+        return (*(current_state_++))->getValue();
     }
     return nullptr;
 }
