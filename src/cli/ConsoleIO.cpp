@@ -50,3 +50,7 @@ void ConsoleIO::clearPrefixSpaces() {
     buffer_ = std::string(buf_iter, buffer_.end());
 }
 
+std::string_view ConsoleIO::seeBuffer() {
+    return std::string_view(buffer_);
+}
+

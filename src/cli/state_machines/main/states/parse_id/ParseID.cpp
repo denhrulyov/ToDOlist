@@ -25,6 +25,10 @@ std::shared_ptr<State> ParseID::execute(ConsoleContextInterface &context, StateF
         return Visitor<ParseCommand>().visit(factory);
     }
     context.getIO().requestInputLine();
+    Keyword spec_cmd = SpecwordFinder::findSpecWord(context.getIO().seeBuffer());
+    if (spec_cmd != Keyword::NONE) {
+        return dispatchSpecWord(spec_cmd, factory);
+    }
     std::string input = context.getIO().readRestBuffer();
     TaskNumber task_number = -1;
     try {

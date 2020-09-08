@@ -5,7 +5,7 @@
 #include "StateFactory.h"
 #include "cli/state_machines/input_task/ParseStateFactory.h"
 #include "Visitor.h"
-#include "cli/state_machines/main/tokenization/KeywordTokenizer.h"
+#include "cli/tokenization/KeywordTokenizer.h"
 #include "cli/state_machines/main/states/AllStates.h"
 
 template<class T>

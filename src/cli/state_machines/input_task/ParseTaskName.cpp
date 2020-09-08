@@ -18,6 +18,11 @@ void ParseTaskName::print(InputTaskContextInterface &context) {
 
 ParseState::Event ParseTaskName::execute(InputTaskContextInterface &context) {
     context.getIO().requestInputLine();
+    Keyword spec_cmd = SpecwordFinder::findSpecWord(context.getIO().seeBuffer());
+    if (spec_cmd != Keyword::NONE) {
+        return dispatchSpecWord(spec_cmd);
+    }
+    context.getIO().requestInputLine();
     std::string input = context.getIO().readRestBuffer();
     if (input.empty()) {
         context.getIO().putLine("Task name must not be empty!");

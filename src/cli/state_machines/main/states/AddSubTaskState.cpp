@@ -36,6 +36,10 @@ AddSubTaskState::print(ConsoleContextInterface &context) {
 std::shared_ptr<State>
 AddSubTaskState::execute(ConsoleContextInterface &context, StateFactoryInterface &factory) {
     context.getIO().requestInputLine();
+    Keyword spec_cmd = SpecwordFinder::findSpecWord(context.getIO().seeBuffer());
+    if (spec_cmd != Keyword::NONE) {
+        return dispatchSpecWord(spec_cmd, factory);
+    }
     Keyword token = tokenizer_->read(context.getIO());
     if (token != Keyword::YES) {
         context.getIO().putLine("aborting...");

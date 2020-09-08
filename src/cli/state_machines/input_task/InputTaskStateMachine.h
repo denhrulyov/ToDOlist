@@ -22,7 +22,8 @@ class InputTaskStateMachine {
 public:
     enum class Result {
         SUCCESS,
-        FAIL
+        FAIL,
+        EXIT_PROGRAM
     };
 
 public:

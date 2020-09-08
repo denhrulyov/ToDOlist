@@ -15,9 +15,13 @@ public:
     std::string     readWord() override ;
     std::string     readRestBuffer() override ;
     void            requestInputLine() override ;
+
 public:
     bool            isEmpty() override ;
     void            clear() override ;
+
+public:
+    std::string_view seeBuffer() override;
 
 private:
     void            clearPrefixSpaces();

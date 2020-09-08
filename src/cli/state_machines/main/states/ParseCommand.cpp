@@ -7,7 +7,7 @@
 #include "ParseAddType.h"
 #include "ShowState.h"
 #include "DeleteTaskState.h"
-#include "cli/state_machines/main/tokenization/Tokenizer.h"
+#include "cli/tokenization/Tokenizer.h"
 #include "parse_id/DeleteStateParseID.h"
 
 ParseCommand::ParseCommand(std::unique_ptr<Tokenizer> tokenizer)
@@ -21,6 +21,10 @@ void ParseCommand::print(ConsoleContextInterface &context) {
 
 std::shared_ptr<State> ParseCommand::execute(ConsoleContextInterface &context, StateFactoryInterface &factory) {
     context.getIO().requestInputLine();
+    Keyword spec_cmd = SpecwordFinder::findSpecWord(context.getIO().seeBuffer());
+    if (spec_cmd != Keyword::NONE) {
+        return dispatchSpecWord(spec_cmd, factory);
+    }
     Keyword token = tokenizer_->read(context.getIO());
     switch (token) {
         case Keyword::ADD:

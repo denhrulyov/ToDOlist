@@ -7,7 +7,6 @@
 #include "ParseShowTag.h"
 #include "ParseCommand.h"
 #include "cli/state_machines/main/ConsoleContext.h"
-#include "cli/state_machines/main/tokenization/KeywordTokenizer.h"
 
 ShowState::ShowState(std::unique_ptr<Tokenizer> tokenizer) :
 State(),
@@ -24,6 +23,7 @@ std::shared_ptr<State> ShowState::execute(ConsoleContextInterface &context, Stat
         help(context);
         return Visitor<ParseCommand>().visit(factory);
     }
+
     Keyword token = tokenizer_->read(context.getIO());
     switch (token) {
         case Keyword::TODAY:

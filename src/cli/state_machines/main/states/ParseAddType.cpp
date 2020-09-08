@@ -6,7 +6,7 @@
 #include "ParseAddType.h"
 #include "State.h"
 #include "ParseCommand.h"
-#include "cli/state_machines/main/tokenization/KeywordTokenizer.h"
+#include "cli/tokenization/KeywordTokenizer.h"
 #include "InputState.h"
 #include "AddTaskState.h"
 #include "AddSubTaskState.h"

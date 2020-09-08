@@ -21,8 +21,13 @@ typename InputTaskStateMachine::Result InputTaskStateMachine::run() {
         do {
             state->print(*context_);
             event = state->execute(*context_);
-            if (event == ParseState::Event::EXIT) {
-                return Result::FAIL;
+            switch (event) {
+                case ParseState::Event::ABORT:
+                    return Result::FAIL;
+                case ParseState::Event::EXIT:
+                    return Result::EXIT_PROGRAM;
+                default:
+                    break;
             }
         } while(event != ParseState::Event::SUCCESS);
         state = factory_->getNextState();

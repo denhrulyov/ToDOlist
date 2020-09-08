@@ -12,7 +12,7 @@
 #include "ParseCommand.h"
 #include "cli/state_machines/main/ConsoleContext.h"
 #include "cli/state_machines/main/states/utils/Utils.h"
-#include "cli/state_machines/main/tokenization/Tokenizer.h"
+#include "cli/tokenization/Tokenizer.h"
 
 
 
@@ -41,6 +41,10 @@ AddTaskState::print(ConsoleContextInterface &context) {
 std::shared_ptr<State>
 AddTaskState::execute(ConsoleContextInterface &context, StateFactoryInterface &factory) {
     context.getIO().requestInputLine();
+    Keyword spec_cmd = SpecwordFinder::findSpecWord(context.getIO().seeBuffer());
+    if (spec_cmd != Keyword::NONE) {
+        return dispatchSpecWord(spec_cmd, factory);
+    }
     Keyword token = tokenizer_->read(context.getIO());
     if (token != Keyword::YES) {
         context.getIO().putLine("aborting...");

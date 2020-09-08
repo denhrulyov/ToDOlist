@@ -7,6 +7,7 @@
 
 
 #include <cli/state_machines/main/ConsoleContextInterface.h>
+#include "cli/tokenization/SpecwordFinder.h"
 #include "InputTaskContext.h"
 #include "ParseStateFactoryInterface.h"
 
@@ -18,6 +19,7 @@ public:
     enum class Event {
         SUCCESS,
         FAIL,
+        ABORT,
         EXIT
     };
 
@@ -30,6 +32,9 @@ public:
     virtual void                         help(InputTaskContextInterface &) = 0;
 
     virtual ~ParseState() = default;
+
+public:
+    virtual Event                       dispatchSpecWord(Keyword kw);
 };
 
 
