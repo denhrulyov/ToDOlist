@@ -61,7 +61,7 @@ const auto pointer_to_same(const std::weak_ptr<TaskNode>& to_cmp) {
 }
 
 auto sample_nodes(const std::size_t slice = 4) {
-    const std::vector ids = {TaskID(1), TaskID(2), TaskID(3), TaskID(4)};
+    const std::vector<TaskID> ids = {TaskID(1), TaskID(2), TaskID(3), TaskID(4)};
     const std::vector<std::shared_ptr<TaskNode>> tasks {
             std::make_shared<TaskNode>(
                     ids[0],
@@ -254,7 +254,7 @@ TEST_F(TaskServiceTest, TestErrorResultOfAddSubTaskIfErrorInStorage) {
     );
     // ___________
     // Mocks
-    auto ms = create_fixed_mock_storage(std::vector {sample_node});
+    auto ms = create_fixed_mock_storage(std::vector<std::shared_ptr<TaskNode>> {sample_node});
     ON_CALL(*ms, addTask)
             .WillByDefault(Return(TaskStorageInterface::Result::FAILURE));
     TaskService ts = TaskService(   std::move(ms),

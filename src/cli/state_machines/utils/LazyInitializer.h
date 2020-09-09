@@ -20,8 +20,6 @@ public:
     initialized_(false) {}
 
 public:
-    LazyInitializer() : initialized_(false) {}
-
     std::shared_ptr<Base> getValue() override {
         if (!initialized_) {
             object_ = this->getCreator()();
@@ -29,7 +27,6 @@ public:
         return object_;
     }
 
-public:
     static LazyInitializer createDefault() {
         return LazyInitializer(
                 Creator([] () {

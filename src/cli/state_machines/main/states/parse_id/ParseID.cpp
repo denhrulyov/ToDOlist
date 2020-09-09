@@ -20,7 +20,7 @@ void ParseID::print(ConsoleContextInterface &context) {
 }
 
 std::shared_ptr<State> ParseID::execute(ConsoleContextInterface &context, StateFactoryInterface &factory) {
-    if (context.getTaskTable().empty()) {
+    if (context.getMatchingTablePositionToID().empty()) {
         context.getIO().putLine("Task table is now empty. Make get command to gain some set of tasks.");
         return Visitor<ParseCommand>().visit(factory);
     }
@@ -30,25 +30,27 @@ std::shared_ptr<State> ParseID::execute(ConsoleContextInterface &context, StateF
         return dispatchSpecWord(spec_cmd, factory);
     }
     std::string input = context.getIO().readRestBuffer();
-    TaskNumber task_number = -1;
+    TaskNumber task_number = 0;
     try {
         task_number = std::stoi(input);
     } catch (...) {
         context.getIO().putLine("Incorrect number!");
         return Visitor<ParseCommand>().visit(factory);
     }
-    if (task_number < 1 || task_number > (--context.getTaskTable().end())->first) {
+    TaskNumber max_row_number = (--context.getMatchingTablePositionToID().end())->first;
+    if (task_number < 1 || task_number > max_row_number) {
         context.getIO().putLine("Index is out of table!");
         context.getIO().putLine("Current table is:");
         task_table_io::print(context);
         return Visitor<ParseCommand>().visit(factory);
     }
-    if (context.getTaskTable().count(task_number) == 0) {
+    if (context.getMatchingTablePositionToID().count(task_number) == 0) {
         context.getIO().putLine("This task was deleted.");
         context.getIO().putLine("Current table is:");
         task_table_io::print(context);
         return Visitor<ParseCommand>().visit(factory);
     }
+    context.fillIDBuffer(context.getMatchingTablePositionToID()[task_number]);
     return switchGood(context, factory);
 }
 

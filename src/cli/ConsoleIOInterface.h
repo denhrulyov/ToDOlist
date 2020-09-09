@@ -19,6 +19,9 @@ public:
     virtual void            clear() = 0;
 
 public:
+    void operator = (const ConsoleIOInterface& rhs) = delete;
+
+public:
     virtual std::string_view seeBuffer() = 0;
 public:
     virtual ~ConsoleIOInterface() = default;

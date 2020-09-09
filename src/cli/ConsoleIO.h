@@ -11,6 +11,9 @@
 class ConsoleIO : public ConsoleIOInterface {
 
 public:
+    ConsoleIO(std::istream&, std::ostream&);
+
+public:
     void            putLine(const std::string& message) override ;
     std::string     readWord() override ;
     std::string     readRestBuffer() override ;
@@ -27,6 +30,8 @@ private:
     void            clearPrefixSpaces();
 
 private:
+    std::istream& in_;
+    std::ostream& out_;
     std::string buffer_;
 };
 

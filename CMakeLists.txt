@@ -50,44 +50,19 @@ include_directories(tests)
 #############################################
 
 # tests #####################################
-
 include(GoogleTest)
 find_package(GTest REQUIRED)
 include_directories(${GMOCK_INCLUDE_DIR})
 enable_testing()
 
+file(GLOB_RECURSE TESTS tests/*.cpp)
+file(GLOB_RECURSE MOCKS tests/mocks/*.h)
+
 add_executable(TestsExecutable
-                tests/TestTaskNode.cpp
-                tests/TestTaskDTO.cpp
-                tests/TestTagPriorityView.cpp
-                tests/TestDatePriortyView.cpp
-                tests/TestTaskService.cpp
-                tests/TestLinkManager.cpp
-                tests/TestTaskStorage.cpp
-                tests/TestTaskID.cpp
-                tests/TestTaskIDFactory.cpp
-                tests/TestTaskCreationResult.cpp
-                tests/TestTaskModificationResult.cpp
-                tests/TestRequestResult.cpp
-                src/core/api/RequestResult.cpp
-                src/core/api/TaskModificationResult.cpp
-                src/core/api/TaskCreationResult.cpp
-                src/core/api/TaskService.cpp
-                src/core/memory_model/data/Task.cpp
-                src/core/memory_model/structure/TaskNode.cpp
-                src/core/memory_model/view/DatePriorityView.cpp
-                src/core/api/TaskDTO.cpp
-                src/core/memory_model/data/TaskID.cpp
-                src/core/memory_model/data/TaskIDFactory.cpp
-                src/core/api/TaskCreationResult.cpp
-                src/core/memory_model/view/TagPriorityView.cpp
-                src/core/memory_model/data/TaskStorage.cpp
-                src/core/memory_model/structure/LinkManager.cpp
-                src/core/utils/data_transfer/TaskDTOConverter.cpp
-                src/core/memory_model/data/TaskPriority.h tests/test_main.cpp
-                src/core/api/TaskServiceInterface.h
-                ${CLI_SOURCES})
-target_link_libraries(TestsExecutable GTest::GTest GTest::Main ${GMOCK_LIBRARY} ${GMOCK_MAIN_LIBRARY})
+        ${CLI_SOURCES} ${CLI_HEADERS}
+        ${CORE_SOURCES} ${CORE_HEADERS}
+        ${TESTS} ${MOCKS})
+target_link_libraries(TestsExecutable GTest::GTest GTest::Main ${GMOCK_LIBRARY} ${GMOCK_MAIN_LIBRARY} ${Boost_LIBRARIES})
 
 gtest_discover_tests(TestsExecutable)
 

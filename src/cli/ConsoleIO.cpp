@@ -5,7 +5,7 @@
 #include "ConsoleIO.h"
 
 void ConsoleIO::putLine(const std::string& message) {
-    std::cout << message << std::endl;
+    out_ << message << std::endl;
 }
 std::string ConsoleIO::readWord() {
     clearPrefixSpaces();
@@ -21,7 +21,7 @@ std::string ConsoleIO::readWord() {
 void ConsoleIO::requestInputLine() {
     clear();
     std::string input;
-    std::getline(std::cin, input);
+    std::getline(in_, input);
     buffer_ = input;
 }
 
@@ -54,3 +54,4 @@ std::string_view ConsoleIO::seeBuffer() {
     return std::string_view(buffer_);
 }
 
+ConsoleIO::ConsoleIO(std::istream &in, std::ostream &out) : in_(in), out_(out) {}

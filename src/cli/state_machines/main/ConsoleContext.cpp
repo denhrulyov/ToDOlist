@@ -10,12 +10,13 @@ ConsoleContext::ConsoleContext(
     std::unique_ptr<ConsoleIOInterface> io)
 :
 service_(std::move(service)),
-io_(std::move(io))
+io_(std::move(io)),
+task_buffer_(std::nullopt)
 {}
 
 
 std::optional<TaskDTO> ConsoleContext::getTaskBuffer() {
-    return task_buffer_.value();
+    return task_buffer_;
 }
 
 TaskServiceInterface &ConsoleContext::getTaskService() {
@@ -26,11 +27,11 @@ ConsoleIOInterface & ConsoleContext::getIO() {
     return *io_;
 }
 
-std::map<TaskNumber, TaskID> &ConsoleContext::getTaskTable() {
+std::map<TaskNumber, TaskID> &ConsoleContext::getMatchingTablePositionToID() {
     return task_table_;
 }
 
-std::map<TaskID, TaskNumber> &ConsoleContext::getIDTable() {
+std::map<TaskID, TaskNumber> &ConsoleContext::getMatchingIDtoTablePosition() {
     return id_table_;
 }
 
@@ -40,6 +41,10 @@ std::optional<TaskID> ConsoleContext::getBufferedId() const {
 
 void ConsoleContext::fillTaskBuffer(const TaskDTO& dto) {
     task_buffer_ = dto;
+}
+
+void ConsoleContext::fillIDBuffer(TaskID id) {
+    id_buffer_ = id;
 }
 
 

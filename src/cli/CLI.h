@@ -15,7 +15,7 @@
 namespace todo_list_cli {
 
     ConsoleStateMachine createCLI() {
-        auto io      = std::make_unique<ConsoleIO>();
+        auto io      = std::make_unique<ConsoleIO>(std::cin, std::cout);
         auto context = std::make_unique<ConsoleContext>(
                             std::move(todo_list::createService()),
                             std::move(io)

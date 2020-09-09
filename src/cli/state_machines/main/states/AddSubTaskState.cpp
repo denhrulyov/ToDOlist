@@ -50,7 +50,7 @@ AddSubTaskState::execute(ConsoleContextInterface &context, StateFactoryInterface
     } else {
         context.getIO().putLine("Task added successfully.");
     }
-    return Visitor<StartState>().visit(factory);
+    return Visitor<ParseCommand>().visit(factory);
 }
 
 void AddSubTaskState::help(ConsoleContextInterface &) {

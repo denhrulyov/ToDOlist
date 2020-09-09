@@ -8,19 +8,20 @@
 #include "core/api/TaskServiceInterface.h"
 #include "cli/ConsoleIOInterface.h"
 
-typedef uint32_t TaskNumber;
+typedef int32_t TaskNumber;
 
 class ConsoleContextInterface {
 
 public:
     virtual TaskServiceInterface&                   getTaskService() = 0;
     virtual ConsoleIOInterface &                    getIO() = 0;
-    virtual std::map<TaskNumber, TaskID>&           getTaskTable() = 0;
-    virtual std::map<TaskID, TaskNumber>&           getIDTable() = 0;
+    virtual std::map<TaskNumber, TaskID>&           getMatchingTablePositionToID() = 0;
+    virtual std::map<TaskID, TaskNumber>&           getMatchingIDtoTablePosition() = 0;
 
 public:
     virtual void                                    fillTaskBuffer(const TaskDTO&) = 0;
     virtual std::optional<TaskDTO>                  getTaskBuffer() = 0;
+    virtual void                                    fillIDBuffer(TaskID) = 0;
     virtual std::optional<TaskID>                   getBufferedId() const = 0;
 
     virtual ~ConsoleContextInterface() =    default;

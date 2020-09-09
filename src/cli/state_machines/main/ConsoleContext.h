@@ -20,12 +20,13 @@ public:
 public:
     TaskServiceInterface&                   getTaskService() override;
     ConsoleIOInterface &                    getIO() override;
-    std::map<TaskNumber, TaskID>&           getTaskTable() override;
-    std::map<TaskID, TaskNumber>&           getIDTable() override;
+    std::map<TaskNumber, TaskID>&           getMatchingTablePositionToID() override;
+    std::map<TaskID, TaskNumber>&           getMatchingIDtoTablePosition() override;
 
 public:
     void                                    fillTaskBuffer(const TaskDTO&) override;
     std::optional<TaskDTO>                  getTaskBuffer() override;
+    void                                    fillIDBuffer(TaskID) override;
     std::optional<TaskID>                   getBufferedId() const override;
 
 private:
