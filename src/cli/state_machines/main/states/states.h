@@ -2,8 +2,8 @@
 // Created by denis on 03.09.20.
 //
 
-#ifndef TODOLIST_ALLSTATES_H
-#define TODOLIST_ALLSTATES_H
+#ifndef TODOLIST_STATES_H
+#define TODOLIST_STATES_H
 
 #include "AddSubTaskState.h"
 #include "AddTaskState.h"
@@ -18,4 +18,4 @@
 #include "parse_id/InputTaskParseID.h"
 #include "parse_id/DeleteStateParseID.h"
 
-#endif //TODOLIST_ALLSTATES_H
+#endif //TODOLIST_STATES_H

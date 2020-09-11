@@ -6,7 +6,7 @@
 #include "ParseCommand.h"
 #include "cli/state_machines/main/ConsoleContext.h"
 #include "cli/state_machines/main/state_factory/StateFactory.h"
-#include "cli/state_machines/main/state_factory/Visitor.h"
+#include "cli/state_machines/main/state_factory/Of.h"
 
 StartState::StartState()
 {}
@@ -14,7 +14,7 @@ StartState::StartState()
 
 std::shared_ptr<State>
 StartState::execute(ConsoleContextInterface &context, StateFactoryInterface &factory) {
-    return Visitor<ParseCommand>().visit(factory);
+    return factory.getInstance(Of<ParseCommand>());;
 }
 
 void

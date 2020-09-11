@@ -21,7 +21,7 @@ std::shared_ptr<State> ShowState::execute(ConsoleContextInterface &context, Stat
     if (context.getIO().isEmpty()) {
         context.getIO().putLine("No show option specified!");
         help(context);
-        return Visitor<ParseCommand>().visit(factory);
+        return factory.getInstance(Of<ParseCommand>());
     }
 
     Keyword token = tokenizer_->read(context.getIO());
@@ -36,7 +36,7 @@ std::shared_ptr<State> ShowState::execute(ConsoleContextInterface &context, Stat
             context.getIO().putLine("All tasks:");
             break;
         case Keyword::TAG:
-            return Visitor<ParseShowTag>().visit(factory);
+            return factory.getInstance(Of<ParseShowTag>());
         case Keyword::CURRENT_LIST:
             context.getIO().putLine("Active list of tasks:");
             break;
@@ -45,7 +45,7 @@ std::shared_ptr<State> ShowState::execute(ConsoleContextInterface &context, Stat
             help(context);
             break;
     }
-    return Visitor<ParseCommand>().visit(factory);
+    return factory.getInstance(Of<ParseCommand>());
 }
 
 void ShowState::help(ConsoleContextInterface &context) {

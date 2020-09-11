@@ -20,23 +20,23 @@ class DeleteStateParseID;
 class InputTaskParseID;
 #include <memory>
 
-template<class T> class Visitor;
+template<class T> class Of;
 
 class StateFactoryInterface {
 
 public:
-    virtual std::shared_ptr<State> getInstance(const Visitor<AddSubTaskState>&) = 0;
-    virtual std::shared_ptr<State> getInstance(const Visitor<AddTaskState>&) = 0;
-    virtual std::shared_ptr<State> getInstance(const Visitor<DeleteTaskState>&) = 0;
-    virtual std::shared_ptr<State> getInstance(const Visitor<InputState<AddTaskState, ParseCommand>>&) = 0;
-    virtual std::shared_ptr<State> getInstance(const Visitor<InputState<AddSubTaskState, ParseCommand>>&) = 0;
-    virtual std::shared_ptr<State> getInstance(const Visitor<ParseAddType>&) = 0;
-    virtual std::shared_ptr<State> getInstance(const Visitor<ParseCommand>&) = 0;
-    virtual std::shared_ptr<State> getInstance(const Visitor<ParseShowTag>&) = 0;
-    virtual std::shared_ptr<State> getInstance(const Visitor<ShowState>&) = 0;
-    virtual std::shared_ptr<State> getInstance(const Visitor<StartState>&) = 0;
-    virtual std::shared_ptr<State> getInstance(const Visitor<DeleteStateParseID>&) = 0;
-    virtual std::shared_ptr<State> getInstance(const Visitor<InputTaskParseID>&) = 0;
+    virtual std::shared_ptr<State> getInstance(const Of<AddSubTaskState>&) = 0;
+    virtual std::shared_ptr<State> getInstance(const Of<AddTaskState>&) = 0;
+    virtual std::shared_ptr<State> getInstance(const Of<DeleteTaskState>&) = 0;
+    virtual std::shared_ptr<State> getInstance(const Of<InputState<AddTaskState, ParseCommand>>&) = 0;
+    virtual std::shared_ptr<State> getInstance(const Of<InputState<AddSubTaskState, ParseCommand>>&) = 0;
+    virtual std::shared_ptr<State> getInstance(const Of<ParseAddType>&) = 0;
+    virtual std::shared_ptr<State> getInstance(const Of<ParseCommand>&) = 0;
+    virtual std::shared_ptr<State> getInstance(const Of<ParseShowTag>&) = 0;
+    virtual std::shared_ptr<State> getInstance(const Of<ShowState>&) = 0;
+    virtual std::shared_ptr<State> getInstance(const Of<StartState>&) = 0;
+    virtual std::shared_ptr<State> getInstance(const Of<DeleteStateParseID>&) = 0;
+    virtual std::shared_ptr<State> getInstance(const Of<InputTaskParseID>&) = 0;
 
     virtual ~StateFactoryInterface() = default;
 };

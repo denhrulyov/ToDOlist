@@ -22,6 +22,7 @@ public:
 public:
     std::shared_ptr<Base> getValue() override {
         if (!initialized_) {
+            initialized_ = true;
             object_ = this->getCreator()();
         }
         return object_;

@@ -20,7 +20,7 @@ void DeleteTaskState::print(ConsoleContextInterface &context) {
 
 std::shared_ptr<State> DeleteTaskState::execute(ConsoleContextInterface &context, StateFactoryInterface &factory) {
     context.getIO().clear();
-    return Visitor<ParseCommand>().visit(factory);
+    return factory.getInstance(Of<ParseCommand>());
 }
 
 void DeleteTaskState::help(ConsoleContextInterface &context) {

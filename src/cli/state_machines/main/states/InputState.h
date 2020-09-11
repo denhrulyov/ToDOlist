@@ -31,9 +31,9 @@ std::shared_ptr<State> InputState<T_next, T_exit>::execute(ConsoleContextInterfa
     switch (machine_->run()) {
         case InputTaskStateMachine::Result::SUCCESS:
             context.fillTaskBuffer(machine_->extractTask());
-            return Visitor<T_next>().visit(factory);
+            return factory.getInstance(Of<T_next>());
         case InputTaskStateMachine::Result::FAIL:
-            return Visitor<T_exit>().visit(factory);
+            return factory.getInstance(Of<T_exit>());
         default:
             return nullptr;
     }

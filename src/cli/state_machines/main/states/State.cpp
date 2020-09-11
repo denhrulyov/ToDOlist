@@ -11,7 +11,7 @@ State::State()
 std::shared_ptr<State> State::dispatchSpecWord(Keyword kw, StateFactoryInterface& factory) {
     switch (kw) {
         case Keyword::ABORT:
-            return Visitor<ParseCommand>().visit(factory);
+            return factory.getInstance(Of<ParseCommand>());
         default:
             return nullptr;
     }

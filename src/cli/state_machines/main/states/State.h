@@ -11,7 +11,7 @@
 #include "cli/tokenization/Tokenizer.h"
 #include "cli/tokenization/SpecwordFinder.h"
 #include "cli/state_machines/main/state_factory/StateFactoryInterface.h"
-#include "cli/state_machines/main/state_factory/Visitor.h"
+#include "cli/state_machines/main/state_factory/Of.h"
 
 
 class State {

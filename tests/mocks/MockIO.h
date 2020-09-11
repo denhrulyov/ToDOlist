@@ -10,7 +10,19 @@
 #include <gmock/gmock.h>
 #include "cli/tokenization/KeywordTokenizer.h"
 
+using ::testing::Return;
+
 class MockIO : public ConsoleIOInterface {
+
+public:
+    MockIO() = default;
+    MockIO(const std::string& reads) : reads_(reads) {
+        ON_CALL(*this, readWord).WillByDefault(Return(reads_));
+    }
+    MockIO(const std::string& reads, const std::string& writes) : reads_(reads), writes_(writes) {
+        ON_CALL(*this, readWord).WillByDefault(Return(reads_));
+        EXPECT_CALL(*this, putLine(writes_)).WillRepeatedly(Return());
+    }
 
 public:
     MOCK_METHOD(void, putLine, (const std::string&), (override));
@@ -22,7 +34,8 @@ public:
     MOCK_METHOD(std::string_view , seeBuffer, (), (override));
 
 private:
-    std::string gives_;
+    std::string reads_;
+    std::string writes_;
 };
 
 

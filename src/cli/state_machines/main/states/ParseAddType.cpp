@@ -26,18 +26,18 @@ std::shared_ptr<State> ParseAddType::execute(ConsoleContextInterface &context, S
     if (context.getIO().isEmpty()) {
         context.getIO().putLine("Specify what to add!");
         help(context);
-        return Visitor<ParseCommand>().visit(factory);
+        return factory.getInstance(Of<ParseCommand>());
     }
     Keyword token = tokenizer_->read(context.getIO());
     switch (token) {
         case Keyword::TASK:
-            return Visitor<InputState<AddTaskState, ParseCommand>>().visit(factory);
+            return factory.getInstance(Of<InputState<AddTaskState, ParseCommand>>());
         case Keyword::SUBTASK:
-            return Visitor<InputTaskParseID>().visit(factory);
+            return factory.getInstance(Of<InputTaskParseID>());
         default:
             context.getIO().putLine("Invalid add parameter!");
             help(context);
-            return Visitor<ParseCommand>().visit(factory);
+            return factory.getInstance(Of<ParseCommand>());
     }
 }
 

@@ -14,18 +14,18 @@ class StateFactory : public StateFactoryInterface {
 public:
     explicit StateFactory(ConsoleIOInterface&);
 public:
-    std::shared_ptr<State> getInstance(const Visitor<AddSubTaskState>&) override;
-    std::shared_ptr<State> getInstance(const Visitor<AddTaskState>&) override;
-    std::shared_ptr<State> getInstance(const Visitor<DeleteTaskState>&) override;
-    std::shared_ptr<State> getInstance(const Visitor<InputState<AddTaskState, ParseCommand>>&) override;
-    std::shared_ptr<State> getInstance(const Visitor<InputState<AddSubTaskState, ParseCommand>>&) override;
-    std::shared_ptr<State> getInstance(const Visitor<ParseAddType>&) override;
-    std::shared_ptr<State> getInstance(const Visitor<ParseCommand>&) override;
-    std::shared_ptr<State> getInstance(const Visitor<ParseShowTag>&) override;
-    std::shared_ptr<State> getInstance(const Visitor<ShowState>&) override;
-    std::shared_ptr<State> getInstance(const Visitor<StartState>&) override;
-    std::shared_ptr<State> getInstance(const Visitor<DeleteStateParseID>&) override ;
-    std::shared_ptr<State> getInstance(const Visitor<InputTaskParseID>&) override ;
+    std::shared_ptr<State> getInstance(const Of<AddSubTaskState>&) override;
+    std::shared_ptr<State> getInstance(const Of<AddTaskState>&) override;
+    std::shared_ptr<State> getInstance(const Of<DeleteTaskState>&) override;
+    std::shared_ptr<State> getInstance(const Of<InputState<AddTaskState, ParseCommand>>&) override;
+    std::shared_ptr<State> getInstance(const Of<InputState<AddSubTaskState, ParseCommand>>&) override;
+    std::shared_ptr<State> getInstance(const Of<ParseAddType>&) override;
+    std::shared_ptr<State> getInstance(const Of<ParseCommand>&) override;
+    std::shared_ptr<State> getInstance(const Of<ParseShowTag>&) override;
+    std::shared_ptr<State> getInstance(const Of<ShowState>&) override;
+    std::shared_ptr<State> getInstance(const Of<StartState>&) override;
+    std::shared_ptr<State> getInstance(const Of<DeleteStateParseID>&) override ;
+    std::shared_ptr<State> getInstance(const Of<InputTaskParseID>&) override ;
 
 public:
     template<class T>

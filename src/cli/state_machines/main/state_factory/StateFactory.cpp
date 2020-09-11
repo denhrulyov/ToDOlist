@@ -4,9 +4,9 @@
 
 #include "StateFactory.h"
 #include "cli/state_machines/input_task/ParseStateFactory.h"
-#include "Visitor.h"
+#include "Of.h"
 #include "cli/tokenization/KeywordTokenizer.h"
-#include "cli/state_machines/main/states/AllStates.h"
+#include "cli/state_machines/main/states/states.h"
 
 template<class T>
 StateFactory::LazyInitializerPtr<T> createInitializer(const typename LazyInitializer<State, T>::Creator& init) {
@@ -71,51 +71,51 @@ states_ {
 {}
 
 
-std::shared_ptr<State> StateFactory::getInstance(const Visitor<AddSubTaskState> &) {
+std::shared_ptr<State> StateFactory::getInstance(const Of<AddSubTaskState> &) {
     return getInitializer<AddSubTaskState>()->getValue();
 }
 
-std::shared_ptr<State> StateFactory::getInstance(const Visitor<AddTaskState> &) {
+std::shared_ptr<State> StateFactory::getInstance(const Of<AddTaskState> &) {
     return getInitializer<AddTaskState>()->getValue();
 }
 
-std::shared_ptr<State> StateFactory::getInstance(const Visitor<DeleteTaskState> &) {
+std::shared_ptr<State> StateFactory::getInstance(const Of<DeleteTaskState> &) {
     return getInitializer<DeleteTaskState>()->getValue();
 }
 
-std::shared_ptr<State> StateFactory::getInstance(const Visitor<InputState<AddTaskState, ParseCommand>> &) {
+std::shared_ptr<State> StateFactory::getInstance(const Of<InputState<AddTaskState, ParseCommand>> &) {
     return getInitializer<InputState<AddTaskState, ParseCommand>>()->getValue();
 }
 
-std::shared_ptr<State> StateFactory::getInstance(const Visitor<InputState<AddSubTaskState, ParseCommand>> &) {
+std::shared_ptr<State> StateFactory::getInstance(const Of<InputState<AddSubTaskState, ParseCommand>> &) {
     return getInitializer<InputState<AddSubTaskState, ParseCommand>>()->getValue();
 }
 
-std::shared_ptr<State> StateFactory::getInstance(const Visitor<ParseAddType> &) {
+std::shared_ptr<State> StateFactory::getInstance(const Of<ParseAddType> &) {
     return getInitializer<ParseAddType>()->getValue();
 }
 
-std::shared_ptr<State> StateFactory::getInstance(const Visitor<ParseCommand> &) {
+std::shared_ptr<State> StateFactory::getInstance(const Of<ParseCommand> &) {
     return getInitializer<ParseCommand>()->getValue();
 }
 
-std::shared_ptr<State> StateFactory::getInstance(const Visitor<ParseShowTag> &) {
+std::shared_ptr<State> StateFactory::getInstance(const Of<ParseShowTag> &) {
     return getInitializer<ParseShowTag>()->getValue();
 }
 
-std::shared_ptr<State> StateFactory::getInstance(const Visitor<ShowState> &) {
+std::shared_ptr<State> StateFactory::getInstance(const Of<ShowState> &) {
     return getInitializer<ShowState>()->getValue();
 }
 
-std::shared_ptr<State> StateFactory::getInstance(const Visitor<StartState> &) {
+std::shared_ptr<State> StateFactory::getInstance(const Of<StartState> &) {
     return getInitializer<StartState>()->getValue();
 }
 
-std::shared_ptr<State> StateFactory::getInstance(const Visitor<DeleteStateParseID> &) {
+std::shared_ptr<State> StateFactory::getInstance(const Of<DeleteStateParseID> &) {
     return getInitializer<DeleteStateParseID>()->getValue();
 }
 
-std::shared_ptr<State> StateFactory::getInstance(const Visitor<InputTaskParseID> &) {
+std::shared_ptr<State> StateFactory::getInstance(const Of<InputTaskParseID> &) {
     return getInitializer<InputTaskParseID>()->getValue();
 }
 
