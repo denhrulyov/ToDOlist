@@ -29,27 +29,27 @@ public:
 
 public:
     template<class T>
-    using LazyInitializerPtr = std::unique_ptr<LazyInitializer<State, T>>;
+    using LazyStateInitializer = LazyInitializer<State, T>;
 
 private:
     template<class T>
-    const LazyInitializerPtr<T>& getInitializer();
+    LazyStateInitializer<T>& getInitializer();
 
 private:
     ConsoleIOInterface& io_;
     std::tuple<
-        LazyInitializerPtr<AddSubTaskState>,
-        LazyInitializerPtr<AddTaskState>,
-        LazyInitializerPtr<DeleteTaskState>,
-        LazyInitializerPtr<InputTaskState>,
-        LazyInitializerPtr<InputSubTaskState>,
-        LazyInitializerPtr<ParseAddType>,
-        LazyInitializerPtr<ParseCommand>,
-        LazyInitializerPtr<ParseShowTag>,
-        LazyInitializerPtr<ShowState>,
-        LazyInitializerPtr<StartState>,
-        LazyInitializerPtr<DeleteStateParseID>,
-        LazyInitializerPtr<InputTaskParseID>
+        LazyStateInitializer<AddSubTaskState>,
+        LazyStateInitializer<AddTaskState>,
+        LazyStateInitializer<DeleteTaskState>,
+        LazyStateInitializer<InputTaskState>,
+        LazyStateInitializer<InputSubTaskState>,
+        LazyStateInitializer<ParseAddType>,
+        LazyStateInitializer<ParseCommand>,
+        LazyStateInitializer<ParseShowTag>,
+        LazyStateInitializer<ShowState>,
+        LazyStateInitializer<StartState>,
+        LazyStateInitializer<DeleteStateParseID>,
+        LazyStateInitializer<InputTaskParseID>
         > states_;
 };
 

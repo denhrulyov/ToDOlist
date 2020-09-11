@@ -9,8 +9,8 @@
 #include "cli/state_machines/main/states/states.h"
 
 template<class T>
-StateFactory::LazyInitializerPtr<T> createInitializer(const typename LazyInitializer<State, T>::Creator& init) {
-    return std::make_unique<LazyInitializer<State, T>>(init);
+StateFactory::LazyStateInitializer<T> createInitializer(const typename LazyInitializer<State, T>::Creator& init) {
+    return LazyInitializer<State, T>(init);
 }
 
 StateFactory::StateFactory(ConsoleIOInterface &io)
@@ -72,57 +72,59 @@ states_ {
 
 
 std::shared_ptr<State> StateFactory::getInstanceOfAddSubTaskState() {
-    return getInitializer<AddSubTaskState>()->getValue();
+    return getInitializer<AddSubTaskState>().getValue();
 }
 
 std::shared_ptr<State> StateFactory::getInstanceOfAddTaskState() {
-    return getInitializer<AddTaskState>()->getValue();
+    return getInitializer<AddTaskState>().getValue();
 }
 
 std::shared_ptr<State> StateFactory::getInstanceOfDeleteTaskState() {
-    return getInitializer<DeleteTaskState>()->getValue();
+    return getInitializer<DeleteTaskState>().getValue();
 }
 
 std::shared_ptr<State> StateFactory::getInstanceOfSubTaskInputChain() {
-    return getInitializer<InputTaskState>()->getValue();
+    return getInitializer<InputTaskState>().getValue();
 }
 
 std::shared_ptr<State> StateFactory::getInstanceOfTaskInputChain() {
-    return getInitializer<InputSubTaskState>()->getValue();
+    return getInitializer<InputSubTaskState>().getValue();
 }
 
 std::shared_ptr<State> StateFactory::getInstanceOfParseAddType() {
-    return getInitializer<ParseAddType>()->getValue();
+    return getInitializer<ParseAddType>().getValue();
 }
 
 std::shared_ptr<State> StateFactory::getInstanceOfParseCommand() {
-    return getInitializer<ParseCommand>()->getValue();
+    return getInitializer<ParseCommand>().getValue();
 }
 
 std::shared_ptr<State> StateFactory::getInstanceOfParseShowTag() {
-    return getInitializer<ParseShowTag>()->getValue();
+    return getInitializer<ParseShowTag>().getValue();
 }
 
 std::shared_ptr<State> StateFactory::getInstanceOfShowState() {
-    return getInitializer<ShowState>()->getValue();
+    return getInitializer<ShowState>().getValue();
 }
 
 std::shared_ptr<State> StateFactory::getInstanceOfStartState() {
-    return getInitializer<StartState>()->getValue();
+    return getInitializer<StartState>().getValue();
 }
 
 std::shared_ptr<State> StateFactory::getInstanceOfDeleteStateParseID() {
-    return getInitializer<DeleteStateParseID>()->getValue();
+    return getInitializer<DeleteStateParseID>().getValue();
 }
 
 std::shared_ptr<State> StateFactory::getInstanceOfInputTaskParseID() {
-    return getInitializer<InputTaskParseID>()->getValue();
+    return getInitializer<InputTaskParseID>().getValue();
 }
-
-
 
 template<class T>
-const StateFactory::LazyInitializerPtr<T>& StateFactory::getInitializer() {
-    return std::get<LazyInitializerPtr<T>>(states_);
+StateFactory::LazyStateInitializer<T> &StateFactory::getInitializer() {
+    return std::get<StateFactory::LazyStateInitializer<T>>(states_);
 }
+
+
+
+
 
