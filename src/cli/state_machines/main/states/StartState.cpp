@@ -14,7 +14,7 @@ StartState::StartState()
 
 std::shared_ptr<State>
 StartState::execute(ConsoleContextInterface &context, StateFactoryInterface &factory) {
-    return factory.getInstance(Of<ParseCommand>());;
+    return factory.getInstanceOfParseCommand();;
 }
 
 void

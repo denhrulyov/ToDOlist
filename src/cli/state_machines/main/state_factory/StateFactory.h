@@ -14,18 +14,18 @@ class StateFactory : public StateFactoryInterface {
 public:
     explicit StateFactory(ConsoleIOInterface&);
 public:
-    std::shared_ptr<State> getInstance(const Of<AddSubTaskState>&) override;
-    std::shared_ptr<State> getInstance(const Of<AddTaskState>&) override;
-    std::shared_ptr<State> getInstance(const Of<DeleteTaskState>&) override;
-    std::shared_ptr<State> getInstance(const Of<InputState<AddTaskState, ParseCommand>>&) override;
-    std::shared_ptr<State> getInstance(const Of<InputState<AddSubTaskState, ParseCommand>>&) override;
-    std::shared_ptr<State> getInstance(const Of<ParseAddType>&) override;
-    std::shared_ptr<State> getInstance(const Of<ParseCommand>&) override;
-    std::shared_ptr<State> getInstance(const Of<ParseShowTag>&) override;
-    std::shared_ptr<State> getInstance(const Of<ShowState>&) override;
-    std::shared_ptr<State> getInstance(const Of<StartState>&) override;
-    std::shared_ptr<State> getInstance(const Of<DeleteStateParseID>&) override ;
-    std::shared_ptr<State> getInstance(const Of<InputTaskParseID>&) override ;
+    std::shared_ptr<State> getInstanceOfAddSubTaskState() override;
+    std::shared_ptr<State> getInstanceOfAddTaskState() override;
+    std::shared_ptr<State> getInstanceOfDeleteTaskState() override;
+    std::shared_ptr<State> getInstanceOfSubTaskInputChain() override;
+    std::shared_ptr<State> getInstanceOfTaskInputChain() override;
+    std::shared_ptr<State> getInstanceOfParseAddType() override;
+    std::shared_ptr<State> getInstanceOfParseCommand() override;
+    std::shared_ptr<State> getInstanceOfParseShowTag() override;
+    std::shared_ptr<State> getInstanceOfShowState() override;
+    std::shared_ptr<State> getInstanceOfStartState() override;
+    std::shared_ptr<State> getInstanceOfDeleteStateParseID() override;
+    std::shared_ptr<State> getInstanceOfInputTaskParseID() override;
 
 public:
     template<class T>
@@ -41,8 +41,8 @@ private:
         LazyInitializerPtr<AddSubTaskState>,
         LazyInitializerPtr<AddTaskState>,
         LazyInitializerPtr<DeleteTaskState>,
-        LazyInitializerPtr<InputState<AddTaskState, ParseCommand>>,
-        LazyInitializerPtr<InputState<AddSubTaskState, ParseCommand>>,
+        LazyInitializerPtr<InputTaskState>,
+        LazyInitializerPtr<InputSubTaskState>,
         LazyInitializerPtr<ParseAddType>,
         LazyInitializerPtr<ParseCommand>,
         LazyInitializerPtr<ParseShowTag>,

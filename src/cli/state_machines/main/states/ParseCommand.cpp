@@ -28,16 +28,16 @@ std::shared_ptr<State> ParseCommand::execute(ConsoleContextInterface &context, S
     Keyword token = tokenizer_->read(context.getIO());
     switch (token) {
         case Keyword::ADD:
-            return factory.getInstance(Of<ParseAddType>());
+            return factory.getInstanceOfParseAddType();
         case Keyword::SHOW:
-            return factory.getInstance(Of<ShowState>());
+            return factory.getInstanceOfShowState();
         case Keyword::DELETE:
-            return factory.getInstance(Of<DeleteStateParseID>());
+            return factory.getInstanceOfDeleteStateParseID();
         default:
             context.getIO().putLine("Unknown command!");
             help(context);
             context.getIO().clear();
-            return factory.getInstance(Of<ParseCommand>());
+            return factory.getInstanceOfParseCommand();
     }
 }
 

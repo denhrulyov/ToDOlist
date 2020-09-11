@@ -9,5 +9,5 @@
 #include "cli/state_machines/input_task/InputTaskStateMachine.h"
 
 std::shared_ptr<State> InputTaskParseID::switchGood(ConsoleContextInterface &context, StateFactoryInterface &factory) {
-    return factory.getInstance(Of<InputState<AddSubTaskState, ParseCommand>>());
+    return factory.getInstanceOfSubTaskInputChain();
 }

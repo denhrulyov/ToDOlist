@@ -26,8 +26,8 @@ states_ {
     createInitializer<DeleteTaskState>([] () {
         return std::make_shared<DeleteTaskState>();
     }),
-    createInitializer<InputState<AddTaskState, ParseCommand>>([&io] () {
-        return std::make_shared<InputState<AddTaskState, ParseCommand>>(
+    createInitializer<InputTaskState>([&io] () {
+        return std::make_shared<InputTaskState>(
                 std::move(
                         std::make_unique<InputTaskStateMachine>(
                                 std::make_unique<ParseStateFactory>(),
@@ -36,8 +36,8 @@ states_ {
                 )
         );
     }),
-    createInitializer<InputState<AddSubTaskState, ParseCommand>>([&io] () {
-        return std::make_shared<InputState<AddSubTaskState, ParseCommand>>(
+    createInitializer<InputSubTaskState>([&io] () {
+        return std::make_shared<InputSubTaskState>(
                 std::move(
                         std::make_unique<InputTaskStateMachine>(
                                 std::make_unique<ParseStateFactory>(),
@@ -71,51 +71,51 @@ states_ {
 {}
 
 
-std::shared_ptr<State> StateFactory::getInstance(const Of<AddSubTaskState> &) {
+std::shared_ptr<State> StateFactory::getInstanceOfAddSubTaskState() {
     return getInitializer<AddSubTaskState>()->getValue();
 }
 
-std::shared_ptr<State> StateFactory::getInstance(const Of<AddTaskState> &) {
+std::shared_ptr<State> StateFactory::getInstanceOfAddTaskState() {
     return getInitializer<AddTaskState>()->getValue();
 }
 
-std::shared_ptr<State> StateFactory::getInstance(const Of<DeleteTaskState> &) {
+std::shared_ptr<State> StateFactory::getInstanceOfDeleteTaskState() {
     return getInitializer<DeleteTaskState>()->getValue();
 }
 
-std::shared_ptr<State> StateFactory::getInstance(const Of<InputState<AddTaskState, ParseCommand>> &) {
-    return getInitializer<InputState<AddTaskState, ParseCommand>>()->getValue();
+std::shared_ptr<State> StateFactory::getInstanceOfSubTaskInputChain() {
+    return getInitializer<InputTaskState>()->getValue();
 }
 
-std::shared_ptr<State> StateFactory::getInstance(const Of<InputState<AddSubTaskState, ParseCommand>> &) {
-    return getInitializer<InputState<AddSubTaskState, ParseCommand>>()->getValue();
+std::shared_ptr<State> StateFactory::getInstanceOfTaskInputChain() {
+    return getInitializer<InputSubTaskState>()->getValue();
 }
 
-std::shared_ptr<State> StateFactory::getInstance(const Of<ParseAddType> &) {
+std::shared_ptr<State> StateFactory::getInstanceOfParseAddType() {
     return getInitializer<ParseAddType>()->getValue();
 }
 
-std::shared_ptr<State> StateFactory::getInstance(const Of<ParseCommand> &) {
+std::shared_ptr<State> StateFactory::getInstanceOfParseCommand() {
     return getInitializer<ParseCommand>()->getValue();
 }
 
-std::shared_ptr<State> StateFactory::getInstance(const Of<ParseShowTag> &) {
+std::shared_ptr<State> StateFactory::getInstanceOfParseShowTag() {
     return getInitializer<ParseShowTag>()->getValue();
 }
 
-std::shared_ptr<State> StateFactory::getInstance(const Of<ShowState> &) {
+std::shared_ptr<State> StateFactory::getInstanceOfShowState() {
     return getInitializer<ShowState>()->getValue();
 }
 
-std::shared_ptr<State> StateFactory::getInstance(const Of<StartState> &) {
+std::shared_ptr<State> StateFactory::getInstanceOfStartState() {
     return getInitializer<StartState>()->getValue();
 }
 
-std::shared_ptr<State> StateFactory::getInstance(const Of<DeleteStateParseID> &) {
+std::shared_ptr<State> StateFactory::getInstanceOfDeleteStateParseID() {
     return getInitializer<DeleteStateParseID>()->getValue();
 }
 
-std::shared_ptr<State> StateFactory::getInstance(const Of<InputTaskParseID> &) {
+std::shared_ptr<State> StateFactory::getInstanceOfInputTaskParseID() {
     return getInitializer<InputTaskParseID>()->getValue();
 }
 

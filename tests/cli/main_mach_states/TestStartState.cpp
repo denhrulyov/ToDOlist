@@ -21,7 +21,7 @@ bool operator==(Of<T>, Of<T>) {
 
 TEST_F(StartStateTest, WillPassToParseCommand) {
     MockStateFactory mf;
-    EXPECT_CALL(mf, getInstance(Of<ParseCommand>())).WillRepeatedly(Return(nullptr));
+    EXPECT_CALL(mf, getInstanceOfParseCommand()).WillRepeatedly(Return(nullptr));
     NiceMock<MockContext> mctx;
     NiceMock<MockIO> mio("");
     ON_CALL(mctx, getIO).WillByDefault(ReturnRef(mio));
