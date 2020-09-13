@@ -28,9 +28,9 @@ public:
 
 public:
     virtual void                         print(InputTaskContextInterface &) = 0;
-    virtual Event                        execute(InputTaskContextInterface &) = 0;
+    virtual Event                        execute(InputTaskContextInterface &);
+    virtual Event                        processInput(InputTaskContextInterface &) = 0;
     virtual void                         help(InputTaskContextInterface &) = 0;
-
     virtual ~ParseState() = default;
 
 public:

@@ -17,3 +17,12 @@ ParseState::Event ParseState::dispatchSpecWord(Keyword kw) {
             return ParseState::Event::FAIL;
     }
 }
+
+ParseState::Event ParseState::execute(InputTaskContextInterface &context) {
+    context.getIO().requestInputLine();
+    Keyword spec_cmd = SpecwordFinder::findSpecWord(context.getIO().seeBuffer());
+    if (spec_cmd != Keyword::NONE) {
+        return dispatchSpecWord(spec_cmd);
+    }
+    return processInput(context);
+}

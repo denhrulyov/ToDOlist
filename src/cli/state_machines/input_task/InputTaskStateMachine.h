@@ -11,7 +11,7 @@
 #include "ParseTaskDate.h"
 #include "ParseTaskPriority.h"
 #include "ParseTaskName.h"
-#include "InputTaskContext.h"
+#include "InputTaskContextInterface.h"
 #include "core/api/TaskDTO.h"
 #include "ParseStateFactoryInterface.h"
 
@@ -27,14 +27,16 @@ public:
     };
 
 public:
-    explicit          InputTaskStateMachine(std::unique_ptr<ParseStateFactoryInterface>, ConsoleIOInterface&);
+    explicit          InputTaskStateMachine(std::unique_ptr<ParseStateFactoryInterface>,
+                                            std::unique_ptr<InputTaskContextInterface>);
 
 public:
-    Result            run();
-    TaskDTO           extractTask();
+    virtual Result            run();
+    virtual TaskDTO           extractTask();
 
+    virtual ~InputTaskStateMachine() = default;
 private:
-    std::unique_ptr<InputTaskContext>            context_;
+    std::unique_ptr<InputTaskContextInterface>   context_;
     std::unique_ptr<ParseStateFactoryInterface>  factory_;
 };
 

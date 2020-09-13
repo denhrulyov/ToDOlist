@@ -14,12 +14,7 @@ void ParseTaskDate::print(InputTaskContextInterface &context) {
     context.getIO().putLine("Date in format yyyy-mm-dd:");
 }
 
-ParseState::Event ParseTaskDate::execute(InputTaskContextInterface &context) {
-    context.getIO().requestInputLine();
-    Keyword spec_cmd = SpecwordFinder::findSpecWord(context.getIO().seeBuffer());
-    if (spec_cmd != Keyword::NONE) {
-        return dispatchSpecWord(spec_cmd);
-    }
+ParseState::Event ParseTaskDate::processInput(InputTaskContextInterface &context) {
     std::string input = context.getIO().readRestBuffer();
     if (input.empty()) {
         context.getIO().putLine("Task date must not be empty!");

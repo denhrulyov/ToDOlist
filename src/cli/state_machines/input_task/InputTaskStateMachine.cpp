@@ -2,19 +2,20 @@
 // Created by denis on 01.09.20.
 //
 
+
 #include "InputTaskStateMachine.h"
 #include "ParseState.h"
 #include "cli/state_machines/main/ConsoleContext.h"
 
 InputTaskStateMachine::InputTaskStateMachine(
         std::unique_ptr<ParseStateFactoryInterface> factory,
-        ConsoleIOInterface& io)
+        std::unique_ptr<InputTaskContextInterface> context)
 :
 factory_(std::move(factory)),
-context_(std::move(std::make_unique<InputTaskContext>(io)))
+context_(std::move(context))
 {}
 
-typename InputTaskStateMachine::Result InputTaskStateMachine::run() {
+InputTaskStateMachine::Result InputTaskStateMachine::run() {
     auto state = factory_->getNextState();
     while (state) {
         ParseState::Event event;

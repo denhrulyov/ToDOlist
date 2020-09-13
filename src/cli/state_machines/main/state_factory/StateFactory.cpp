@@ -4,7 +4,7 @@
 
 #include "StateFactory.h"
 #include "cli/state_machines/input_task/ParseStateFactory.h"
-#include "Of.h"
+#include "cli/state_machines/input_task/InputTaskContext.h"
 #include "cli/tokenization/KeywordTokenizer.h"
 #include "cli/state_machines/main/states/states.h"
 
@@ -31,7 +31,7 @@ states_ {
                 std::move(
                         std::make_unique<InputTaskStateMachine>(
                                 std::make_unique<ParseStateFactory>(),
-                                io
+                                std::make_unique<InputTaskContext>(io)
                         )
                 )
         );
@@ -41,7 +41,7 @@ states_ {
                 std::move(
                         std::make_unique<InputTaskStateMachine>(
                                 std::make_unique<ParseStateFactory>(),
-                                io
+                                std::make_unique<InputTaskContext>(io)
                         )
                 )
         );

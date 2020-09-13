@@ -6,7 +6,6 @@
 #include "ParseCommand.h"
 #include "cli/state_machines/main/ConsoleContext.h"
 #include "cli/state_machines/main/state_factory/StateFactory.h"
-#include "cli/state_machines/main/state_factory/Of.h"
 
 StartState::StartState()
 {}

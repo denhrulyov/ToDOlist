@@ -16,7 +16,7 @@ public:
 
 public:
     void                        print(InputTaskContextInterface &context) override;
-    Event                       execute(InputTaskContextInterface &) override;
+    Event                       processInput(InputTaskContextInterface &) override;
     void                        help(InputTaskContextInterface &) override;
 };
 
