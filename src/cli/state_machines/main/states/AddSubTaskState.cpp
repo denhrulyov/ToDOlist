@@ -43,7 +43,7 @@ AddSubTaskState::execute(ConsoleContextInterface &context, StateFactoryInterface
     Keyword token = tokenizer_->read(context.getIO());
     if (token != Keyword::YES) {
         context.getIO().putLine("aborting...");
-        return factory.getInstanceOfStartState();
+        return factory.getInstanceOfParseCommand();
     }
     if (!context.getTaskBuffer().has_value()) {
         context.getIO().putLine("Some fields were not set correctly. Task can't be added!");

@@ -27,8 +27,6 @@ InputTaskStateMachine::Result InputTaskStateMachine::run() {
                     return Result::FAIL;
                 case ParseState::Event::EXIT:
                     return Result::EXIT_PROGRAM;
-                default:
-                    break;
             }
         } while(event != ParseState::Event::SUCCESS);
         state = factory_->getNextState();

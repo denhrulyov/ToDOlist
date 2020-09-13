@@ -24,7 +24,7 @@ states_ {
         return std::make_shared<AddTaskState>(std::make_unique<KeywordTokenizer>());
     }),
     createInitializer<DeleteTaskState>([] () {
-        return std::make_shared<DeleteTaskState>();
+        return std::make_shared<DeleteTaskState>(std::make_unique<KeywordTokenizer>());
     }),
     createInitializer<InputTaskState>([&io] () {
         return std::make_shared<InputTaskState>(

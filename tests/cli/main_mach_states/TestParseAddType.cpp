@@ -6,7 +6,7 @@
 #include "mocks/MockStateFactory.h"
 #include "mocks/MockContext.h"
 #include "mocks/MockKeywordTokenizer.h"
-#include "StandardTokenReaction.cpp"
+#include "StandardStateReaction.cpp"
 
 class TestParseAddType : public ::testing::Test {
 

@@ -4,7 +4,6 @@
 
 #include <gtest/gtest.h>
 #include "cli/state_machines/main/state_factory/StateFactory.h"
-#include "cli/state_machines/main/state_factory/Of.h"
 
 class StateFactoryTest : public ::testing::Test {
 public:
@@ -12,11 +11,6 @@ public:
     StateFactory sf = StateFactory(*io);
 };
 
-template<class State>
-void check(StateFactory& sf) {
-    auto ptr = Of<State>().visit(sf);
-
-}
 
 TEST_F(StateFactoryTest, FactoryReturnsSameAddSubTaskState) {
     auto ptr = sf.getInstanceOfAddTaskState();

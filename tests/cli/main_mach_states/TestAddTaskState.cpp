@@ -6,7 +6,7 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
-#include "StandardTokenReaction.cpp"
+#include "StandardStateReaction.cpp"
 
 
 
@@ -18,6 +18,6 @@ TEST_F(TestAddTaskState, WillReactToYesKeyword) {
     STATE_MUST_SWITCH(AddTaskState, getInstanceOfParseCommand, Keyword::YES);
 }
 
-TEST_F(TestAddTaskState, WillReactNoYesKeyword) {
-    STATE_MUST_SWITCH(AddTaskState, getInstanceOfParseCommand, Keyword::YES);
+TEST_F(TestAddTaskState, WillReactToNoKeyword) {
+    STATE_MUST_SWITCH(AddTaskState, getInstanceOfParseCommand, Keyword::NO);
 }

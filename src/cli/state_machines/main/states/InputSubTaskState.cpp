@@ -9,7 +9,7 @@ std::shared_ptr<State> InputSubTaskState::getNextState(StateFactoryInterface &fa
 }
 
 std::shared_ptr<State> InputSubTaskState::getExitState(StateFactoryInterface &factory) {
-    return factory.getInstanceOfAddTaskState();
+    return factory.getInstanceOfParseCommand();
 }
 
 InputSubTaskState::InputSubTaskState(std::unique_ptr<InputTaskStateMachine> machine)

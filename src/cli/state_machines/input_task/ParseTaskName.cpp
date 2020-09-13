@@ -20,7 +20,7 @@ ParseState::Event ParseTaskName::processInput(InputTaskContextInterface &context
     std::string input = context.getIO().readRestBuffer();
     if (input.empty()) {
         context.getIO().putLine("Task name must not be empty!");
-        return ParseState::Event::FAIL;
+        return ParseState::Event::INCORRECT;
     }
     context.setName(input);
     return ParseState::Event::SUCCESS;

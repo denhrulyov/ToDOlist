@@ -8,7 +8,6 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 #include "cli/state_machines/main/state_factory/StateFactoryInterface.h"
-#include "cli/state_machines/main/state_factory/Of.h"
 
 class MockStateFactory : public StateFactoryInterface {
 

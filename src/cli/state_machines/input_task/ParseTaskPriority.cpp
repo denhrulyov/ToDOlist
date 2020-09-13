@@ -20,7 +20,7 @@ ParseState::Event ParseTaskPriority::processInput(InputTaskContextInterface &con
     std::string input = context.getIO().readRestBuffer();
     if (input.empty()) {
         context.getIO().putLine("Task priority must not be empty");
-        return ParseState::Event::FAIL;
+        return ParseState::Event::INCORRECT;
     }
     for (auto &symbol : input) {
         symbol = std::tolower(symbol);
@@ -35,7 +35,7 @@ ParseState::Event ParseTaskPriority::processInput(InputTaskContextInterface &con
                context.setPriority(TaskPriority::NONE);
     } else {
                help(context);
-               return ParseState::Event::FAIL;
+               return ParseState::Event::INCORRECT;
     }
     return ParseState::Event::SUCCESS;
 }

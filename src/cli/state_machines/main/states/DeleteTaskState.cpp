@@ -6,8 +6,10 @@
 #include "DeleteTaskState.h"
 #include "ParseCommand.h"
 
-DeleteTaskState::DeleteTaskState()
-: State()
+DeleteTaskState::DeleteTaskState(std::unique_ptr<Tokenizer> tokenizer)
+:
+State(),
+tokenizer_(std::move(tokenizer))
 {}
 
 void DeleteTaskState::print(ConsoleContextInterface &context) {
@@ -19,7 +21,15 @@ void DeleteTaskState::print(ConsoleContextInterface &context) {
 
 
 std::shared_ptr<State> DeleteTaskState::execute(ConsoleContextInterface &context, StateFactoryInterface &factory) {
-    context.getIO().clear();
+    context.getIO().requestInputLine();
+    Keyword spec_cmd = SpecwordFinder::findSpecWord(context.getIO().seeBuffer());
+    if (spec_cmd != Keyword::NONE) {
+        return dispatchSpecWord(spec_cmd, factory);
+    }
+    Keyword token = tokenizer_->read(context.getIO());
+    if (token != Keyword::YES) {
+        context.getIO().putLine("aborting...");
+    }
     return factory.getInstanceOfParseCommand();
 }
 

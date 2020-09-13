@@ -18,7 +18,7 @@ ParseState::Event ParseTaskLabel::processInput(InputTaskContextInterface &contex
     std::string input = context.getIO().readRestBuffer();
     if (input.empty()) {
         context.getIO().putLine("Task label must not be empty!");
-        return ParseState::Event::FAIL;
+        return ParseState::Event::INCORRECT;
     }
     context.setLabel(input);
     return ParseState::Event::SUCCESS;

@@ -18,14 +18,14 @@ ParseState::Event ParseTaskDate::processInput(InputTaskContextInterface &context
     std::string input = context.getIO().readRestBuffer();
     if (input.empty()) {
         context.getIO().putLine("Task date must not be empty!");
-        return ParseState::Event::FAIL;
+        return ParseState::Event::INCORRECT;
     }
     using namespace boost::gregorian;
     try {
         context.setDate(BoostDate(from_string(input)));
     } catch (...) {
         context.getIO().putLine("Incorrect date!");
-        return ParseState::Event::FAIL;
+        return ParseState::Event::INCORRECT;
     }
     return ParseState::Event::SUCCESS;
 }

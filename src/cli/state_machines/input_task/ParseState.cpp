@@ -14,7 +14,7 @@ ParseState::Event ParseState::dispatchSpecWord(Keyword kw) {
         case Keyword::EXIT:
             return ParseState::Event::EXIT;
         default:
-            return ParseState::Event::FAIL;
+            return ParseState::Event::INCORRECT;
     }
 }
 

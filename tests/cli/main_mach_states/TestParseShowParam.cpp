@@ -6,14 +6,14 @@
 #include "mocks/MockStateFactory.h"
 #include "mocks/MockContext.h"
 #include "mocks/MockKeywordTokenizer.h"
-#include "StandardTokenReaction.cpp"
+#include "StandardStateReaction.cpp"
 
 class TestParseShowParam : public ::testing::Test {
 
 };
 
 TEST_F(TestParseShowParam, WillReactToTodayKeyword) {
-    STATE_MUST_SWITCH(ParseAddType, getInstanceOfTaskInputChain, Keyword::TODAY);
+    STATE_MUST_SWITCH(ParseAddType, getInstanceOfTaskInputChain, Keyword::TASK);
 }
 
 TEST_F(TestParseShowParam, WillReactToShowKeyword) {
