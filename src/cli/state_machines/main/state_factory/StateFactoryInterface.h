@@ -13,7 +13,7 @@ class InputSubTaskState;
 class ParseAddType;
 class ParseCommand;
 class ParseShowTag;
-class ShowState;
+class ParseShowParam;
 class StartState;
 class State;
 

@@ -2,29 +2,30 @@
 // Created by denis on 10.09.20.
 //
 
+#include "cli/state_machines/main/states/ParseCommand.h"
 #include "mocks/MockStateFactory.h"
 #include "mocks/MockContext.h"
-#include "cli/state_machines/main/states/StartState.h"
+#include "mocks/MockKeywordTokenizer.h"
+#include "StandardTokenReaction.cpp"
 
 class TestParseCommand : public ::testing::Test {
 
 };
 
-using ::testing::NiceMock;
-using ::testing::ReturnRef;
-using ::testing::Truly;
-
-template<class T>
-bool operator==(Visitor<T>, Visitor<T>) {
-    return true;
+TEST_F(TestParseCommand, WillReactToAddKeyword) {
+    STATE_MUST_SWITCH(ParseCommand, getInstanceOfParseAddType, Keyword::ADD);
 }
 
-TEST_F(TestParseCommand, WillPassToParseCommand) {
-    MockStateFactory mf;
-    EXPECT_CALL(mf, getInstance(Visitor<ParseCommand>())).WillRepeatedly(Return(nullptr));
-    NiceMock<MockContext> mctx;
-    NiceMock<MockIO> mio();
-    ON_CALL(mctx, getIO).WillByDefault(ReturnRef(mio));
-    StartState state;
-    state.execute(mctx, mf);
+TEST_F(TestParseCommand, WillReactToShowKeyword) {
+    STATE_MUST_SWITCH(ParseCommand, getInstanceOfShowState, Keyword::SHOW);
+}
+
+TEST_F(TestParseCommand, WillReactToDeleteKeyword) {
+    STATE_MUST_SWITCH(ParseCommand, getInstanceOfDeleteStateParseID, Keyword::DELETE);
+}
+
+TEST_F(TestParseCommand, ReactSpecKW) {
+
+    ParseCommand state(std::move(std::make_unique<MockKeywordTokenizer>()));
+    STATE_MUST_SWITCH_SPEC_KEYWORDS(state);
 }

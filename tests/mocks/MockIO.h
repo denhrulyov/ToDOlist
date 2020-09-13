@@ -18,6 +18,8 @@ public:
     MockIO() = default;
     MockIO(const std::string& reads) : reads_(reads) {
         ON_CALL(*this, readWord).WillByDefault(Return(reads_));
+        ON_CALL(*this, readRestBuffer).WillByDefault(Return(reads_));
+        ON_CALL(*this, seeBuffer).WillByDefault(Return(reads_));
     }
     MockIO(const std::string& reads, const std::string& writes) : reads_(reads), writes_(writes) {
         ON_CALL(*this, readWord).WillByDefault(Return(reads_));

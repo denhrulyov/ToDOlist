@@ -14,10 +14,6 @@ using ::testing::NiceMock;
 using ::testing::ReturnRef;
 using ::testing::Truly;
 
-template<class T>
-bool operator==(Of<T>, Of<T>) {
-    return true;
-}
 
 TEST_F(StartStateTest, WillPassToParseCommand) {
     MockStateFactory mf;

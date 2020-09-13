@@ -2,22 +2,22 @@
 // Created by denis on 25.08.20.
 //
 
-#include "ShowState.h"
+#include "ParseShowParam.h"
 #include "StartState.h"
 #include "ParseShowTag.h"
 #include "ParseCommand.h"
 #include "cli/state_machines/main/ConsoleContext.h"
 
-ShowState::ShowState(std::unique_ptr<Tokenizer> tokenizer) :
+ParseShowParam::ParseShowParam(std::unique_ptr<Tokenizer> tokenizer) :
 State(),
 tokenizer_(std::move(tokenizer))
 {}
 
-void ShowState::print(ConsoleContextInterface &context) {
+void ParseShowParam::print(ConsoleContextInterface &context) {
 
 }
 
-std::shared_ptr<State> ShowState::execute(ConsoleContextInterface &context, StateFactoryInterface &factory) {
+std::shared_ptr<State> ParseShowParam::execute(ConsoleContextInterface &context, StateFactoryInterface &factory) {
     if (context.getIO().isEmpty()) {
         context.getIO().putLine("No show option specified!");
         help(context);
@@ -48,7 +48,7 @@ std::shared_ptr<State> ShowState::execute(ConsoleContextInterface &context, Stat
     return factory.getInstanceOfParseCommand();
 }
 
-void ShowState::help(ConsoleContextInterface &context) {
+void ParseShowParam::help(ConsoleContextInterface &context) {
     context.getIO().putLine("Available options:");
     context.getIO().putLine("-  today");
     context.getIO().putLine("-  this_week");

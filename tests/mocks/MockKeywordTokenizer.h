@@ -5,9 +5,14 @@
 #ifndef TODOLIST_MOCKKEYWORDTOKENIZER_H
 #define TODOLIST_MOCKKEYWORDTOKENIZER_H
 
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
+#include "cli/tokenization/Tokenizer.h"
 
-class MockKeywordTokenizer {
-    
+class MockKeywordTokenizer : public Tokenizer {
+
+public:
+    MOCK_METHOD(Keyword, read, (ConsoleIOInterface&), (override));
 };
 
 

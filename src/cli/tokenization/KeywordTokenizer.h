@@ -12,7 +12,7 @@ class KeywordTokenizer : public Tokenizer {
 
 public:
     Keyword  read(ConsoleIOInterface &) override;
-    ~KeywordTokenizer() = default;
+    virtual ~KeywordTokenizer() = default;
 };
 
 

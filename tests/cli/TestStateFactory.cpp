@@ -15,55 +15,89 @@ public:
 template<class State>
 void check(StateFactory& sf) {
     auto ptr = Of<State>().visit(sf);
-    ASSERT_EQ(ptr.get(), Of<State>().visit(sf).get());
-    ASSERT_EQ(ptr.get(), Of<State>().visit(sf).get());
-    ASSERT_EQ(ptr.get(), Of<State>().visit(sf).get());
+
 }
 
 TEST_F(StateFactoryTest, FactoryReturnsSameAddSubTaskState) {
-    check<AddSubTaskState>(sf);
+    auto ptr = sf.getInstanceOfAddTaskState();
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfAddTaskState().get());
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfAddTaskState().get());
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfAddTaskState().get());
 }
 
 TEST_F(StateFactoryTest, FactoryReturnsSameAddTaskState) {
-    check<AddTaskState>(sf);
+    auto ptr = sf.getInstanceOfAddSubTaskState();
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfAddSubTaskState().get());
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfAddSubTaskState().get());
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfAddSubTaskState().get());
 }
 
 TEST_F(StateFactoryTest, FactoryReturnsSameDeleteTaskState) {
-    check<DeleteTaskState>(sf);
+    auto ptr = sf.getInstanceOfDeleteTaskState();
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfDeleteTaskState().get());
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfDeleteTaskState().get());
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfDeleteTaskState().get());
 }
 
-TEST_F(StateFactoryTest, FactoryReturnsSameInputState_AddTaskState_ParseCommand_) {
-    check<InputState<AddTaskState, ParseCommand>>(sf);
+TEST_F(StateFactoryTest, FactoryReturnsSameTaskInputChain) {
+    auto ptr = sf.getInstanceOfTaskInputChain();
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfTaskInputChain().get());
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfTaskInputChain().get());
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfTaskInputChain().get());
 }
 
-TEST_F(StateFactoryTest, FactoryReturnsSameInputState_AddSubTaskState_ParseCommand_) {
-    check<InputState<AddSubTaskState, ParseCommand>>(sf);
+TEST_F(StateFactoryTest, FactoryReturnsSameSubTaskInputChain) {
+    auto ptr = sf.getInstanceOfSubTaskInputChain();
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfSubTaskInputChain().get());
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfSubTaskInputChain().get());
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfSubTaskInputChain().get());
 }
 
 TEST_F(StateFactoryTest, ParseAddType) {
-    check<ParseAddType>(sf);
+    auto ptr = sf.getInstanceOfAddTaskState();
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfAddTaskState().get());
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfAddTaskState().get());
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfAddTaskState().get());
 }
 
 TEST_F(StateFactoryTest, ParseCommand) {
-    check<ParseCommand>(sf);
+    auto ptr = sf.getInstanceOfParseCommand();
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfParseCommand().get());
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfParseCommand().get());
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfParseCommand().get());
 }
 
 TEST_F(StateFactoryTest, ParseShowTag) {
-    check<ParseShowTag>(sf);
+    auto ptr = sf.getInstanceOfAddTaskState();
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfAddTaskState().get());
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfAddTaskState().get());
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfAddTaskState().get());
 }
 
 TEST_F(StateFactoryTest, ShowState) {
-    check<ShowState>(sf);
+    auto ptr = sf.getInstanceOfShowState();
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfShowState().get());
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfShowState().get());
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfShowState().get());
 }
 
 TEST_F(StateFactoryTest, StartState) {
-    check<StartState>(sf);
+    auto ptr = sf.getInstanceOfStartState();
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfStartState().get());
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfStartState().get());
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfStartState().get());
 }
 
 TEST_F(StateFactoryTest, DeleteStateParseID) {
-    check<DeleteStateParseID>(sf);
+    auto ptr = sf.getInstanceOfDeleteStateParseID();
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfDeleteStateParseID().get());
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfDeleteStateParseID().get());
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfDeleteStateParseID().get());
 }
 
 TEST_F(StateFactoryTest, InputTaskParseID) {
-    check<InputTaskParseID>(sf);
+    auto ptr = sf.getInstanceOfInputTaskParseID();
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfInputTaskParseID().get());
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfInputTaskParseID().get());
+    ASSERT_EQ(ptr.get(), sf.getInstanceOfInputTaskParseID().get());
 }

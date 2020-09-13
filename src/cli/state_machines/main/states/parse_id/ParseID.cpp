@@ -29,7 +29,8 @@ std::shared_ptr<State> ParseID::execute(ConsoleContextInterface &context, StateF
     if (spec_cmd != Keyword::NONE) {
         return dispatchSpecWord(spec_cmd, factory);
     }
-    std::string input = context.getIO().readRestBuffer();
+    auto& io = context.getIO();
+    std::string input = io.readRestBuffer();
     TaskNumber task_number = 0;
     try {
         task_number = std::stoi(input);

@@ -13,20 +13,18 @@
 class MockStateFactory : public StateFactoryInterface {
 
 public:
-    MOCK_METHOD(std::shared_ptr<State>, getInstance, (const Visitor<AddSubTaskState>&) ,(override));
-    MOCK_METHOD(std::shared_ptr<State>, getInstance, (const Visitor<AddTaskState>&) ,(override));
-    MOCK_METHOD(std::shared_ptr<State>, getInstance, (const Visitor<DeleteTaskState>&) ,(override));
-    using Visitor_InputState_AddTaskState_ParseCommand__ = Of<InputState<AddTaskState, ParseCommand>>;
-    MOCK_METHOD(std::shared_ptr<State>, getInstance, (const Visitor_InputState_AddTaskState_ParseCommand__&) ,(override));
-    using Visitor_InputState_AddSubTaskState_ParseCommand__ = Of<InputState<AddSubTaskState, ParseCommand>>;
-    MOCK_METHOD(std::shared_ptr<State>, getInstance, (const Visitor_InputState_AddSubTaskState_ParseCommand__&) ,(override));
-    MOCK_METHOD(std::shared_ptr<State>, getInstance, (const Visitor<ParseAddType>&) ,(override));
-    MOCK_METHOD(std::shared_ptr<State>, getInstance, (const Visitor<ParseCommand>&) ,(override));
-    MOCK_METHOD(std::shared_ptr<State>, getInstance, (const Visitor<ParseShowTag>&) ,(override));
-    MOCK_METHOD(std::shared_ptr<State>, getInstance, (const Visitor<ShowState>&) ,(override));
-    MOCK_METHOD(std::shared_ptr<State>, getInstance, (const Visitor<StartState>&) ,(override));
-    MOCK_METHOD(std::shared_ptr<State>, getInstance, (const Visitor<DeleteStateParseID>&) ,(override));
-    MOCK_METHOD(std::shared_ptr<State>, getInstance, (const Visitor<InputTaskParseID>&) ,(override));
+    MOCK_METHOD(std::shared_ptr<State>, getInstanceOfAddSubTaskState, () ,(override));
+    MOCK_METHOD(std::shared_ptr<State>, getInstanceOfAddTaskState, () ,(override));
+    MOCK_METHOD(std::shared_ptr<State>, getInstanceOfDeleteTaskState, () ,(override));
+    MOCK_METHOD(std::shared_ptr<State>, getInstanceOfSubTaskInputChain, () ,(override));
+    MOCK_METHOD(std::shared_ptr<State>, getInstanceOfTaskInputChain, () ,(override));
+    MOCK_METHOD(std::shared_ptr<State>, getInstanceOfParseAddType, () ,(override));
+    MOCK_METHOD(std::shared_ptr<State>, getInstanceOfParseCommand, () ,(override));
+    MOCK_METHOD(std::shared_ptr<State>, getInstanceOfParseShowTag, () ,(override));
+    MOCK_METHOD(std::shared_ptr<State>, getInstanceOfShowState, () ,(override));
+    MOCK_METHOD(std::shared_ptr<State>, getInstanceOfStartState, () ,(override));
+    MOCK_METHOD(std::shared_ptr<State>, getInstanceOfDeleteStateParseID, () ,(override));
+    MOCK_METHOD(std::shared_ptr<State>, getInstanceOfInputTaskParseID, () ,(override));
 };
 
 

@@ -46,7 +46,7 @@ private:
         LazyStateInitializer<ParseAddType>,
         LazyStateInitializer<ParseCommand>,
         LazyStateInitializer<ParseShowTag>,
-        LazyStateInitializer<ShowState>,
+        LazyStateInitializer<ParseShowParam>,
         LazyStateInitializer<StartState>,
         LazyStateInitializer<DeleteStateParseID>,
         LazyStateInitializer<InputTaskParseID>

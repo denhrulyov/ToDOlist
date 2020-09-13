@@ -2,16 +2,16 @@
 // Created by denis on 18.08.20.
 //
 
-#ifndef TODOLIST_SHOWSTATE_H
-#define TODOLIST_SHOWSTATE_H
+#ifndef TODOLIST_PARSESHOWPARAM_H
+#define TODOLIST_PARSESHOWPARAM_H
 
 #include "State.h"
 
 
-class ShowState : public State {
+class ParseShowParam : public State {
 
 public:
-    explicit ShowState(std::unique_ptr<Tokenizer>);
+    explicit ParseShowParam(std::unique_ptr<Tokenizer>);
 
 public:
     void                     print(ConsoleContextInterface &)    override;
@@ -24,4 +24,4 @@ private:
 
 
 
-#endif //TODOLIST_SHOWSTATE_H
+#endif //TODOLIST_PARSESHOWPARAM_H

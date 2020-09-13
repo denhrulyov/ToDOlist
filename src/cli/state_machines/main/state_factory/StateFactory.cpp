@@ -55,8 +55,8 @@ states_ {
     createInitializer<ParseShowTag>([] () {
         return std::make_shared<ParseShowTag>();
     }),
-    createInitializer<ShowState>([] () {
-        return std::make_shared<ShowState>(std::make_unique<KeywordTokenizer>());
+    createInitializer<ParseShowParam>([] () {
+        return std::make_shared<ParseShowParam>(std::make_unique<KeywordTokenizer>());
     }),
     createInitializer<StartState>([] () {
         return std::make_shared<StartState>();
@@ -104,7 +104,7 @@ std::shared_ptr<State> StateFactory::getInstanceOfParseShowTag() {
 }
 
 std::shared_ptr<State> StateFactory::getInstanceOfShowState() {
-    return getInitializer<ShowState>().getValue();
+    return getInitializer<ParseShowParam>().getValue();
 }
 
 std::shared_ptr<State> StateFactory::getInstanceOfStartState() {
