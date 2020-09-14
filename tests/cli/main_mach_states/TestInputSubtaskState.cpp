@@ -4,6 +4,7 @@
 
 #include "cli/state_machines/main/states/InputSubTaskState.h"
 #include "mocks/MockInputTaskStateMachine.h"
+#include "mocks/MockInputTaskContext.h"
 #include "mocks/MockStateFactory.h"
 #include "mocks/MockContext.h"
 #include "StandardStateReaction.cpp"
@@ -15,11 +16,13 @@ class TestInputSubTaskState : public ::testing::Test {
 
 TEST_F(TestInputSubTaskState, writeTaskBufferOnSuccess) {
     auto mit_fsm = std::make_unique<MockInputTaskStateMachine>();
+    MockInputTaskContext mictx;
+    EXPECT_CALL(mictx, getName).WillRepeatedly(Return("name"));
+    EXPECT_CALL(mictx, getPriority).WillRepeatedly(Return(TaskPriority::SECOND));
+    EXPECT_CALL(mictx, getLabel).WillRepeatedly(Return("label"));
+    EXPECT_CALL(mictx, getDate).WillRepeatedly(Return(BoostDate()));
     EXPECT_CALL(*mit_fsm, run).WillOnce(Return(InputTaskStateMachine::Result::SUCCESS));
-    ON_CALL(*mit_fsm, extractTask).WillByDefault(Return(
-            TaskDTO::create("", TaskPriority::SECOND, "",                                       \
-                            boost::gregorian::day_clock::local_day())
-    ));
+    EXPECT_CALL(*mit_fsm, getContext).WillOnce(ReturnRef(mictx));
     NiceMock<MockStateFactory> mf;
     NiceMock<MockIO> mio;
     MockContext mctx;

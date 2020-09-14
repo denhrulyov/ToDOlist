@@ -6,6 +6,7 @@
 #include <gmock/gmock.h>
 #include "mocks/MockStateFactory.h"
 #include "mocks/MockContext.h"
+#include "mocks/MockInputTaskContext.h"
 #include "mocks/MockKeywordTokenizer.h"
 using ::testing::NiceMock;
 using ::testing::ReturnRef;
@@ -57,11 +58,13 @@ using ::testing::Truly;
 
 #define INPUT_STATE_MUST_SWITCH(InputSubState, getInstanceMethod, InputResult)                  \
     auto mit_fsm = std::make_unique<MockInputTaskStateMachine>();                               \
+    NiceMock<MockInputTaskContext> mictx;                                                       \
+    ON_CALL(mictx, getName).WillByDefault(Return("name"));                                     \
+    ON_CALL(mictx, getPriority).WillByDefault(Return(TaskPriority::SECOND));                   \
+    ON_CALL(mictx, getLabel).WillByDefault(Return("label"));                                   \
+    ON_CALL(mictx, getDate).WillByDefault(Return(BoostDate()));                                \
     EXPECT_CALL(*mit_fsm, run).WillOnce(Return(InputResult));                                   \
-    ON_CALL(*mit_fsm, extractTask).WillByDefault(Return(                                        \
-            TaskDTO::create("", TaskPriority::SECOND, "",                                       \
-                            boost::gregorian::day_clock::local_day())                           \
-    ));                                                                                         \
+    ON_CALL(*mit_fsm, getContext).WillByDefault(ReturnRef(mictx));                              \
     MockStateFactory mf;                                                                        \
     EXPECT_CALL(mf, getInstanceMethod).WillOnce(Return(nullptr));                               \
     NiceMock<MockIO> mio;                                                                       \
@@ -72,12 +75,14 @@ using ::testing::Truly;
     state.execute(mctx, mf);
 
 #define INPUT_STATE_MUST_RETURN_NULL(InputSubState, InputResult)                                \
-    auto mit_fsm = std::make_unique<MockInputTaskStateMachine>();                               \
+        auto mit_fsm = std::make_unique<MockInputTaskStateMachine>();                           \
+    MockInputTaskContext mictx;                                                                 \
+    EXPECT_CALL(mictx, getName).WillRepeatedly(Return("name"));                                 \
+    EXPECT_CALL(mictx, getPriority).WillRepeatedly(Return(TaskPriority::SECOND));               \
+    EXPECT_CALL(mictx, getLabel).WillRepeatedly(Return("label"));                                \
+    EXPECT_CALL(mictx, getDate).WillRepeatedly(Return(BoostDate()));                            \
     EXPECT_CALL(*mit_fsm, run).WillOnce(Return(InputResult));                                   \
-    ON_CALL(*mit_fsm, extractTask).WillByDefault(Return(                                        \
-            TaskDTO::create("", TaskPriority::SECOND, "",                                       \
-                            boost::gregorian::day_clock::local_day())                           \
-    ));                                                                                         \
+    ON_CALL(*mit_fsm, getContext).WillByDefault(ReturnRef(mictx));                              \
     MockStateFactory mf;                                                                        \
     NiceMock<MockIO> mio;                                                                       \
     NiceMock<MockContext> mctx;                                                                 \

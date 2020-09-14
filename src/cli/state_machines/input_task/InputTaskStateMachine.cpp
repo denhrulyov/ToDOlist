@@ -35,9 +35,6 @@ InputTaskStateMachine::Result InputTaskStateMachine::run() {
 }
 
 
-TaskDTO InputTaskStateMachine::extractTask() {
-    return TaskDTO::create( context_->getName().value(),
-                            context_->getPriority().value(),
-                            context_->getLabel().value(),
-                            context_->getDate().value());
+const InputTaskContextInterface & InputTaskStateMachine::getContext() {
+    return *context_;
 }

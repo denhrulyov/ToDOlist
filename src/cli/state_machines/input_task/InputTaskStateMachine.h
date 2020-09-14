@@ -31,8 +31,8 @@ public:
                                             std::unique_ptr<InputTaskContextInterface>);
 
 public:
-    virtual Result            run();
-    virtual TaskDTO           extractTask();
+    virtual Result                           run();
+    virtual const InputTaskContextInterface& getContext();
 
     virtual ~InputTaskStateMachine() = default;
 private:

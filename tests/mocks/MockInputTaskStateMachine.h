@@ -14,7 +14,8 @@ class MockInputTaskStateMachine : public InputTaskStateMachine {
 public:
     MockInputTaskStateMachine() : InputTaskStateMachine(nullptr, nullptr) {}
     MOCK_METHOD(Result, run, (), (override));
-    MOCK_METHOD(TaskDTO, extractTask, (), (override));
+    MOCK_METHOD(const InputTaskContextInterface&, getContext, (), (override));
+
 };
 
 #endif //TODOLIST_MOCKINPUTTASKSTATEMACHINE_H
