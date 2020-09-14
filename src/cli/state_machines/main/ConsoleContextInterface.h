@@ -24,6 +24,9 @@ public:
     virtual void                                    fillIDBuffer(TaskID) = 0;
     virtual std::optional<TaskID>                   getBufferedId() const = 0;
 
+public:
+    virtual void                                    fillTable(const std::vector<TaskDTO>&) = 0;
+
     virtual ~ConsoleContextInterface() =    default;
 };
 

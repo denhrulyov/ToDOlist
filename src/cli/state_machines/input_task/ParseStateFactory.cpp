@@ -35,4 +35,9 @@ std::shared_ptr<ParseState> ParseStateFactory::getNextState() {
     return nullptr;
 }
 
+std::shared_ptr<ParseState> ParseStateFactory::getFirstState() {
+    current_state_ = states_.begin();
+    return getNextState();
+}
+
 

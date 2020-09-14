@@ -16,7 +16,7 @@ context_(std::move(context))
 {}
 
 InputTaskStateMachine::Result InputTaskStateMachine::run() {
-    auto state = factory_->getNextState();
+    auto state = factory_->getFirstState();
     while (state) {
         ParseState::Event event;
         do {

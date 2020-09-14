@@ -20,10 +20,22 @@ void
 AddSubTaskState::print(ConsoleContextInterface &context) {
     auto buffer = context.getTaskBuffer();
     context.getIO().putLine("Main task: ");
-    context.getIO().putLine(std::string("name :     ") + field_repr(buffer->getName()));
-    context.getIO().putLine(std::string("priority : ") + field_repr(buffer->getPriority()));
-    context.getIO().putLine(std::string("label :    ") + field_repr(buffer->getLabel()));
-    context.getIO().putLine(std::string("date :     ") + field_repr(std::optional(buffer->getDate())));
+    auto& service = context.getTaskService();
+    std::optional<TaskDTO> task = service.getTaskByID(context.getBufferedId().value());
+    if (task) {
+        TaskDTO dto = task.value();
+        context.getIO().putLine(std::string("name :     ")
+                                + field_repr(dto.getName()));
+        context.getIO().putLine(std::string("priority : ")
+                                + field_repr(dto.getPriority()));
+        context.getIO().putLine(std::string("label :    ")
+                                + field_repr(dto.getLabel()));
+        context.getIO().putLine(std::string("date :     ")
+                                + field_repr(std::optional(dto.getDate())));
+        context.getIO().putLine("Y - accept, n - decline");
+    } else {
+        context.getIO().putLine("###Unknown task###");
+    }
     context.getIO().putLine("You specified subtask with following parameters:");
     context.getIO().putLine(std::string("name :     ") + field_repr(buffer->getName()));
     context.getIO().putLine(std::string("priority : ") + field_repr(buffer->getPriority()));
@@ -46,9 +58,20 @@ AddSubTaskState::execute(ConsoleContextInterface &context, StateFactoryInterface
         return factory.getInstanceOfParseCommand();
     }
     if (!context.getTaskBuffer().has_value()) {
-        context.getIO().putLine("Some fields were not set correctly. Task can't be added!");
+        context.getIO().putLine("System error: some fields were not set correctly.");
+        return nullptr;
     } else {
-        context.getIO().putLine("Task added successfully.");
+        auto result = context
+                        .getTaskService()
+                        .addSubTask(
+                                context.getBufferedId().value(),
+                                context.getTaskBuffer().value()
+                         );
+        if (result.getSuccessStatus()) {
+            context.getIO().putLine("Task added successfully.");
+        } else {
+            context.getIO().putLine(result.getErrorMessage().value());
+        }
     }
     return factory.getInstanceOfParseCommand();
 }

@@ -12,6 +12,7 @@ class ParseStateFactoryInterface {
 
 public:
     virtual std::shared_ptr<ParseState> getNextState() = 0;
+    virtual std::shared_ptr<ParseState> getFirstState() = 0;
     virtual ~ParseStateFactoryInterface() = default;
 };
 

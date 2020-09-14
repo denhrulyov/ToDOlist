@@ -31,8 +31,11 @@ TaskCreationResult TaskService::addTask(const TaskDTO &task_data) {
     if (task_data.getDate() > service::max_date) {
         std::string message;
         std::stringstream ss(message);
-        ss << "Given date is bigger then " << service::max_date;
+        ss << "Given date is bigger than " << service::max_date;
         return TaskCreationResult::error(message);
+    }
+    if (task_data.getDate() < boost::gregorian::day_clock::local_day()) {
+        return TaskCreationResult::error("Given date is before today ");
     }
     auto created_node = createNode(
             id_generator_.generateID(),

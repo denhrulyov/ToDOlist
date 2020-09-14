@@ -53,7 +53,14 @@ AddTaskState::execute(ConsoleContextInterface &context, StateFactoryInterface &f
     if (!context.getTaskBuffer().has_value()) {
         context.getIO().putLine("Some fields were not set correctly. Task can't be added!");
     } else {
-        context.getIO().putLine("Task added successfully.");
+        auto result = context
+                        .getTaskService()
+                        .addTask(context.getTaskBuffer().value());
+        if (result.getSuccessStatus()) {
+            context.getIO().putLine("Task added successfully.");
+        } else {
+            context.getIO().putLine(result.getErrorMessage().value());
+        }
     }
     return factory.getInstanceOfParseCommand();
 }

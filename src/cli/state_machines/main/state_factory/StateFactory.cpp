@@ -84,11 +84,11 @@ std::shared_ptr<State> StateFactory::getInstanceOfDeleteTaskState() {
 }
 
 std::shared_ptr<State> StateFactory::getInstanceOfSubTaskInputChain() {
-    return getInitializer<InputTaskState>().getValue();
+    return getInitializer<InputSubTaskState>().getValue();
 }
 
 std::shared_ptr<State> StateFactory::getInstanceOfTaskInputChain() {
-    return getInitializer<InputSubTaskState>().getValue();
+    return getInitializer<InputTaskState>().getValue();
 }
 
 std::shared_ptr<State> StateFactory::getInstanceOfParseAddType() {

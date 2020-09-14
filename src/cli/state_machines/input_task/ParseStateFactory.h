@@ -15,6 +15,7 @@ public:
 
 public:
     std::shared_ptr<ParseState> getNextState() override ;
+    std::shared_ptr<ParseState> getFirstState() override;
 
 
 private:

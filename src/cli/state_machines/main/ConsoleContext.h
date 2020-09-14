@@ -29,6 +29,9 @@ public:
     void                                    fillIDBuffer(TaskID) override;
     std::optional<TaskID>                   getBufferedId() const override;
 
+public:
+    void                                    fillTable(const std::vector<TaskDTO>&) override;
+
 private:
 
 

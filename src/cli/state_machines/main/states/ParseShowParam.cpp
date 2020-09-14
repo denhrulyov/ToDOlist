@@ -7,6 +7,8 @@
 #include "ParseShowTag.h"
 #include "ParseCommand.h"
 #include "cli/state_machines/main/ConsoleContext.h"
+#include "cli/state_machines/main/TaskTableIO.h"
+
 
 ParseShowParam::ParseShowParam(std::unique_ptr<Tokenizer> tokenizer) :
 State(),
@@ -23,22 +25,29 @@ std::shared_ptr<State> ParseShowParam::execute(ConsoleContextInterface &context,
         help(context);
         return factory.getInstanceOfParseCommand();
     }
-
     Keyword token = tokenizer_->read(context.getIO());
+    auto& service = context.getTaskService();
     switch (token) {
         case Keyword::TODAY:
             context.getIO().putLine("Tasks for today:");
+            context.fillTable(service.getToday());
+            task_table_io::print(context);
             break;
         case Keyword::THIS_WEEK:
             context.getIO().putLine("Tasks for this week:");
+            context.fillTable(service.getThisWeek());
+            task_table_io::print(context);
             break;
         case Keyword::ALL:
             context.getIO().putLine("All tasks:");
+            context.fillTable(service.getAllTasks());
+            task_table_io::print(context);
             break;
         case Keyword::TAG:
             return factory.getInstanceOfParseShowTag();
         case Keyword::CURRENT_LIST:
             context.getIO().putLine("Active list of tasks:");
+            task_table_io::print(context);
             break;
         default:
             context.getIO().putLine("Incorrect show options!");
@@ -53,6 +62,7 @@ void ParseShowParam::help(ConsoleContextInterface &context) {
     context.getIO().putLine("-  today");
     context.getIO().putLine("-  this_week");
     context.getIO().putLine("-  all");
+    context.getIO().putLine("-  current_list");
     context.getIO().putLine("-  tag <tg>, where <tg> is a desired label");
 }
 

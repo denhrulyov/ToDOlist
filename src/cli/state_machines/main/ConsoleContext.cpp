@@ -47,6 +47,15 @@ void ConsoleContext::fillIDBuffer(TaskID id) {
     id_buffer_ = id;
 }
 
+void ConsoleContext::fillTable(const std::vector<TaskDTO> &tasks) {
+    task_table_.clear();
+    TaskNumber i = 1;
+    for (const TaskDTO& dto : tasks) {
+        task_table_[i] = dto.getId();
+        ++i;
+    }
+}
+
 
 
 
