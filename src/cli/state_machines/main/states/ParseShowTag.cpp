@@ -21,7 +21,7 @@ std::shared_ptr<State> ParseShowTag::execute(ConsoleContextInterface &context, S
     std::string tag = context.getIO().readRestBuffer();
     context.getIO().putLine(std::string("Tasks with tag \"") + tag + "\" : ");
     auto& service = context.getTaskService();
-    context.fillTable(service.getAllTasks());
+    context.fillTable(service.getAllWithLabel(tag));
     task_table_io::print(context);
     return factory.getInstanceOfParseCommand();
 }

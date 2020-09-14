@@ -16,7 +16,9 @@ void task_table_io::print(ConsoleContextInterface& context) {
             std::string row_out = std::to_string(map_iter->first) + ".) ";
             std::optional<TaskDTO> dto = service.getTaskByID(id);
             if (dto) {
-                row_out += dto->getName() + " " + boost::gregorian::to_simple_string(dto->getDate());
+                row_out += dto->getName() + " "
+                        + boost::gregorian::to_simple_string(dto->getDate())
+                        + (dto->isCompleted() ? "(COMPLETED)" : "");
             } else {
                 row_out += "## deleted ##";
             }

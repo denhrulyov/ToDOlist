@@ -18,6 +18,7 @@ enum class Keyword  {
     CURRENT_LIST,
     DELETE,
     POSTPONE,
+    COMPLETE,
     YES,
     NO,
     UNKNOWN,

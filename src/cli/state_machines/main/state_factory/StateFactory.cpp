@@ -23,6 +23,9 @@ states_ {
     createInitializer<AddTaskState>([] () {
         return std::make_shared<AddTaskState>(std::make_unique<KeywordTokenizer>());
     }),
+    createInitializer<CompleteState>([] () {
+        return std::make_shared<CompleteState>();
+    }),
     createInitializer<DeleteTaskState>([] () {
         return std::make_shared<DeleteTaskState>(std::make_unique<KeywordTokenizer>());
     }),
@@ -52,11 +55,17 @@ states_ {
     createInitializer<ParseCommand>([] () {
         return std::make_shared<ParseCommand>(std::make_unique<KeywordTokenizer>());
     }),
+    createInitializer<ParsePostponeDate>([] () {
+        return std::make_shared<ParsePostponeDate>();
+    }),
     createInitializer<ParseShowTag>([] () {
         return std::make_shared<ParseShowTag>();
     }),
     createInitializer<ParseShowParam>([] () {
         return std::make_shared<ParseShowParam>(std::make_unique<KeywordTokenizer>());
+    }),
+    createInitializer<PostponeState>([] () {
+        return std::make_shared<PostponeState>();
     }),
     createInitializer<StartState>([] () {
         return std::make_shared<StartState>();
@@ -66,6 +75,12 @@ states_ {
     }),
     createInitializer<InputTaskParseID>([] () {
         return std::make_shared<InputTaskParseID>();
+    }),
+    createInitializer<ParseCompleteID>([] () {
+        return std::make_shared<ParseCompleteID>();
+    }),
+    createInitializer<ParsePostponeID>([] () {
+        return std::make_shared<ParsePostponeID>();
     })
 }
 {}
@@ -119,12 +134,30 @@ std::shared_ptr<State> StateFactory::getInstanceOfInputTaskParseID() {
     return getInitializer<InputTaskParseID>().getValue();
 }
 
+std::shared_ptr<State> StateFactory::getInstanceOfCompleteState() {
+    return getInitializer<CompleteState>().getValue();
+}
+
+std::shared_ptr<State> StateFactory::getInstanceOfParseCompleteID() {
+    return getInitializer<ParseCompleteID>().getValue();
+}
+
+std::shared_ptr<State> StateFactory::getInstanceOfPostponeState() {
+    return getInitializer<PostponeState>().getValue();
+}
+
+std::shared_ptr<State> StateFactory::getInstanceOfParsePostponeID() {
+    return getInitializer<ParsePostponeID>().getValue();
+}
+
+std::shared_ptr<State> StateFactory::getInstanceOfParsePostponeDate() {
+    return getInitializer<ParsePostponeDate>().getValue();
+}
+
+
 template<class T>
 StateFactory::LazyStateInitializer<T> &StateFactory::getInitializer() {
     return std::get<StateFactory::LazyStateInitializer<T>>(states_);
 }
-
-
-
 
 
