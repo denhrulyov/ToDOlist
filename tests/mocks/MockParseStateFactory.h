@@ -13,6 +13,7 @@ class MockParseStateFactory : public ParseStateFactoryInterface {
 
 public:
     MOCK_METHOD(std::shared_ptr<ParseState>, getNextState, (), (override));
+    MOCK_METHOD(std::shared_ptr<ParseState>, getFirstState, (), (override));
 };
 
 

@@ -22,6 +22,7 @@ public:
     MOCK_METHOD(std::optional<TaskDTO>, getTaskBuffer, () ,(override));
     MOCK_METHOD(void, fillIDBuffer, (TaskID) ,(override));
     MOCK_METHOD(std::optional<TaskID>, getBufferedId, (), (override, const));
+    MOCK_METHOD(void, fillTable, (const std::vector<TaskDTO>&), (override));
 };
 
 

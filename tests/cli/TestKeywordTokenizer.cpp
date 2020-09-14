@@ -34,7 +34,7 @@ public:
         {"postpone",  Keyword::POSTPONE},
         {"today",     Keyword::TODAY},
         {"this_week", Keyword::THIS_WEEK},
-        {"all",       Keyword::SUBTASK},
+        {"all",       Keyword::ALL},
         {"tag",       Keyword::TAG},
         {"task",      Keyword::TASK},
         {"subtask",   Keyword::SUBTASK},

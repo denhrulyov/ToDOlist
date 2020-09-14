@@ -52,6 +52,7 @@ AddTaskState::execute(ConsoleContextInterface &context, StateFactoryInterface &f
     }
     if (!context.getTaskBuffer().has_value()) {
         context.getIO().putLine("Some fields were not set correctly. Task can't be added!");
+        return nullptr;
     } else {
         auto result = context
                         .getTaskService()

@@ -8,6 +8,7 @@
 #include "mocks/MockContext.h"
 #include "mocks/MockInputTaskContext.h"
 #include "mocks/MockKeywordTokenizer.h"
+#include "mocks/MockService.h"
 using ::testing::NiceMock;
 using ::testing::ReturnRef;
 using ::testing::Truly;
@@ -15,7 +16,20 @@ using ::testing::Truly;
 #define STATE_MUST_SWITCH(SubState, getInstanceMethod, keyword)                 \
     MockStateFactory mf;                                                        \
     EXPECT_CALL(mf, getInstanceMethod).WillOnce(Return(nullptr));               \
+    NiceMock<MockService> ms;                                                    \
+    ON_CALL(ms, deleteTask).WillByDefault(Return(TaskModificationResult::success())); \
+    ON_CALL(ms, addTask).WillByDefault(Return(TaskCreationResult::success(TaskID(1)))); \
+    ON_CALL(ms, addSubTask).WillByDefault(Return(TaskCreationResult::success(TaskID(1)))); \
     NiceMock<MockContext> mctx;                                                 \
+    ON_CALL(mctx, getTaskBuffer).WillByDefault(Return(TaskDTO::create(          \
+            TaskID(3),                                  \
+            "name",                                     \
+            TaskPriority::SECOND,                       \
+            "label",                                    \
+            boost::gregorian::day_clock::local_day(),   \
+            true)));                                    \
+    ON_CALL(mctx, getBufferedId).WillByDefault(Return(TaskID(1)));              \
+    ON_CALL(mctx, getTaskService).WillByDefault(ReturnRef(ms));                 \
     NiceMock<MockIO> mio;                                                       \
     auto tokenizer = std::make_unique<NiceMock<MockKeywordTokenizer>>();        \
     ON_CALL(*tokenizer, read(Truly([&mio] (ConsoleIOInterface& io) {            \
