@@ -28,3 +28,30 @@ TEST_F(TestInputTaskStateMachine, TestReturnFailResultOnAbortEvent) {
     ASSERT_EQ(InputTaskStateMachine::Result::FAIL,
             InputTaskStateMachine(std::move(mf), std::move(mctx)).run());
 }
+
+TEST_F(TestInputTaskStateMachine, TestReturnExiProgramResultOnExitEvent) {
+    auto mf = std::make_unique<MockParseStateFactory>();
+    auto mctx = std::make_unique<MockInputTaskContext>();
+    auto mio = NiceMock<MockIO>();
+    ON_CALL(*mctx, getIO).WillByDefault(ReturnRef(mio));
+    auto mps = std::make_shared<MockParseState>();
+    EXPECT_CALL(*mps, execute).WillOnce(Return(ParseState::Event::EXIT));
+    EXPECT_CALL(*mf, getNextState).WillOnce(Return(mps));
+    ASSERT_EQ(InputTaskStateMachine::Result::EXIT_PROGRAM,
+              InputTaskStateMachine(std::move(mf), std::move(mctx)).run());
+}
+
+TEST_F(TestInputTaskStateMachine, TestWillLoopWhileIncorrect) {
+    auto mf = std::make_unique<MockParseStateFactory>();
+    auto mctx = std::make_unique<MockInputTaskContext>();
+    auto mio = NiceMock<MockIO>();
+    ON_CALL(*mctx, getIO).WillByDefault(ReturnRef(mio));
+    auto mps = std::make_shared<NiceMock<MockParseState>>();
+    EXPECT_CALL(*mps, execute)
+        .WillOnce(Return(ParseState::Event::INCORRECT))
+        .WillOnce(Return(ParseState::Event::SUCCESS));
+    EXPECT_CALL(*mf, getNextState)
+        .WillOnce(Return(mps))
+        .WillOnce(Return(nullptr));
+    InputTaskStateMachine(std::move(mf), std::move(mctx)).run();
+}
