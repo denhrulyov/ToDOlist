@@ -45,11 +45,13 @@ public:
     virtual std::shared_ptr<State> getInstanceOfParseShowTag() = 0;
     virtual std::shared_ptr<State> getInstanceOfPostponeState() = 0;
     virtual std::shared_ptr<State> getInstanceOfShowState() = 0;
+    virtual std::shared_ptr<State> getInstanceOfShowSubTasksState() = 0;
     virtual std::shared_ptr<State> getInstanceOfStartState() = 0;
     virtual std::shared_ptr<State> getInstanceOfDeleteStateParseID() = 0;
     virtual std::shared_ptr<State> getInstanceOfInputTaskParseID() = 0;
     virtual std::shared_ptr<State> getInstanceOfParseCompleteID() = 0;
     virtual std::shared_ptr<State> getInstanceOfParsePostponeID() = 0;
+    virtual std::shared_ptr<State> getInstanceOfShowSubTasksParseID() = 0;
 
     virtual ~StateFactoryInterface() = default;
 };

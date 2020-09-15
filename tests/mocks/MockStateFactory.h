@@ -25,10 +25,12 @@ public:
     MOCK_METHOD(std::shared_ptr<State>, getInstanceOfPostponeState, (), (override));
     MOCK_METHOD(std::shared_ptr<State>, getInstanceOfShowState, (), (override));
     MOCK_METHOD(std::shared_ptr<State>, getInstanceOfStartState, (), (override));
+    MOCK_METHOD(std::shared_ptr<State>, getInstanceOfShowSubTasksState, (), (override));
     MOCK_METHOD(std::shared_ptr<State>, getInstanceOfDeleteStateParseID, (), (override));
     MOCK_METHOD(std::shared_ptr<State>, getInstanceOfInputTaskParseID, (), (override));
     MOCK_METHOD(std::shared_ptr<State>, getInstanceOfParseCompleteID, (), (override));
     MOCK_METHOD(std::shared_ptr<State>, getInstanceOfParsePostponeID, (), (override));
+    MOCK_METHOD(std::shared_ptr<State>, getInstanceOfShowSubTasksParseID, (), (override));
 };
 
 

@@ -15,6 +15,7 @@ enum class Keyword  {
     ALL,
     THIS_WEEK,
     TAG,
+    SUBTASKS,
     CURRENT_LIST,
     DELETE,
     POSTPONE,

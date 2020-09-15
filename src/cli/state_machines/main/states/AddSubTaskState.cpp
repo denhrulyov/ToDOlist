@@ -6,8 +6,8 @@
 
 #include "core/utils/task_io/ConsoleTaskIO.h"
 #include "StartState.h"
+#include "cli/CLITaskIO.h"
 #include "cli/state_machines/main/ConsoleContext.h"
-#include "cli/state_machines/main/states/utils/Utils.h"
 
 
 AddSubTaskState::AddSubTaskState(std::unique_ptr<Tokenizer> tokenizer)
@@ -24,23 +24,13 @@ AddSubTaskState::print(ConsoleContextInterface &context) {
     std::optional<TaskDTO> task = service.getTaskByID(context.getBufferedId().value());
     if (task) {
         TaskDTO dto = task.value();
-        context.getIO().putLine(std::string("name :     ")
-                                + field_repr(dto.getName()));
-        context.getIO().putLine(std::string("priority : ")
-                                + field_repr(dto.getPriority()));
-        context.getIO().putLine(std::string("label :    ")
-                                + field_repr(dto.getLabel()));
-        context.getIO().putLine(std::string("date :     ")
-                                + field_repr(std::optional(dto.getDate())));
+        cli_task_io::print(context.getIO(), dto);
         context.getIO().putLine("Y - accept, n - decline");
     } else {
         context.getIO().putLine("###Unknown task###");
     }
     context.getIO().putLine("You specified subtask with following parameters:");
-    context.getIO().putLine(std::string("name :     ") + field_repr(buffer->getName()));
-    context.getIO().putLine(std::string("priority : ") + field_repr(buffer->getPriority()));
-    context.getIO().putLine(std::string("label :    ") + field_repr(buffer->getLabel()));
-    context.getIO().putLine(std::string("date :     ") + field_repr(std::optional(buffer->getDate())));
+    cli_task_io::print(context.getIO(), buffer.value());
     context.getIO().putLine("Y - accept, n - decline");
 }
 

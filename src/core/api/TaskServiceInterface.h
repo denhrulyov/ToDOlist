@@ -52,6 +52,20 @@ public:
      * @return task DTO if such task exists otherwise nullopt.
      */
     virtual std::optional<TaskDTO>                                  getTaskByID(TaskID id) = 0;
+    /*
+     * Gives all direct subtasks of task.
+     *
+     * @param task id.
+     * @return vector of task DTO got from subtasks
+     */
+    virtual std::vector<TaskDTO>                                    getSubTasks(TaskID id) = 0;
+    /*
+     * Gives all subtasks, subtasks of subtasks and so on recursively.
+     *
+     * @param task id.
+     * @return vector of task DTO got from subtasks
+     */
+    virtual std::vector<TaskDTO>                                    getSubTasksRecursive(TaskID id) = 0;
 
 public:
     /*

@@ -10,6 +10,7 @@
 
 #include "core/utils/task_io/ConsoleTaskIO.h"
 #include "ParseCommand.h"
+#include "cli/CLITaskIO.h"
 #include "cli/state_machines/main/ConsoleContext.h"
 #include "cli/state_machines/main/states/utils/Utils.h"
 #include "cli/tokenization/Tokenizer.h"
@@ -24,16 +25,9 @@ State()
 
 void
 AddTaskState::print(ConsoleContextInterface &context) {
-    auto dto = context.getTaskBuffer().value();
     context.getIO().putLine("You specified task with following parameters:");
-    context.getIO().putLine(std::string("name :     ")
-                                                + field_repr(dto.getName()));
-    context.getIO().putLine(std::string("priority : ")
-                                                + field_repr(dto.getPriority()));
-    context.getIO().putLine(std::string("label :    ")
-                                                + field_repr(dto.getLabel()));
-    context.getIO().putLine(std::string("date :     ")
-                                                + field_repr(std::optional(dto.getDate())));
+    auto dto = context.getTaskBuffer().value();
+    cli_task_io::print(context.getIO(), dto);
     context.getIO().putLine("Y - accept, n - decline");
 }
 

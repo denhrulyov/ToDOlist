@@ -43,6 +43,8 @@ public:
     std::vector<TaskDTO>                                    getAllTasks() override;
     std::vector<TaskDTO>                                    getAllWithLabel(const std::string& label) override;
     std::optional<TaskDTO>                                  getTaskByID(TaskID id) override;
+    std::vector<TaskDTO>                                    getSubTasks(TaskID id) override;
+    std::vector<TaskDTO>                                    getSubTasksRecursive(TaskID id) override;
 
 public:
     TaskCreationResult                                      addTask(const TaskDTO &task_data) override;

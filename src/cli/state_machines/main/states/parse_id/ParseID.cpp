@@ -21,7 +21,7 @@ void ParseID::print(ConsoleContextInterface &context) {
 
 std::shared_ptr<State> ParseID::execute(ConsoleContextInterface &context, StateFactoryInterface &factory) {
     if (context.getMatchingTablePositionToID().empty()) {
-        context.getIO().putLine("Task table is now empty. Make get command to gain some set of tasks.");
+        context.getIO().putLine("Task table is now empty. Make show command to gain some set of tasks.");
         return factory.getInstanceOfParseCommand();
     }
     context.getIO().requestInputLine();

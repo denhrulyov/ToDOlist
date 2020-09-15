@@ -25,6 +25,8 @@ public:
     MOCK_METHOD(TaskModificationResult, deleteTask, (TaskID ), (override));
     MOCK_METHOD(TaskModificationResult, postponeTask, (TaskID, BoostDate), (override));
     MOCK_METHOD(RequestResult         , complete, (TaskID), (override));
+    MOCK_METHOD(std::vector<TaskDTO>, getSubTasks, (TaskID id), (override));
+    MOCK_METHOD(std::vector<TaskDTO>, getSubTasksRecursive, (TaskID id), (override));
 };
 
 #endif //TODOLIST_MOCKSERVICE_H

@@ -49,6 +49,8 @@ std::shared_ptr<State> ParseShowParam::execute(ConsoleContextInterface &context,
             context.getIO().putLine("Active list of tasks:");
             task_table_io::print(context);
             break;
+        case Keyword::SUBTASKS:
+            return factory.getInstanceOfShowSubTasksParseID();
         default:
             context.getIO().putLine("Incorrect show options!");
             help(context);

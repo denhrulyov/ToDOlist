@@ -135,3 +135,33 @@ std::vector<TaskDTO> TaskService::getAllTasks() {
     return convertAll(result_set);
 }
 
+std::vector<TaskDTO> TaskService::getSubTasks(TaskID id) {
+    auto parent = storage_->getTaskByID(id).lock();
+    if (parent) {
+        return convertAll(parent->getSubNodes());
+    }
+    return std::vector<TaskDTO>{};
+}
+
+std::vector<TaskDTO> get_sub_tasks_recurse(const std::shared_ptr<TaskNode>& node) {
+    std::vector<TaskDTO> result = { TaskDTOConverter::getDTO(node) };
+    for (const auto& child : node->getSubNodes()) {
+        auto sub_result = get_sub_tasks_recurse(child.lock());
+        result.insert(result.end(), sub_result.begin(), sub_result.end());
+    }
+    return result;
+}
+
+std::vector<TaskDTO> TaskService::getSubTasksRecursive(TaskID id) {
+    auto parent = storage_->getTaskByID(id).lock();
+    if (parent) {
+        std::vector<TaskDTO> result;
+        for (const auto& child : parent->getSubNodes()) {
+            auto sub_result = get_sub_tasks_recurse(child.lock());
+            result.insert(result.end(), sub_result.begin(), sub_result.end());
+        }
+        return result;
+    }
+    return std::vector<TaskDTO>{};
+}
+

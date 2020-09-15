@@ -70,6 +70,9 @@ states_ {
     createInitializer<StartState>([] () {
         return std::make_shared<StartState>();
     }),
+    createInitializer<ShowSubTasksState>([] () {
+        return std::make_shared<ShowSubTasksState>();
+    }),
     createInitializer<DeleteStateParseID>([] () {
         return std::make_shared<DeleteStateParseID>();
     }),
@@ -81,6 +84,9 @@ states_ {
     }),
     createInitializer<ParsePostponeID>([] () {
         return std::make_shared<ParsePostponeID>();
+    }),
+    createInitializer<ShowSubTasksParseID>([] () {
+        return std::make_shared<ShowSubTasksParseID>();
     })
 }
 {}
@@ -153,6 +159,15 @@ std::shared_ptr<State> StateFactory::getInstanceOfParsePostponeID() {
 std::shared_ptr<State> StateFactory::getInstanceOfParsePostponeDate() {
     return getInitializer<ParsePostponeDate>().getValue();
 }
+
+std::shared_ptr<State> StateFactory::getInstanceOfShowSubTasksState() {
+    return getInitializer<ShowSubTasksState>().getValue();
+}
+
+std::shared_ptr<State> StateFactory::getInstanceOfShowSubTasksParseID() {
+    return getInitializer<ShowSubTasksParseID>().getValue();
+}
+
 
 
 template<class T>
