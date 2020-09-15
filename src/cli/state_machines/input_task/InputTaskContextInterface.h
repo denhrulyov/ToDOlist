@@ -8,8 +8,20 @@
 #include "cli/ConsoleIOInterface.h"
 #include "core/memory_model/data/Task.h"
 
+/*
+ * Class containing input task data
+ *
+ * @author Denis Hrulov
+ *
+ */
 class InputTaskContextInterface {
 public:
+
+    /*
+     *
+     * @return console input-output interface
+     *
+     */
     virtual ConsoleIOInterface&             getIO() const = 0;
 
 public:
