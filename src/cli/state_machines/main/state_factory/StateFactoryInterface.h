@@ -23,6 +23,13 @@ class InputTaskParseID;
 
 template<class T> class Of;
 
+
+/*
+ * class responsible for creating, maintaining and giving access to states
+ *
+ * @author Denis Hrulov
+ *
+ */
 class StateFactoryInterface {
 
 public:

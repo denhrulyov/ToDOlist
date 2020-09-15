@@ -8,7 +8,12 @@
 class ConsoleContextInterface;
 
 namespace task_table_io {
-
+    /*
+     * function for printing task table to console
+     *
+     * @param context containing data
+     *
+     */
     void print(ConsoleContextInterface& context);
 }
 

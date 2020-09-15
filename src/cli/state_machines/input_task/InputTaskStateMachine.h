@@ -17,6 +17,12 @@
 
 class ParseState;
 
+/*
+ * class representing state machine task fields input control
+ *
+ * @author Denis Hrulov
+ *
+ */
 class InputTaskStateMachine {
 
 public:
@@ -31,7 +37,13 @@ public:
                                             std::unique_ptr<InputTaskContextInterface>);
 
 public:
+    /*
+     * runs state machine
+     */
     virtual Result                           run();
+    /*
+     * @return context of task input
+     */
     virtual const InputTaskContextInterface& getContext();
 
     virtual ~InputTaskStateMachine() = default;

@@ -8,6 +8,13 @@
 #include "ConsoleContextInterface.h"
 #include "cli/state_machines/main/states/State.h"
 
+/*
+ * class representing state machine of CLI control
+ *
+ * @author Denis Hrulov
+ *
+ */
+
 class ConsoleStateMachine {
 
 public:
@@ -16,6 +23,9 @@ public:
                         const std::shared_ptr<State>& start_state);
 
 public:
+    /*
+     * runs state machine
+     */
     void                                    run();
 
 
