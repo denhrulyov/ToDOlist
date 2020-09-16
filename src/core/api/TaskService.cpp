@@ -110,6 +110,9 @@ std::optional<TaskDTO> TaskService::getTaskByID(TaskID id) {
 
 RequestResult TaskService::complete(TaskID id) {
     auto shared_node = storage_->getTaskByID(id).lock();
+    if (!shared_node) {
+        return TaskModificationResult::taskNotFound();
+    }
     shared_node->complete();
     for (TaskID child : shared_node->getSubtasks()) {
         complete(child);
