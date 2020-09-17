@@ -64,6 +64,7 @@ void ParseShowParam::help(ConsoleContextInterface &context) {
     context.getIO().putLine("-  today");
     context.getIO().putLine("-  this_week");
     context.getIO().putLine("-  all");
+    context.getIO().putLine("-  subtasks");
     context.getIO().putLine("-  current_list");
     context.getIO().putLine("-  tag <tg>, where <tg> is a desired label");
 }
