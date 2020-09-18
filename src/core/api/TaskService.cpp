@@ -31,8 +31,11 @@ TaskCreationResult TaskService::addTask(const TaskDTO &task_data) {
     if (task_data.getDate() > service::max_date) {
         std::string message;
         std::stringstream ss(message);
-        ss << "Given date is bigger then " << service::max_date;
+        ss << "Given date is bigger than " << service::max_date;
         return TaskCreationResult::error(message);
+    }
+    if (task_data.getDate() < boost::gregorian::day_clock::local_day()) {
+        return TaskCreationResult::error("Given date is before today ");
     }
     auto created_node = createNode(
             id_generator_.generateID(),
@@ -107,6 +110,9 @@ std::optional<TaskDTO> TaskService::getTaskByID(TaskID id) {
 
 RequestResult TaskService::complete(TaskID id) {
     auto shared_node = storage_->getTaskByID(id).lock();
+    if (!shared_node) {
+        return TaskModificationResult::taskNotFound();
+    }
     shared_node->complete();
     for (TaskID child : shared_node->getSubtasks()) {
         complete(child);
@@ -130,5 +136,35 @@ std::vector<TaskDTO> TaskService::getAllTasks() {
     using namespace boost::gregorian;
     auto result_set = by_time_->getAllWithConstraint(service::max_date);
     return convertAll(result_set);
+}
+
+std::vector<TaskDTO> TaskService::getSubTasks(TaskID id) {
+    auto parent = storage_->getTaskByID(id).lock();
+    if (parent) {
+        return convertAll(parent->getSubNodes());
+    }
+    return std::vector<TaskDTO>{};
+}
+
+std::vector<TaskDTO> get_sub_tasks_recurse(const std::shared_ptr<TaskNode>& node) {
+    std::vector<TaskDTO> result = { TaskDTOConverter::getDTO(node) };
+    for (const auto& child : node->getSubNodes()) {
+        auto sub_result = get_sub_tasks_recurse(child.lock());
+        result.insert(result.end(), sub_result.begin(), sub_result.end());
+    }
+    return result;
+}
+
+std::vector<TaskDTO> TaskService::getSubTasksRecursive(TaskID id) {
+    auto parent = storage_->getTaskByID(id).lock();
+    if (parent) {
+        std::vector<TaskDTO> result;
+        for (const auto& child : parent->getSubNodes()) {
+            auto sub_result = get_sub_tasks_recurse(child.lock());
+            result.insert(result.end(), sub_result.begin(), sub_result.end());
+        }
+        return result;
+    }
+    return std::vector<TaskDTO>{};
 }
 

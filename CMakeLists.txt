@@ -7,29 +7,14 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-instr-generate -fcoverage-mapping")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-instr-generate -fcoverage-mapping")
 #set(CMAKE_CXX_FLAGS "-D_GLIBCXX_DEBUG")
+
+file( GLOB_RECURSE CLI_SOURCES src/cli/*.cpp)
+file( GLOB_RECURSE CLI_HEADERS src/cli/*.h)
+file( GLOB_RECURSE CORE_HEADERS src/core/*.h)
+file( GLOB_RECURSE CORE_SOURCES src/core/*.cpp)
 add_executable(ToDOList src/main.cpp
-        src/core/api/TaskService.cpp src/core/api/TaskService.h
-        src/core/memory_model/data/Task.h
-        src/core/memory_model/data/Task.cpp
-        src/core/memory_model/structure/TaskNode.cpp src/core/memory_model/structure/TaskNode.h
-        src/core/memory_model/view/DatePriorityView.cpp src/core/memory_model/view/DatePriorityView.h
-        src/core/api/TaskDTO.cpp src/core/api/TaskDTO.h
-        src/core/utils/task_io/ConsoleTaskIO.h
-        src/core/memory_model/data/TaskID.cpp src/core/memory_model/data/TaskID.h
-        src/core/memory_model/view/PriorityViewInterface.h
-        src/core/api/TODOList.h
-        src/core/memory_model/data/TaskIDFactory.cpp src/core/memory_model/data/TaskIDFactory.h
-        src/core/memory_model/view/TagPriorityView.cpp src/core/memory_model/view/TagPriorityView.h
-        src/core/memory_model/data/TaskStorageInterface.h
-        src/core/memory_model/data/TaskStorage.cpp
-        src/core/memory_model/data/TaskStorage.h
-        src/core/memory_model/structure/LinkManager.cpp
-        src/core/memory_model/structure/LinkManager.h
-        src/core/utils/data_transfer/TaskDTOConverter.cpp
-        src/core/utils/data_transfer/TaskDTOConverter.h
-        src/core/api/RequestResult.cpp src/core/api/RequestResult.h
-        src/core/api/TaskModificationResult.cpp src/core/api/TaskModificationResult.h
-        src/core/api/TaskCreationResult.cpp src/core/api/TaskCreationResult.h src/core/memory_model/data/TaskPriority.h src/core/memory_model/structure/LinkManagerInterface.h)
+        ${CLI_SOURCES} ${CLI_HEADERS}
+        ${CORE_SOURCES} ${CORE_HEADERS})
 
 # boost #####################################################
 set(Boost_USE_STATIC_LIBS        ON)  # only find static libs
@@ -39,6 +24,7 @@ set(Boost_USE_MULTITHREADED      ON)
 set(Boost_USE_STATIC_RUNTIME     OFF)
 
 find_package(Boost REQUIRED COMPONENTS date_time)
+
 
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
@@ -64,43 +50,19 @@ include_directories(tests)
 #############################################
 
 # tests #####################################
-
 include(GoogleTest)
 find_package(GTest REQUIRED)
 include_directories(${GMOCK_INCLUDE_DIR})
 enable_testing()
 
-add_executable(TestsExecutable
-                tests/TestTaskNode.cpp
-                tests/TestTaskDTO.cpp
-                tests/TestTagPriorityView.cpp
-                tests/TestDatePriortyView.cpp
-                tests/TestTaskService.cpp
-        tests/TestLinkManager.cpp
-                tests/TestTaskStorage.cpp
-                tests/TestTaskID.cpp
-                tests/TestTaskIDFactory.cpp
-                tests/TestTaskCreationResult.cpp
-                tests/TestTaskModificationResult.cpp
-                tests/TestRequestResult.cpp
+file(GLOB_RECURSE TESTS tests/*.cpp)
+file(GLOB_RECURSE MOCKS tests/mocks/*.h)
 
-        src/core/api/RequestResult.cpp
-        src/core/api/TaskModificationResult.cpp
-        src/core/api/TaskCreationResult.cpp
-        src/core/api/TaskService.cpp
-        src/core/memory_model/data/Task.cpp
-        src/core/memory_model/structure/TaskNode.cpp
-        src/core/memory_model/view/DatePriorityView.cpp
-        src/core/api/TaskDTO.cpp
-        src/core/memory_model/data/TaskID.cpp
-        src/core/memory_model/data/TaskIDFactory.cpp
-        src/core/api/TaskCreationResult.cpp
-        src/core/memory_model/view/TagPriorityView.cpp
-        src/core/memory_model/data/TaskStorage.cpp
-        src/core/memory_model/structure/LinkManager.cpp
-        src/core/utils/data_transfer/TaskDTOConverter.cpp
-        src/core/memory_model/data/TaskPriority.h tests/test_main.cpp src/core/api/TaskServiceInterface.h)
-target_link_libraries(TestsExecutable GTest::GTest GTest::Main ${GMOCK_LIBRARY} ${GMOCK_MAIN_LIBRARY})
+add_executable(TestsExecutable
+        ${CLI_SOURCES} ${CLI_HEADERS}
+        ${CORE_SOURCES} ${CORE_HEADERS}
+        ${TESTS} ${MOCKS})
+target_link_libraries(TestsExecutable GTest::GTest GTest::Main ${GMOCK_LIBRARY} ${GMOCK_MAIN_LIBRARY} ${Boost_LIBRARIES})
 
 gtest_discover_tests(TestsExecutable)
 

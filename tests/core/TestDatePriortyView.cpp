@@ -80,7 +80,7 @@ TEST_F(PriorityViewTest, DateConstraintIsWorkingProperly) {
     tw.addToView(node2);
     tw.addToView(node3);
     tw.addToView(node4);
-    std::vector nodes = {node1, node2, node3, node4};
+    std::vector<std::shared_ptr<TaskNode>> nodes = {node1, node2, node3, node4};
     std::sort(nodes.begin(), nodes.end(),
             [] (const auto& lhs, const auto& rhs) {
                 return lhs->getTask().getDate() < rhs->getTask().getDate();
@@ -101,7 +101,7 @@ TEST_F(PriorityViewTest, PartialResultSetSortedByPriority) {
     tw.addToView(node2);
     tw.addToView(node3);
     tw.addToView(node4);
-    std::vector nodes = {node1, node2, node3, node4};
+    std::vector<std::shared_ptr<TaskNode>> nodes = {node1, node2, node3, node4};
     std::sort(nodes.begin(), nodes.end(),
               [] (const auto& lhs, const auto& rhs) {
                   return lhs->getTask().getDate() < rhs->getTask().getDate();
