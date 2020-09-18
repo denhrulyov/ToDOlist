@@ -3,10 +3,10 @@
 //
 
 #include "core/api/TODOList.h"
-#include "IstreamServiceDeserializer.h"
+#include "ProtobufIstreamServiceDeserializer.h"
 #include "TaskSerialization.h"
 
-IstreamServiceDeserializer::IstreamServiceDeserializer(std::istream& in) : in_(in) {}
+ProtobufIstreamServiceDeserializer::ProtobufIstreamServiceDeserializer(std::istream& in) : in_(in) {}
 
 bool deserialize_subtasks(TaskID id_parent, const TaskProto& task_load, TaskServiceInterface& service) {
     for (const TaskProto& subtask_load : task_load.subtasks()) {
@@ -27,7 +27,7 @@ bool deserialize_subtasks(TaskID id_parent, const TaskProto& task_load, TaskServ
     return true;
 }
 
-std::unique_ptr<TaskServiceInterface> IstreamServiceDeserializer::deserialize() {
+std::unique_ptr<TaskServiceInterface> ProtobufIstreamServiceDeserializer::deserialize() {
     TaskServiceProto service_load;
     if(!service_load.ParseFromIstream(&in_)) {
         return nullptr;

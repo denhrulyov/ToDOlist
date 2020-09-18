@@ -6,7 +6,7 @@
 #define TODOLIST_SERVICESERIALIZER_H
 
 #include "core/api/TaskServiceInterface.h"
-class ServiceSerializer{
+class ServiceSerializer {
 
 public:
     virtual void serialize(TaskServiceInterface& service) = 0;

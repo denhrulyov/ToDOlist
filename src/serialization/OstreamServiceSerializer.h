@@ -1,29 +1,13 @@
 //
-// Created by denis on 17.09.20.
+// Created by denis on 18.09.20.
 //
-
-#ifndef TODOLIST_OSTREAMSERVICESERIALIZER_H
-#define TODOLIST_OSTREAMSERVICESERIALIZER_H
-
 
 #include "ServiceSerializer.h"
 #include <iostream>
 #include "task.pb.h"
 
-class OstreamServiceSerializer : ServiceSerializer {
+class OstreamServiceSerializer : public ServiceSerializer {
 
 public:
-    explicit OstreamServiceSerializer(std::ostream& out);
-
-public:
-    void serialize(TaskServiceInterface& service) override;
-
-private:
-    void serializeSubtasks(TaskProto* task_dump, TaskID id, TaskServiceInterface &service);
-
-private:
-    std::ostream& out_;
+    virtual void serialize(TaskServiceInterface& service) = 0;
 };
-
-
-#endif //TODOLIST_OSTREAMSERVICESERIALIZER_H
