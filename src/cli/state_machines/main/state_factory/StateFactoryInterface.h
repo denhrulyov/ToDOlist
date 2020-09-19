@@ -39,11 +39,13 @@ public:
     virtual std::shared_ptr<State> getInstanceOfDeleteTaskState() = 0;
     virtual std::shared_ptr<State> getInstanceOfSubTaskInputChain() = 0;
     virtual std::shared_ptr<State> getInstanceOfTaskInputChain() = 0;
+    virtual std::shared_ptr<State> getInstanceOfLoadFromFileState() = 0;
     virtual std::shared_ptr<State> getInstanceOfParseAddType() = 0;
     virtual std::shared_ptr<State> getInstanceOfParseCommand() = 0;
     virtual std::shared_ptr<State> getInstanceOfParsePostponeDate() = 0;
     virtual std::shared_ptr<State> getInstanceOfParseShowTag() = 0;
     virtual std::shared_ptr<State> getInstanceOfPostponeState() = 0;
+    virtual std::shared_ptr<State> getInstanceOfSaveToFileState() = 0;
     virtual std::shared_ptr<State> getInstanceOfShowState() = 0;
     virtual std::shared_ptr<State> getInstanceOfShowSubTasksState() = 0;
     virtual std::shared_ptr<State> getInstanceOfStartState() = 0;

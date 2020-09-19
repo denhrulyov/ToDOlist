@@ -9,7 +9,7 @@
 
 bool deserialize_subtasks(TaskID id_parent, const TaskProto& task_load, TaskServiceInterface& service) {
     for (const TaskProto& subtask_load : task_load.subtasks()) {
-        TaskCreationResult result = service.addSubTask(id_parent, serialization::deserialize_task(task_load));
+        TaskCreationResult result = service.addSubTask(id_parent, serialization::deserialize_task(subtask_load));
         if (!result.getCreatedTaskID()) {
             return false;
         }

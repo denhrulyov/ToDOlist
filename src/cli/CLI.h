@@ -10,6 +10,8 @@
 #include "cli/state_machines/main/states/StartState.h"
 #include "cli/state_machines/main/state_factory/StateFactory.h"
 #include "cli/state_machines/main/ConsoleContext.h"
+#include "serialization/ProtobufIstreamServiceDeserializer.h"
+#include "serialization/ProtobufOstreamServiceSerializer.h"
 #include "core/api/TODOList.h"
 
 namespace todo_list_cli {
@@ -18,9 +20,11 @@ namespace todo_list_cli {
         auto io      = std::make_unique<ConsoleIO>(std::cin, std::cout);
         auto context = std::make_unique<ConsoleContext>(
                             std::move(todo_list::createService()),
-                            std::move(io)
+                            std::move(io),
+                            std::make_unique<ProtobufOstreamServiceSerializer>(),
+                            std::make_unique<ProtobufIstreamServiceDeserializer>()
                             );
-        auto factory = std::make_unique<StateFactory>(context->getIO());
+        auto factory = std::make_unique<StateFactory>(*context);
         auto& ref_context = *context;
         ConsoleStateMachine cli(
                 std::move(context), std::move(factory), std::make_shared<StartState>()
