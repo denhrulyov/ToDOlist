@@ -6,6 +6,8 @@
 #define TODOLIST_CONSOLECONTEXTINTERFACE_H
 
 #include "core/api/TaskServiceInterface.h"
+#include "serialization/IstreamServiceDeserializer.h"
+#include "serialization/OstreamServiceSerializer.h"
 #include "cli/ConsoleIOInterface.h"
 
 typedef int32_t TaskNumber;
@@ -19,6 +21,10 @@ typedef int32_t TaskNumber;
 class ConsoleContextInterface {
 
 public:
+    /*
+     * @param TaskService to put into context
+     */
+    virtual void                                    setTaskService(std::unique_ptr<TaskServiceInterface>) = 0;
     /*
      * @return reference to TaskService
      */
@@ -54,9 +60,17 @@ public:
      */
     virtual void                                    fillIDBuffer(TaskID) = 0;
     /*
-     * @returns id of buffered data if it was set or nullopt otherwise
+     * @return id of buffered data if it was set or nullopt otherwise
      */
     virtual std::optional<TaskID>                   getBufferedId() const = 0;
+    /*
+     * @return serialization destination
+     */
+    virtual OstreamServiceSerializer&               getSerializer() = 0;
+    /*
+     * @return deserialization source
+     */
+    virtual IstreamServiceDeserializer&             getDeserializer() = 0;
 
 public:
     /*

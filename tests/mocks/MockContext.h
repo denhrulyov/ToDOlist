@@ -12,6 +12,7 @@
 class MockContext : public ConsoleContextInterface {
 
 public:
+    MOCK_METHOD(void, setTaskService, (std::unique_ptr<TaskServiceInterface>), (override));
     MOCK_METHOD(TaskServiceInterface&, getTaskService, () ,(override));
     MOCK_METHOD(ConsoleIOInterface&, getIO, (), (override));
     using from_ID_to_TaskNumber = std::map<TaskNumber, TaskID>;

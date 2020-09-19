@@ -7,12 +7,21 @@
 
 ConsoleContext::ConsoleContext(
     std::unique_ptr<TaskServiceInterface> service,
-    std::unique_ptr<ConsoleIOInterface> io)
+    std::unique_ptr<ConsoleIOInterface> io,
+    std::unique_ptr<OstreamServiceSerializer> serializer,
+    std::unique_ptr<IstreamServiceDeserializer> deserializer)
 :
 service_(std::move(service)),
 io_(std::move(io)),
+serializer_(std::move(serializer)),
+deserializer_(std::move(deserializer)),
 task_buffer_(std::nullopt)
 {}
+
+
+void ConsoleContext::setTaskService(std::unique_ptr<TaskServiceInterface> service) {
+    service_ = std::move(service);
+}
 
 
 std::optional<TaskDTO> ConsoleContext::getTaskBuffer() {
@@ -56,9 +65,13 @@ void ConsoleContext::fillTable(const std::vector<TaskDTO> &tasks) {
     }
 }
 
+OstreamServiceSerializer &ConsoleContext::getSerializer() {
+    return *serializer_;
+}
 
-
-
+IstreamServiceDeserializer &ConsoleContext::getDeserializer() {
+    return *deserializer_;
+}
 
 
 

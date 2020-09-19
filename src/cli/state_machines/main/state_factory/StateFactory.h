@@ -13,7 +13,7 @@
 class StateFactory : public StateFactoryInterface {
 
 public:
-    explicit StateFactory(ConsoleIOInterface&);
+    explicit StateFactory(ConsoleContextInterface&);
 public:
     std::shared_ptr<State> getInstanceOfAddSubTaskState() override;
     std::shared_ptr<State> getInstanceOfAddTaskState() override;
@@ -44,7 +44,7 @@ private:
     LazyStateInitializer<T>& getInitializer();
 
 private:
-    ConsoleIOInterface& io_;
+    ConsoleContextInterface& context_;
     std::tuple<
         LazyStateInitializer<AddSubTaskState>,
         LazyStateInitializer<AddTaskState>,

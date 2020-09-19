@@ -13,10 +13,11 @@ StateFactory::LazyStateInitializer<T> createInitializer(const typename LazyIniti
     return LazyInitializer<State, T>(init);
 }
 
-StateFactory::StateFactory(ConsoleIOInterface &io)
+StateFactory::StateFactory(ConsoleContextInterface &context)
 :
-io_(io),
-states_ {
+    context_(context),
+    states_
+{
     createInitializer<AddSubTaskState>([] () {
         return std::make_shared<AddSubTaskState>(std::make_unique<KeywordTokenizer>());
     }),
@@ -29,22 +30,22 @@ states_ {
     createInitializer<DeleteTaskState>([] () {
         return std::make_shared<DeleteTaskState>(std::make_unique<KeywordTokenizer>());
     }),
-    createInitializer<InputTaskState>([&io] () {
+    createInitializer<InputTaskState>([&context] () {
         return std::make_shared<InputTaskState>(
                 std::move(
                         std::make_unique<InputTaskStateMachine>(
                                 std::make_unique<ParseStateFactory>(),
-                                std::make_unique<InputTaskContext>(io)
+                                std::make_unique<InputTaskContext>(context.getIO())
                         )
                 )
         );
     }),
-    createInitializer<InputSubTaskState>([&io] () {
+    createInitializer<InputSubTaskState>([&context] () {
         return std::make_shared<InputSubTaskState>(
                 std::move(
                         std::make_unique<InputTaskStateMachine>(
                                 std::make_unique<ParseStateFactory>(),
-                                std::make_unique<InputTaskContext>(io)
+                                std::make_unique<InputTaskContext>(context.getIO())
                         )
                 )
         );

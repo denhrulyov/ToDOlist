@@ -15,9 +15,12 @@ class ConsoleContext : public ConsoleContextInterface {
 public:
     explicit
     ConsoleContext( std::unique_ptr<TaskServiceInterface>,
-                    std::unique_ptr<ConsoleIOInterface>);
+                    std::unique_ptr<ConsoleIOInterface>,
+                    std::unique_ptr<OstreamServiceSerializer>,
+                    std::unique_ptr<IstreamServiceDeserializer>);
 
 public:
+    void                                    setTaskService(std::unique_ptr<TaskServiceInterface>) override;
     TaskServiceInterface&                   getTaskService() override;
     ConsoleIOInterface &                    getIO() override;
     std::map<TaskNumber, TaskID>&           getMatchingTablePositionToID() override;
@@ -28,6 +31,8 @@ public:
     std::optional<TaskDTO>                  getTaskBuffer() override;
     void                                    fillIDBuffer(TaskID) override;
     std::optional<TaskID>                   getBufferedId() const override;
+    OstreamServiceSerializer&               getSerializer() override;
+    IstreamServiceDeserializer&             getDeserializer() override;
 
 public:
     void                                    fillTable(const std::vector<TaskDTO>&) override;
@@ -43,7 +48,8 @@ private:
     std::optional<TaskID>                   id_buffer_;
     std::optional<TaskDTO>                  task_buffer_;
     std::unique_ptr<TaskServiceInterface>   service_;
-
+    std::unique_ptr<OstreamServiceSerializer>       serializer_;
+    std::unique_ptr<IstreamServiceDeserializer>     deserializer_;
 };
 
 
