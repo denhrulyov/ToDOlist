@@ -6,7 +6,6 @@
 #include "ProtobufIstreamServiceDeserializer.h"
 #include "TaskSerialization.h"
 
-ProtobufIstreamServiceDeserializer::ProtobufIstreamServiceDeserializer(std::istream& in) : in_(in) {}
 
 bool deserialize_subtasks(TaskID id_parent, const TaskProto& task_load, TaskServiceInterface& service) {
     for (const TaskProto& subtask_load : task_load.subtasks()) {
@@ -27,9 +26,9 @@ bool deserialize_subtasks(TaskID id_parent, const TaskProto& task_load, TaskServ
     return true;
 }
 
-std::unique_ptr<TaskServiceInterface> ProtobufIstreamServiceDeserializer::deserialize() {
+std::unique_ptr<TaskServiceInterface> ProtobufIstreamServiceDeserializer::deserialize(std::istream& in) {
     TaskServiceProto service_load;
-    if(!service_load.ParseFromIstream(&in_)) {
+    if(!service_load.ParseFromIstream(&in)) {
         return nullptr;
     }
     auto service = todo_list::createService();

@@ -6,6 +6,8 @@
 #include "cli/state_machines/main/ConsoleContext.h"
 #include "mocks/MockIO.h"
 #include "mocks/MockService.h"
+#include "mocks/MockOstreamSerializer.h"
+#include "mocks/MockIstreamDeserializer.h"
 
 class ConsoleContextTest : public ::testing::Test {
 
@@ -14,7 +16,7 @@ class ConsoleContextTest : public ::testing::Test {
 
 
 TEST_F(ConsoleContextTest, TestIDBufferWritten) {
-    ConsoleContext ctx(nullptr, std::move(std::make_unique<MockIO>()));
+    ConsoleContext ctx(nullptr, std::move(std::make_unique<MockIO>()), nullptr, nullptr);
     TaskID id_to_write(2);
     ASSERT_FALSE(ctx.getBufferedId().has_value());
     ctx.fillIDBuffer(id_to_write);
@@ -22,7 +24,7 @@ TEST_F(ConsoleContextTest, TestIDBufferWritten) {
 }
 
 TEST_F(ConsoleContextTest, TestTaskDTOBufferWritten) {
-    ConsoleContext ctx(nullptr, std::move(std::make_unique<MockIO>()));
+    ConsoleContext ctx(nullptr, std::move(std::make_unique<MockIO>()), nullptr, nullptr);
     auto dto = TaskDTO::create(
             TaskID(3),
             "name",
@@ -44,19 +46,19 @@ TEST_F(ConsoleContextTest, TestTaskDTOBufferWritten) {
 TEST_F(ConsoleContextTest, BringCorrectIO) {
     auto m0 = std::make_unique<MockIO>();
     ConsoleIOInterface* ptr = m0.get();
-    ConsoleContext ctx(nullptr, std::move(m0));
+    ConsoleContext ctx(nullptr, std::move(m0), nullptr, nullptr);
     ASSERT_EQ(&ctx.getIO(), ptr);
 }
 
 TEST_F(ConsoleContextTest, BringCorrectService) {
     auto ms = std::make_unique<MockService>();
     TaskServiceInterface* ptr = ms.get();
-    ConsoleContext ctx( std::move(ms), nullptr);
+    ConsoleContext ctx( std::move(ms), nullptr, nullptr, nullptr);
     ASSERT_EQ(&ctx.getTaskService(), ptr);
 }
 
 TEST_F(ConsoleContextTest, Added_Item_To_MatcingIDtoTablePosition) {
-    ConsoleContext ctx(nullptr, nullptr);
+    ConsoleContext ctx(nullptr, nullptr, nullptr, nullptr);
     auto id_to_table_position_matching = ctx.getMatchingIDtoTablePosition();
     TaskID id1(1); TaskNumber num1(3);
     TaskID id2(2); TaskNumber num2(10);
@@ -69,7 +71,7 @@ TEST_F(ConsoleContextTest, Added_Item_To_MatcingIDtoTablePosition) {
 }
 
 TEST_F(ConsoleContextTest, Added_Item_To_MatcingTablePositionToID) {
-    ConsoleContext ctx(nullptr, nullptr);
+    ConsoleContext ctx(nullptr, nullptr, nullptr, nullptr);
     auto table_position_to_id_matching = ctx.getMatchingTablePositionToID();
     TaskNumber num1(3); TaskID id1(1);
     TaskNumber num2(10); TaskID id2(2);

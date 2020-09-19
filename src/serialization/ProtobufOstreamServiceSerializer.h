@@ -13,16 +13,11 @@
 class ProtobufOstreamServiceSerializer : public OstreamServiceSerializer {
 
 public:
-    explicit ProtobufOstreamServiceSerializer(std::ostream& out);
-
-public:
-    void serialize(TaskServiceInterface& service) override;
+    void serialize(std::ostream&, TaskServiceInterface& service) override;
 
 private:
     void serializeSubtasks(TaskProto* task_dump, TaskID id, TaskServiceInterface &service);
 
-private:
-    std::ostream& out_;
 };
 
 

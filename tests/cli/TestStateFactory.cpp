@@ -3,12 +3,23 @@
 //
 
 #include <gtest/gtest.h>
+#include "mocks/MockContext.h"
 #include "cli/state_machines/main/state_factory/StateFactory.h"
+
+
+using ::testing::NiceMock;
+using ::testing::ReturnRef;
 
 class StateFactoryTest : public ::testing::Test {
 public:
-    std::shared_ptr<ConsoleIOInterface> io;
-    StateFactory sf = StateFactory(*io);
+    MockContext context;
+    NiceMock<MockIO> io;
+    StateFactory sf = StateFactory(context);
+
+public:
+    StateFactoryTest() {
+        ON_CALL(context, getIO).WillByDefault(ReturnRef(io));
+    }
 };
 
 

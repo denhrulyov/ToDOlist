@@ -11,13 +11,8 @@
 class ProtobufIstreamServiceDeserializer : public IstreamServiceDeserializer {
 
 public:
-    explicit ProtobufIstreamServiceDeserializer(std::istream& in);
+    std::unique_ptr<TaskServiceInterface> deserialize(std::istream&) override;
 
-public:
-    std::unique_ptr<TaskServiceInterface> deserialize() override;
-
-private:
-    std::istream& in_;
 };
 
 

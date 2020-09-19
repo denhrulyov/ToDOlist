@@ -23,6 +23,8 @@ public:
     MOCK_METHOD(void, fillIDBuffer, (TaskID) ,(override));
     MOCK_METHOD(std::optional<TaskID>, getBufferedId, (), (override, const));
     MOCK_METHOD(void, fillTable, (const std::vector<TaskDTO>&), (override));
+    MOCK_METHOD(OstreamServiceSerializer&, getSerializer, (), (override));
+    MOCK_METHOD(IstreamServiceDeserializer&, getDeserializer, (), (override));
 };
 
 

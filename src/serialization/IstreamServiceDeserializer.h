@@ -7,10 +7,11 @@
 
 #include "ServiceDeserializer.h"
 
-class IstreamServiceDeserializer : public ServiceDeserializer {
+class IstreamServiceDeserializer {
 
 public:
-    virtual std::unique_ptr<TaskServiceInterface> deserialize() = 0;
+    virtual std::unique_ptr<TaskServiceInterface> deserialize(std::istream&) = 0;
+    virtual ~IstreamServiceDeserializer() = default;
 };
 
 
