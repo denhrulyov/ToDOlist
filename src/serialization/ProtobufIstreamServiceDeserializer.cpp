@@ -4,12 +4,19 @@
 
 #include "core/api/TODOList.h"
 #include "ProtobufIstreamServiceDeserializer.h"
-#include "TaskSerialization.h"
+#include "Serialization.h"
 
 
-bool deserialize_subtasks(TaskID id_parent, const TaskProto& task_load, TaskServiceInterface& service) {
+ProtobufIstreamServiceDeserializer::ProtobufIstreamServiceDeserializer(
+        std::unique_ptr<ProtoTaskDeserializer> task_deserializer)
+        :
+        task_deserializer_(std::move(task_deserializer))
+        {}
+
+
+bool ProtobufIstreamServiceDeserializer::deserializeSubtasks(TaskID id_parent, const TaskProto& task_load, TaskServiceInterface& service) {
     for (const TaskProto& subtask_load : task_load.subtasks()) {
-        TaskCreationResult result = service.addSubTask(id_parent, serialization::deserialize_task(subtask_load));
+        TaskCreationResult result = service.addSubTask(id_parent, task_deserializer_->deserialize(subtask_load));
         if (!result.getCreatedTaskID()) {
             return false;
         }
@@ -17,7 +24,7 @@ bool deserialize_subtasks(TaskID id_parent, const TaskProto& task_load, TaskServ
         if (subtask_load.completed()) {
             service.complete(id);
         }
-        if (!deserialize_subtasks(id, subtask_load, service)) {
+        if (!deserializeSubtasks(id, subtask_load, service)) {
             // failed to deserialize subtasks hierarchy at any point
             return false;
         }
@@ -33,7 +40,7 @@ std::unique_ptr<TaskServiceInterface> ProtobufIstreamServiceDeserializer::deseri
     }
     auto service = todo_list::createService();
     for (const TaskProto& task_load : service_load.tasks()) {
-        TaskCreationResult result = service->addTask(serialization::deserialize_task(task_load));
+        TaskCreationResult result = service->addTask(task_deserializer_->deserialize(task_load));
         if (!result.getCreatedTaskID()) {
             return nullptr;
         }
@@ -41,7 +48,7 @@ std::unique_ptr<TaskServiceInterface> ProtobufIstreamServiceDeserializer::deseri
         if (task_load.completed()) {
             service->complete(id);
         }
-        if (!deserialize_subtasks(id, task_load, *service)) {
+        if (!deserializeSubtasks(id, task_load, *service)) {
             // failed to deserialize subtasks hierarchy at any point
            return nullptr;
         }

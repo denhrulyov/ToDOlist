@@ -7,10 +7,16 @@
 
 
 #include "OstreamServiceSerializer.h"
+#include "ProtoTaskSerializer.h"
+#include "ProtoTaskDeserializer.h"
 #include <iostream>
 #include "task.pb.h"
 
 class ProtobufOstreamServiceSerializer : public OstreamServiceSerializer {
+
+public:
+    explicit ProtobufOstreamServiceSerializer(
+            std::unique_ptr<ProtoTaskSerializer>);
 
 public:
     void serialize(std::ostream&, TaskServiceInterface& service) override;
@@ -18,6 +24,8 @@ public:
 private:
     void serializeSubtasks(TaskProto* task_dump, TaskID id, TaskServiceInterface &service);
 
+private:
+    std::unique_ptr<ProtoTaskSerializer> task_serializer_;
 };
 
 

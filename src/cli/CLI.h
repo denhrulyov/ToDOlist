@@ -21,8 +21,10 @@ namespace todo_list_cli {
         auto context = std::make_unique<ConsoleContext>(
                             std::move(todo_list::createService()),
                             std::move(io),
-                            std::make_unique<ProtobufOstreamServiceSerializer>(),
-                            std::make_unique<ProtobufIstreamServiceDeserializer>()
+                            std::make_unique<ProtobufOstreamServiceSerializer>(
+                                    std::make_unique<ProtoTaskSerializer>()),
+                            std::make_unique<ProtobufIstreamServiceDeserializer>(
+                                    std::make_unique<ProtoTaskDeserializer>())
                             );
         auto factory = std::make_unique<StateFactory>(*context);
         auto& ref_context = *context;

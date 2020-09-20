@@ -20,11 +20,6 @@ namespace serialization {
 
     TaskPriority deserialize_priority(TaskProto::Priority prior);
 
-    TaskDTO deserialize_task(const TaskProto& task_load);
-
-    void serialize_task(const TaskDTO& task, TaskProto* task_dump);
-
-
 }
 
 #endif //TODOLIST_TASKSEREALIZATION_H

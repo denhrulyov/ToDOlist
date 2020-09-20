@@ -3,7 +3,14 @@
 //
 
 #include "ProtobufOstreamServiceSerializer.h"
-#include "TaskSerialization.h"
+#include "Serialization.h"
+
+
+ProtobufOstreamServiceSerializer::ProtobufOstreamServiceSerializer(
+        std::unique_ptr<ProtoTaskSerializer> task_serializer)
+        :
+        task_serializer_(std::move(task_serializer))
+        {}
 
 
 std::set<TaskID> find_non_root_tasks(TaskServiceInterface &service) {
@@ -22,7 +29,7 @@ void ProtobufOstreamServiceSerializer::serializeSubtasks(TaskProto* task_dump,
                                                          TaskServiceInterface &service) {
     for (const auto& subtask : service.getSubTasks(id)) {
         TaskProto* subtask_dump = task_dump->add_subtasks();
-        serialization::serialize_task(subtask, subtask_dump);
+        task_serializer_->serializeTo(subtask, subtask_dump);
         serializeSubtasks(subtask_dump, subtask.getId(), service);
     }
 }
@@ -33,10 +40,9 @@ void ProtobufOstreamServiceSerializer::serialize(std::ostream& out, TaskServiceI
     for (const auto& task : service.getAllTasks()) {
         if (has_parent.find(task.getId()) == has_parent.end()) {
             TaskProto* task_dump = service_dump.add_tasks();
-            serialization::serialize_task(task, task_dump);
+            task_serializer_->serializeTo(task, task_dump);
             serializeSubtasks(task_dump, task.getId(), service);
         }
     }
     service_dump.SerializeToOstream(&out);
 }
-
