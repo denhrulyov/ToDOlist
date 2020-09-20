@@ -12,9 +12,8 @@ void LoadFromFileState::print(ConsoleContextInterface &context) {
 std::shared_ptr<State> LoadFromFileState::execute(ConsoleContextInterface &context, StateFactoryInterface &factory) {
     std::string path = context.getIO().readRestBuffer();
     std::fstream file;
-    try {
-        file.open(path);
-    } catch (const std::exception& e) {
+    file.open(path, std::fstream::in);
+    if (!file.is_open()) {
         context.getIO().putLine("Cannot open file!");
         return factory.getInstanceOfParseCommand();
     }
