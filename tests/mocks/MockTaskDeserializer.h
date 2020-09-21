@@ -5,9 +5,15 @@
 #ifndef TODOLIST_MOCKTASKDESERIALIZER_H
 #define TODOLIST_MOCKTASKDESERIALIZER_H
 
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
-class MockTaskDeserializer {
+#include "serialization/ProtoTaskDeserializer.h"
 
+class MockTaskDeserializer : public ProtoTaskDeserializer {
+
+public:
+    MOCK_METHOD(TaskDTO, deserialize, (const TaskProto&), (override));
 };
 
 
