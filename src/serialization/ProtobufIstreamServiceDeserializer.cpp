@@ -8,8 +8,10 @@
 
 
 ProtobufIstreamServiceDeserializer::ProtobufIstreamServiceDeserializer(
+        std::unique_ptr<IstreamProtoFileLoader<TaskServiceProto>> file_loader,
         std::unique_ptr<ProtoTaskDeserializer> task_deserializer)
         :
+        file_loader_(std::move(file_loader)),
         task_deserializer_(std::move(task_deserializer))
         {}
 
@@ -34,10 +36,11 @@ bool ProtobufIstreamServiceDeserializer::deserializeSubtasks(TaskID id_parent, c
 }
 
 std::unique_ptr<TaskServiceInterface> ProtobufIstreamServiceDeserializer::deserialize(std::istream& in) {
-    TaskServiceProto service_load;
-    if(!service_load.ParseFromIstream(&in)) {
+    std::optional<TaskServiceProto> maybe_service_load = file_loader_->load(in);
+    if (!maybe_service_load) {
         return nullptr;
     }
+    TaskServiceProto service_load = maybe_service_load.value();
     auto service = todo_list::createService();
     for (const TaskProto& task_load : service_load.tasks()) {
         TaskCreationResult result = service->addTask(task_deserializer_->deserialize(task_load));

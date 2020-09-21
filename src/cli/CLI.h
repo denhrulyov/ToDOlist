@@ -24,6 +24,7 @@ namespace todo_list_cli {
                             std::make_unique<ProtobufOstreamServiceSerializer>(
                                     std::make_unique<ProtoTaskSerializer>()),
                             std::make_unique<ProtobufIstreamServiceDeserializer>(
+                                    std::make_unique<IstreamProtoFileLoader<TaskServiceProto>>(),
                                     std::make_unique<ProtoTaskDeserializer>())
                             );
         auto factory = std::make_unique<StateFactory>(*context);
