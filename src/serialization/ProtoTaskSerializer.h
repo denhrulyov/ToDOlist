@@ -10,9 +10,19 @@
 #include "task.pb.h"
 #include "Serialization.h"
 
+/*
+ * class filling TaskProto with TaskDTO data
+ *
+ * @author Denis Hrulov
+ */
 class ProtoTaskSerializer {
 
 public:
+    /*
+    * @param task proto
+    *
+    * @return TaskProto with TaskDTO appropriately converted data
+    */
     virtual void serializeTo(const TaskDTO& task, TaskProto* task_dump);
 };
 

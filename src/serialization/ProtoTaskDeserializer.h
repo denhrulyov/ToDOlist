@@ -10,9 +10,20 @@
 #include "task.pb.h"
 #include "Serialization.h"
 
+/*
+ * class extracting TaskDTO from TaskProto
+ *
+ * @author Denis Hrulov
+ */
+
 class ProtoTaskDeserializer {
 
 public:
+    /*
+    * @param task proto
+    *
+    * @return dto with appropriately converted data
+    */
     virtual TaskDTO deserialize(const TaskProto& task_load);
 };
 

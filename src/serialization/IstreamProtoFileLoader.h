@@ -8,10 +8,21 @@
 #include <iostream>
 #include <optional>
 
+/*
+ * class wrapping parsing Protobuf objects from istream
+ *
+ * @author Denis Hrulov
+ */
+
 template<class T_proto>
 class IstreamProtoFileLoader {
 
 public:
+    /*
+     * @param input stream
+     *
+     * @return Protobuf object if succeed to parse else std::nullopt
+     */
     virtual std::optional<T_proto> load(std::istream&);
 };
 
