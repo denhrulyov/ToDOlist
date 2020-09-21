@@ -25,7 +25,7 @@ std::shared_ptr<State> LoadFromFileState::execute(ConsoleContextInterface &conte
         }
         context.setTaskService(std::move(deserialized_service));
     } catch (const std::exception& e) {
-        context.getIO().putLine("Cannot read from file!");
+        context.getIO().putLine("Data is corrupted!");
         return factory.getInstanceOfParseCommand();
     }
     context.getIO().putLine("Tasks loaded");

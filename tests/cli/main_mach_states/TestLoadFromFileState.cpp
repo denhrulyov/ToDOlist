@@ -46,3 +46,34 @@ TEST_F(LoadFromFileStateTest, OkIfCorrectData) {
     LoadFromFileState state;
     state.execute(mctx, mf);
 }
+
+TEST_F(LoadFromFileStateTest, TestNullDeserializedService) {
+    MockStateFactory mf;
+    EXPECT_CALL(mf, getInstanceOfParseCommand).WillOnce(Return(nullptr));
+    MockContext mctx;
+    EXPECT_CALL(mctx, setTaskService).Times(0);
+    MockIstreamDeserializer mdsr;
+    EXPECT_CALL(mdsr, deserialize).WillOnce(Return(ByMove(
+            std::unique_ptr<TaskServiceInterface>(nullptr))
+    ));
+    EXPECT_CALL(mctx, getDeserializer).WillRepeatedly(ReturnRef(mdsr));
+    NiceMock<MockIO> mio("data.bin");
+    EXPECT_CALL(mctx, getIO).WillRepeatedly(ReturnRef(mio));
+    LoadFromFileState state;
+    state.execute(mctx, mf);
+}
+
+TEST_F(LoadFromFileStateTest, MessageOnDeserializerException) {
+    MockStateFactory mf;
+    EXPECT_CALL(mf, getInstanceOfParseCommand).WillOnce(Return(nullptr));
+    MockContext mctx;
+    EXPECT_CALL(mctx, setTaskService).Times(0);
+    MockIstreamDeserializer mdsr;
+    EXPECT_CALL(mdsr, deserialize).WillOnce(::testing::Throw(std::exception()));
+    EXPECT_CALL(mctx, getDeserializer).WillRepeatedly(ReturnRef(mdsr));
+    NiceMock<MockIO> mio("data.bin");
+    EXPECT_CALL(mio, putLine("Data is corrupted!"));
+    EXPECT_CALL(mctx, getIO).WillRepeatedly(ReturnRef(mio));
+    LoadFromFileState state;
+    state.execute(mctx, mf);
+}
