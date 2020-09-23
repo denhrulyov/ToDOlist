@@ -32,6 +32,7 @@ public:
   MOCK_METHOD(std::weak_ptr<TaskNode>, getTaskByID, (TaskID), (override));
   MOCK_METHOD(Result, addTask, (const std::shared_ptr<TaskNode>&), (override));
   MOCK_METHOD(Result, eraseTask, (TaskID), (override));
+  MOCK_METHOD(std::vector<std::weak_ptr<TaskNode>>, getAllTasks, (), (override));
 };
 
 template<class T>

@@ -13,6 +13,7 @@ public:
     Result                                          addTask(const std::shared_ptr<TaskNode>&) override;
     Result                                          eraseTask(TaskID id) override;
     std::weak_ptr<TaskNode>                         getTaskByID(TaskID id) override;
+    std::vector<std::weak_ptr<TaskNode>>            getAllTasks() override;
 
 private:
     std::map<TaskID, std::shared_ptr<TaskNode>>     nodes_;
