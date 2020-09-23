@@ -5,16 +5,10 @@
 #ifndef TODOLIST_TASKMODEL_H
 #define TODOLIST_TASKMODEL_H
 
-#include "core/utils/data_transfer/TaskDTOConverter.h"
 #include "core/memory_model/data/TaskIDFactory.h"
-#include "core/memory_model/data/TaskStorageInterface.h"
-#include "core/memory_model/structure/LinkManagerInterface.h"
-#include "view/DatePriorityView.h"
-#include "view/TagPriorityView.h"
-#include "core/api/TaskCreationResult.h"
-#include "core/api/TaskModificationResult.h"
+#include "TaskModelInterface.h"
 
-class TaskModel {
+class TaskModel : public TaskModelInterface {
 
 public:
     TaskModel(
