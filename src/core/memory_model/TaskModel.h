@@ -17,6 +17,19 @@
 class TaskModel {
 
 public:
+    TaskModel(
+            std::unique_ptr<TaskStorageInterface>                   storage,
+            std::unique_ptr<PriorityViewInterface<BoostDate>>       view_date,
+            std::unique_ptr<PriorityViewInterface<std::string>>     view_label,
+            std::unique_ptr<LinkManagerInterface>                   link_manger)
+    :
+    storage_(std::move(storage)),
+    by_date_(std::move(view_date)),
+    by_label_(std::move(view_label)),
+    link_manager_(std::move(link_manger))
+    {}
+
+public:
     TaskCreationResult                          addTask(const TaskDTO&);
     TaskCreationResult                          addSubTask(TaskID, const TaskDTO&);
     TaskModificationResult                      setTaskData(TaskID, const TaskDTO&);
