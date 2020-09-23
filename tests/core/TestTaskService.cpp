@@ -40,7 +40,7 @@ class MockView : public PriorityViewInterface<T> {
 
 public:
     MOCK_METHOD(void, addToView, (const std::weak_ptr<TaskNode>&), (override));
-    MOCK_METHOD(std::vector<std::weak_ptr<TaskNode>>, getAllWithConstraint, (const T&), (override));
+    MOCK_METHOD(std::vector<std::weak_ptr<TaskNode>>, getAllWithConstraint, (const T&), (const, override));
     MOCK_METHOD(void, removeFromView, (TaskID), (override));
 };
 
