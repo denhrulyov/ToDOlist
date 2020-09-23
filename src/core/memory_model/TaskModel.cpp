@@ -67,11 +67,12 @@ TaskModificationResult TaskModel::dropTask(TaskID id) {
     return TaskModificationResult::success();
 }
 
-TaskModificationResult TaskModel::setPostponed(TaskID id) {
-    auto to_postpone = storage_->getTaskByID(id).lock();
-    if (!to_postpone) {
+TaskModificationResult TaskModel::setCompleted(TaskID id) {
+    auto to_complete = storage_->getTaskByID(id).lock();
+    if (!to_complete) {
         return TaskModificationResult::taskNotFound();
     }
+    to_complete->complete();
     return TaskModificationResult::success();
 }
 

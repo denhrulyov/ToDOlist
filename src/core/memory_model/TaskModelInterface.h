@@ -21,7 +21,7 @@ public:
     virtual TaskModificationResult                      setTaskData(TaskID, const TaskDTO&) = 0;
     virtual std::optional<TaskDTO>                      getTaskData(TaskID) = 0;
     virtual TaskModificationResult                      dropTask(TaskID) = 0;
-    virtual TaskModificationResult                      setPostponed(TaskID) = 0;
+    virtual TaskModificationResult                      setCompleted(TaskID) = 0;
     virtual const PriorityViewInterface<BoostDate>&     dateFilter() = 0;
     virtual const PriorityViewInterface<std::string>&   labelFilter() = 0;
 };

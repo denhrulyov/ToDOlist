@@ -7,6 +7,7 @@
 #include <core/api/TODOList.h>
 #include "core/utils/data_transfer/TaskDTOConverter.h"
 #include "core/utils/task_io/ConsoleTaskIO.h"
+#include "mocks/CoreMocks.h"
 
 using ::testing::AnyNumber;
 using ::testing::Return;
@@ -26,31 +27,6 @@ public:
     }
 };
 
-class MockStorage : public TaskStorageInterface {
-
-public:
-  MOCK_METHOD(std::weak_ptr<TaskNode>, getTaskByID, (TaskID), (override));
-  MOCK_METHOD(Result, addTask, (const std::shared_ptr<TaskNode>&), (override));
-  MOCK_METHOD(Result, eraseTask, (TaskID), (override));
-  MOCK_METHOD(std::vector<std::weak_ptr<TaskNode>>, getAllTasks, (), (override));
-};
-
-template<class T>
-class MockView : public PriorityViewInterface<T> {
-
-public:
-    MOCK_METHOD(void, addToView, (const std::weak_ptr<TaskNode>&), (override));
-    MOCK_METHOD(std::vector<std::weak_ptr<TaskNode>>, getAllWithConstraint, (const T&), (const, override));
-    MOCK_METHOD(void, removeFromView, (TaskID), (override));
-};
-
-class MockLinkManager : public LinkManagerInterface {
-public:
-    MOCK_METHOD(void, linkSubTask, (const std::weak_ptr<TaskNode>&, const std::weak_ptr<TaskNode>&), (override));
-    MOCK_METHOD(void, setLinks, (const std::weak_ptr<TaskNode>&), (override));
-    MOCK_METHOD(void, removeLinks, (const std::weak_ptr<TaskNode>&), (override));
-    MOCK_METHOD(void, moveInboundLinks, (const std::weak_ptr<TaskNode>&, const std::weak_ptr<TaskNode>&), (override));
-};
 
 /***********************************************************************************/
 // Utility

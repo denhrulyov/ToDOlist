@@ -29,7 +29,7 @@ public:
     TaskModificationResult                      setTaskData(TaskID, const TaskDTO&);
     std::optional<TaskDTO>                      getTaskData(TaskID);
     TaskModificationResult                      dropTask(TaskID);
-    TaskModificationResult                      setPostponed(TaskID);
+    TaskModificationResult                      setCompleted(TaskID);
     const PriorityViewInterface<BoostDate>&     dateFilter();
     const PriorityViewInterface<std::string>&   labelFilter();
 
