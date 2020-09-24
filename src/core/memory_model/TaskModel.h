@@ -24,14 +24,14 @@ public:
     {}
 
 public:
-    TaskCreationResult                          addTask(const TaskDTO&);
-    TaskCreationResult                          addSubTask(TaskID, const TaskDTO&);
-    TaskModificationResult                      setTaskData(TaskID, const TaskDTO&);
-    std::optional<TaskDTO>                      getTaskData(TaskID);
-    TaskModificationResult                      dropTask(TaskID);
-    TaskModificationResult                      setCompleted(TaskID);
-    const PriorityViewInterface<BoostDate>&     dateFilter();
-    const PriorityViewInterface<std::string>&   labelFilter();
+    TaskCreationResult                          addTask(const TaskDTO&) override;
+    TaskCreationResult                          addSubTask(TaskID, const TaskDTO&) override;
+    TaskModificationResult                      setTaskData(TaskID, const TaskDTO&) override;
+    std::optional<TaskDTO>                      getTaskData(TaskID) override;
+    TaskModificationResult                      dropTask(TaskID) override;
+    TaskModificationResult                      setCompleted(TaskID) override;
+    const PriorityViewInterface<BoostDate>&     dateFilter() override;
+    const PriorityViewInterface<std::string>&   labelFilter() override;
 
 private:
     std::unique_ptr<TaskStorageInterface>                   storage_;
