@@ -130,3 +130,7 @@ std::vector<TaskDTO> TaskModel::getSubTasksRecursive(TaskID id) {
     return std::vector<TaskDTO>{};
 }
 
+std::vector<TaskDTO> TaskModel::getAllTasks() {
+    return convertAllNodes(storage_->getAllTasks());
+}
+

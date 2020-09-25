@@ -575,3 +575,31 @@ TEST_F(TaskModelTest, TestGetSubtasksRecursiveTaskReturnsEmptyVector) {
                                })->get()->getId().getInt();
     EXPECT_TRUE(ts.getSubTasksRecursive(TaskID(mx + 1)).empty());
 }
+
+TEST_F(TaskModelTest, TestGetAllTasks) {
+    auto nodes = task_model_test::sample_nodes(5);
+    std::vector<std::weak_ptr<TaskNode>> weak_nodes(5);
+    std::transform(nodes.begin(), nodes.end(), weak_nodes.begin(), [] (const auto& ptr) {return ptr;});
+    auto ms = task_model_test::create_fixed_mock_storage(nodes);
+    EXPECT_CALL(*ms, getAllTasks).WillOnce(Return(weak_nodes));
+    auto[parent, children] = task_model_test::create_sample_structure_1(nodes);
+    auto mvd = std::make_unique<MockView<date>>();
+    auto mvl = std::make_unique<MockView<std::string>>();
+    auto mlm = std::make_unique<MockLinkManager>();
+    TaskModel tm = TaskModel(std::move(ms),
+                             std::move(mvd),
+                             std::move(mvl),
+                             std::move(mlm));
+    auto expected = nodes;
+    auto real = tm.getAllTasks();
+    std::sort(expected.begin(), expected.end(), [](auto n1, auto n2) {
+    return n1->getId() < n2->getId();
+    });
+    std::sort(real.begin(), real.end(), [](auto n1, auto n2) {
+    return n1.getId() < n2.getId();
+    });
+    ASSERT_EQ(real.size(), expected.size());
+    for (int i = 0; i < real.size(); ++i) {
+        ASSERT_EQ(real[i].getId(), expected[i]->getId());
+    }
+}

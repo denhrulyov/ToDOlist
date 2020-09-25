@@ -34,6 +34,7 @@ public:
     const PriorityViewInterface<std::string>&   labelFilter() override;
     std::vector<TaskDTO>                        getSubTasks(TaskID id) override;
     std::vector<TaskDTO>                        getSubTasksRecursive(TaskID id) override;
+    std::vector<TaskDTO>                        getAllTasks() override;
 
 private:
     std::unique_ptr<TaskStorageInterface>                   storage_;

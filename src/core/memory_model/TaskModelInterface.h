@@ -99,6 +99,12 @@ public:
      * @return vector of task DTO got from subtasks
      */
     virtual std::vector<TaskDTO>                        getSubTasksRecursive(TaskID id) = 0;
+    /*
+     * Gives all actual tasks present in system at the moment
+     *
+     * @return vector of task DTO corresponding to all tasks in system
+     */
+    virtual std::vector<TaskDTO>                        getAllTasks() = 0;
 };
 
 
