@@ -32,6 +32,8 @@ public:
     TaskModificationResult                      setCompleted(TaskID) override;
     const PriorityViewInterface<BoostDate>&     dateFilter() override;
     const PriorityViewInterface<std::string>&   labelFilter() override;
+    std::vector<TaskDTO>                        getSubTasks(TaskID id) override;
+    std::vector<TaskDTO>                        getSubTasksRecursive(TaskID id) override;
 
 private:
     std::unique_ptr<TaskStorageInterface>                   storage_;
@@ -41,5 +43,9 @@ private:
     std::unique_ptr<LinkManagerInterface>                   link_manager_;
 };
 
+
+std::vector<TaskDTO> convertAllNodes(const std::vector<std::weak_ptr<TaskNode>>& all);
+std::vector<TaskDTO> get_sub_tasks_recurse(const std::shared_ptr<TaskNode>& node);
+std::vector<TaskDTO> get_children_recurse(const std::shared_ptr<TaskNode>& node);
 
 #endif //TODOLIST_TASKMODEL_H

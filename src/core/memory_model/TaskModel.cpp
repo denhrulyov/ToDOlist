@@ -2,7 +2,23 @@
 // Created by denis on 23.09.20.
 //
 
+
 #include "TaskModel.h"
+
+
+
+std::vector<TaskDTO> convertAllNodes(const std::vector<std::weak_ptr<TaskNode>>& all) {
+    std::vector<TaskDTO> user_result_set;
+    std::transform(all.begin(), all.end(),
+                   std::back_inserter(user_result_set),
+                   [] (std::weak_ptr<TaskNode> node) {
+                       return TaskDTOConverter::getDTO(node.lock());
+                   }
+    );
+    return user_result_set;
+}
+
+/*****************************************************************************/
 
 TaskCreationResult TaskModel::addTask(const TaskDTO &task_data) {
     auto created_node = std::make_shared<TaskNode>(
@@ -83,3 +99,34 @@ const PriorityViewInterface<BoostDate>& TaskModel::dateFilter() {
 const PriorityViewInterface<std::string>& TaskModel::labelFilter() {
     return *by_label_;
 }
+
+std::vector<TaskDTO> TaskModel::getSubTasks(TaskID id) {
+    auto parent = storage_->getTaskByID(id).lock();
+    if (parent) {
+        return convertAllNodes(parent->getSubNodes());
+    }
+    return std::vector<TaskDTO>{};
+}
+
+std::vector<TaskDTO> get_children_recurse(const std::shared_ptr<TaskNode>& node) {
+    std::vector<TaskDTO> result = { TaskDTOConverter::getDTO(node) };
+    for (const auto& child : node->getSubNodes()) {
+        auto sub_result = get_sub_tasks_recurse(child.lock());
+        result.insert(result.end(), sub_result.begin(), sub_result.end());
+    }
+    return result;
+}
+
+std::vector<TaskDTO> TaskModel::getSubTasksRecursive(TaskID id) {
+    auto parent = storage_->getTaskByID(id).lock();
+    if (parent) {
+        std::vector<TaskDTO> result;
+        for (const auto& child : parent->getSubNodes()) {
+            auto sub_result = get_sub_tasks_recurse(child.lock());
+            result.insert(result.end(), sub_result.begin(), sub_result.end());
+        }
+        return result;
+    }
+    return std::vector<TaskDTO>{};
+}
+

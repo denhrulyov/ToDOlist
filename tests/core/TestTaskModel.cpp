@@ -479,3 +479,99 @@ TEST_F(TaskModelTest, FiltersAreExactlyViews) {
     ASSERT_EQ(&tm.dateFilter(), p_view_date);
     ASSERT_EQ(&tm.labelFilter(), p_view_lbl);
 }
+
+TEST_F(TaskModelTest, TestGetSubtasks) {
+    auto nodes = task_model_test::sample_nodes(5);
+    auto ms = task_model_test::create_fixed_mock_storage(nodes);
+    auto [parent, children] = task_model_test::create_sample_structure_1(nodes);
+    auto mvd = std::make_unique<MockView<date>>();
+    auto mvl = std::make_unique<MockView<std::string>>();
+    auto mlm = std::make_unique<MockLinkManager>();
+    TaskModel tm = TaskModel(   std::move(ms),
+                                std::move(mvd),
+                                std::move(mvl),
+                                std::move(mlm));
+    for (auto node : nodes) {
+        auto expected = node->getSubNodes();
+        auto real = tm.getSubTasks(node->getId());
+        std::sort(expected.begin(), expected.end(), [] (auto n1, auto n2) {
+            return n1.lock()->getId() < n2.lock()->getId();
+        });
+        std::sort(real.begin(), real.end(), [] (auto n1, auto n2) {
+            return n1.getId() < n2.getId();
+        });
+        ASSERT_EQ(real.size(), expected.size());
+        for (int i = 0; i < real.size(); ++i) {
+            ASSERT_EQ(real[i].getId(), expected[i].lock()->getId());
+        }
+    }
+}
+
+TEST_F(TaskModelTest, TestGetSubtasksTaskReturnsEmptyVector) {
+    auto nodes = task_model_test::sample_nodes(5);
+    auto ms = task_model_test::create_fixed_mock_storage(nodes);
+    auto [parent, children] = task_model_test::create_sample_structure_1(nodes);
+    ON_CALL(*ms, getTaskByID)
+            .WillByDefault(Return(std::shared_ptr<TaskNode> {nullptr}));
+    TaskModel ts = TaskModel(   std::move(ms),
+                                std::make_unique<MockView<date>>(),
+                                std::make_unique<MockView<std::string>>(),
+                                std::make_unique<MockLinkManager>());
+    auto mx = std::max_element(nodes.begin(), nodes.end(),
+                               [] (auto& t1, auto& t2) {
+                                   return t1->getId() < t2->getId();
+                               })->get()->getId().getInt();
+    EXPECT_TRUE(ts.getSubTasks(TaskID(mx + 1)).empty());
+}
+
+TEST_F(TaskModelTest, TestGetSubtasksRecurse) {
+    auto nodes = task_model_test::sample_nodes(5);
+    auto ms = task_model_test::create_fixed_mock_storage(nodes);
+    auto[parent, children] = task_model_test::create_sample_structure_1(nodes);
+    auto mvd = std::make_unique<MockView<date>>();
+    auto mvl = std::make_unique<MockView<std::string>>();
+    auto mlm = std::make_unique<MockLinkManager>();
+    TaskModel tm = TaskModel(std::move(ms),
+                             std::move(mvd),
+                             std::move(mvl),
+                             std::move(mlm));
+    std::function<std::vector<std::shared_ptr<TaskNode>>(const std::shared_ptr<TaskNode>&)>
+    traverse = [&](const std::shared_ptr<TaskNode>& node) {
+        std::vector<std::shared_ptr<TaskNode>> all = {node};
+        for (auto to : node->getSubNodes()) {
+            auto part = traverse(to.lock());
+        }
+        return all;
+    };
+    for (auto node : nodes) {
+        auto expected = node->getSubNodes();
+        auto real = tm.getSubTasks(node->getId());
+        std::sort(expected.begin(), expected.end(), [](auto n1, auto n2) {
+            return n1.lock()->getId() < n2.lock()->getId();
+        });
+        std::sort(real.begin(), real.end(), [](auto n1, auto n2) {
+            return n1.getId() < n2.getId();
+        });
+        ASSERT_EQ(real.size(), expected.size());
+        for (int i = 0; i < real.size(); ++i) {
+            ASSERT_EQ(real[i].getId(), expected[i].lock()->getId());
+        }
+    }
+}
+
+TEST_F(TaskModelTest, TestGetSubtasksRecursiveTaskReturnsEmptyVector) {
+    auto nodes = task_model_test::sample_nodes(5);
+    auto ms = task_model_test::create_fixed_mock_storage(nodes);
+    auto [parent, children] = task_model_test::create_sample_structure_1(nodes);
+    ON_CALL(*ms, getTaskByID)
+            .WillByDefault(Return(std::shared_ptr<TaskNode> {nullptr}));
+    TaskModel ts = TaskModel(   std::move(ms),
+                                std::make_unique<MockView<date>>(),
+                                std::make_unique<MockView<std::string>>(),
+                                std::make_unique<MockLinkManager>());
+    auto mx = std::max_element(nodes.begin(), nodes.end(),
+                               [] (auto& t1, auto& t2) {
+                                   return t1->getId() < t2->getId();
+                               })->get()->getId().getInt();
+    EXPECT_TRUE(ts.getSubTasksRecursive(TaskID(mx + 1)).empty());
+}
