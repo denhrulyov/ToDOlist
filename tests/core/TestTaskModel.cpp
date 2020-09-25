@@ -540,21 +540,23 @@ TEST_F(TaskModelTest, TestGetSubtasksRecurse) {
         std::vector<std::shared_ptr<TaskNode>> all = {node};
         for (auto to : node->getSubNodes()) {
             auto part = traverse(to.lock());
+            all.insert(all.end(), part.begin(), part.end());
         }
         return all;
     };
     for (auto node : nodes) {
-        auto expected = node->getSubNodes();
-        auto real = tm.getSubTasks(node->getId());
+        auto expected = traverse(node);
+        expected.erase(expected.begin(), expected.begin() + 1);
+        auto real = tm.getSubTasksRecursive(node->getId());
         std::sort(expected.begin(), expected.end(), [](auto n1, auto n2) {
-            return n1.lock()->getId() < n2.lock()->getId();
+            return n1->getId() < n2->getId();
         });
         std::sort(real.begin(), real.end(), [](auto n1, auto n2) {
             return n1.getId() < n2.getId();
         });
         ASSERT_EQ(real.size(), expected.size());
         for (int i = 0; i < real.size(); ++i) {
-            ASSERT_EQ(real[i].getId(), expected[i].lock()->getId());
+            ASSERT_EQ(real[i].getId(), expected[i]->getId());
         }
     }
 }
