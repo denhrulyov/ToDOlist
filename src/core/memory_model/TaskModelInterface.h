@@ -105,6 +105,8 @@ public:
      * @return vector of task DTO corresponding to all tasks in system
      */
     virtual std::vector<TaskDTO>                        getAllTasks() const = 0;
+
+    virtual                                             ~TaskModelInterface() = default;
 };
 
 
