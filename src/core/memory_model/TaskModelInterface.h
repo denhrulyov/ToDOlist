@@ -54,7 +54,7 @@ public:
      * @param task id.
      * @return task DTO if such task exists otherwise nullopt.
      */
-    virtual std::optional<TaskDTO>                      getTaskData(TaskID) = 0;
+    virtual std::optional<TaskDTO>                      getTaskData(TaskID) const = 0;
     /*
      * Deletes task from system. All subtasks will be deleted recursively.
      *
@@ -77,34 +77,34 @@ public:
      *
      * @return date task view
      */
-    virtual const PriorityViewInterface<BoostDate>&     dateFilter() = 0;
+    virtual const PriorityViewInterface<BoostDate>&     dateFilter() const = 0;
     /*
      * Returns reference to view sorted by priority
      * and allowing to get selection with specific label
      *
      * @return label task view
      */
-    virtual const PriorityViewInterface<std::string>&   labelFilter() = 0;
+    virtual const PriorityViewInterface<std::string>&   labelFilter() const = 0;
     /*
      * Gives all direct subtasks of task.
      *
      * @param task id.
      * @return vector of task DTO got from subtasks
      */
-    virtual std::vector<TaskDTO>                        getSubTasks(TaskID id) = 0;
+    virtual std::vector<TaskDTO>                        getSubTasks(TaskID id) const = 0;
     /*
      * Gives all subtasks, subtasks of subtasks and so on recursively.
      *
      * @param task id.
      * @return vector of task DTO got from subtasks
      */
-    virtual std::vector<TaskDTO>                        getSubTasksRecursive(TaskID id) = 0;
+    virtual std::vector<TaskDTO>                        getSubTasksRecursive(TaskID id) const = 0;
     /*
      * Gives all actual tasks present in system at the moment
      *
      * @return vector of task DTO corresponding to all tasks in system
      */
-    virtual std::vector<TaskDTO>                        getAllTasks() = 0;
+    virtual std::vector<TaskDTO>                        getAllTasks() const = 0;
 };
 
 
