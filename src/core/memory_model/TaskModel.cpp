@@ -122,7 +122,7 @@ std::vector<TaskDTO> TaskModel::getSubTasksRecursive(TaskID id) {
     if (parent) {
         std::vector<TaskDTO> result;
         for (const auto& child : parent->getSubNodes()) {
-            auto sub_result = get_sub_tasks_recurse(child.lock());
+            auto sub_result = get_children_recurse(child.lock());
             result.insert(result.end(), sub_result.begin(), sub_result.end());
         }
         return result;
