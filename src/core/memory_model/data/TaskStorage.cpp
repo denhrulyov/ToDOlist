@@ -27,5 +27,14 @@ std::weak_ptr<TaskNode> TaskStorage::getTaskByID(TaskID id) {
     return nodes_.count(id) ? nodes_[id] : nullptr;
 }
 
+std::vector<std::weak_ptr<TaskNode>> TaskStorage::getAllTasks() {
+    std::vector<std::weak_ptr<TaskNode>> result;
+    std::transform(nodes_.begin(), nodes_.end(), std::back_inserter(result),
+            [] (const auto& item) {
+                return item.second;
+            });
+    return result;
+}
+
 
 

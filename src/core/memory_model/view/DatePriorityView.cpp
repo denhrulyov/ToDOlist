@@ -21,12 +21,12 @@ void DatePriorityView::addToView(const std::weak_ptr<TaskNode>& pnode) {
     place_of_[id] = {&map_to_insert, inserted_entry};
 }
 
-std::vector<std::weak_ptr<TaskNode>> DatePriorityView::getAllWithConstraint(const BoostDate& date) {
+std::vector<std::weak_ptr<TaskNode>> DatePriorityView::getAllWithConstraint(const BoostDate& date) const {
     std::vector<std::weak_ptr<TaskNode>> result_set;
     time_t current_time;
     time(&current_time); //  get current time
     for (auto prior : priorities_by_order) {
-        for (const auto& [its_date, p_task] : view[prior]) {
+        for (const auto& [its_date, p_task] : view.at(prior)) {
             if (its_date > date) {
                 break;
             }

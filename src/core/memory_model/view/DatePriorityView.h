@@ -35,7 +35,7 @@ public:
 
 public:
     void                                        addToView(const std::weak_ptr<TaskNode>& pnode) override ;
-    std::vector<std::weak_ptr<TaskNode>>        getAllWithConstraint(const BoostDate& date) override;
+    std::vector<std::weak_ptr<TaskNode>>        getAllWithConstraint(const BoostDate& date) const override;
     void                                        removeFromView(TaskID id) override;
 private:
     priority_map                                view;

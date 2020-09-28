@@ -22,7 +22,7 @@ class TagPriorityView : public PriorityViewInterface<std::string> {
 
 public:
     void                                        addToView(const std::weak_ptr<TaskNode>&) override;
-    std::vector<std::weak_ptr<TaskNode>>        getAllWithConstraint(const std::string& tag) override;
+    std::vector<std::weak_ptr<TaskNode>>        getAllWithConstraint(const std::string& tag) const override;
     void                                        removeFromView(TaskID id) override;
     ~TagPriorityView() = default;
 
