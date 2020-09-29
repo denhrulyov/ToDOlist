@@ -10,6 +10,7 @@
 #include "core/memory_model/data/TaskStorage.h"
 #include "core/memory_model/structure/LinkManagerInterface.h"
 #include "core/memory_model/view/PriorityViewInterface.h"
+#include "core/memory_model/api/TaskModelInterface.h"
 
 using ::testing::AnyNumber;
 using ::testing::Return;
@@ -45,5 +46,24 @@ public:
     MOCK_METHOD(void, moveInboundLinks, (const std::weak_ptr<TaskNode>&, const std::weak_ptr<TaskNode>&), (override));
 };
 
+
+
+class MockModel : public TaskModelInterface {
+
+public:
+    MOCK_METHOD(std::vector<TaskDTO>,   getToDate, (const BoostDate&), (const, override));
+    MOCK_METHOD(std::optional<TaskDTO>, getTaskData, (TaskID), (const, override));
+    MOCK_METHOD(TaskModificationResult, setTaskData, (TaskID, const TaskDTO&), (override));
+    MOCK_METHOD(std::vector<TaskDTO>,   getWithLabel, (const std::string&), (const, override));
+
+public:
+    MOCK_METHOD(TaskCreationResult,     addTask, (const TaskDTO&), (override));
+    MOCK_METHOD(TaskCreationResult,     addSubTask, (TaskID, const TaskDTO&), (override));
+    MOCK_METHOD(TaskModificationResult, dropTask, (TaskID), (override));
+    MOCK_METHOD(TaskModificationResult, setCompleted, (TaskID), (override));
+    MOCK_METHOD(std::vector<TaskDTO>,   getSubTasks, (TaskID id), (const, override));
+    MOCK_METHOD(std::vector<TaskDTO>,   getSubTasksRecursive, (TaskID id), (const, override));
+    MOCK_METHOD(std::vector<TaskDTO>,   getAllTasks, (), (const, override));
+};
 
 #endif //TODOLIST_MOCKS_H

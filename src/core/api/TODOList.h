@@ -9,7 +9,8 @@
 #include "core/memory_model/view/DatePriorityView.h"
 #include "core/memory_model/view/TagPriorityView.h"
 #include "core/memory_model/data/TaskStorage.h"
-#include "core/memory_model/data/TaskIDFactory.h"
+#include "core/memory_model/structure/LinkManager.h"
+#include "core/memory_model/api/TaskModel.h"
 
 /*
  * TaskService injector

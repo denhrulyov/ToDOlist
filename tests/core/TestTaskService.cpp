@@ -20,439 +20,140 @@ using namespace boost::gregorian;
 
 class TaskServiceTest : public ::testing::Test {
 
-public:
-    //std::vector<TaskDTO> tasks;
-    void SetUp() override {
-
-    }
 };
 
-
-/***********************************************************************************/
-// Utility
-
-const auto pointer_to_same(const std::weak_ptr<TaskNode>& to_cmp) {
-    return [&] (const std::weak_ptr<TaskNode>& nd) {
-        return nd.lock().get() == to_cmp.lock().get();
+auto dto_equal(const TaskDTO& rhs) {
+    return [&rhs] (const TaskDTO& lhs) {
+        return
+        lhs.getId() == rhs.getId() &&
+        lhs.getName() == rhs.getName() &&
+        lhs.getPriority() == rhs.getPriority() &&
+        lhs.getLabel() == rhs.getLabel() &&
+        lhs.getDate() == rhs.getDate() &&
+        lhs.isCompleted() == rhs.isCompleted();
     };
 }
 
-auto sample_nodes(const std::size_t slice = 4) {
-    const std::vector<TaskID> ids = {TaskID(1), TaskID(2), TaskID(3), TaskID(4)};
-    const std::vector<std::shared_ptr<TaskNode>> tasks {
-            std::make_shared<TaskNode>(
-                    ids[0],
-                    Task::create("t1", TaskPriority::FIRST, "lbl1",
-                                 day_clock::local_day() + days(2020))
-            ),
-            std::make_shared<TaskNode>(
-                    ids[1],
-                    Task::create("t1", TaskPriority::SECOND, "lbl2",
-                                 day_clock::local_day() + days(2021))
-            ),
-            std::make_shared<TaskNode>(
-                    ids[2],
-                    Task::create("t3", TaskPriority::FIRST, "lbl3",
-                                 day_clock::local_day() + days(2024))
-            ),
-            std::make_shared<TaskNode>(
-                    ids[3],
-                    Task::create("t1", TaskPriority::NONE, "lbl1",
-                                 day_clock::local_day() + days(2020))
-            ),
-            std::make_shared<TaskNode>(
-                ids[4],
-                Task::create("t99", TaskPriority::SECOND, "lbl2",
-                day_clock::local_day() + days(1999))
-            )
-    };
-    return std::vector<std::shared_ptr<TaskNode>>(tasks.begin(), tasks.begin() + slice);
-}
-
-template<class collection>
-auto create_fixed_mock_storage(const collection& tasks) {
-    auto ms = std::make_unique<NiceMock<MockStorage>>();
-    for (auto task : tasks) {
-        TaskID id = task->getId();
-        ON_CALL(*ms, getTaskByID(id))
-                .WillByDefault(Return(task));
-    }
-    return std::move(ms);
-}
-
-template <class collection>
-std::pair<
-        std::shared_ptr<TaskNode>,
-        std::vector<std::shared_ptr<TaskNode>>
-        >
-create_sample_structure_1 (const collection& tasks) {
-    auto sample_parent = tasks[0];
-    for (std::size_t i = 1; i < tasks.size() - (tasks.size() > 2); ++i) {
-        tasks[i]->setParent(sample_parent);
-        sample_parent->addSubtask(tasks[i]);
-    }
-    if (tasks.size() > 2) {
-        (*(tasks.end() - 2))->addSubtask(tasks.back());
-        tasks.back()->setParent(*(tasks.end() - 2));
-    }
-    TaskID parent(sample_parent->getId());
-    return {sample_parent, std::vector<std::shared_ptr<TaskNode>>(tasks.begin() + 1, tasks.end())};
-}
-
-
-/*************************************************************************************/
-// Tests
 
 TEST_F(TaskServiceTest, TestAllSubtasksComplete) {
-    auto tasks = sample_nodes();
-    // Mocks
-    auto ms = std::make_unique<NiceMock<MockStorage>>();
-    for (auto node : tasks) {
-        ON_CALL(*ms, getTaskByID(node->getId()))
-                .WillByDefault(Return(
-                        std::weak_ptr(node)
-                ));
-    }
-    auto mw = std::make_unique<MockView<date>>();
-    ON_CALL(*mw, getAllWithConstraint(service::max_date))
-            .WillByDefault(Return(
-                    std::vector<std::weak_ptr<TaskNode>>
-                                {tasks[0],
-                                 tasks[1],
-                                 tasks[2],
-                                 tasks[3]}
-            ));
-    // ___________
-    // Mock Expectations
-    EXPECT_CALL(*mw, getAllWithConstraint(service::max_date));
-    //____________
-    // Build structure
-    auto root_task = TaskDTO::create("t1", TaskPriority::THIRD, "lbl5",
-                             day_clock::local_day() + days(3000));
-    TaskService ts = TaskService(   std::move(ms),
-                                    std::move(mw),
-                                    std::make_unique<MockView<std::string>>(),
-                                    std::make_unique<MockLinkManager>());
-    auto parent = std::shared_ptr<TaskNode>(nullptr);
-    for (const auto& task : tasks) {
-        if (parent) {
-            parent->addSubtask(task);
-            task->setParent(parent);
-        }
-        parent = task;
-    }
-    //___________
-    // Exercise mehod testing
-    ts.complete(tasks[0]->getId());
-    //___________
-    // Check result
-    for (const auto& dto : ts.getAllTasks()) {
-        EXPECT_TRUE(dto.isCompleted());
-    }
+    TaskID root(0);
+    auto mm = std::make_unique<MockModel>();
+    EXPECT_CALL(*mm, getSubTasksRecursive(root)).WillOnce(Return(
+            std::vector<TaskDTO> {
+        TaskDTO::create(TaskID(1), "", TaskPriority::FIRST, "", BoostDate()),
+        TaskDTO::create(TaskID(2), "", TaskPriority::FIRST, "", BoostDate()),
+        TaskDTO::create(TaskID(3), "", TaskPriority::FIRST, "", BoostDate()),
+        TaskDTO::create(TaskID(4), "", TaskPriority::FIRST, "", BoostDate())
+    }));
+    EXPECT_CALL(*mm, setCompleted(TaskID(0))).WillOnce(Return(TaskModificationResult::success()));
+    EXPECT_CALL(*mm, setCompleted(TaskID(1))).WillOnce(Return(TaskModificationResult::success()));
+    EXPECT_CALL(*mm, setCompleted(TaskID(2))).WillOnce(Return(TaskModificationResult::success()));
+    EXPECT_CALL(*mm, setCompleted(TaskID(3))).WillOnce(Return(TaskModificationResult::success()));
+    EXPECT_CALL(*mm, setCompleted(TaskID(4))).WillOnce(Return(TaskModificationResult::success()));
+    TaskService ts = TaskService(std::move(mm));
+    ts.complete(root);
 }
 
 TEST_F(TaskServiceTest, TestTaskWithDateBiggerThenMaxNotAdded) {
-    // Sample data
-    TaskID id(0);
-    auto sample_task = TaskDTO::create("t1", TaskPriority::FIRST, "lbl1", service::max_date + days(1));
-    auto sample_node = std::make_shared<TaskNode>(
-            id,
-            TaskDTOConverter::getTask(sample_task)
-    );
-    // ___________
-    // Mocks
-    auto ms = std::make_unique<MockStorage>();
-    EXPECT_CALL(*ms, addTask).Times(0);
-
-    TaskService ts = TaskService(   std::move(ms),
-                                    std::make_unique<MockView<date>>(),
-                                    std::make_unique<MockView<std::string>>(),
-                                    std::make_unique<MockLinkManager>());
-    //___________
-    // Exercise mehod testing
-    EXPECT_FALSE(ts.addTask(sample_task).getSuccessStatus());
+    auto mm = std::make_unique<MockModel>();
+    TaskService ts = TaskService(std::move(mm));
+    ASSERT_FALSE(ts.addTask(
+            TaskDTO::create("nm",
+                    TaskPriority::FIRST,
+                    "lb",
+                    service::max_date + days(1)))
+                    .getSuccessStatus());
 }
 
-TEST_F(TaskServiceTest, TestTaskAddedToStorage) {
-    // Sample data
-    TaskID id(0);
-    auto sample_task = TaskDTO::create("t1", TaskPriority::FIRST, "lbl1",
-                                    day_clock::local_day() + days(2020));
-    auto sample_node = std::make_shared<TaskNode>(
-            id,
-            TaskDTOConverter::getTask(sample_task)
-    );
-    // ___________
-    // Mocks
-    auto ms = std::make_unique<MockStorage>();
-    EXPECT_CALL(*ms, addTask).Times(1);
-
-    TaskService ts = TaskService(   std::move(ms),
-                                    std::make_unique<MockView<date>>(),
-                                    std::make_unique<MockView<std::string>>(),
-                                    std::make_unique<MockLinkManager>());
-    //___________
-    // Exercise mehod testing
-    ts.addTask(sample_task);
+TEST_F(TaskServiceTest, TestTaskWithDateBeforeTodayNotAdded) {
+    auto mm = std::make_unique<MockModel>();
+    TaskService ts = TaskService(std::move(mm));
+    ASSERT_FALSE(ts.addTask(
+                    TaskDTO::create("nm",
+                                    TaskPriority::FIRST,
+                                    "lb",
+                                    day_clock::local_day() - days(1)))
+                         .getSuccessStatus());
 }
 
-TEST_F(TaskServiceTest, TestErrorResultIfNoParentToAddSubtask) {
-    // Sample data
-    TaskID id(0);
-    auto sample_task = TaskDTO::create("t1", TaskPriority::FIRST, "lbl1",
-                                       day_clock::local_day() + days(2020));
-    auto sample_node = std::make_shared<TaskNode>(
-            id,
-            TaskDTOConverter::getTask(sample_task)
-    );
-    // ___________
-    // Mocks
-    auto ms = std::make_unique<MockStorage>();
-    ON_CALL(*ms, getTaskByID)
-            .WillByDefault(Return(std::shared_ptr<TaskNode>{nullptr}));
-
-    TaskService ts = TaskService(   std::move(ms),
-                                    std::make_unique<MockView<date>>(),
-                                    std::make_unique<MockView<std::string>>(),
-                                    std::make_unique<MockLinkManager>());
-    //___________
-    // Exercise mehod testing
-    EXPECT_FALSE(ts.addSubTask(id, sample_task).getSuccessStatus());
+TEST_F(TaskServiceTest, TestGetTaskData) {
+    TaskDTO dto = TaskDTO::create("", TaskPriority::NONE, "", BoostDate());
+    auto mm = std::make_unique<MockModel>();
+    EXPECT_CALL(*mm, getTaskData(dto.getId())).WillOnce(Return(dto));
+    TaskService ts = TaskService(std::move(mm));
+    EXPECT_TRUE(ts.getTaskByID(dto.getId()));
 }
 
-TEST_F(TaskServiceTest, TestErrorResultOfAddSubTaskIfErrorInStorage) {
-    // Sample data
-    TaskID id(0);
-    auto sample_task = TaskDTO::create("t1", TaskPriority::FIRST, "lbl1",
-                                       day_clock::local_day() + days(2020));
-    auto sample_node = std::make_shared<TaskNode>(
-            id,
-            TaskDTOConverter::getTask(sample_task)
-    );
-    // ___________
-    // Mocks
-    auto ms = create_fixed_mock_storage(std::vector<std::shared_ptr<TaskNode>> {sample_node});
-    ON_CALL(*ms, addTask)
-            .WillByDefault(Return(TaskStorageInterface::Result::FAILURE));
-    TaskService ts = TaskService(   std::move(ms),
-                                    std::make_unique<MockView<date>>(),
-                                    std::make_unique<MockView<std::string>>(),
-                                    std::make_unique<MockLinkManager>());
-    //___________
-    // Exercise mehod testing
-    EXPECT_FALSE(ts.addSubTask(id, sample_task).getSuccessStatus());
-}
-
-TEST_F(TaskServiceTest, TestTaskLinksSet) {
-    // Sample data
-    TaskID id(0);
-    auto sample_task = TaskDTO::create("t1", TaskPriority::FIRST, "lbl1",
-                                       day_clock::local_day() + days(2020));
-    auto sample_node = std::make_shared<TaskNode>(
-            id,
-            TaskDTOConverter::getTask(sample_task)
-    );
-    // ___________
-    // Mocks
-    auto mlm = std::make_unique<MockLinkManager>();
-    EXPECT_CALL(*mlm, setLinks).Times(1);
-    TaskService ts = TaskService(   std::make_unique<MockStorage>(),
-                                    std::make_unique<MockView<date>>(),
-                                    std::make_unique<MockView<std::string>>(),
-                                    std::move(mlm));
-    //___________
-    // Exercise mehod testing
-    ts.addTask(sample_task);
-}
-
-TEST_F(TaskServiceTest, TestSubTaskLinked) {
-
-    TaskID parent(1);
-    auto sample_parent = std::make_shared<TaskNode>(
-            parent,
-            Task::create("t1", TaskPriority::THIRD, "lbl5",
-                    day_clock::local_day() + days(3000)));
-    auto ms = std::make_unique<NiceMock<MockStorage>>();
-    ON_CALL(*ms, getTaskByID(parent))
-            .WillByDefault(Return(sample_parent));
-    ON_CALL(*ms, addTask)
-            .WillByDefault(Return(
-                    TaskStorageInterface::Result::SUCCESS)
-                    );
-    auto mlm = std::make_unique<NiceMock<MockLinkManager>>();
-    EXPECT_CALL(*mlm,
-            linkSubTask(
-                    /*parent*/Truly(pointer_to_same(std::weak_ptr(sample_parent))),
-                    /*child*/ _
-                    )).Times(1);
-    TaskService ts = TaskService(   std::move(ms),
-                                    std::make_unique<MockView<date>>(),
-                                    std::make_unique<MockView<std::string>>(),
-                                    std::move(mlm));
-    ts.addSubTask(
-            parent,
-            TaskDTO::create("t2", TaskPriority::FIRST, "lbl3",
-                    day_clock::local_day() + days(3200))
-    );
-}
-
-TEST_F(TaskServiceTest, TestDeleteTaskDeletesItFromStorage) {
-    auto tasks = sample_nodes(1);
-    TaskID id(tasks[0]->getId());
-    auto ms = create_fixed_mock_storage(tasks);
-    EXPECT_CALL(*ms, eraseTask(id)).Times(1);
-    TaskService ts = TaskService(   std::move(ms),
-                                    std::make_unique<MockView<date>>(),
-                                    std::make_unique<MockView<std::string>>(),
-                                    std::make_unique<MockLinkManager>());
-    ts.deleteTask(id);
-}
-
-TEST_F(TaskServiceTest, TestDeleteTaskDeletesAllChildrenFromStorage) {
-    auto tasks = sample_nodes(5);
-    auto [parent, children] = create_sample_structure_1(tasks);
-    auto ms = create_fixed_mock_storage(tasks);
-    EXPECT_CALL(*ms, eraseTask).Times(AnyNumber());
-    for (auto child : children) {
-        EXPECT_CALL(*ms, eraseTask(child->getId())).Times(1);
-    }
-    TaskService ts = TaskService(   std::move(ms),
-                                    std::make_unique<MockView<date>>(),
-                                    std::make_unique<MockView<std::string>>(),
-                                    std::make_unique<MockLinkManager>());
-    ts.deleteTask(parent->getId());
-}
-
-TEST_F(TaskServiceTest, TestDeleteTaskDeletesItsLinks) {
-    auto tasks = sample_nodes(1);
-    auto mlm = std::make_unique<MockLinkManager>();
-    EXPECT_CALL(*mlm,
-                removeLinks).Times(AnyNumber());
-    EXPECT_CALL(*mlm,
-            removeLinks(
-                    Truly(pointer_to_same(std::weak_ptr(tasks[0])))
-                    )).Times(1);
-    TaskService ts = TaskService(   std::move(create_fixed_mock_storage(tasks)),
-                                    std::make_unique<MockView<date>>(),
-                                    std::make_unique<MockView<std::string>>(),
-                                    std::move(mlm));
-    ts.deleteTask(tasks[0]->getId());
-}
-
-TEST_F(TaskServiceTest, TestDeleteTaskDeletesAllChildrenLinks) {
-    auto tasks = sample_nodes(5);
-    auto [sample_parent, children] = create_sample_structure_1(tasks);
-    auto mlm = std::make_unique<MockLinkManager>();
-    EXPECT_CALL(*mlm, removeLinks).Times(AnyNumber());
-    for (auto child : children) {
-        EXPECT_CALL(
-                *mlm,
-                removeLinks(
-                        Truly(pointer_to_same(child))
-                        )
-                    )
-                    .Times(AnyNumber());
-    }
-    TaskService ts = TaskService(   std::move(create_fixed_mock_storage(tasks)),
-                                    std::make_unique<MockView<date>>(),
-                                    std::make_unique<MockView<std::string>>(),
-                                    std::move(mlm));
-    ts.deleteTask(sample_parent->getId());
+TEST_F(TaskServiceTest, TestAddSubTaskReturnsErrorIfNoSuchTask) {
+    TaskID to_par(1);
+    auto mm = std::make_unique<MockModel>();
+    EXPECT_CALL(*mm, addSubTask(to_par, _)).WillOnce(Return(TaskCreationResult::taskNotFound()));
+    TaskService ts = TaskService(std::move(mm));
+    EXPECT_FALSE(ts.addSubTask(to_par, TaskDTO::create("", TaskPriority::NONE, "", day_clock::local_day())).getSuccessStatus());
 }
 
 TEST_F(TaskServiceTest, TestDeleteTaskReturnsErrorIfNoSuchTask) {
-    auto tasks = sample_nodes(1);
-    auto ms = std::make_unique<MockStorage>();
-    ON_CALL(*ms, getTaskByID)
-        .WillByDefault(Return(std::shared_ptr<TaskNode> {nullptr}));
-    TaskService ts = TaskService(   std::move(ms),
-                                    std::make_unique<MockView<date>>(),
-                                    std::make_unique<MockView<std::string>>(),
-                                    std::make_unique<MockLinkManager>());
-    EXPECT_FALSE(ts.deleteTask(tasks[0]->getId()).getSuccessStatus());
+    TaskID to_drop(1);
+    auto mm = std::make_unique<MockModel>();
+    EXPECT_CALL(*mm, dropTask(to_drop)).WillOnce(Return(TaskModificationResult::taskNotFound()));
+    TaskService ts = TaskService(std::move(mm));
+    EXPECT_FALSE(ts.deleteTask(to_drop).getSuccessStatus());
 }
 
 TEST_F(TaskServiceTest, TestPostponeTaskReturnsErrorIfNoSuchTask) {
-    auto tasks = sample_nodes(1);
-    auto ms = std::make_unique<MockStorage>();
-    ON_CALL(*ms, getTaskByID)
-            .WillByDefault(Return(std::shared_ptr<TaskNode> {nullptr}));
-    TaskService ts = TaskService(   std::move(ms),
-                                    std::make_unique<MockView<date>>(),
-                                    std::make_unique<MockView<std::string>>(),
-                                    std::make_unique<MockLinkManager>());
-    EXPECT_FALSE(
-            ts.postponeTask(tasks[0]->getId(),
-                    tasks[0]->getTask().getDate() + boost::gregorian::days(1))
-                        .getSuccessStatus()
-                    );
+    TaskID to_postpone(1);
+    auto mm = std::make_unique<MockModel>();
+    EXPECT_CALL(*mm, getTaskData(to_postpone)).WillOnce(Return(std::nullopt));
+    TaskService ts = TaskService(std::move(mm));
+    EXPECT_FALSE(ts.postponeTask(to_postpone, BoostDate()).getSuccessStatus());
 }
 
 TEST_F(TaskServiceTest, TestPostponeTask) {
-    auto ts = todo_list::createService();
-    TaskDTO task = TaskDTO::create("t1", TaskPriority::THIRD, "lbl5",
-                           day_clock::local_day() + days(3000));
-    TaskID id = ts->addTask(task).getCreatedTaskID().value();
-    ts->postponeTask(id,
-                    day_clock::local_day() + days(4000));
-    ASSERT_TRUE(ts->getTaskByID(id).has_value());
-    EXPECT_EQ(ts->getTaskByID(id)->getDate(),
-              day_clock::local_day() + days(4000));
-    EXPECT_EQ(ts->getTaskByID(id)->getLabel(), task.getLabel());
-    EXPECT_EQ(ts->getTaskByID(id)->getPriority(), task.getPriority());
-    EXPECT_EQ(ts->getTaskByID(id)->getName(), task.getName());
+    auto old_task =
+    TaskDTO::create(TaskID(5), "name", TaskPriority::SECOND, "label", day_clock::local_day(), true);
+    auto new_task =
+    TaskDTO::create(TaskID(5), "name", TaskPriority::SECOND, "label", day_clock::local_day() + days(10), true);
+    auto mm = std::make_unique<MockModel>();
+    EXPECT_CALL(*mm, getTaskData(old_task.getId())).WillOnce(Return(old_task));
+    EXPECT_CALL(*mm, setTaskData(old_task.getId(), Truly(dto_equal(new_task))))
+    .WillOnce(Return(TaskModificationResult::success()));
+    TaskService ts = TaskService(std::move(mm));
+    ASSERT_TRUE(ts.postponeTask(old_task.getId(), day_clock::local_day() + days(10))
+    .getSuccessStatus());
 }
 
-TEST_F(TaskServiceTest, TestPostponeSubTask) {
-    auto ts = todo_list::createService();
-    TaskDTO task = TaskDTO::create("t1", TaskPriority::THIRD, "lbl5",
-            day_clock::local_day() + days(3000));
-    TaskDTO subtask = TaskDTO::create("t2", TaskPriority::SECOND, "lbls",
-                              day_clock::local_day() + days(3200));
-    TaskID id = ts->addTask(task).getCreatedTaskID().value();
-    TaskID id_subtask = ts->addSubTask(id, subtask).getCreatedTaskID().value();
-    ts->postponeTask(id_subtask, day_clock::local_day() + days(4000));
-    ASSERT_TRUE(ts->getTaskByID(id_subtask).has_value());
-    EXPECT_EQ(ts->getTaskByID(id_subtask)->getDate(),
-              day_clock::local_day() + days(4000));
-    EXPECT_EQ(ts->getTaskByID(id_subtask)->getLabel(), subtask.getLabel());
-    EXPECT_EQ(ts->getTaskByID(id_subtask)->getPriority(), subtask.getPriority());
-    EXPECT_EQ(ts->getTaskByID(id_subtask)->getName(), subtask.getName());
+TEST_F(TaskServiceTest, TestGetSubtasks) {
+    TaskID root(9);
+    auto mm = std::make_unique<MockModel>();
+    EXPECT_CALL(*mm, getSubTasks(root)).Times(1);
+    TaskService ts = TaskService(std::move(mm));
+    ts.getSubTasks(root);
 }
 
-TEST_F(TaskServiceTest, TestPostponeSUBTaskDoesNotBreaksPARENT) {
-    auto ts = todo_list::createService();
-    TaskDTO task = TaskDTO::create("t1", TaskPriority::THIRD, "lbl5",
-                           day_clock::local_day() + days(3000));
-    TaskDTO subtask = TaskDTO::create("t2", TaskPriority::SECOND, "lbls",
-                              day_clock::local_day() + days(3200));
-    TaskID id = ts->addTask(task).getCreatedTaskID().value();
-    TaskID id_subtask = ts->addSubTask(id, subtask).getCreatedTaskID().value();
-    ts->postponeTask(id_subtask, day_clock::local_day() + days(4000));
-    ASSERT_TRUE(ts->getTaskByID(id).has_value());
-    EXPECT_EQ(ts->getTaskByID(id)->getDate(), task.getDate());
-    EXPECT_EQ(ts->getTaskByID(id)->getLabel(), task.getLabel());
-    EXPECT_EQ(ts->getTaskByID(id)->getPriority(), task.getPriority());
-    EXPECT_EQ(ts->getTaskByID(id)->getName(), task.getName());
+TEST_F(TaskServiceTest, TestGetAllTasks) {
+    auto mm = std::make_unique<MockModel>();
+    EXPECT_CALL(*mm, getToDate(service::max_date)).Times(1);
+    TaskService ts = TaskService(std::move(mm));
+    ts.getAllTasks();
 }
 
-TEST_F(TaskServiceTest, TestPostponeSUBTaskDoesNotBreaksSUBTask) {
-    auto ts = todo_list::createService();
-    TaskDTO task = TaskDTO::create("t1", TaskPriority::THIRD, "lbl5",
-                           day_clock::local_day() + days(3000));
-    TaskDTO subtask = TaskDTO::create("t2", TaskPriority::SECOND, "lbls",
-                              day_clock::local_day() + days(3200));
-    TaskDTO subsubtask = TaskDTO::create("t3", TaskPriority::FIRST, "lblss",
-                                 day_clock::local_day() + days(2800));
-    TaskID id = ts->addTask(task).getCreatedTaskID().value();
-    TaskID id_subtask = ts->addSubTask(id, subtask).getCreatedTaskID().value();
-    TaskID id_subsubtask = ts->addSubTask(id_subtask, subsubtask).getCreatedTaskID().value();
-    ts->postponeTask(id_subtask,
-                    day_clock::local_day() + days(4000));
-    ASSERT_TRUE(ts->getTaskByID(id_subsubtask).has_value());
-    EXPECT_EQ(ts->getTaskByID(id_subsubtask)->getDate(), subsubtask.getDate());
-    EXPECT_EQ(ts->getTaskByID(id_subsubtask)->getLabel(), subsubtask.getLabel());
-    EXPECT_EQ(ts->getTaskByID(id_subsubtask)->getPriority(), subsubtask.getPriority());
-    EXPECT_EQ(ts->getTaskByID(id_subsubtask)->getName(), subsubtask.getName());
+TEST_F(TaskServiceTest, TestGetByLabel) {
+    auto mm = std::make_unique<MockModel>();
+    EXPECT_CALL(*mm, getWithLabel("label")).Times(1);
+    TaskService ts = TaskService(std::move(mm));
+    ts.getAllWithLabel("label");
 }
 
+TEST_F(TaskServiceTest, TestGetToday) {
+    auto mm = std::make_unique<MockModel>();
+    EXPECT_CALL(*mm, getToDate(day_clock::local_day())).Times(1);
+    TaskService ts = TaskService(std::move(mm));
+    ts.getToday();
+}
+
+TEST_F(TaskServiceTest, TestGetThisWeek) {
+    auto mm = std::make_unique<MockModel>();
+    EXPECT_CALL(*mm, getToDate(day_clock::local_day() + days(6))).Times(1);
+    TaskService ts = TaskService(std::move(mm));
+    ts.getThisWeek();
+}
