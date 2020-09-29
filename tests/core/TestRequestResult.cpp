@@ -3,7 +3,7 @@
 //
 
 #include <gtest/gtest.h>
-#include "core/api/RequestResult.h"
+#include "core/memory_model/api/RequestResult.h"
 
 class TestRequestResult : public ::testing::Test {
 

@@ -6,11 +6,11 @@
 #define EVAL_TASKSERVICE_H
 #include "core/memory_model/structure/TaskNode.h"
 #include "core/memory_model/data/TaskStorageInterface.h"
-#include "TaskCreationResult.h"
+#include "core/memory_model/api/TaskCreationResult.h"
 #include "core/memory_model/data/TaskIDFactory.h"
 #include "core/memory_model/structure/LinkManager.h"
 #include "core/utils/data_transfer/TaskDTOConverter.h"
-#include "TaskModificationResult.h"
+#include "core/memory_model/api/TaskModificationResult.h"
 #include "TaskServiceInterface.h"
 #include <unordered_map>
 #include <algorithm>

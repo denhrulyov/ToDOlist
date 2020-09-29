@@ -8,10 +8,10 @@
 
 #include "core/memory_model/data/TaskStorageInterface.h"
 #include "core/memory_model/structure/LinkManagerInterface.h"
-#include "view/DatePriorityView.h"
-#include "view/TagPriorityView.h"
-#include "core/api/TaskCreationResult.h"
-#include "core/api/TaskModificationResult.h"
+#include "core/memory_model/view/DatePriorityView.h"
+#include "core/memory_model/view/TagPriorityView.h"
+#include "core/memory_model/api/TaskCreationResult.h"
+#include "core/memory_model/api/TaskModificationResult.h"
 
 /*
  * Api for manipulating structure of tasks.

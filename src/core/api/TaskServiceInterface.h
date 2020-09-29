@@ -5,9 +5,9 @@
 #ifndef TODOLIST_TASKSERVICEINTERFACE_H
 #define TODOLIST_TASKSERVICEINTERFACE_H
 
-#include "TaskCreationResult.h"
-#include "TaskModificationResult.h"
-#include "TaskDTO.h"
+#include "core/memory_model/api/TaskCreationResult.h"
+#include "core/memory_model/api/TaskModificationResult.h"
+#include "core/memory_model/api/TaskDTO.h"
 
 #include <vector>
 

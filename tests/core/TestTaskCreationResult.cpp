@@ -3,7 +3,7 @@
 //
 
 #include <gtest/gtest.h>
-#include "core/api/TaskCreationResult.h"
+#include "core/memory_model/api/TaskCreationResult.h"
 
 class TaskCreationResultTest : public ::testing::Test {
 

@@ -3,7 +3,7 @@
 //
 
 #include "mocks/CoreMocks.h"
-#include "core/memory_model/TaskModel.h"
+#include "core/memory_model/api/TaskModel.h"
 
 using ::testing::AnyNumber;
 using ::testing::Return;

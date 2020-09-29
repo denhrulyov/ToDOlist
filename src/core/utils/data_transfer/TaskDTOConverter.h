@@ -5,7 +5,7 @@
 #ifndef TODOLIST_TASKDTOCONVERTER_H
 #define TODOLIST_TASKDTOCONVERTER_H
 
-#include "core/api/TaskDTO.h"
+#include "core/memory_model/api/TaskDTO.h"
 #include "core/memory_model/data/Task.h"
 #include "core/memory_model/structure/TaskNode.h"
 

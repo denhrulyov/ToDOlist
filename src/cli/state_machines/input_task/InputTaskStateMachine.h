@@ -12,7 +12,7 @@
 #include "ParseTaskPriority.h"
 #include "ParseTaskName.h"
 #include "InputTaskContextInterface.h"
-#include "core/api/TaskDTO.h"
+#include "core/memory_model/api/TaskDTO.h"
 #include "ParseStateFactoryInterface.h"
 
 class ParseState;
