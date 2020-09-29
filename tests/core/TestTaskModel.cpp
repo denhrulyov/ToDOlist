@@ -3,7 +3,7 @@
 //
 
 #include "mocks/CoreMocks.h"
-#include "core/memory_model/TaskModel.h"
+#include "core/memory_model/api/TaskModel.h"
 
 using ::testing::AnyNumber;
 using ::testing::Return;
@@ -464,20 +464,20 @@ TEST_F(TaskModelTest, NulloptIfNoSuchTask) {
 }
 
 
-TEST_F(TaskModelTest, FiltersAreExactlyViews) {
+TEST_F(TaskModelTest, GetMethodsCallViewsMethods) {
     auto nodes = task_model_test::sample_nodes(5);
     auto ms = task_model_test::create_fixed_mock_storage(nodes);
     auto mvd = std::make_unique<MockView<date>>();
+    EXPECT_CALL(*mvd, getAllWithConstraint);
     auto mvl = std::make_unique<MockView<std::string>>();
+    EXPECT_CALL(*mvl, getAllWithConstraint);
     auto mlm = std::make_unique<MockLinkManager>();
-    auto* p_view_date = mvd.get();
-    auto* p_view_lbl = mvl.get();
     TaskModel tm = TaskModel(   std::move(ms),
                                 std::move(mvd),
                                 std::move(mvl),
                                 std::move(mlm));
-    ASSERT_EQ(&tm.dateFilter(), p_view_date);
-    ASSERT_EQ(&tm.labelFilter(), p_view_lbl);
+    tm.getToDate(BoostDate());
+    tm.getWithLabel("label");
 }
 
 TEST_F(TaskModelTest, TestGetSubtasks) {

@@ -5,7 +5,7 @@
 #ifndef TODOLIST_CONSOLETASKIO_H
 #define TODOLIST_CONSOLETASKIO_H
 
-#include "core/api/TaskDTO.h"
+#include "core/memory_model/api/TaskDTO.h"
 #include <unordered_map>
 #include <iomanip>
 

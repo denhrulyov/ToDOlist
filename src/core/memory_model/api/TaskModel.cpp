@@ -62,7 +62,7 @@ TaskModificationResult TaskModel::setTaskData(TaskID id, const TaskDTO &new_data
     return TaskModificationResult::success();
 }
 
-std::optional<TaskDTO> TaskModel::getTaskData(TaskID id) {
+std::optional<TaskDTO> TaskModel::getTaskData(TaskID id) const {
     auto node = storage_->getTaskByID(id).lock();
     return node ? std::make_optional(TaskDTOConverter::getDTO(node)) : std::nullopt;
 }
@@ -92,15 +92,15 @@ TaskModificationResult TaskModel::setCompleted(TaskID id) {
     return TaskModificationResult::success();
 }
 
-const PriorityViewInterface<BoostDate>& TaskModel::dateFilter() {
-    return *by_date_;
+std::vector<TaskDTO> TaskModel::getToDate(const BoostDate &date_to) const {
+    return convertAllNodes(by_date_->getAllWithConstraint(date_to));
 }
 
-const PriorityViewInterface<std::string>& TaskModel::labelFilter() {
-    return *by_label_;
+std::vector<TaskDTO> TaskModel::getWithLabel(const std::string &label) const {
+    return convertAllNodes(by_label_->getAllWithConstraint(label));
 }
 
-std::vector<TaskDTO> TaskModel::getSubTasks(TaskID id) {
+std::vector<TaskDTO> TaskModel::getSubTasks(TaskID id) const {
     auto parent = storage_->getTaskByID(id).lock();
     if (parent) {
         return convertAllNodes(parent->getSubNodes());
@@ -111,13 +111,13 @@ std::vector<TaskDTO> TaskModel::getSubTasks(TaskID id) {
 std::vector<TaskDTO> get_children_recurse(const std::shared_ptr<TaskNode>& node) {
     std::vector<TaskDTO> result = { TaskDTOConverter::getDTO(node) };
     for (const auto& child : node->getSubNodes()) {
-        auto sub_result = get_sub_tasks_recurse(child.lock());
+        auto sub_result = get_children_recurse(child.lock());
         result.insert(result.end(), sub_result.begin(), sub_result.end());
     }
     return result;
 }
 
-std::vector<TaskDTO> TaskModel::getSubTasksRecursive(TaskID id) {
+std::vector<TaskDTO> TaskModel::getSubTasksRecursive(TaskID id) const {
     auto parent = storage_->getTaskByID(id).lock();
     if (parent) {
         std::vector<TaskDTO> result;
@@ -130,7 +130,6 @@ std::vector<TaskDTO> TaskModel::getSubTasksRecursive(TaskID id) {
     return std::vector<TaskDTO>{};
 }
 
-std::vector<TaskDTO> TaskModel::getAllTasks() {
+std::vector<TaskDTO> TaskModel::getAllTasks() const {
     return convertAllNodes(storage_->getAllTasks());
 }
-

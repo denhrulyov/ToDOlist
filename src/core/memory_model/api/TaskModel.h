@@ -27,14 +27,14 @@ public:
     TaskCreationResult                          addTask(const TaskDTO&) override;
     TaskCreationResult                          addSubTask(TaskID, const TaskDTO&) override;
     TaskModificationResult                      setTaskData(TaskID, const TaskDTO&) override;
-    std::optional<TaskDTO>                      getTaskData(TaskID) override;
+    std::optional<TaskDTO>                      getTaskData(TaskID) const override;
     TaskModificationResult                      dropTask(TaskID) override;
     TaskModificationResult                      setCompleted(TaskID) override;
-    const PriorityViewInterface<BoostDate>&     dateFilter() override;
-    const PriorityViewInterface<std::string>&   labelFilter() override;
-    std::vector<TaskDTO>                        getSubTasks(TaskID id) override;
-    std::vector<TaskDTO>                        getSubTasksRecursive(TaskID id) override;
-    std::vector<TaskDTO>                        getAllTasks() override;
+    std::vector<TaskDTO>                        getToDate(const BoostDate &date_to) const override;
+    std::vector<TaskDTO>                        getWithLabel(const std::string &label) const override;
+    std::vector<TaskDTO>                        getSubTasks(TaskID id) const override;
+    std::vector<TaskDTO>                        getSubTasksRecursive(TaskID id) const override;
+    std::vector<TaskDTO>                        getAllTasks() const override;
 
 private:
     std::unique_ptr<TaskStorageInterface>                   storage_;
@@ -46,7 +46,6 @@ private:
 
 
 std::vector<TaskDTO> convertAllNodes(const std::vector<std::weak_ptr<TaskNode>>& all);
-std::vector<TaskDTO> get_sub_tasks_recurse(const std::shared_ptr<TaskNode>& node);
 std::vector<TaskDTO> get_children_recurse(const std::shared_ptr<TaskNode>& node);
 
 #endif //TODOLIST_TASKMODEL_H
