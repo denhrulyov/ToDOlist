@@ -92,12 +92,12 @@ TaskModificationResult TaskModel::setCompleted(TaskID id) {
     return TaskModificationResult::success();
 }
 
-const PriorityViewInterface<BoostDate>& TaskModel::dateFilter() const {
-    return *by_date_;
+std::vector<TaskDTO> TaskModel::getToDate(const BoostDate &date_to) const {
+    return convertAllNodes(by_date_->getAllWithConstraint(date_to));
 }
 
-const PriorityViewInterface<std::string>& TaskModel::labelFilter() const {
-    return *by_label_;
+std::vector<TaskDTO> TaskModel::getWithLabel(const std::string &label) const {
+    return convertAllNodes(by_label_->getAllWithConstraint(label));
 }
 
 std::vector<TaskDTO> TaskModel::getSubTasks(TaskID id) const {

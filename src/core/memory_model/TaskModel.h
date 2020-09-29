@@ -30,8 +30,8 @@ public:
     std::optional<TaskDTO>                      getTaskData(TaskID) const override;
     TaskModificationResult                      dropTask(TaskID) override;
     TaskModificationResult                      setCompleted(TaskID) override;
-    const PriorityViewInterface<BoostDate>&     dateFilter() const override;
-    const PriorityViewInterface<std::string>&   labelFilter() const override;
+    std::vector<TaskDTO>                        getToDate(const BoostDate &date_to) const override;
+    std::vector<TaskDTO>                        getWithLabel(const std::string &label) const override;
     std::vector<TaskDTO>                        getSubTasks(TaskID id) const override;
     std::vector<TaskDTO>                        getSubTasksRecursive(TaskID id) const override;
     std::vector<TaskDTO>                        getAllTasks() const override;

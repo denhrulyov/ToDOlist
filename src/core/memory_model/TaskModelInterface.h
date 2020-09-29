@@ -77,14 +77,14 @@ public:
      *
      * @return date task view
      */
-    virtual const PriorityViewInterface<BoostDate>&     dateFilter() const = 0;
+    virtual std::vector<TaskDTO> getToDate(const BoostDate &date_to) const = 0;
     /*
      * Returns reference to view sorted by priority
      * and allowing to get selection with specific label
      *
      * @return label task view
      */
-    virtual const PriorityViewInterface<std::string>&   labelFilter() const = 0;
+    virtual std::vector<TaskDTO> getWithLabel(const std::string &label) const = 0;
     /*
      * Gives all direct subtasks of task.
      *
