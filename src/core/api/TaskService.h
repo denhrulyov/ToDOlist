@@ -4,13 +4,7 @@
 
 #ifndef EVAL_TASKSERVICE_H
 #define EVAL_TASKSERVICE_H
-#include "core/memory_model/structure/TaskNode.h"
-#include "core/memory_model/data/TaskStorageInterface.h"
-#include "core/memory_model/api/TaskCreationResult.h"
-#include "core/memory_model/data/TaskIDFactory.h"
-#include "core/memory_model/structure/LinkManager.h"
-#include "core/utils/data_transfer/TaskDTOConverter.h"
-#include "core/memory_model/api/TaskModificationResult.h"
+#include "core/memory_model/api/TaskModelInterface.h"
 #include "TaskServiceInterface.h"
 #include <unordered_map>
 #include <algorithm>
@@ -25,16 +19,9 @@
 class TaskService : public TaskServiceInterface {
 
 public:
-    TaskService(
-            std::unique_ptr<TaskStorageInterface>                   storage,
-            std::unique_ptr<PriorityViewInterface<BoostDate>>       view_time,
-            std::unique_ptr<PriorityViewInterface<std::string>>     view_label,
-            std::unique_ptr<LinkManagerInterface>                   link_manger)
+    explicit TaskService(std::unique_ptr<TaskModelInterface> model)
     :
-    storage_(std::move(storage)),
-    by_time_(std::move(view_time)),
-    by_label_(std::move(view_label)),
-    link_manager_(std::move(link_manger))
+    model_(std::move(model))
     {}
 
 public:
@@ -57,12 +44,10 @@ public:
     ~TaskService() override =                               default;
 
 private:
-    TaskIDFactory                                           id_generator_;
-    std::unique_ptr<TaskStorageInterface>                   storage_;
-    std::unique_ptr<PriorityViewInterface<BoostDate>>       by_time_;
-    std::unique_ptr<PriorityViewInterface<std::string>>     by_label_;
-    std::unique_ptr<LinkManagerInterface>                   link_manager_;
+    std::unique_ptr<TaskModelInterface>                     model_;
 };
 
+
+bool validate_date(const BoostDate& date);
 
 #endif //EVAL_TASKSERVICE_H
