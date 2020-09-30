@@ -105,6 +105,14 @@ public:
      * @return vector of task DTO corresponding to all tasks in system
      */
     virtual std::vector<TaskDTO>                        getAllTasks() const = 0;
+    /*
+     * Gives task which has a task with the given id as subtask,
+     * or nothig if such does not exits. In terms of tree, method
+     * gives a parent of the task.
+     *
+     * @return parent of task or nullopt if there is no.
+     */
+    virtual std::optional<TaskDTO>                      getParentTask(TaskID id) const = 0;
 
     virtual                                             ~TaskModelInterface() = default;
 };

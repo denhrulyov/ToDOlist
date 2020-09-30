@@ -133,3 +133,12 @@ std::vector<TaskDTO> TaskModel::getSubTasksRecursive(TaskID id) const {
 std::vector<TaskDTO> TaskModel::getAllTasks() const {
     return convertAllNodes(storage_->getAllTasks());
 }
+
+std::optional<TaskDTO> TaskModel::getParentTask(TaskID id) const {
+    auto node = storage_->getTaskByID(id).lock();
+    if (!node) {
+        return std::nullopt;
+    }
+    auto parent = node->getParent().lock();
+    return parent ? getTaskData(parent->getId()) : std::nullopt;
+}
