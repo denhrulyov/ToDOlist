@@ -1,0 +1,25 @@
+import "google/protobuf/timestamp.proto";
+
+message TaskData {
+  enum Priority {
+    NONE = 0;
+    FIRST = 1;
+    SECOND = 2;
+    THIRD = 3;
+  }
+  required string                     name        = 1;
+  required Priority                   prior       = 2;
+  required string                     label       = 3;
+  required google.protobuf.Timestamp  date        = 4;
+  required bool                       completed   = 5;
+
+}
+
+message TaskMessage {
+  required TaskData                   task = 1;
+  repeated TaskMessage                subtasks = 8;
+}
+
+message TaskModelMessage {
+  repeated TaskMessage tasks = 1;
+}
