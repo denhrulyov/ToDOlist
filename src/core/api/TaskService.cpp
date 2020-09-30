@@ -6,24 +6,9 @@
 
 
 
-Task getPostponedTask(const Task& task, BoostDate date_postpone) {
-    return Task::create(task.getName(), task.getPriority(), task.getLabel(), date_postpone);
-}
-
-std::vector<TaskDTO> convertAll(const std::vector<std::weak_ptr<TaskNode>>& all) {
-    std::vector<TaskDTO> user_result_set;
-    std::transform(all.begin(), all.end(),
-                   std::back_inserter(user_result_set),
-                   [] (std::weak_ptr<TaskNode> node) {
-                        return TaskDTOConverter::getDTO(node.lock());
-                    }
-    );
-    return user_result_set;
-}
-
 bool validate_date(const BoostDate& date) {
-    return  !(date > service::max_date) &&
-            !(date < boost::gregorian::day_clock::local_day());
+    return  date <= service::max_date &&
+            date >= boost::gregorian::day_clock::local_day();
 }
 
 /**********************************************************************/
