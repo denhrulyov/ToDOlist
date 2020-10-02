@@ -89,9 +89,9 @@ TEST_F(IostreamModelPersisterTest, TestDemanglesAllSubtasks) {
     }
     IostreamModelPersister iosmp(std::move(mtd));
 
-    auto ss = std::make_shared<std::stringstream>(std::ios::out | std::ios::in);
+    auto ss = std::make_unique<std::stringstream>(std::ios::out | std::ios::in);
     model_proto.SerializeToOstream(ss.get());
-    iosmp.setStream(ss);
+    iosmp.SetStream(std::move(ss));
     ASSERT_TRUE(iosmp.Load(mm));
 }
 
@@ -153,6 +153,6 @@ TEST_F(IostreamModelPersisterTest, TestSerializesAllSubtasks) {
         ).Times(1);
     }
     IostreamModelPersister sr(std::move(mts));
-    sr.setStream(std::make_shared<std::stringstream>());
+    sr.SetStream(std::make_unique<std::stringstream>());
     sr.Save(ms);
 }

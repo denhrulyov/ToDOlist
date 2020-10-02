@@ -77,8 +77,8 @@ bool IostreamModelPersister::Load(TaskModelInterface &model) {
     return true;
 }
 
-void IostreamModelPersister::setStream(const std::shared_ptr<std::iostream>& stream) {
-    stream_ = stream;
+void IostreamModelPersister::SetStream(std::unique_ptr<std::iostream> stream) {
+    stream_ = std::move(stream);
 }
 
 

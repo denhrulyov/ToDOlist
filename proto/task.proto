@@ -1,3 +1,4 @@
+syntax = "proto3";
 import "google/protobuf/timestamp.proto";
 
 message TaskData {
@@ -7,17 +8,17 @@ message TaskData {
     SECOND = 2;
     THIRD = 3;
   }
-  required string                     name        = 1;
-  required Priority                   prior       = 2;
-  required string                     label       = 3;
-  required google.protobuf.Timestamp  date        = 4;
-  required bool                       completed   = 5;
+  string                     name        = 1;
+  Priority                   prior       = 2;
+  string                     label       = 3;
+  google.protobuf.Timestamp  date        = 4;
+  bool                       completed   = 5;
 
 }
 
 message TaskMessage {
-  required TaskData                   task = 1;
-  repeated TaskMessage                subtasks = 8;
+  TaskData                   task = 1;
+  repeated TaskMessage       subtasks = 8;
 }
 
 message TaskModelMessage {

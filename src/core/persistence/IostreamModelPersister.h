@@ -17,8 +17,8 @@ public:
 
 public:
     bool                                Save(const TaskModelInterface &model) override;
-    bool Load(TaskModelInterface &model) override;
-    void                                setStream(const std::shared_ptr<std::iostream>&) override;
+    bool                                Load(TaskModelInterface &model) override;
+    void                                SetStream(std::unique_ptr<std::iostream>) override;
 
 private:
     bool RestoreTaskByMessage(TaskModelInterface& model, TaskID id, const TaskMessage& message);

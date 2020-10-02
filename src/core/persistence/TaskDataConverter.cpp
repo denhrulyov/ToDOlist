@@ -43,6 +43,8 @@ TaskPriority RestorePriority(TaskData::Priority prior) {
             return TaskPriority::THIRD;
         case TaskData::NONE:
             return TaskPriority::NONE;
+        default:
+            return TaskPriority::NONE;
     }
 }
 

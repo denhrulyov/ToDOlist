@@ -10,7 +10,7 @@
 class StreamOwner {
 
 public:
-    virtual void setStream(const std::shared_ptr<std::iostream>&) = 0;
+    virtual void SetStream(std::unique_ptr<std::iostream>) = 0;
     virtual ~StreamOwner() = default;
 };
 
