@@ -35,6 +35,7 @@ public:
     std::vector<TaskDTO>                        getSubTasks(TaskID id) const override;
     std::vector<TaskDTO>                        getSubTasksRecursive(TaskID id) const override;
     std::vector<TaskDTO>                        getAllTasks() const override;
+    std::optional<TaskDTO>                      getParentTask(TaskID id) const override;
 
 private:
     std::unique_ptr<TaskStorageInterface>                   storage_;

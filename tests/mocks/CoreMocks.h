@@ -64,6 +64,8 @@ public:
     MOCK_METHOD(std::vector<TaskDTO>,   getSubTasks, (TaskID id), (const, override));
     MOCK_METHOD(std::vector<TaskDTO>,   getSubTasksRecursive, (TaskID id), (const, override));
     MOCK_METHOD(std::vector<TaskDTO>,   getAllTasks, (), (const, override));
+    MOCK_METHOD(std::optional<TaskDTO>, getParentTask, (TaskID id), (const, override));
+
 };
 
 #endif //TODOLIST_MOCKS_H
