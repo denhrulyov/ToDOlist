@@ -41,6 +41,10 @@ public:
     RequestResult                                           complete(TaskID id) override;
 
 public:
+    RequestResult                                           saveToFile(const std::string& filepath) override;
+    RequestResult                                           loadFromFile(const std::string& filepath) override;
+
+public:
     ~TaskService() override =                               default;
 
 private:

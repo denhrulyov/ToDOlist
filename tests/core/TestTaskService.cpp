@@ -185,3 +185,43 @@ TEST_F(TaskServiceTest, TestGetThisWeek) {
     TaskService ts = TaskService(std::move(mmh));
     ts.getThisWeek();
 }
+
+TEST_F(TaskServiceTest, TestLoadFromFile) {
+    auto mm = std::make_unique<MockModel>();
+    auto mmh = std::make_unique<MockModelHolder>();
+    EXPECT_CALL(*mmh, GetModel).WillRepeatedly(ReturnRef(*mm));
+    std::string filepath = "abacabadabacaba";
+    EXPECT_CALL(*mmh, LoadModelFromFile(filepath)).Times(1).WillOnce(Return(true));;
+    TaskService ts = TaskService(std::move(mmh));
+    EXPECT_TRUE(ts.loadFromFile(filepath).getSuccessStatus());
+}
+
+TEST_F(TaskServiceTest, TestLoadFromFileReturn) {
+    auto mm = std::make_unique<MockModel>();
+    auto mmh = std::make_unique<MockModelHolder>();
+    EXPECT_CALL(*mmh, GetModel).WillRepeatedly(ReturnRef(*mm));
+    std::string filepath = "abacabadabacaba";
+    EXPECT_CALL(*mmh, LoadModelFromFile(filepath)).Times(1).WillOnce(Return(true));
+    TaskService ts = TaskService(std::move(mmh));
+    EXPECT_TRUE(ts.loadFromFile(filepath).getSuccessStatus());
+}
+
+TEST_F(TaskServiceTest, TestSaveToFileReturnsErrorOnFail) {
+    auto mm = std::make_unique<MockModel>();
+    auto mmh = std::make_unique<MockModelHolder>();
+    EXPECT_CALL(*mmh, GetModel).WillRepeatedly(ReturnRef(*mm));
+    std::string filepath = "abacabadabacaba";
+    EXPECT_CALL(*mmh, SaveModelToFile(filepath)).Times(1).WillOnce(Return(false));
+    TaskService ts = TaskService(std::move(mmh));
+    EXPECT_FALSE(ts.saveToFile(filepath).getSuccessStatus());
+}
+
+TEST_F(TaskServiceTest, TestLoadFromFileReturnsErrorOnFail) {
+    auto mm = std::make_unique<MockModel>();
+    auto mmh = std::make_unique<MockModelHolder>();
+    EXPECT_CALL(*mmh, GetModel).WillRepeatedly(ReturnRef(*mm));
+    std::string filepath = "abacabadabacaba";
+    EXPECT_CALL(*mmh, SaveModelToFile(filepath)).Times(1).WillOnce(Return(false));
+    TaskService ts = TaskService(std::move(mmh));
+    EXPECT_FALSE(ts.saveToFile(filepath).getSuccessStatus());
+}

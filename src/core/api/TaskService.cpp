@@ -63,12 +63,13 @@ std::optional<TaskDTO> TaskService::getTaskByID(TaskID id) {
 }
 
 RequestResult TaskService::complete(TaskID id) {
-    auto root_complete_result = model_holder_->GetModel().setCompleted(id);
+    TaskModelInterface& model = model_holder_->GetModel();
+    auto root_complete_result = model.setCompleted(id);
     if (!root_complete_result.getSuccessStatus()) {
         return root_complete_result;
     }
-    for (const auto& task : model_holder_->GetModel().getSubTasksRecursive(id)) {
-        auto complete_result = model_holder_->GetModel().setCompleted(task.getId());
+    for (const auto& task : model.getSubTasksRecursive(id)) {
+        auto complete_result = model.setCompleted(task.getId());
         if (!complete_result.getSuccessStatus()) {
             return complete_result;
         }
@@ -98,5 +99,15 @@ std::vector<TaskDTO> TaskService::getSubTasks(TaskID id) {
 
 std::vector<TaskDTO> TaskService::getSubTasksRecursive(TaskID id) {
     return model_holder_->GetModel().getSubTasksRecursive(id);
+}
+
+RequestResult TaskService::saveToFile(const std::string &filepath) {
+    bool saved = model_holder_->SaveModelToFile(filepath);
+    return saved ? RequestResult::success() : RequestResult(false, "Could not save");
+}
+
+RequestResult TaskService::loadFromFile(const std::string &filepath) {
+    bool loaded = model_holder_->LoadModelFromFile(filepath);
+    return loaded ? RequestResult::success() : RequestResult(false, "Could not load");
 }
 

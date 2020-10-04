@@ -110,6 +110,22 @@ public:
      * @return object info about success or possible error occurred
      */
     virtual RequestResult                                           complete(TaskID id) = 0;
+    /*
+     * Save program state to file
+     *
+     * @param filepath
+     *
+     * @return object containing info about success about error
+     */
+    virtual RequestResult                                           saveToFile(const std::string& filepath) = 0;
+    /*
+     * Load program state from file
+     *
+     * @param filepath
+     *
+     * @return object containing info about success about error
+     */
+    virtual RequestResult                                           loadFromFile(const std::string& filepath) = 0;
 
 public:
     virtual ~TaskServiceInterface() =                               default;
