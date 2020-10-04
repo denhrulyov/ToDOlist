@@ -5,19 +5,18 @@
 #include "ModelHolder.h"
 
 ModelHolder::ModelHolder(
-        std::unique_ptr<ModelCreator> creator,
+        std::unique_ptr<ModelCreatorInterface> creator,
         std::unique_ptr<ModelPersister> persister,
         StreamOwner &persistence_stream) :
         creator_(std::move(creator)),
         persister_(std::move(persister)),
         persistence_stream_(persistence_stream)
-        {}
+        {
+            model_ = creator_->CreateModel();
+        }
 
 
 TaskModelInterface &ModelHolder::GetModel() {
-    if (!model_) {
-        model_ = creator_->CreateModel();
-    }
     return *model_;
 }
 
