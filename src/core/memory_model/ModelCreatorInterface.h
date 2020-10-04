@@ -11,6 +11,7 @@ class ModelCreatorInterface {
 
 public:
     virtual std::unique_ptr<TaskModelInterface> CreateModel() = 0;
+    virtual ~ModelCreatorInterface() = default;
 };
 
 

@@ -10,12 +10,14 @@ ModelHolder::ModelHolder(
         StreamOwner &persistence_stream) :
         creator_(std::move(creator)),
         persister_(std::move(persister)),
-        persistence_stream_(persistence_stream),
-        model_(creator_->CreateModel())
+        persistence_stream_(persistence_stream)
         {}
 
 
 TaskModelInterface &ModelHolder::GetModel() {
+    if (!model_) {
+        model_ = creator_->CreateModel();
+    }
     return *model_;
 }
 

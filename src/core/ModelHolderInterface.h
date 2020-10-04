@@ -13,6 +13,7 @@ public:
     virtual TaskModelInterface&     GetModel() = 0;
     virtual bool                    LoadModelFromFile(const std::string& filepath) = 0;
     virtual bool                    SaveModelToFile(const std::string& filepath) = 0;
+    virtual ~ModelHolderInterface() = default;
 };
 
 
