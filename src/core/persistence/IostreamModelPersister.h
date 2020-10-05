@@ -7,13 +7,9 @@
 
 #include "ModelPersister.h"
 #include "StreamOwner.h"
-#include "TaskDataConverterInterface.h"
 #include "task.pb.h"
 
 class IostreamModelPersister : public ModelPersister, public StreamOwner {
-
-public:
-    explicit IostreamModelPersister(std::unique_ptr<TaskDataConverterInterface> data_converter);
 
 public:
     bool                                Save(const TaskModelInterface &model) override;
@@ -25,7 +21,6 @@ private:
     bool WriteTaskToTaskMessage(const TaskModelInterface& model, const TaskDTO& task, TaskMessage* message);
 
 private:
-    std::unique_ptr<TaskDataConverterInterface> data_converter_;
     std::shared_ptr<std::iostream> stream_;
 };
 

@@ -8,16 +8,11 @@
 #include "core/memory_model/data/TaskStorage.h"
 #include "core/memory_model/structure/LinkManager.h"
 #include "core/memory_model/api/TaskModel.h"
-
-IostreamModelPersister::IostreamModelPersister
-        (std::unique_ptr<TaskDataConverterInterface> data_converter)
-        :
-        data_converter_(std::move(data_converter))
-{}
+#include "core/persistence/ProtoConvert.h"
 
 bool IostreamModelPersister::WriteTaskToTaskMessage(const TaskModelInterface& model, const TaskDTO& task, TaskMessage* message) {
     message->set_allocated_task(new TaskData);
-    data_converter_->WriteToMessage(task, message->mutable_task());
+    proto_convert::WriteToMessage(task, message->mutable_task());
     for (const auto& subtask : model.getSubTasks(task.getId())) {
         TaskMessage* subtask_dump = message->add_subtasks();
         if (!WriteTaskToTaskMessage(model, subtask, subtask_dump)) {
@@ -42,7 +37,7 @@ bool IostreamModelPersister::Save(const TaskModelInterface &model) {
 
 bool IostreamModelPersister::RestoreTaskByMessage(TaskModelInterface& model, TaskID id, const TaskMessage& message) {
     for (const TaskMessage& subtask_load : message.subtasks()) {
-        TaskDTO subtask = data_converter_->RestoreFromMessage(subtask_load.task());
+        TaskDTO subtask = proto_convert::RestoreFromMessage(subtask_load.task());
         TaskCreationResult result = model.addSubTask(id, subtask);
         if (!result.getCreatedTaskID()) {
             return false;
@@ -63,7 +58,7 @@ bool IostreamModelPersister::Load(TaskModelInterface &model) {
         return false;
     }
     for (const TaskMessage& task_load : loaded_model.tasks()) {
-        TaskDTO task = data_converter_->RestoreFromMessage(task_load.task());
+        TaskDTO task = proto_convert::RestoreFromMessage(task_load.task());
         TaskCreationResult result = model.addTask(task);
 
         if (!result.getCreatedTaskID()) {

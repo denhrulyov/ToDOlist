@@ -2,9 +2,9 @@
 // Created by denis on 30.09.20.
 //
 
-#include "TaskDataConverter.h"
+#include "ProtoConvert.h"
 
-std::unique_ptr<google::protobuf::Timestamp> GetProtobufDate(const BoostDate& date) {
+std::unique_ptr<google::protobuf::Timestamp> proto_convert::GetProtobufDate(const BoostDate& date) {
     using namespace boost::posix_time;
     ptime datetime(date);
     ptime epoch(BoostDate(1970, 1, 1));
@@ -14,14 +14,14 @@ std::unique_ptr<google::protobuf::Timestamp> GetProtobufDate(const BoostDate& da
     return timestamp;
 }
 
-BoostDate RestoreDate(const google::protobuf::Timestamp &time_load) {
+BoostDate proto_convert::RestoreDate(const google::protobuf::Timestamp &time_load) {
     using namespace boost::posix_time;
     ptime datetime = from_time_t(time_load.seconds());
     return datetime.date();
 }
 
 
-TaskData::Priority GetProtobufPriority(TaskPriority prior) {
+TaskData::Priority proto_convert::GetProtobufPriority(TaskPriority prior) {
     switch (prior) {
         case TaskPriority::FIRST:
             return TaskData::FIRST;
@@ -33,7 +33,7 @@ TaskData::Priority GetProtobufPriority(TaskPriority prior) {
             return TaskData::NONE;
     }
 }
-TaskPriority RestorePriority(TaskData::Priority prior) {
+TaskPriority proto_convert::RestorePriority(TaskData::Priority prior) {
     switch (prior) {
         case TaskData::FIRST:
             return TaskPriority::FIRST;
@@ -50,7 +50,7 @@ TaskPriority RestorePriority(TaskData::Priority prior) {
 
 /********************************************************************************/
 
-TaskDTO TaskDataConverter::RestoreFromMessage(const TaskData &message) {
+TaskDTO proto_convert::RestoreFromMessage(const TaskData &message) {
     return TaskDTO::create(TaskID(0),
                            message.name(),
                            RestorePriority(message.prior()),
@@ -59,7 +59,7 @@ TaskDTO TaskDataConverter::RestoreFromMessage(const TaskData &message) {
                            message.completed());
 }
 
-bool TaskDataConverter::WriteToMessage(const TaskDTO &task, TaskData *message) {
+bool proto_convert::WriteToMessage(const TaskDTO &task, TaskData *message) {
     message->set_name(task.getName());
     message->set_prior(GetProtobufPriority(task.getPriority()));
     message->set_label(task.getLabel());

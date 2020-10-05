@@ -6,9 +6,7 @@
 
 std::unique_ptr<TaskServiceInterface> todo_list::createService() {
     auto creator =      std::make_unique<ModelCreator>();
-    auto persister =    std::make_unique<IostreamModelPersister>(
-                            std::make_unique<TaskDataConverter>()
-                        );
+    auto persister =    std::make_unique<IostreamModelPersister>();
     StreamOwner& persistence_stream = *persister;
     auto holder =       std::make_unique<ModelHolder>(
                             std::move(creator),
