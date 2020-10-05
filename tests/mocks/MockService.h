@@ -27,6 +27,8 @@ public:
     MOCK_METHOD(RequestResult         , complete, (TaskID), (override));
     MOCK_METHOD(std::vector<TaskDTO>, getSubTasks, (TaskID id), (override));
     MOCK_METHOD(std::vector<TaskDTO>, getSubTasksRecursive, (TaskID id), (override));
+    MOCK_METHOD(RequestResult, saveToFile, (const std::string&), (override));
+    MOCK_METHOD(RequestResult, loadFromFile, (const std::string&), (override));
 };
 
 #endif //TODOLIST_MOCKSERVICE_H

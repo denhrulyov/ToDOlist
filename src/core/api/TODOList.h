@@ -6,11 +6,10 @@
 #define TODOLIST_TODOLIST_H
 
 #include "TaskService.h"
-#include "core/memory_model/view/DatePriorityView.h"
-#include "core/memory_model/view/TagPriorityView.h"
-#include "core/memory_model/data/TaskStorage.h"
-#include "core/memory_model/structure/LinkManager.h"
-#include "core/memory_model/api/TaskModel.h"
+#include "core/memory_model/ModelCreator.h"
+#include "core/persistence/IostreamModelPersister.h"
+#include "core/persistence/TaskDataConverter.h"
+#include "core/ModelHolder.h"
 
 /*
  * TaskService injector

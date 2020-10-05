@@ -11,6 +11,7 @@
 #include "core/memory_model/structure/LinkManagerInterface.h"
 #include "core/memory_model/view/PriorityViewInterface.h"
 #include "core/memory_model/api/TaskModelInterface.h"
+#include "core/memory_model/ModelCreatorInterface.h"
 
 using ::testing::AnyNumber;
 using ::testing::Return;
@@ -66,6 +67,12 @@ public:
     MOCK_METHOD(std::vector<TaskDTO>,   getAllTasks, (), (const, override));
     MOCK_METHOD(std::optional<TaskDTO>, getParentTask, (TaskID id), (const, override));
 
+};
+
+class MockModelCreator : public ModelCreatorInterface {
+
+public:
+    MOCK_METHOD(std::unique_ptr<TaskModelInterface>, CreateModel, (), (override));
 };
 
 #endif //TODOLIST_MOCKS_H

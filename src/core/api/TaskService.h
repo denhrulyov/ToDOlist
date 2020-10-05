@@ -4,7 +4,7 @@
 
 #ifndef EVAL_TASKSERVICE_H
 #define EVAL_TASKSERVICE_H
-#include "core/memory_model/api/TaskModelInterface.h"
+#include "core/ModelHolderInterface.h"
 #include "TaskServiceInterface.h"
 #include <unordered_map>
 #include <algorithm>
@@ -19,9 +19,9 @@
 class TaskService : public TaskServiceInterface {
 
 public:
-    explicit TaskService(std::unique_ptr<TaskModelInterface> model)
+    explicit TaskService(std::unique_ptr<ModelHolderInterface> model_holder)
     :
-    model_(std::move(model))
+    model_holder_(std::move(model_holder))
     {}
 
 public:
@@ -41,10 +41,14 @@ public:
     RequestResult                                           complete(TaskID id) override;
 
 public:
+    RequestResult                                           saveToFile(const std::string& filepath) override;
+    RequestResult                                           loadFromFile(const std::string& filepath) override;
+
+public:
     ~TaskService() override =                               default;
 
 private:
-    std::unique_ptr<TaskModelInterface>                     model_;
+    std::unique_ptr<ModelHolderInterface>                   model_holder_;
 };
 
 
