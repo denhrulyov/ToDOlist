@@ -18,6 +18,7 @@ public:
     MOCK_METHOD(std::shared_ptr<State>, getInstanceOfDeleteTaskState, (), (override));
     MOCK_METHOD(std::shared_ptr<State>, getInstanceOfSubTaskInputChain, (), (override));
     MOCK_METHOD(std::shared_ptr<State>, getInstanceOfTaskInputChain, (), (override));
+    MOCK_METHOD(std::shared_ptr<State>, getInstanceOfLoadFromFileState, (), (override));
     MOCK_METHOD(std::shared_ptr<State>, getInstanceOfParseAddType, (), (override));
     MOCK_METHOD(std::shared_ptr<State>, getInstanceOfParseCommand, (), (override));
     MOCK_METHOD(std::shared_ptr<State>, getInstanceOfParsePostponeDate, (), (override));
@@ -30,6 +31,7 @@ public:
     MOCK_METHOD(std::shared_ptr<State>, getInstanceOfInputTaskParseID, (), (override));
     MOCK_METHOD(std::shared_ptr<State>, getInstanceOfParseCompleteID, (), (override));
     MOCK_METHOD(std::shared_ptr<State>, getInstanceOfParsePostponeID, (), (override));
+    MOCK_METHOD(std::shared_ptr<State>, getInstanceOfSaveToFileState, (), (override));
     MOCK_METHOD(std::shared_ptr<State>, getInstanceOfShowSubTasksParseID, (), (override));
 };
 

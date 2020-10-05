@@ -24,6 +24,15 @@ TEST_F(TestParseCommand, WillReactToDeleteKeyword) {
     STATE_MUST_SWITCH(ParseCommand, getInstanceOfDeleteStateParseID, Keyword::DELETE);
 }
 
+TEST_F(TestParseCommand, WillReactToLoadKeyword) {
+    STATE_MUST_SWITCH(ParseCommand, getInstanceOfLoadFromFileState, Keyword::LOAD);
+}
+
+TEST_F(TestParseCommand, WillReactToSaveKeyword) {
+    STATE_MUST_SWITCH(ParseCommand, getInstanceOfSaveToFileState, Keyword::SAVE);
+}
+
+
 TEST_F(TestParseCommand, ReactSpecKW) {
 
     ParseCommand state(std::move(std::make_unique<MockKeywordTokenizer>()));
