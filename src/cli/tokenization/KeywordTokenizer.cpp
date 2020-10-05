@@ -15,6 +15,8 @@ Keyword  KeywordTokenizer::read(ConsoleIOInterface &io) {
             {"delete",    Keyword::DELETE},
             {"postpone",  Keyword::POSTPONE},
             {"complete",  Keyword::COMPLETE},
+            {"load",      Keyword::LOAD},
+            {"save",      Keyword::SAVE},
             {"today",     Keyword::TODAY},
             {"this_week", Keyword::THIS_WEEK},
             {"all",       Keyword::ALL},

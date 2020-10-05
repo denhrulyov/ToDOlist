@@ -37,6 +37,10 @@ std::shared_ptr<State> ParseCommand::execute(ConsoleContextInterface &context, S
             return factory.getInstanceOfParsePostponeID();
         case Keyword::COMPLETE:
             return factory.getInstanceOfParseCompleteID();
+        case Keyword::LOAD:
+            return factory.getInstanceOfLoadFromFileState();
+        case Keyword::SAVE:
+            return factory.getInstanceOfSaveToFileState();
         default:
             context.getIO().putLine("Unknown command!");
             help(context);
@@ -52,4 +56,6 @@ void ParseCommand::help(ConsoleContextInterface &context) {
     context.getIO().putLine("-  postpone");
     context.getIO().putLine("-  delete");
     context.getIO().putLine("-  complete");
+    context.getIO().putLine("-  load");
+    context.getIO().putLine("-  save");
 }
