@@ -5,23 +5,25 @@
 #ifndef TODOLIST_MODELHOLDER_H
 #define TODOLIST_MODELHOLDER_H
 
-#include "ModelHolderInterface.h"
+#include "ModelHolder.h"
 #include "persistence/ModelPersister.h"
 #include "persistence/StreamOwner.h"
 #include "memory_model/ModelCreatorInterface.h"
 
-class ModelHolder : public ModelHolderInterface {
+class ModelHolder {
 
 public:
-    explicit ModelHolder(
+
+    ModelHolder(
             std::unique_ptr<ModelCreatorInterface> creator,
             std::unique_ptr<ModelPersister> persister,
             StreamOwner& persistence_stream);
 
 public:
-    TaskModelInterface&     GetModel() override;
-    bool                    LoadModelFromFile(const std::string& filepath) override;
-    bool                    SaveModelToFile(const std::string& filepath) override;
+    virtual TaskModelInterface&     GetModel();
+    virtual bool                    LoadModelFromFile(const std::string& filepath);
+    virtual bool                    SaveModelToFile(const std::string& filepath);
+    virtual ~ModelHolder() = default;
 
 private:
     std::unique_ptr<TaskModelInterface> model_;

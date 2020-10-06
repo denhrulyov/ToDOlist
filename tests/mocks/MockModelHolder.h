@@ -7,11 +7,15 @@
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include "core/ModelHolderInterface.h"
+#include "core/ModelHolder.h"
 
-class MockModelHolder : public ModelHolderInterface {
+StreamOwner* nullstream = nullptr;
+
+
+class MockModelHolder : public ModelHolder {
 
 public:
+    MockModelHolder() : ModelHolder(std::make_unique<ModelCreator>(),nullptr, *nullstream) {}
     MOCK_METHOD(TaskModelInterface&, GetModel,(), (override));
     MOCK_METHOD(bool               , LoadModelFromFile, (const std::string& filepath), (override));
     MOCK_METHOD(bool               , SaveModelToFile, (const std::string& filepath), (override));

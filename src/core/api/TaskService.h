@@ -4,7 +4,7 @@
 
 #ifndef EVAL_TASKSERVICE_H
 #define EVAL_TASKSERVICE_H
-#include "core/ModelHolderInterface.h"
+#include "core/ModelHolder.h"
 #include "TaskServiceInterface.h"
 #include <unordered_map>
 #include <algorithm>
@@ -19,7 +19,7 @@
 class TaskService : public TaskServiceInterface {
 
 public:
-    explicit TaskService(std::unique_ptr<ModelHolderInterface> model_holder)
+    explicit TaskService(std::unique_ptr<ModelHolder> model_holder)
     :
     model_holder_(std::move(model_holder))
     {}
@@ -48,7 +48,7 @@ public:
     ~TaskService() override =                               default;
 
 private:
-    std::unique_ptr<ModelHolderInterface>                   model_holder_;
+    std::unique_ptr<ModelHolder>                   model_holder_;
 };
 
 
