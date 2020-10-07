@@ -5,17 +5,17 @@
 #ifndef TODOLIST_MODELCREATOR_H
 #define TODOLIST_MODELCREATOR_H
 
-#include "ModelCreatorInterface.h"
 #include "api/TaskModel.h"
 #include "data/TaskStorage.h"
 #include "structure/LinkManager.h"
 #include "view/TagPriorityView.h"
 #include "view/DatePriorityView.h"
 
-class ModelCreator : public ModelCreatorInterface {
+class ModelCreator {
 
 public:
-    std::unique_ptr<TaskModelInterface> CreateModel() override;
+    virtual std::unique_ptr<TaskModelInterface> CreateModel();
+    virtual ~ModelCreator() = default;
 };
 
 

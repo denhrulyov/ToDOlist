@@ -5,7 +5,7 @@
 #include "ModelHolder.h"
 
 ModelHolder::ModelHolder(
-        std::unique_ptr<ModelCreatorInterface> creator,
+        std::unique_ptr<ModelCreator> creator,
         std::unique_ptr<ModelPersister> persister,
         StreamOwner &persistence_stream) :
         creator_(std::move(creator)),

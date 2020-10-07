@@ -11,7 +11,7 @@
 #include "core/memory_model/structure/LinkManagerInterface.h"
 #include "core/memory_model/view/PriorityViewInterface.h"
 #include "core/memory_model/api/TaskModelInterface.h"
-#include "core/memory_model/ModelCreatorInterface.h"
+#include "core/memory_model/ModelCreator.h"
 
 using ::testing::AnyNumber;
 using ::testing::Return;
@@ -69,7 +69,7 @@ public:
 
 };
 
-class MockModelCreator : public ModelCreatorInterface {
+class MockModelCreator : public ModelCreator {
 
 public:
     MOCK_METHOD(std::unique_ptr<TaskModelInterface>, CreateModel, (), (override));
