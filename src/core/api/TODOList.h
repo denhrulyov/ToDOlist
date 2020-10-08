@@ -7,7 +7,7 @@
 
 #include "TaskService.h"
 #include "core/memory_model/ModelCreator.h"
-#include "core/persistence/IostreamModelPersister.h"
+#include "core/persistence/PersisterCreator.h"
 #include "core/persistence/ProtoConvert.h"
 #include "core/ModelHolder.h"
 

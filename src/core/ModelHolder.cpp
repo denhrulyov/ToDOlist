@@ -6,11 +6,9 @@
 
 ModelHolder::ModelHolder(
         std::unique_ptr<ModelCreator> creator,
-        std::unique_ptr<ModelPersister> persister,
-        StreamOwner &persistence_stream) :
+        std::unique_ptr<PersisterCreator> persister_creator) :
         creator_(std::move(creator)),
-        persister_(std::move(persister)),
-        persistence_stream_(persistence_stream)
+        persister_creator_(std::move(persister_creator))
         {
             model_ = creator_->CreateModel();
         }
@@ -21,13 +19,13 @@ TaskModelInterface &ModelHolder::GetModel() {
 }
 
 bool ModelHolder::LoadModelFromFile(const std::string &filepath) {
-    auto file = std::make_unique<std::fstream>(filepath, std::ios::in);
+    auto file = std::make_shared<std::fstream>(filepath, std::ios::in);
     if (!file->is_open()) {
         return false;
     }
     auto new_model = creator_->CreateModel();
-    persistence_stream_.SetStream(std::move(file));
-    if (!persister_->Load(*new_model)) {
+    auto persister = persister_creator_->CreatePersister(*new_model, file);
+    if (!persister->Load()) {
         return false;
     }
     std::swap(model_, new_model);
@@ -35,11 +33,11 @@ bool ModelHolder::LoadModelFromFile(const std::string &filepath) {
 }
 
 bool ModelHolder::SaveModelToFile(const std::string &filepath) {
-    auto file = std::make_unique<std::fstream>(filepath, std::ios::out);
+    auto file = std::make_shared<std::fstream>(filepath, std::ios::out);
     if (!file->is_open()) {
         return false;
     }
-    persistence_stream_.SetStream(std::move(file));
-    return persister_->Save(*model_);
+    auto persister = persister_creator_->CreatePersister(*model_, file);
+    return persister->Save();
 }
 

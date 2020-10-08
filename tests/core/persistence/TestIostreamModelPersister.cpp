@@ -3,6 +3,7 @@
 //
 
 #include "mocks/CoreMocks.h"
+#include "mocks/CoreMocks.h"
 #include "core/persistence/IostreamModelPersister.h"
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
@@ -76,11 +77,10 @@ TEST_F(IostreamModelPersisterTest, TestDemanglesAllSubtasks) {
     EXPECT_CALL(mm, addSubTask(TaskID(4), has_name("121")))
             .WillOnce(Return(TaskCreationResult::success(TaskID(6))));
     std::vector protos {task1, task11, task12, task121, task13, task2, task3};;
-    IostreamModelPersister iosmp;
-    auto ss = std::make_unique<std::stringstream>(std::ios::out | std::ios::in);
+    auto ss = std::make_shared<std::stringstream>(std::ios::out | std::ios::in);
     model_proto.SerializeToOstream(ss.get());
-    iosmp.SetStream(std::move(ss));
-    ASSERT_TRUE(iosmp.Load(mm));
+    IostreamModelPersister iosmp(mm, ss);
+    ASSERT_TRUE(iosmp.Load());
 }
 
 std::vector<TaskDTO> on_indexes(const std::vector<TaskDTO>& vec, const std::vector<std::size_t>& indexes) {
@@ -134,7 +134,6 @@ TEST_F(IostreamModelPersisterTest, TestSerializesAllSubtasks) {
     EXPECT_CALL(ms, getSubTasks(sample_tasks[7].getId()))
             .WillRepeatedly(Return(std::vector<TaskDTO> {}));
 
-    IostreamModelPersister sr;
-    sr.SetStream(std::make_unique<std::stringstream>());
-    sr.Save(ms);
+    IostreamModelPersister sr(ms, std::make_shared<std::fstream>());
+    sr.Save();
 }

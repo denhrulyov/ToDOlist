@@ -10,8 +10,8 @@
 class ModelPersister {
 
 public:
-    virtual bool Save(const TaskModelInterface &object) = 0;
-    virtual bool Load(TaskModelInterface &model) = 0;
+    virtual bool Save() = 0;
+    virtual bool Load() = 0;
     virtual ~ModelPersister() = default;
 };
 

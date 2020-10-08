@@ -9,18 +9,21 @@
 #include "StreamOwner.h"
 #include "task.pb.h"
 
-class IostreamModelPersister : public ModelPersister, public StreamOwner {
+class IostreamModelPersister : public ModelPersister {
 
 public:
-    bool                                Save(const TaskModelInterface &model) override;
-    bool                                Load(TaskModelInterface &model) override;
-    void                                SetStream(std::unique_ptr<std::iostream>) override;
+    explicit IostreamModelPersister(TaskModelInterface& model, std::shared_ptr<std::iostream> stream);
+
+public:
+    bool                                Save() override;
+    bool                                Load() override;
 
 private:
-    bool RestoreTaskByMessage(TaskModelInterface& model, TaskID id, const TaskMessage& message);
-    bool WriteTaskToTaskMessage(const TaskModelInterface& model, const TaskDTO& task, TaskMessage* message);
+    bool RestoreTaskByMessage(TaskID id, const TaskMessage& message);
+    bool WriteTaskToTaskMessage(const TaskDTO& task, TaskMessage* message);
 
 private:
+    TaskModelInterface& model_;
     std::shared_ptr<std::iostream> stream_;
 };
 

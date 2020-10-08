@@ -12,8 +12,8 @@
 class MockModelPersister : public ModelPersister {
 
 public:
-    MOCK_METHOD(bool, Save, (const TaskModelInterface &object), (override));
-    MOCK_METHOD(bool, Load, (TaskModelInterface&), (override));
+    MOCK_METHOD(bool, Save, (), (override));
+    MOCK_METHOD(bool, Load, (), (override));
 };
 
 

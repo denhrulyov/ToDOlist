@@ -6,7 +6,7 @@
 #define TODOLIST_MODELHOLDER_H
 
 #include "ModelHolder.h"
-#include "persistence/ModelPersister.h"
+#include "persistence/PersisterCreator.h"
 #include "persistence/StreamOwner.h"
 #include "memory_model/ModelCreator.h"
 
@@ -16,8 +16,7 @@ public:
 
     ModelHolder(
             std::unique_ptr<ModelCreator> creator,
-            std::unique_ptr<ModelPersister> persister,
-            StreamOwner& persistence_stream);
+            std::unique_ptr<PersisterCreator> persister_creator);
 
 public:
     virtual TaskModelInterface&     GetModel();
@@ -28,8 +27,7 @@ public:
 private:
     std::unique_ptr<TaskModelInterface> model_;
     std::unique_ptr<ModelCreator> creator_;
-    std::unique_ptr<ModelPersister> persister_;
-    StreamOwner& persistence_stream_;
+    std::unique_ptr<PersisterCreator> persister_creator_;
 
 };
 
