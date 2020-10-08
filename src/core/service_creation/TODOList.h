@@ -5,7 +5,7 @@
 #ifndef TODOLIST_TODOLIST_H
 #define TODOLIST_TODOLIST_H
 
-#include "TaskService.h"
+#include "core/api/TaskService.h"
 #include "core/memory_model/ModelCreator.h"
 #include "core/persistence/PersisterCreator.h"
 #include "core/persistence/ProtoConvert.h"
