@@ -5,7 +5,6 @@
 #include "mocks/CoreMocks.h"
 #include "mocks/MockModelPersister.h"
 #include "mocks/MockModelPersisterCreator.h"
-#include "mocks/MockStreamOwner.h"
 #include "core/ModelHolder.h"
 
 using ::testing::Ref;

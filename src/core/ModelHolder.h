@@ -7,7 +7,6 @@
 
 #include "ModelHolder.h"
 #include "persistence/PersisterCreator.h"
-#include "persistence/StreamOwner.h"
 #include "memory_model/ModelCreator.h"
 
 class ModelHolder {

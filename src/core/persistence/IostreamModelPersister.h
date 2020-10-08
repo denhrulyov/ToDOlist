@@ -6,7 +6,6 @@
 #define TODOLIST_IOSTREAMMODELPERSISTER_H
 
 #include "ModelPersister.h"
-#include "StreamOwner.h"
 #include "task.pb.h"
 
 class IostreamModelPersister : public ModelPersister {
