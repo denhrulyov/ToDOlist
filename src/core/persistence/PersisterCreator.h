@@ -11,7 +11,7 @@ class PersisterCreator {
 
 public:
     virtual std::unique_ptr<ModelPersister> CreatePersister(
-            TaskModelInterface& model,
+            TaskRepositoryInterface& model,
             std::shared_ptr<std::iostream> stream);
     virtual ~PersisterCreator() = default;
 };

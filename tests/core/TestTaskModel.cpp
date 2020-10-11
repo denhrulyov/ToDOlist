@@ -3,7 +3,7 @@
 //
 
 #include "mocks/CoreMocks.h"
-#include "core/memory_model/api/TaskModel.h"
+#include "core/memory_model/api/TaskRespository.h"
 
 using ::testing::AnyNumber;
 using ::testing::Return;
@@ -111,10 +111,10 @@ TEST_F(TaskModelTest, TestTaskAddedToStorage) {
     auto ms = std::make_unique<MockStorage>();
     EXPECT_CALL(*ms, addTask).Times(1);
 
-    TaskModel ts = TaskModel(   std::move(ms),
-                                    std::make_unique<MockView<date>>(),
-                                    std::make_unique<MockView<std::string>>(),
-                                    std::make_unique<MockLinkManager>());
+    TaskRespository ts = TaskRespository(std::move(ms),
+                                         std::make_unique<MockView<date>>(),
+                                         std::make_unique<MockView<std::string>>(),
+                                         std::make_unique<MockLinkManager>());
     //___________
     // Exercise mehod testing
     ts.addTask(sample_task);
@@ -135,10 +135,10 @@ TEST_F(TaskModelTest, TestErrorResultIfNoParentToAddSubtask) {
     ON_CALL(*ms, getTaskByID)
             .WillByDefault(Return(std::shared_ptr<TaskNode>{nullptr}));
 
-    TaskModel tm =     TaskModel(   std::move(ms),
-                                    std::make_unique<MockView<date>>(),
-                                    std::make_unique<MockView<std::string>>(),
-                                    std::make_unique<MockLinkManager>());
+    TaskRespository tm =     TaskRespository(std::move(ms),
+                                             std::make_unique<MockView<date>>(),
+                                             std::make_unique<MockView<std::string>>(),
+                                             std::make_unique<MockLinkManager>());
     //___________
     // Exercise mehod testing
     EXPECT_FALSE(tm.addSubTask(id, sample_task).getSuccessStatus());
@@ -159,10 +159,10 @@ TEST_F(TaskModelTest, TestErrorResultOfAddSubTaskIfErrorInStorage) {
     auto ms = task_model_test::create_fixed_mock_storage(std::vector<std::shared_ptr<TaskNode>> {sample_node});
     ON_CALL(*ms, addTask)
             .WillByDefault(Return(TaskStorageInterface::Result::FAILURE));
-    TaskModel ts = TaskModel(   std::move(ms),
-                                    std::make_unique<MockView<date>>(),
-                                    std::make_unique<MockView<std::string>>(),
-                                    std::make_unique<MockLinkManager>());
+    TaskRespository ts = TaskRespository(std::move(ms),
+                                         std::make_unique<MockView<date>>(),
+                                         std::make_unique<MockView<std::string>>(),
+                                         std::make_unique<MockLinkManager>());
     //___________
     // Exercise mehod testing
     EXPECT_FALSE(ts.addSubTask(id, sample_task).getSuccessStatus());
@@ -181,10 +181,10 @@ TEST_F(TaskModelTest, TestTaskLinksSet) {
     // Mocks
     auto mlm = std::make_unique<MockLinkManager>();
     EXPECT_CALL(*mlm, setLinks).Times(1);
-    TaskModel ts = TaskModel(   std::make_unique<MockStorage>(),
-                                    std::make_unique<MockView<date>>(),
-                                    std::make_unique<MockView<std::string>>(),
-                                    std::move(mlm));
+    TaskRespository ts = TaskRespository(std::make_unique<MockStorage>(),
+                                         std::make_unique<MockView<date>>(),
+                                         std::make_unique<MockView<std::string>>(),
+                                         std::move(mlm));
     //___________
     // Exercise mehod testing
     ts.addTask(sample_task);
@@ -210,10 +210,10 @@ TEST_F(TaskModelTest, TestSubTaskLinked) {
                         /*parent*/Truly(task_model_test::pointer_to_same(std::weak_ptr(sample_parent))),
                         /*child*/ _
                 )).Times(1);
-    TaskModel ts = TaskModel(   std::move(ms),
-                                    std::make_unique<MockView<date>>(),
-                                    std::make_unique<MockView<std::string>>(),
-                                    std::move(mlm));
+    TaskRespository ts = TaskRespository(std::move(ms),
+                                         std::make_unique<MockView<date>>(),
+                                         std::make_unique<MockView<std::string>>(),
+                                         std::move(mlm));
     ts.addSubTask(
             parent,
             TaskDTO::create("t2", TaskPriority::FIRST, "lbl3",
@@ -226,10 +226,10 @@ TEST_F(TaskModelTest, TestDropTaskDeletesItFromStorage) {
     TaskID id(tasks[0]->getId());
     auto ms = task_model_test::create_fixed_mock_storage(tasks);
     EXPECT_CALL(*ms, eraseTask(id)).Times(1);
-    TaskModel ts = TaskModel(   std::move(ms),
-                                    std::make_unique<MockView<date>>(),
-                                    std::make_unique<MockView<std::string>>(),
-                                    std::make_unique<MockLinkManager>());
+    TaskRespository ts = TaskRespository(std::move(ms),
+                                         std::make_unique<MockView<date>>(),
+                                         std::make_unique<MockView<std::string>>(),
+                                         std::make_unique<MockLinkManager>());
     ts.dropTask(id);
 }
 
@@ -241,10 +241,10 @@ TEST_F(TaskModelTest, TestDropTaskDeletesAllChildrenFromStorage) {
     for (auto child : children) {
         EXPECT_CALL(*ms, eraseTask(child->getId())).Times(1);
     }
-    TaskModel ts = TaskModel(   std::move(ms),
-                                    std::make_unique<MockView<date>>(),
-                                    std::make_unique<MockView<std::string>>(),
-                                    std::make_unique<MockLinkManager>());
+    TaskRespository ts = TaskRespository(std::move(ms),
+                                         std::make_unique<MockView<date>>(),
+                                         std::make_unique<MockView<std::string>>(),
+                                         std::make_unique<MockLinkManager>());
     ts.dropTask(parent->getId());
 }
 
@@ -257,10 +257,10 @@ TEST_F(TaskModelTest, TestDeleteTaskDeletesItsLinks) {
                 removeLinks(
                         Truly(task_model_test::pointer_to_same(std::weak_ptr(tasks[0])))
                 )).Times(1);
-    TaskModel ts = TaskModel(   std::move(task_model_test::create_fixed_mock_storage(tasks)),
-                                    std::make_unique<MockView<date>>(),
-                                    std::make_unique<MockView<std::string>>(),
-                                    std::move(mlm));
+    TaskRespository ts = TaskRespository(std::move(task_model_test::create_fixed_mock_storage(tasks)),
+                                         std::make_unique<MockView<date>>(),
+                                         std::make_unique<MockView<std::string>>(),
+                                         std::move(mlm));
     ts.dropTask(tasks[0]->getId());
 }
 
@@ -278,10 +278,10 @@ TEST_F(TaskModelTest, TestDeleteTaskDeletesAllChildrenLinks) {
         )
                 .Times(AnyNumber());
     }
-    TaskModel ts = TaskModel(   std::move(task_model_test::create_fixed_mock_storage(tasks)),
-                                    std::make_unique<MockView<date>>(),
-                                    std::make_unique<MockView<std::string>>(),
-                                    std::move(mlm));
+    TaskRespository ts = TaskRespository(std::move(task_model_test::create_fixed_mock_storage(tasks)),
+                                         std::make_unique<MockView<date>>(),
+                                         std::make_unique<MockView<std::string>>(),
+                                         std::move(mlm));
     ts.dropTask(sample_parent->getId());
 }
 
@@ -290,10 +290,10 @@ TEST_F(TaskModelTest, TestDeleteTaskReturnsErrorIfNoSuchTask) {
     auto ms = std::make_unique<MockStorage>();
     ON_CALL(*ms, getTaskByID)
             .WillByDefault(Return(std::shared_ptr<TaskNode> {nullptr}));
-    TaskModel ts = TaskModel(   std::move(ms),
-                                    std::make_unique<MockView<date>>(),
-                                    std::make_unique<MockView<std::string>>(),
-                                    std::make_unique<MockLinkManager>());
+    TaskRespository ts = TaskRespository(std::move(ms),
+                                         std::make_unique<MockView<date>>(),
+                                         std::make_unique<MockView<std::string>>(),
+                                         std::make_unique<MockLinkManager>());
     EXPECT_FALSE(ts.dropTask(tasks[0]->getId()).getSuccessStatus());
 }
 
@@ -311,10 +311,10 @@ TEST_F(TaskModelTest, TestSetTaskDataLinkManagerMovesLinks) {
                                 Truly(pointer_to_same(test_replace)), _
                                 )
                ).Times(1);
-    TaskModel ts = TaskModel(   std::move(ms),
-                                std::move(mvd),
-                                std::move(mvl),
-                                std::move(mlm));
+    TaskRespository ts = TaskRespository(std::move(ms),
+                                         std::move(mvd),
+                                         std::move(mvl),
+                                         std::move(mlm));
     ts.setTaskData(test_replace->getId(), TaskDTOConverter::getDTO(parent));
 }
 
@@ -330,10 +330,10 @@ TEST_F(TaskModelTest, TestSetTaskDataTaskReplacedInStorage) {
     auto test_replace = children[0];
     EXPECT_CALL(*ms, eraseTask(test_replace->getId())).Times(1);
     EXPECT_CALL(*ms, addTask).Times(1);
-    TaskModel ts = TaskModel(   std::move(ms),
-                                std::move(mvd),
-                                std::move(mvl),
-                                std::move(mlm));
+    TaskRespository ts = TaskRespository(std::move(ms),
+                                         std::move(mvd),
+                                         std::move(mvl),
+                                         std::move(mlm));
     ts.setTaskData(test_replace->getId(), TaskDTOConverter::getDTO(parent));
 }
 
@@ -350,10 +350,10 @@ TEST_F(TaskModelTest, TestSetTaskDataDoNothingOnNotFound) {
     EXPECT_CALL(*ms, eraseTask).Times(0);
     EXPECT_CALL(*ms, addTask).Times(0);
     EXPECT_CALL(*mlm, moveInboundLinks).Times(0);
-    TaskModel ts = TaskModel(   std::move(ms),
-                                std::move(mvd),
-                                std::move(mvl),
-                                std::move(mlm));
+    TaskRespository ts = TaskRespository(std::move(ms),
+                                         std::move(mvd),
+                                         std::move(mvl),
+                                         std::move(mlm));
     ts.setTaskData(test_replace->getId(), TaskDTOConverter::getDTO(parent));
 }
 
@@ -366,10 +366,10 @@ TEST_F(TaskModelTest, TestSetCompletedSetsTaskToCompleted) {
     auto mlm = std::make_unique<MockLinkManager>();
     using task_model_test::pointer_to_same;
     auto test_replace = parent;
-    TaskModel tm = TaskModel(   std::move(ms),
-                                std::move(mvd),
-                                std::move(mvl),
-                                std::move(mlm));
+    TaskRespository tm = TaskRespository(std::move(ms),
+                                         std::move(mvd),
+                                         std::move(mvl),
+                                         std::move(mlm));
     tm.setCompleted(children[0]->getId());
     ASSERT_TRUE(children[0]->isComplete());
 }
@@ -383,10 +383,10 @@ TEST_F(TaskModelTest, TestSetCompletedDoesNotTouchSubTasks) {
     auto mlm = std::make_unique<MockLinkManager>();
     using task_model_test::pointer_to_same;
     auto test_replace = parent;
-    TaskModel tm = TaskModel(   std::move(ms),
-                                std::move(mvd),
-                                std::move(mvl),
-                                std::move(mlm));
+    TaskRespository tm = TaskRespository(std::move(ms),
+                                         std::move(mvd),
+                                         std::move(mvl),
+                                         std::move(mlm));
     tm.setCompleted(children[0]->getId());
     for (int i = 1; i < children.size(); ++i) {
         ASSERT_FALSE(children[i]->isComplete());
@@ -401,10 +401,10 @@ TEST_F(TaskModelTest, TestSetCompletedDoesNotTouchParent) {
     auto mvl = std::make_unique<MockView<std::string>>();
     auto mlm = std::make_unique<MockLinkManager>();
     auto test_replace = parent;
-    TaskModel tm = TaskModel(   std::move(ms),
-                                std::move(mvd),
-                                std::move(mvl),
-                                std::move(mlm));
+    TaskRespository tm = TaskRespository(std::move(ms),
+                                         std::move(mvd),
+                                         std::move(mvl),
+                                         std::move(mlm));
     tm.setCompleted(children[0]->getId());
     ASSERT_FALSE(parent->isComplete());
 }
@@ -417,10 +417,10 @@ TEST_F(TaskModelTest, TestSetCompletedReturnsErrorResultOnBadId) {
     auto mvl = std::make_unique<MockView<std::string>>();
     auto mlm = std::make_unique<MockLinkManager>();
     auto test_replace = parent;
-    TaskModel tm = TaskModel(   std::move(ms),
-                                std::move(mvd),
-                                std::move(mvl),
-                                std::move(mlm));
+    TaskRespository tm = TaskRespository(std::move(ms),
+                                         std::move(mvd),
+                                         std::move(mvl),
+                                         std::move(mlm));
     auto mx = std::max_element(nodes.begin(), nodes.end(),
                                [] (auto& t1, auto& t2) {
                                    return t1->getId() < t2->getId();
@@ -434,10 +434,10 @@ TEST_F(TaskModelTest, TestGetTaskData) {
     auto mvd = std::make_unique<MockView<date>>();
     auto mvl = std::make_unique<MockView<std::string>>();
     auto mlm = std::make_unique<MockLinkManager>();
-    TaskModel tm = TaskModel(   std::move(ms),
-                                std::move(mvd),
-                                std::move(mvl),
-                                std::move(mlm));
+    TaskRespository tm = TaskRespository(std::move(ms),
+                                         std::move(mvd),
+                                         std::move(mvl),
+                                         std::move(mlm));
     ASSERT_TRUE(tm.getTaskData(nodes[0]->getId()));
     TaskDTO got = tm.getTaskData(nodes[0]->getId()).value();
     ASSERT_EQ(nodes[0]->getTask().getName(), got.getName());
@@ -452,10 +452,10 @@ TEST_F(TaskModelTest, NulloptIfNoSuchTask) {
     auto mvd = std::make_unique<MockView<date>>();
     auto mvl = std::make_unique<MockView<std::string>>();
     auto mlm = std::make_unique<MockLinkManager>();
-    TaskModel tm = TaskModel(   std::move(ms),
-                                std::move(mvd),
-                                std::move(mvl),
-                                std::move(mlm));
+    TaskRespository tm = TaskRespository(std::move(ms),
+                                         std::move(mvd),
+                                         std::move(mvl),
+                                         std::move(mlm));
     auto mx = std::max_element(nodes.begin(), nodes.end(),
                       [] (auto& t1, auto& t2) {
                           return t1->getId() < t2->getId();
@@ -472,10 +472,10 @@ TEST_F(TaskModelTest, GetMethodsCallViewsMethods) {
     auto mvl = std::make_unique<MockView<std::string>>();
     EXPECT_CALL(*mvl, getAllWithConstraint);
     auto mlm = std::make_unique<MockLinkManager>();
-    TaskModel tm = TaskModel(   std::move(ms),
-                                std::move(mvd),
-                                std::move(mvl),
-                                std::move(mlm));
+    TaskRespository tm = TaskRespository(std::move(ms),
+                                         std::move(mvd),
+                                         std::move(mvl),
+                                         std::move(mlm));
     tm.getToDate(BoostDate());
     tm.getWithLabel("label");
 }
@@ -487,10 +487,10 @@ TEST_F(TaskModelTest, TestGetSubtasks) {
     auto mvd = std::make_unique<MockView<date>>();
     auto mvl = std::make_unique<MockView<std::string>>();
     auto mlm = std::make_unique<MockLinkManager>();
-    TaskModel tm = TaskModel(   std::move(ms),
-                                std::move(mvd),
-                                std::move(mvl),
-                                std::move(mlm));
+    TaskRespository tm = TaskRespository(std::move(ms),
+                                         std::move(mvd),
+                                         std::move(mvl),
+                                         std::move(mlm));
     for (auto node : nodes) {
         auto expected = node->getSubNodes();
         auto real = tm.getSubTasks(node->getId());
@@ -513,10 +513,10 @@ TEST_F(TaskModelTest, TestGetSubtasksTaskReturnsEmptyVector) {
     auto [parent, children] = task_model_test::create_sample_structure_1(nodes);
     ON_CALL(*ms, getTaskByID)
             .WillByDefault(Return(std::shared_ptr<TaskNode> {nullptr}));
-    TaskModel ts = TaskModel(   std::move(ms),
-                                std::make_unique<MockView<date>>(),
-                                std::make_unique<MockView<std::string>>(),
-                                std::make_unique<MockLinkManager>());
+    TaskRespository ts = TaskRespository(std::move(ms),
+                                         std::make_unique<MockView<date>>(),
+                                         std::make_unique<MockView<std::string>>(),
+                                         std::make_unique<MockLinkManager>());
     auto mx = std::max_element(nodes.begin(), nodes.end(),
                                [] (auto& t1, auto& t2) {
                                    return t1->getId() < t2->getId();
@@ -531,10 +531,10 @@ TEST_F(TaskModelTest, TestGetSubtasksRecurse) {
     auto mvd = std::make_unique<MockView<date>>();
     auto mvl = std::make_unique<MockView<std::string>>();
     auto mlm = std::make_unique<MockLinkManager>();
-    TaskModel tm = TaskModel(std::move(ms),
-                             std::move(mvd),
-                             std::move(mvl),
-                             std::move(mlm));
+    TaskRespository tm = TaskRespository(std::move(ms),
+                                         std::move(mvd),
+                                         std::move(mvl),
+                                         std::move(mlm));
     std::function<std::vector<std::shared_ptr<TaskNode>>(const std::shared_ptr<TaskNode>&)>
     traverse = [&](const std::shared_ptr<TaskNode>& node) {
         std::vector<std::shared_ptr<TaskNode>> all = {node};
@@ -567,10 +567,10 @@ TEST_F(TaskModelTest, TestGetSubtasksRecursiveTaskReturnsEmptyVector) {
     auto [parent, children] = task_model_test::create_sample_structure_1(nodes);
     ON_CALL(*ms, getTaskByID)
             .WillByDefault(Return(std::shared_ptr<TaskNode> {nullptr}));
-    TaskModel ts = TaskModel(   std::move(ms),
-                                std::make_unique<MockView<date>>(),
-                                std::make_unique<MockView<std::string>>(),
-                                std::make_unique<MockLinkManager>());
+    TaskRespository ts = TaskRespository(std::move(ms),
+                                         std::make_unique<MockView<date>>(),
+                                         std::make_unique<MockView<std::string>>(),
+                                         std::make_unique<MockLinkManager>());
     auto mx = std::max_element(nodes.begin(), nodes.end(),
                                [] (auto& t1, auto& t2) {
                                    return t1->getId() < t2->getId();
@@ -588,10 +588,10 @@ TEST_F(TaskModelTest, TestGetAllTasks) {
     auto mvd = std::make_unique<MockView<date>>();
     auto mvl = std::make_unique<MockView<std::string>>();
     auto mlm = std::make_unique<MockLinkManager>();
-    TaskModel tm = TaskModel(std::move(ms),
-                             std::move(mvd),
-                             std::move(mvl),
-                             std::move(mlm));
+    TaskRespository tm = TaskRespository(std::move(ms),
+                                         std::move(mvd),
+                                         std::move(mvl),
+                                         std::move(mlm));
     auto expected = nodes;
     auto real = tm.getAllTasks();
     std::sort(expected.begin(), expected.end(), [](auto n1, auto n2) {

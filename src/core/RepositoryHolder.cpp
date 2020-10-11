@@ -2,10 +2,10 @@
 // Created by denis on 04.10.20.
 //
 
-#include "ModelHolder.h"
+#include "RepositoryHolder.h"
 
-ModelHolder::ModelHolder(
-        std::unique_ptr<ModelCreator> creator,
+RepositoryHolder::RepositoryHolder(
+        std::unique_ptr<RepositoryCreator> creator,
         std::unique_ptr<PersisterCreator> persister_creator) :
         creator_(std::move(creator)),
         persister_creator_(std::move(persister_creator))
@@ -14,11 +14,11 @@ ModelHolder::ModelHolder(
         }
 
 
-TaskModelInterface &ModelHolder::GetModel() {
+TaskRepositoryInterface &RepositoryHolder::GetModel() {
     return *model_;
 }
 
-bool ModelHolder::LoadModelFromFile(const std::string &filepath) {
+bool RepositoryHolder::LoadModelFromFile(const std::string &filepath) {
     auto file = std::make_shared<std::fstream>(filepath, std::ios::in);
     if (!file->is_open()) {
         return false;
@@ -32,7 +32,7 @@ bool ModelHolder::LoadModelFromFile(const std::string &filepath) {
     return true;
 }
 
-bool ModelHolder::SaveModelToFile(const std::string &filepath) {
+bool RepositoryHolder::SaveModelToFile(const std::string &filepath) {
     auto file = std::make_shared<std::fstream>(filepath, std::ios::out);
     if (!file->is_open()) {
         return false;

@@ -6,10 +6,10 @@
 #define TODOLIST_TODOLIST_H
 
 #include "core/api/TaskService.h"
-#include "core/memory_model/ModelCreator.h"
+#include "core/memory_model/RepositoryCreator.h"
 #include "core/persistence/PersisterCreator.h"
 #include "core/persistence/ProtoConvert.h"
-#include "core/ModelHolder.h"
+#include "core/RepositoryHolder.h"
 
 /*
  * TaskService injector

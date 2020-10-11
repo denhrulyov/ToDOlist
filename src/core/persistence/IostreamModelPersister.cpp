@@ -7,12 +7,12 @@
 #include "core/memory_model/view/TagPriorityView.h"
 #include "core/memory_model/data/TaskStorage.h"
 #include "core/memory_model/structure/LinkManager.h"
-#include "core/memory_model/api/TaskModel.h"
+#include "core/memory_model/api/TaskRespository.h"
 #include "core/persistence/ProtoConvert.h"
 
 
 IostreamModelPersister::IostreamModelPersister(
-        TaskModelInterface &model,
+        TaskRepositoryInterface &model,
         std::shared_ptr<std::iostream> stream)
         :
         model_(model),

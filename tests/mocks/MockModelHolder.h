@@ -7,15 +7,15 @@
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include "core/ModelHolder.h"
+#include "core/RepositoryHolder.h"
 
 
 
-class MockModelHolder : public ModelHolder {
+class MockModelHolder : public RepositoryHolder {
 
 public:
-    MockModelHolder() : ModelHolder(std::make_unique<ModelCreator>(),nullptr) {}
-    MOCK_METHOD(TaskModelInterface&, GetModel,(), (override));
+    MockModelHolder() : RepositoryHolder(std::make_unique<RepositoryCreator>(), nullptr) {}
+    MOCK_METHOD(TaskRepositoryInterface&, GetModel,(), (override));
     MOCK_METHOD(bool               , LoadModelFromFile, (const std::string& filepath), (override));
     MOCK_METHOD(bool               , SaveModelToFile, (const std::string& filepath), (override));
 };

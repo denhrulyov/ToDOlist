@@ -11,7 +11,7 @@
 class IostreamModelPersister : public ModelPersister {
 
 public:
-    explicit IostreamModelPersister(TaskModelInterface& model, std::shared_ptr<std::iostream> stream);
+    explicit IostreamModelPersister(TaskRepositoryInterface& model, std::shared_ptr<std::iostream> stream);
 
 public:
     bool                                Save() override;
@@ -22,7 +22,7 @@ private:
     bool WriteTaskToTaskMessage(const TaskDTO& task, TaskMessage* message);
 
 private:
-    TaskModelInterface& model_;
+    TaskRepositoryInterface& model_;
     std::shared_ptr<std::iostream> stream_;
 };
 

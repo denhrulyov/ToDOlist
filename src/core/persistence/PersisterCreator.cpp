@@ -6,7 +6,7 @@
 #include "IostreamModelPersister.h"
 
 std::unique_ptr<ModelPersister> PersisterCreator::CreatePersister(
-        TaskModelInterface& model,
+        TaskRepositoryInterface& model,
         std::shared_ptr<std::iostream> stream) {
     return std::make_unique<IostreamModelPersister>(model, stream);
 }

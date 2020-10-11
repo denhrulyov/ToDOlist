@@ -5,7 +5,7 @@
 #ifndef TODOLIST_MODELPERSISTER_H
 #define TODOLIST_MODELPERSISTER_H
 
-#include "core/memory_model/api/TaskModelInterface.h"
+#include "core/memory_model/api/TaskRepositoryInterface.h"
 
 class ModelPersister {
 
