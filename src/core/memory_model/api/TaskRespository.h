@@ -2,16 +2,16 @@
 // Created by denis on 23.09.20.
 //
 
-#ifndef TODOLIST_TASKMODEL_H
-#define TODOLIST_TASKMODEL_H
+#ifndef TODOLIST_TASKRESPOSITORY_H
+#define TODOLIST_TASKRESPOSITORY_H
 
 #include "core/memory_model/data/TaskIDFactory.h"
-#include "TaskModelInterface.h"
+#include "TaskRepositoryInterface.h"
 
-class TaskModel : public TaskModelInterface {
+class TaskRespository : public TaskRepositoryInterface {
 
 public:
-    TaskModel(
+    TaskRespository(
             std::unique_ptr<TaskStorageInterface>                   storage,
             std::unique_ptr<PriorityViewInterface<BoostDate>>       view_date,
             std::unique_ptr<PriorityViewInterface<std::string>>     view_label,
@@ -49,4 +49,4 @@ private:
 std::vector<TaskDTO> convertAllNodes(const std::vector<std::weak_ptr<TaskNode>>& all);
 std::vector<TaskDTO> get_children_recurse(const std::shared_ptr<TaskNode>& node);
 
-#endif //TODOLIST_TASKMODEL_H
+#endif //TODOLIST_TASKRESPOSITORY_H

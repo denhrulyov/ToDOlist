@@ -10,8 +10,8 @@
 #include "core/memory_model/data/TaskStorage.h"
 #include "core/memory_model/structure/LinkManagerInterface.h"
 #include "core/memory_model/view/PriorityViewInterface.h"
-#include "core/memory_model/api/TaskModelInterface.h"
-#include "core/memory_model/ModelCreatorInterface.h"
+#include "core/memory_model/api/TaskRepositoryInterface.h"
+#include "core/memory_model/RepositoryCreator.h"
 
 using ::testing::AnyNumber;
 using ::testing::Return;
@@ -49,7 +49,7 @@ public:
 
 
 
-class MockModel : public TaskModelInterface {
+class MockModel : public TaskRepositoryInterface {
 
 public:
     MOCK_METHOD(std::vector<TaskDTO>,   getToDate, (const BoostDate&), (const, override));
@@ -69,10 +69,10 @@ public:
 
 };
 
-class MockModelCreator : public ModelCreatorInterface {
+class MockModelCreator : public RepositoryCreator {
 
 public:
-    MOCK_METHOD(std::unique_ptr<TaskModelInterface>, CreateModel, (), (override));
+    MOCK_METHOD(std::unique_ptr<TaskRepositoryInterface>, CreateModel, (), (override));
 };
 
 #endif //TODOLIST_MOCKS_H

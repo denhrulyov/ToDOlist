@@ -6,26 +6,23 @@
 #define TODOLIST_IOSTREAMMODELPERSISTER_H
 
 #include "ModelPersister.h"
-#include "StreamOwner.h"
-#include "TaskDataConverterInterface.h"
 #include "task.pb.h"
 
-class IostreamModelPersister : public ModelPersister, public StreamOwner {
+class IostreamModelPersister : public ModelPersister {
 
 public:
-    explicit IostreamModelPersister(std::unique_ptr<TaskDataConverterInterface> data_converter);
+    explicit IostreamModelPersister(TaskRepositoryInterface& model, std::shared_ptr<std::iostream> stream);
 
 public:
-    bool                                Save(const TaskModelInterface &model) override;
-    bool                                Load(TaskModelInterface &model) override;
-    void                                SetStream(std::unique_ptr<std::iostream>) override;
+    bool                                Save() override;
+    bool                                Load() override;
 
 private:
-    bool RestoreTaskByMessage(TaskModelInterface& model, TaskID id, const TaskMessage& message);
-    bool WriteTaskToTaskMessage(const TaskModelInterface& model, const TaskDTO& task, TaskMessage* message);
+    bool RestoreTaskByMessage(TaskID id, const TaskMessage& message);
+    bool WriteTaskToTaskMessage(const TaskDTO& task, TaskMessage* message);
 
 private:
-    std::unique_ptr<TaskDataConverterInterface> data_converter_;
+    TaskRepositoryInterface& model_;
     std::shared_ptr<std::iostream> stream_;
 };
 

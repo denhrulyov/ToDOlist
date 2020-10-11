@@ -7,32 +7,36 @@
 #include "core/memory_model/view/TagPriorityView.h"
 #include "core/memory_model/data/TaskStorage.h"
 #include "core/memory_model/structure/LinkManager.h"
-#include "core/memory_model/api/TaskModel.h"
+#include "core/memory_model/api/TaskRespository.h"
+#include "core/persistence/ProtoConvert.h"
 
-IostreamModelPersister::IostreamModelPersister
-        (std::unique_ptr<TaskDataConverterInterface> data_converter)
+
+IostreamModelPersister::IostreamModelPersister(
+        TaskRepositoryInterface &model,
+        std::shared_ptr<std::iostream> stream)
         :
-        data_converter_(std::move(data_converter))
-{}
+        model_(model),
+        stream_(stream)
+        {}
 
-bool IostreamModelPersister::WriteTaskToTaskMessage(const TaskModelInterface& model, const TaskDTO& task, TaskMessage* message) {
+bool IostreamModelPersister::WriteTaskToTaskMessage(const TaskDTO& task, TaskMessage* message) {
     message->set_allocated_task(new TaskData);
-    data_converter_->WriteToMessage(task, message->mutable_task());
-    for (const auto& subtask : model.getSubTasks(task.getId())) {
+    proto_convert::WriteToMessage(task, message->mutable_task());
+    for (const auto& subtask : model_.getSubTasks(task.getId())) {
         TaskMessage* subtask_dump = message->add_subtasks();
-        if (!WriteTaskToTaskMessage(model, subtask, subtask_dump)) {
+        if (!WriteTaskToTaskMessage(subtask, subtask_dump)) {
             return false;
         }
     }
     return true;
 }
 
-bool IostreamModelPersister::Save(const TaskModelInterface &model) {
+bool IostreamModelPersister::Save() {
     TaskModelMessage assembled_model_message;
-    for (const auto& task : model.getAllTasks()) {
-        if (!model.getParentTask(task.getId())) {
+    for (const auto& task : model_.getAllTasks()) {
+        if (!model_.getParentTask(task.getId())) {
             TaskMessage* assembled_task_message = assembled_model_message.add_tasks();
-            if (!WriteTaskToTaskMessage(model, task, assembled_task_message)) {
+            if (!WriteTaskToTaskMessage(task, assembled_task_message)) {
                 return false;
             }
         }
@@ -40,15 +44,15 @@ bool IostreamModelPersister::Save(const TaskModelInterface &model) {
     return assembled_model_message.SerializeToOstream(stream_.get());
 }
 
-bool IostreamModelPersister::RestoreTaskByMessage(TaskModelInterface& model, TaskID id, const TaskMessage& message) {
+bool IostreamModelPersister::RestoreTaskByMessage(TaskID id, const TaskMessage& message) {
     for (const TaskMessage& subtask_load : message.subtasks()) {
-        TaskDTO subtask = data_converter_->RestoreFromMessage(subtask_load.task());
-        TaskCreationResult result = model.addSubTask(id, subtask);
+        TaskDTO subtask = proto_convert::RestoreFromMessage(subtask_load.task());
+        TaskCreationResult result = model_.addSubTask(id, subtask);
         if (!result.getCreatedTaskID()) {
             return false;
         }
         TaskID id_subtask = result.getCreatedTaskID().value();
-        if (!RestoreTaskByMessage(model, id_subtask, subtask_load)) {
+        if (!RestoreTaskByMessage(id_subtask, subtask_load)) {
             // failed to deserialize subtasks hierarchy at any point
             return false;
         }
@@ -57,19 +61,19 @@ bool IostreamModelPersister::RestoreTaskByMessage(TaskModelInterface& model, Tas
     return true;
 }
 
-bool IostreamModelPersister::Load(TaskModelInterface &model) {
+bool IostreamModelPersister::Load() {
     TaskModelMessage loaded_model;
     if (!loaded_model.ParseFromIstream(stream_.get())) {
         return false;
     }
     for (const TaskMessage& task_load : loaded_model.tasks()) {
-        TaskDTO task = data_converter_->RestoreFromMessage(task_load.task());
-        TaskCreationResult result = model.addTask(task);
+        TaskDTO task = proto_convert::RestoreFromMessage(task_load.task());
+        TaskCreationResult result = model_.addTask(task);
 
         if (!result.getCreatedTaskID()) {
             return false;
         }
-        if (!RestoreTaskByMessage(model, result.getCreatedTaskID().value(), task_load)) {
+        if (!RestoreTaskByMessage(result.getCreatedTaskID().value(), task_load)) {
             // failed to deserialize subtasks hierarchy at any point
             return false;
         }
@@ -77,8 +81,6 @@ bool IostreamModelPersister::Load(TaskModelInterface &model) {
     return true;
 }
 
-void IostreamModelPersister::SetStream(std::unique_ptr<std::iostream> stream) {
-    stream_ = std::move(stream);
-}
+
 
 

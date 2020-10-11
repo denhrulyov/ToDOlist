@@ -5,11 +5,11 @@
 #ifndef TODOLIST_TODOLIST_H
 #define TODOLIST_TODOLIST_H
 
-#include "TaskService.h"
-#include "core/memory_model/ModelCreator.h"
-#include "core/persistence/IostreamModelPersister.h"
-#include "core/persistence/TaskDataConverter.h"
-#include "core/ModelHolder.h"
+#include "core/api/TaskService.h"
+#include "core/memory_model/RepositoryCreator.h"
+#include "core/persistence/PersisterCreator.h"
+#include "core/persistence/ProtoConvert.h"
+#include "core/RepositoryHolder.h"
 
 /*
  * TaskService injector

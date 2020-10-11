@@ -63,7 +63,7 @@ std::optional<TaskDTO> TaskService::getTaskByID(TaskID id) {
 }
 
 RequestResult TaskService::complete(TaskID id) {
-    TaskModelInterface& model = model_holder_->GetModel();
+    TaskRepositoryInterface& model = model_holder_->GetModel();
     auto root_complete_result = model.setCompleted(id);
     if (!root_complete_result.getSuccessStatus()) {
         return root_complete_result;

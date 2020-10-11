@@ -5,13 +5,13 @@
 #ifndef TODOLIST_MODELPERSISTER_H
 #define TODOLIST_MODELPERSISTER_H
 
-#include "core/memory_model/api/TaskModelInterface.h"
+#include "core/memory_model/api/TaskRepositoryInterface.h"
 
 class ModelPersister {
 
 public:
-    virtual bool Save(const TaskModelInterface &object) = 0;
-    virtual bool Load(TaskModelInterface &model) = 0;
+    virtual bool Save() = 0;
+    virtual bool Load() = 0;
     virtual ~ModelPersister() = default;
 };
 

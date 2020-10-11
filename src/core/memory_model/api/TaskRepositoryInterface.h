@@ -2,8 +2,8 @@
 // Created by denis on 23.09.20.
 //
 
-#ifndef TODOLIST_TASKMODELINTERFACE_H
-#define TODOLIST_TASKMODELINTERFACE_H
+#ifndef TODOLIST_TASKREPOSITORYINTERFACE_H
+#define TODOLIST_TASKREPOSITORYINTERFACE_H
 #include "core/utils/data_transfer/TaskDTOConverter.h"
 
 #include "core/memory_model/data/TaskStorageInterface.h"
@@ -19,7 +19,7 @@
  * @author Denys Hrulov
  */
 
-class TaskModelInterface {
+class TaskRepositoryInterface {
 
 public:
     /*
@@ -114,8 +114,8 @@ public:
      */
     virtual std::optional<TaskDTO>                      getParentTask(TaskID id) const = 0;
 
-    virtual                                             ~TaskModelInterface() = default;
+    virtual                                             ~TaskRepositoryInterface() = default;
 };
 
 
-#endif //TODOLIST_TASKMODELINTERFACE_H
+#endif //TODOLIST_TASKREPOSITORYINTERFACE_H
