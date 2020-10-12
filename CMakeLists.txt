@@ -62,7 +62,7 @@ add_executable(ToDOList src/main.cpp
         ${CORE_SOURCES} ${CORE_HEADERS}
         ${PROTO_SRCS} ${PROTO_HDRS})
 target_link_libraries(ToDOList ${Boost_LIBRARIES})
-target_link_libraries(ToDOList -static ${Protobuf_LIBRARIES})
+target_link_libraries(ToDOList ${Protobuf_LIBRARIES})
 
 # tests #####################################
 include(GoogleTest)
