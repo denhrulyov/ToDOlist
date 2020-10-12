@@ -21,11 +21,13 @@ public:
     std::shared_ptr<State> getInstanceOfDeleteTaskState() override;
     std::shared_ptr<State> getInstanceOfSubTaskInputChain() override;
     std::shared_ptr<State> getInstanceOfTaskInputChain() override;
+    std::shared_ptr<State> getInstanceOfLoadFromFileState() override;
     std::shared_ptr<State> getInstanceOfParseAddType() override;
     std::shared_ptr<State> getInstanceOfParseCommand() override;
     std::shared_ptr<State> getInstanceOfParsePostponeDate() override;
     std::shared_ptr<State> getInstanceOfParseShowTag() override;
     std::shared_ptr<State> getInstanceOfPostponeState() override;
+    std::shared_ptr<State> getInstanceOfSaveToFileState() override;
     std::shared_ptr<State> getInstanceOfShowState() override;
     std::shared_ptr<State> getInstanceOfShowSubTasksState() override;
     std::shared_ptr<State> getInstanceOfStartState() override;
@@ -52,12 +54,14 @@ private:
         LazyStateInitializer<DeleteTaskState>,
         LazyStateInitializer<InputTaskState>,
         LazyStateInitializer<InputSubTaskState>,
+        LazyStateInitializer<LoadFromFileState>,
         LazyStateInitializer<ParseAddType>,
         LazyStateInitializer<ParseCommand>,
         LazyStateInitializer<ParsePostponeDate>,
         LazyStateInitializer<ParseShowTag>,
         LazyStateInitializer<ParseShowParam>,
         LazyStateInitializer<PostponeState>,
+        LazyStateInitializer<SaveToFileState>,
         LazyStateInitializer<StartState>,
         LazyStateInitializer<ShowSubTasksState>,
         LazyStateInitializer<DeleteStateParseID>,
@@ -65,7 +69,8 @@ private:
         LazyStateInitializer<ParseCompleteID>,
         LazyStateInitializer<ParsePostponeID>,
         LazyStateInitializer<ShowSubTasksParseID>
-        > states_;
+    > states_;
 };
+
 
 #endif //TODOLIST_STATEFACTORY_H

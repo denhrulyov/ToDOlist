@@ -20,6 +20,8 @@ enum class Keyword  {
     DELETE,
     POSTPONE,
     COMPLETE,
+    LOAD,
+    SAVE,
     YES,
     NO,
     UNKNOWN,

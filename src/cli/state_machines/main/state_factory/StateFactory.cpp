@@ -49,6 +49,7 @@ states_ {
                 )
         );
     }),
+    LazyStateInitializer<LoadFromFileState>::createDefault(),
     createInitializer<ParseAddType>([] () {
         return std::make_shared<ParseAddType>(std::make_unique<KeywordTokenizer>());
     }),
@@ -67,6 +68,7 @@ states_ {
     createInitializer<PostponeState>([] () {
         return std::make_shared<PostponeState>();
     }),
+    LazyStateInitializer<SaveToFileState>::createDefault(),
     createInitializer<StartState>([] () {
         return std::make_shared<StartState>();
     }),
@@ -168,11 +170,15 @@ std::shared_ptr<State> StateFactory::getInstanceOfShowSubTasksParseID() {
     return getInitializer<ShowSubTasksParseID>().getValue();
 }
 
+std::shared_ptr<State> StateFactory::getInstanceOfLoadFromFileState() {
+    return getInitializer<LoadFromFileState>().getValue();
+}
 
+std::shared_ptr<State> StateFactory::getInstanceOfSaveToFileState() {
+    return getInitializer<SaveToFileState>().getValue();
+}
 
 template<class T>
 StateFactory::LazyStateInitializer<T> &StateFactory::getInitializer() {
     return std::get<StateFactory::LazyStateInitializer<T>>(states_);
 }
-
-
