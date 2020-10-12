@@ -3,6 +3,7 @@
 //
 
 #include "RepositoryHolder.h"
+#include <future>
 
 RepositoryHolder::RepositoryHolder(
         std::unique_ptr<RepositoryCreator> creator,
@@ -25,7 +26,9 @@ bool RepositoryHolder::LoadModelFromFile(const std::string &filepath) {
     }
     auto new_model = creator_->CreateModel();
     auto persister = persister_creator_->CreatePersister(*new_model, file);
-    if (!persister->Load()) {
+    std::future<bool> is_loaded = std::async(std::bind(&ModelPersister::Load, persister.get()));
+    is_loaded.wait();
+    if (!is_loaded.get()) {
         return false;
     }
     std::swap(model_, new_model);
@@ -38,6 +41,8 @@ bool RepositoryHolder::SaveModelToFile(const std::string &filepath) {
         return false;
     }
     auto persister = persister_creator_->CreatePersister(*model_, file);
-    return persister->Save();
+    std::future<bool> is_saved = std::async(std::bind(&ModelPersister::Save, persister.get()));
+    is_saved.wait();
+    return is_saved.get();
 }
 
