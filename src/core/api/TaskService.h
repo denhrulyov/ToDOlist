@@ -21,7 +21,7 @@ class TaskService : public TaskServiceInterface {
 public:
     explicit TaskService(std::unique_ptr<RepositoryHolder> model_holder)
     :
-    model_holder_(std::move(model_holder))
+            repository_holder_(std::move(model_holder))
     {}
 
 public:
@@ -48,7 +48,7 @@ public:
     ~TaskService() override =                               default;
 
 private:
-    std::unique_ptr<RepositoryHolder>                   model_holder_;
+    std::unique_ptr<RepositoryHolder>                       repository_holder_;
 };
 
 
