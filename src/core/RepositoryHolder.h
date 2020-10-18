@@ -24,7 +24,7 @@ public:
     virtual ~RepositoryHolder() = default;
 
 private:
-    std::unique_ptr<TaskRepositoryInterface> model_;
+    std::unique_ptr<TaskRepositoryInterface> repository_;
     std::unique_ptr<RepositoryCreator> creator_;
     std::unique_ptr<PersisterCreator> persister_creator_;
 

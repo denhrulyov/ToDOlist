@@ -11,12 +11,12 @@ RepositoryHolder::RepositoryHolder(
         creator_(std::move(creator)),
         persister_creator_(std::move(persister_creator))
         {
-            model_ = creator_->CreateModel();
+            repository_ = creator_->CreateModel();
         }
 
 
 TaskRepositoryInterface &RepositoryHolder::GetModel() {
-    return *model_;
+    return *repository_;
 }
 
 bool RepositoryHolder::LoadModelFromFile(const std::string &filepath) {
@@ -31,7 +31,7 @@ bool RepositoryHolder::LoadModelFromFile(const std::string &filepath) {
     if (!is_loaded.get()) {
         return false;
     }
-    std::swap(model_, new_model);
+    std::swap(repository_, new_model);
     return true;
 }
 
@@ -40,7 +40,7 @@ bool RepositoryHolder::SaveModelToFile(const std::string &filepath) {
     if (!file->is_open()) {
         return false;
     }
-    auto persister = persister_creator_->CreatePersister(*model_, file);
+    auto persister = persister_creator_->CreatePersister(*repository_, file);
     std::future<bool> is_saved = std::async(std::bind(&Persister::Save, persister.get()));
     is_saved.wait();
     return is_saved.get();
