@@ -2,16 +2,16 @@
 // Created by denis on 30.09.20.
 //
 
-#ifndef TODOLIST_IOSTREAMMODELPERSISTER_H
-#define TODOLIST_IOSTREAMMODELPERSISTER_H
+#ifndef TODOLIST_IOSTREAMREPOSITORYPERSISTER_H
+#define TODOLIST_IOSTREAMREPOSITORYPERSISTER_H
 
-#include "ModelPersister.h"
+#include "Persister.h"
 #include "task.pb.h"
 
-class IostreamModelPersister : public ModelPersister {
+class IostreamRepositoryPersister : public Persister {
 
 public:
-    explicit IostreamModelPersister(TaskRepositoryInterface& model, std::shared_ptr<std::iostream> stream);
+    explicit IostreamRepositoryPersister(TaskRepositoryInterface& model, std::shared_ptr<std::iostream> stream);
 
 public:
     bool                                Save() override;
@@ -28,4 +28,4 @@ private:
 
 
 
-#endif //TODOLIST_IOSTREAMMODELPERSISTER_H
+#endif //TODOLIST_IOSTREAMREPOSITORYPERSISTER_H

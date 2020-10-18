@@ -26,7 +26,7 @@ bool RepositoryHolder::LoadModelFromFile(const std::string &filepath) {
     }
     auto new_model = creator_->CreateModel();
     auto persister = persister_creator_->CreatePersister(*new_model, file);
-    std::future<bool> is_loaded = std::async(std::bind(&ModelPersister::Load, persister.get()));
+    std::future<bool> is_loaded = std::async(std::bind(&Persister::Load, persister.get()));
     is_loaded.wait();
     if (!is_loaded.get()) {
         return false;
@@ -41,7 +41,7 @@ bool RepositoryHolder::SaveModelToFile(const std::string &filepath) {
         return false;
     }
     auto persister = persister_creator_->CreatePersister(*model_, file);
-    std::future<bool> is_saved = std::async(std::bind(&ModelPersister::Save, persister.get()));
+    std::future<bool> is_saved = std::async(std::bind(&Persister::Save, persister.get()));
     is_saved.wait();
     return is_saved.get();
 }

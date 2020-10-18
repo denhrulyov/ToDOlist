@@ -4,7 +4,7 @@
 
 #include "mocks/CoreMocks.h"
 #include "mocks/CoreMocks.h"
-#include "core/persistence/IostreamModelPersister.h"
+#include "core/persistence/IostreamRepositoryPersister.h"
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
@@ -79,7 +79,7 @@ TEST_F(IostreamModelPersisterTest, TestDemanglesAllSubtasks) {
     std::vector protos {task1, task11, task12, task121, task13, task2, task3};;
     auto ss = std::make_shared<std::stringstream>(std::ios::out | std::ios::in);
     model_proto.SerializeToOstream(ss.get());
-    IostreamModelPersister iosmp(mm, ss);
+    IostreamRepositoryPersister iosmp(mm, ss);
     ASSERT_TRUE(iosmp.Load());
 }
 
@@ -134,6 +134,6 @@ TEST_F(IostreamModelPersisterTest, TestSerializesAllSubtasks) {
     EXPECT_CALL(ms, getSubTasks(sample_tasks[7].getId()))
             .WillRepeatedly(Return(std::vector<TaskDTO> {}));
 
-    IostreamModelPersister sr(ms, std::make_shared<std::fstream>());
+    IostreamRepositoryPersister sr(ms, std::make_shared<std::fstream>());
     sr.Save();
 }

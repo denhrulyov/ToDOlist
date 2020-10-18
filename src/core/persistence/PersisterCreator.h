@@ -5,12 +5,12 @@
 #ifndef TODOLIST_PERSISTERCREATOR_H
 #define TODOLIST_PERSISTERCREATOR_H
 
-#include "ModelPersister.h"
+#include "Persister.h"
 
 class PersisterCreator {
 
 public:
-    virtual std::unique_ptr<ModelPersister> CreatePersister(
+    virtual std::unique_ptr<Persister> CreatePersister(
             TaskRepositoryInterface& model,
             std::shared_ptr<std::iostream> stream);
     virtual ~PersisterCreator() = default;
