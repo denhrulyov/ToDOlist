@@ -19,8 +19,8 @@ public:
 
 public:
     virtual TaskRepositoryInterface&     GetModel();
-    virtual bool                    LoadModelFromFile(const std::string& filepath);
-    virtual bool                    SaveModelToFile(const std::string& filepath);
+    virtual bool                         LoadModelFromFile(const std::string& filepath);
+    virtual bool                         SaveModelToFile(const std::string& filepath);
     virtual ~RepositoryHolder() = default;
 
 private:
