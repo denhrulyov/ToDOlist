@@ -52,20 +52,20 @@ public:
 class MockModel : public TaskRepositoryInterface {
 
 public:
-    MOCK_METHOD(std::vector<TaskDTO>,   getToDate, (const BoostDate&), (const, override));
-    MOCK_METHOD(std::optional<TaskDTO>, getTaskData, (TaskID), (const, override));
-    MOCK_METHOD(TaskModificationResult, setTaskData, (TaskID, const TaskDTO&), (override));
-    MOCK_METHOD(std::vector<TaskDTO>,   getWithLabel, (const std::string&), (const, override));
+    MOCK_METHOD(std::vector<RepositoryTaskDTO>,   getToDate, (const BoostDate&), (const, override));
+    MOCK_METHOD(std::optional<RepositoryTaskDTO>, getTaskData, (TaskID), (const, override));
+    MOCK_METHOD(TaskModificationResult, setTaskData, (TaskID, const RepositoryTaskDTO&), (override));
+    MOCK_METHOD(std::vector<RepositoryTaskDTO>,   getWithLabel, (const std::string&), (const, override));
 
 public:
-    MOCK_METHOD(TaskCreationResult,     addTask, (const TaskDTO&), (override));
-    MOCK_METHOD(TaskCreationResult,     addSubTask, (TaskID, const TaskDTO&), (override));
+    MOCK_METHOD(TaskCreationResult,     addTask, (const RepositoryTaskDTO&), (override));
+    MOCK_METHOD(TaskCreationResult,     addSubTask, (TaskID, const RepositoryTaskDTO&), (override));
     MOCK_METHOD(TaskModificationResult, dropTask, (TaskID), (override));
     MOCK_METHOD(TaskModificationResult, setCompleted, (TaskID), (override));
-    MOCK_METHOD(std::vector<TaskDTO>,   getSubTasks, (TaskID id), (const, override));
-    MOCK_METHOD(std::vector<TaskDTO>,   getSubTasksRecursive, (TaskID id), (const, override));
-    MOCK_METHOD(std::vector<TaskDTO>,   getAllTasks, (), (const, override));
-    MOCK_METHOD(std::optional<TaskDTO>, getParentTask, (TaskID id), (const, override));
+    MOCK_METHOD(std::vector<RepositoryTaskDTO>,   getSubTasks, (TaskID id), (const, override));
+    MOCK_METHOD(std::vector<RepositoryTaskDTO>,   getSubTasksRecursive, (TaskID id), (const, override));
+    MOCK_METHOD(std::vector<RepositoryTaskDTO>,   getAllTasks, (), (const, override));
+    MOCK_METHOD(std::optional<RepositoryTaskDTO>, getParentTask, (TaskID id), (const, override));
 
 };
 

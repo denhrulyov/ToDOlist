@@ -7,9 +7,10 @@
 
 #include "core/memory_model/api/TaskCreationResult.h"
 #include "core/memory_model/api/TaskModificationResult.h"
-#include "core/memory_model/api/TaskDTO.h"
+#include "core/api/TaskDTO.h"
 
 #include <vector>
+
 
 namespace service {
 

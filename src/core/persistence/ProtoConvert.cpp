@@ -50,8 +50,8 @@ TaskPriority proto_convert::RestorePriority(TaskData::Priority prior) {
 
 /********************************************************************************/
 
-TaskDTO proto_convert::RestoreFromMessage(const TaskData &message) {
-    return TaskDTO::create(TaskID(0),
+RepositoryTaskDTO proto_convert::RestoreFromMessage(const TaskData &message) {
+    return RepositoryTaskDTO::create(TaskID(0),
                            message.name(),
                            RestorePriority(message.prior()),
                            message.label(),
@@ -59,7 +59,7 @@ TaskDTO proto_convert::RestoreFromMessage(const TaskData &message) {
                            message.completed());
 }
 
-bool proto_convert::WriteToMessage(const TaskDTO &task, TaskData *message) {
+bool proto_convert::WriteToMessage(const RepositoryTaskDTO &task, TaskData *message) {
     message->set_name(task.getName());
     message->set_prior(GetProtobufPriority(task.getPriority()));
     message->set_label(task.getLabel());

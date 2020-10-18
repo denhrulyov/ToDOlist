@@ -100,7 +100,7 @@ namespace task_model_test {
 TEST_F(TaskModelTest, TestTaskAddedToStorage) {
     // Sample data
     TaskID id(0);
-    auto sample_task = TaskDTO::create("t1", TaskPriority::FIRST, "lbl1",
+    auto sample_task = RepositoryTaskDTO::create("t1", TaskPriority::FIRST, "lbl1",
                                        day_clock::local_day() + days(2020));
     auto sample_node = std::make_shared<TaskNode>(
             id,
@@ -123,7 +123,7 @@ TEST_F(TaskModelTest, TestTaskAddedToStorage) {
 TEST_F(TaskModelTest, TestErrorResultIfNoParentToAddSubtask) {
     // Sample data
     TaskID id(0);
-    auto sample_task = TaskDTO::create("t1", TaskPriority::FIRST, "lbl1",
+    auto sample_task = RepositoryTaskDTO::create("t1", TaskPriority::FIRST, "lbl1",
                                        day_clock::local_day() + days(2020));
     auto sample_node = std::make_shared<TaskNode>(
             id,
@@ -148,7 +148,7 @@ TEST_F(TaskModelTest, TestErrorResultIfNoParentToAddSubtask) {
 TEST_F(TaskModelTest, TestErrorResultOfAddSubTaskIfErrorInStorage) {
     // Sample data
     TaskID id(0);
-    auto sample_task = TaskDTO::create("t1", TaskPriority::FIRST, "lbl1",
+    auto sample_task = RepositoryTaskDTO::create("t1", TaskPriority::FIRST, "lbl1",
                                        day_clock::local_day() + days(2020));
     auto sample_node = std::make_shared<TaskNode>(
             id,
@@ -171,7 +171,7 @@ TEST_F(TaskModelTest, TestErrorResultOfAddSubTaskIfErrorInStorage) {
 TEST_F(TaskModelTest, TestTaskLinksSet) {
     // Sample data
     TaskID id(0);
-    auto sample_task = TaskDTO::create("t1", TaskPriority::FIRST, "lbl1",
+    auto sample_task = RepositoryTaskDTO::create("t1", TaskPriority::FIRST, "lbl1",
                                        day_clock::local_day() + days(2020));
     auto sample_node = std::make_shared<TaskNode>(
             id,
@@ -216,7 +216,7 @@ TEST_F(TaskModelTest, TestSubTaskLinked) {
                                          std::move(mlm));
     ts.addSubTask(
             parent,
-            TaskDTO::create("t2", TaskPriority::FIRST, "lbl3",
+            RepositoryTaskDTO::create("t2", TaskPriority::FIRST, "lbl3",
                             day_clock::local_day() + days(3200))
     );
 }
@@ -439,7 +439,7 @@ TEST_F(TaskModelTest, TestGetTaskData) {
                                          std::move(mvl),
                                          std::move(mlm));
     ASSERT_TRUE(tm.getTaskData(nodes[0]->getId()));
-    TaskDTO got = tm.getTaskData(nodes[0]->getId()).value();
+    RepositoryTaskDTO got = tm.getTaskData(nodes[0]->getId()).value();
     ASSERT_EQ(nodes[0]->getTask().getName(), got.getName());
     ASSERT_EQ(nodes[0]->getTask().getPriority(), got.getPriority());
     ASSERT_EQ(nodes[0]->getTask().getLabel(), got.getLabel());

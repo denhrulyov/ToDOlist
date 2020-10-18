@@ -6,6 +6,7 @@
 #define EVAL_TASKSERVICE_H
 #include "core/RepositoryHolder.h"
 #include "TaskServiceInterface.h"
+#include "core/memory_model/api/RepositoryTaskDTO.h"
 #include <unordered_map>
 #include <algorithm>
 #include <memory>
@@ -53,5 +54,8 @@ private:
 
 
 bool validate_date(const BoostDate& date);
+TaskDTO GetDTO(const RepositoryTaskDTO& dto);
+RepositoryTaskDTO GetRepositoryDTO(const TaskDTO& dto);
+std::vector<TaskDTO> ConvertAll(const std::vector<TaskDTO>& all);
 
 #endif //EVAL_TASKSERVICE_H

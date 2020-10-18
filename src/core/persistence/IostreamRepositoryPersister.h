@@ -19,7 +19,7 @@ public:
 
 private:
     bool RestoreTaskByMessage(TaskID id, const TaskMessage& message);
-    bool WriteTaskToTaskMessage(const TaskDTO& task, TaskMessage* message);
+    bool WriteTaskToTaskMessage(const RepositoryTaskDTO& task, TaskMessage* message);
 
 private:
     TaskRepositoryInterface& model_;

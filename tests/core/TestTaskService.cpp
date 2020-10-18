@@ -25,7 +25,7 @@ class TaskServiceTest : public ::testing::Test {
 };
 
 auto dto_equal(const TaskDTO& rhs) {
-    return [&rhs] (const TaskDTO& lhs) {
+    return [&rhs] (const auto& lhs) {
         return
         lhs.getId() == rhs.getId() &&
         lhs.getName() == rhs.getName() &&
@@ -36,6 +36,42 @@ auto dto_equal(const TaskDTO& rhs) {
     };
 }
 
+auto dto_equal(const RepositoryTaskDTO& rhs) {
+    return [&rhs] (const auto& lhs) {
+        return
+                lhs.getId() == rhs.getId() &&
+                lhs.getName() == rhs.getName() &&
+                lhs.getPriority() == rhs.getPriority() &&
+                lhs.getLabel() == rhs.getLabel() &&
+                lhs.getDate() == rhs.getDate() &&
+                lhs.isCompleted() == rhs.isCompleted();
+    };
+}
+
+
+TEST_F(TaskServiceTest, TestGetReposDTO) {
+    auto dto = TaskDTO::create(TaskID(1), "name", TaskPriority::SECOND, "label",
+            boost::gregorian::day_clock::local_day());
+    RepositoryTaskDTO service_dto = GetRepositoryDTO(dto);
+    ASSERT_EQ(service_dto.getId(), dto.getId());
+    ASSERT_EQ(service_dto.getName(), dto.getName());
+    ASSERT_EQ(service_dto.getPriority(), dto.getPriority());
+    ASSERT_EQ(service_dto.getLabel(), dto.getLabel());
+    ASSERT_EQ(service_dto.getDate(), dto.getDate());
+    ASSERT_EQ(service_dto.isCompleted(), dto.isCompleted());
+}
+
+TEST_F(TaskServiceTest, TestGetDTO) {
+    auto dto = RepositoryTaskDTO::create(TaskID(1), "name", TaskPriority::SECOND, "label",
+                                              boost::gregorian::day_clock::local_day());
+    TaskDTO service_dto = GetDTO(dto);
+    ASSERT_EQ(service_dto.getId(), dto.getId());
+    ASSERT_EQ(service_dto.getName(), dto.getName());
+    ASSERT_EQ(service_dto.getPriority(), dto.getPriority());
+    ASSERT_EQ(service_dto.getLabel(), dto.getLabel());
+    ASSERT_EQ(service_dto.getDate(), dto.getDate());
+    ASSERT_EQ(service_dto.isCompleted(), dto.isCompleted());
+}
 
 TEST_F(TaskServiceTest, TestAllSubtasksComplete) {
     TaskID root(0);
@@ -43,11 +79,11 @@ TEST_F(TaskServiceTest, TestAllSubtasksComplete) {
     auto mmh = std::make_unique<MockModelHolder>();
     EXPECT_CALL(*mmh, GetModel).WillRepeatedly(ReturnRef(*mm));
     EXPECT_CALL(*mm, getSubTasksRecursive(root)).WillOnce(Return(
-            std::vector<TaskDTO> {
-        TaskDTO::create(TaskID(1), "", TaskPriority::FIRST, "", BoostDate()),
-        TaskDTO::create(TaskID(2), "", TaskPriority::FIRST, "", BoostDate()),
-        TaskDTO::create(TaskID(3), "", TaskPriority::FIRST, "", BoostDate()),
-        TaskDTO::create(TaskID(4), "", TaskPriority::FIRST, "", BoostDate())
+            std::vector<RepositoryTaskDTO> {
+                    RepositoryTaskDTO::create(TaskID(1), "", TaskPriority::FIRST, "", BoostDate()),
+                    RepositoryTaskDTO::create(TaskID(2), "", TaskPriority::FIRST, "", BoostDate()),
+                    RepositoryTaskDTO::create(TaskID(3), "", TaskPriority::FIRST, "", BoostDate()),
+                    RepositoryTaskDTO::create(TaskID(4), "", TaskPriority::FIRST, "", BoostDate())
     }));
     EXPECT_CALL(*mm, setCompleted(TaskID(0))).WillOnce(Return(TaskModificationResult::success()));
     EXPECT_CALL(*mm, setCompleted(TaskID(1))).WillOnce(Return(TaskModificationResult::success()));
@@ -85,7 +121,7 @@ TEST_F(TaskServiceTest, TestTaskWithDateBeforeTodayNotAdded) {
 }
 
 TEST_F(TaskServiceTest, TestGetTaskData) {
-    TaskDTO dto = TaskDTO::create("", TaskPriority::NONE, "", BoostDate());
+    RepositoryTaskDTO dto = RepositoryTaskDTO::create("", TaskPriority::NONE, "", BoostDate());
     auto mm = std::make_unique<MockModel>();
     auto mmh = std::make_unique<MockModelHolder>();
     EXPECT_CALL(*mmh, GetModel).WillRepeatedly(ReturnRef(*mm));
@@ -126,9 +162,9 @@ TEST_F(TaskServiceTest, TestPostponeTaskReturnsErrorIfNoSuchTask) {
 
 TEST_F(TaskServiceTest, TestPostponeTask) {
     auto old_task =
-    TaskDTO::create(TaskID(5), "name", TaskPriority::SECOND, "label", day_clock::local_day(), true);
+            RepositoryTaskDTO::create(TaskID(5), "name", TaskPriority::SECOND, "label", day_clock::local_day(), true);
     auto new_task =
-    TaskDTO::create(TaskID(5), "name", TaskPriority::SECOND, "label", day_clock::local_day() + days(10), true);
+            RepositoryTaskDTO::create(TaskID(5), "name", TaskPriority::SECOND, "label", day_clock::local_day() + days(10), true);
     auto mm = std::make_unique<MockModel>();
     auto mmh = std::make_unique<MockModelHolder>();
     EXPECT_CALL(*mmh, GetModel).WillRepeatedly(ReturnRef(*mm));

@@ -4,7 +4,7 @@
 
 #include <gtest/gtest.h>
 #include <boost/date_time.hpp>
-#include "core/memory_model/api/TaskDTO.h"
+#include "core/api/TaskDTO.h"
 
 class TestTaskDTO : public ::testing::Test {
 

@@ -19,7 +19,7 @@ IostreamRepositoryPersister::IostreamRepositoryPersister(
         stream_(stream)
         {}
 
-bool IostreamRepositoryPersister::WriteTaskToTaskMessage(const TaskDTO& task, TaskMessage* message) {
+bool IostreamRepositoryPersister::WriteTaskToTaskMessage(const RepositoryTaskDTO& task, TaskMessage* message) {
     message->set_allocated_task(new TaskData);
     proto_convert::WriteToMessage(task, message->mutable_task());
     for (const auto& subtask : model_.getSubTasks(task.getId())) {
@@ -46,7 +46,7 @@ bool IostreamRepositoryPersister::Save() {
 
 bool IostreamRepositoryPersister::RestoreTaskByMessage(TaskID id, const TaskMessage& message) {
     for (const TaskMessage& subtask_load : message.subtasks()) {
-        TaskDTO subtask = proto_convert::RestoreFromMessage(subtask_load.task());
+        RepositoryTaskDTO subtask = proto_convert::RestoreFromMessage(subtask_load.task());
         TaskCreationResult result = model_.addSubTask(id, subtask);
         if (!result.getCreatedTaskID()) {
             return false;
@@ -67,7 +67,7 @@ bool IostreamRepositoryPersister::Load() {
         return false;
     }
     for (const TaskMessage& task_load : loaded_model.tasks()) {
-        TaskDTO task = proto_convert::RestoreFromMessage(task_load.task());
+        RepositoryTaskDTO task = proto_convert::RestoreFromMessage(task_load.task());
         TaskCreationResult result = model_.addTask(task);
 
         if (!result.getCreatedTaskID()) {
