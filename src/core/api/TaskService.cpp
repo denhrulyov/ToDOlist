@@ -47,31 +47,31 @@ TaskCreationResult TaskService::addTask(const TaskDTO &task_data) {
     if (!validate_date(task_data.getDate())) {
         return TaskCreationResult::error("Task date is out of allowed range");
     }
-    return repository_holder_->GetModel().addTask(GetRepositoryDTO(task_data));
+    return repository_holder_->GetRepository().addTask(GetRepositoryDTO(task_data));
 }
 
 TaskCreationResult TaskService::addSubTask(TaskID parent, const TaskDTO &task_data) {
     if (!validate_date(task_data.getDate())) {
         return TaskCreationResult::error("Task date is out of allowed range");
     }
-    return repository_holder_->GetModel().addSubTask(parent, GetRepositoryDTO(task_data));
+    return repository_holder_->GetRepository().addSubTask(parent, GetRepositoryDTO(task_data));
 }
 
 TaskModificationResult
 TaskService::deleteTask(TaskID id) {
-    return repository_holder_->GetModel().dropTask(id);
+    return repository_holder_->GetRepository().dropTask(id);
 }
 
 TaskModificationResult
 TaskService::postponeTask(TaskID id, BoostDate date_postpone) {
-    std::optional<RepositoryTaskDTO> is_old_task = repository_holder_->GetModel().getTaskData(id);
+    std::optional<RepositoryTaskDTO> is_old_task = repository_holder_->GetRepository().getTaskData(id);
     if (!is_old_task) {
         return TaskModificationResult::taskNotFound();
     }
     TaskDTO old_task = GetDTO(is_old_task.value());
 
     return
-    repository_holder_->GetModel().setTaskData(
+            repository_holder_->GetRepository().setTaskData(
             id,
             RepositoryTaskDTO::create(
                     id,
@@ -84,17 +84,17 @@ TaskService::postponeTask(TaskID id, BoostDate date_postpone) {
 }
 
 std::vector<TaskDTO> TaskService::getAllWithLabel(const std::string &label) {
-    return ConvertAll(repository_holder_->GetModel().getWithLabel(label));
+    return ConvertAll(repository_holder_->GetRepository().getWithLabel(label));
 }
 
 
 std::optional<TaskDTO> TaskService::getTaskByID(TaskID id) {
-    auto result = repository_holder_->GetModel().getTaskData(id);
+    auto result = repository_holder_->GetRepository().getTaskData(id);
     return result ? std::make_optional(GetDTO(result.value())) : std::nullopt;
 }
 
 RequestResult TaskService::complete(TaskID id) {
-    TaskRepositoryInterface& model = repository_holder_->GetModel();
+    TaskRepositoryInterface& model = repository_holder_->GetRepository();
     auto root_complete_result = model.setCompleted(id);
     if (!root_complete_result.getSuccessStatus()) {
         return root_complete_result;
@@ -110,35 +110,35 @@ RequestResult TaskService::complete(TaskID id) {
 
 std::vector<TaskDTO> TaskService::getToday() {
     using namespace boost::gregorian;
-    return ConvertAll(repository_holder_->GetModel().getToDate(day_clock::local_day()));
+    return ConvertAll(repository_holder_->GetRepository().getToDate(day_clock::local_day()));
 }
 
 std::vector<TaskDTO> TaskService::getThisWeek() {
     using namespace boost::gregorian;
-    return ConvertAll(repository_holder_->GetModel().getToDate(day_clock::local_day() + days(6)));
+    return ConvertAll(repository_holder_->GetRepository().getToDate(day_clock::local_day() + days(6)));
 }
 
 std::vector<TaskDTO> TaskService::getAllTasks() {
     using namespace boost::gregorian;
-    return ConvertAll(repository_holder_->GetModel().getToDate(service::max_date));
+    return ConvertAll(repository_holder_->GetRepository().getToDate(service::max_date));
 }
 
 std::vector<TaskDTO> TaskService::getSubTasks(TaskID id) {
-    return ConvertAll(repository_holder_->GetModel().getSubTasks(id));
+    return ConvertAll(repository_holder_->GetRepository().getSubTasks(id));
 }
 
 
 std::vector<TaskDTO> TaskService::getSubTasksRecursive(TaskID id) {
-    return ConvertAll(repository_holder_->GetModel().getSubTasksRecursive(id));
+    return ConvertAll(repository_holder_->GetRepository().getSubTasksRecursive(id));
 }
 
 RequestResult TaskService::saveToFile(const std::string &filepath) {
-    bool saved = repository_holder_->SaveModelToFile(filepath);
+    bool saved = repository_holder_->SaveRepositoryToFile(filepath);
     return saved ? RequestResult::success() : RequestResult(false, "Could not save");
 }
 
 RequestResult TaskService::loadFromFile(const std::string &filepath) {
-    bool loaded = repository_holder_->LoadModelFromFile(filepath);
+    bool loaded = repository_holder_->LoadRepositoryFromFile(filepath);
     return loaded ? RequestResult::success() : RequestResult(false, "Could not load");
 }
 

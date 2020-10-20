@@ -49,7 +49,7 @@ public:
 
 
 
-class MockModel : public TaskRepositoryInterface {
+class MockRepository : public TaskRepositoryInterface {
 
 public:
     MOCK_METHOD(std::vector<RepositoryTaskDTO>,   getToDate, (const BoostDate&), (const, override));

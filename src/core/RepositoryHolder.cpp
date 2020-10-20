@@ -15,11 +15,11 @@ RepositoryHolder::RepositoryHolder(
         }
 
 
-TaskRepositoryInterface &RepositoryHolder::GetModel() {
+TaskRepositoryInterface &RepositoryHolder::GetRepository() {
     return *repository_;
 }
 
-bool RepositoryHolder::LoadModelFromFile(const std::string &filepath) {
+bool RepositoryHolder::LoadRepositoryFromFile(const std::string &filepath) {
     auto file = std::make_shared<std::fstream>(filepath, std::ios::in);
     if (!file->is_open()) {
         return false;
@@ -35,7 +35,7 @@ bool RepositoryHolder::LoadModelFromFile(const std::string &filepath) {
     return true;
 }
 
-bool RepositoryHolder::SaveModelToFile(const std::string &filepath) {
+bool RepositoryHolder::SaveRepositoryToFile(const std::string &filepath) {
     auto file = std::make_shared<std::fstream>(filepath, std::ios::out);
     if (!file->is_open()) {
         return false;

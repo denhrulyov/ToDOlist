@@ -37,7 +37,7 @@ auto has_name(std::string str) {
 }
 
 TEST_F(IostreamModelPersisterTest, TestDemanglesAllSubtasks) {
-    MockModel mm;
+    MockRepository mm;
     TaskModelMessage model_proto;
     TaskMessage* task1 = model_proto.add_tasks();
     task1->set_allocated_task(new TaskData);
@@ -104,7 +104,7 @@ TEST_F(IostreamModelPersisterTest, TestSerializesAllSubtasks) {
             RepositoryTaskDTO::create(TaskID(7), DUMMY_TASK_FIELDS, false)
 
     };
-    MockModel ms;
+    MockRepository ms;
     EXPECT_CALL(ms, getAllTasks).WillRepeatedly(Return(sample_tasks));
     EXPECT_CALL(ms, getParentTask(TaskID(0))).Times(1).WillOnce(Return(std::nullopt));
     EXPECT_CALL(ms, getParentTask(TaskID(1))).Times(1).WillOnce(Return(sample_tasks[0]));
