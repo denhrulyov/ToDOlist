@@ -5,7 +5,7 @@
 #ifndef TODOLIST_TASKDTOCONVERTER_H
 #define TODOLIST_TASKDTOCONVERTER_H
 
-#include "core/memory_model/api/TaskDTO.h"
+#include "core/memory_model/api/RepositoryTaskDTO.h"
 #include "core/memory_model/data/Task.h"
 #include "core/memory_model/structure/TaskNode.h"
 
@@ -24,7 +24,7 @@ public:
      *
      * @return Task instance built by dto fields.
      */
-    static Task     getTask(const TaskDTO& dto);
+    static Task     getTask(const RepositoryTaskDTO& dto);
     /*
      * Method to create TaskDTO instance from TaskNode.
      *
@@ -33,7 +33,7 @@ public:
      * @return DTO describing task in the node.
      *
      */
-    static TaskDTO  getDTO(const std::shared_ptr<TaskNode>& node);
+    static RepositoryTaskDTO  getDTO(const std::shared_ptr<TaskNode>& node);
 };
 
 

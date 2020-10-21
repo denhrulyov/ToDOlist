@@ -3,10 +3,10 @@
 //
 
 #include "PersisterCreator.h"
-#include "IostreamModelPersister.h"
+#include "IostreamRepositoryPersister.h"
 
-std::unique_ptr<ModelPersister> PersisterCreator::CreatePersister(
+std::unique_ptr<Persister> PersisterCreator::CreatePersister(
         TaskRepositoryInterface& model,
         std::shared_ptr<std::iostream> stream) {
-    return std::make_unique<IostreamModelPersister>(model, stream);
+    return std::make_unique<IostreamRepositoryPersister>(model, stream);
 }

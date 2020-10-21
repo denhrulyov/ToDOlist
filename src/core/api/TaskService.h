@@ -6,6 +6,7 @@
 #define EVAL_TASKSERVICE_H
 #include "core/RepositoryHolder.h"
 #include "TaskServiceInterface.h"
+#include "core/memory_model/api/RepositoryTaskDTO.h"
 #include <unordered_map>
 #include <algorithm>
 #include <memory>
@@ -21,7 +22,7 @@ class TaskService : public TaskServiceInterface {
 public:
     explicit TaskService(std::unique_ptr<RepositoryHolder> model_holder)
     :
-    model_holder_(std::move(model_holder))
+            repository_holder_(std::move(model_holder))
     {}
 
 public:
@@ -48,10 +49,13 @@ public:
     ~TaskService() override =                               default;
 
 private:
-    std::unique_ptr<RepositoryHolder>                   model_holder_;
+    std::unique_ptr<RepositoryHolder>                       repository_holder_;
 };
 
 
 bool validate_date(const BoostDate& date);
+TaskDTO GetDTO(const RepositoryTaskDTO& dto);
+RepositoryTaskDTO GetRepositoryDTO(const TaskDTO& dto);
+std::vector<TaskDTO> ConvertAll(const std::vector<TaskDTO>& all);
 
 #endif //EVAL_TASKSERVICE_H

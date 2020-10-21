@@ -2,17 +2,17 @@
 // Created by denis on 30.09.20.
 //
 
-#ifndef TODOLIST_MODELPERSISTER_H
-#define TODOLIST_MODELPERSISTER_H
+#ifndef TODOLIST_PERSISTER_H
+#define TODOLIST_PERSISTER_H
 
 #include "core/memory_model/api/TaskRepositoryInterface.h"
 
-class ModelPersister {
+class Persister {
 
 public:
     virtual bool Save() = 0;
     virtual bool Load() = 0;
-    virtual ~ModelPersister() = default;
+    virtual ~Persister() = default;
 };
 
 #endif //TODOLIST_PROTOBUFMODELPERSISTER_H

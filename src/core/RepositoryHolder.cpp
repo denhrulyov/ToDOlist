@@ -11,37 +11,37 @@ RepositoryHolder::RepositoryHolder(
         creator_(std::move(creator)),
         persister_creator_(std::move(persister_creator))
         {
-            model_ = creator_->CreateModel();
+            repository_ = creator_->CreateModel();
         }
 
 
-TaskRepositoryInterface &RepositoryHolder::GetModel() {
-    return *model_;
+TaskRepositoryInterface &RepositoryHolder::GetRepository() {
+    return *repository_;
 }
 
-bool RepositoryHolder::LoadModelFromFile(const std::string &filepath) {
+bool RepositoryHolder::LoadRepositoryFromFile(const std::string &filepath) {
     auto file = std::make_shared<std::fstream>(filepath, std::ios::in);
     if (!file->is_open()) {
         return false;
     }
     auto new_model = creator_->CreateModel();
     auto persister = persister_creator_->CreatePersister(*new_model, file);
-    std::future<bool> is_loaded = std::async(std::bind(&ModelPersister::Load, persister.get()));
+    std::future<bool> is_loaded = std::async(std::bind(&Persister::Load, persister.get()));
     is_loaded.wait();
     if (!is_loaded.get()) {
         return false;
     }
-    std::swap(model_, new_model);
+    std::swap(repository_, new_model);
     return true;
 }
 
-bool RepositoryHolder::SaveModelToFile(const std::string &filepath) {
+bool RepositoryHolder::SaveRepositoryToFile(const std::string &filepath) {
     auto file = std::make_shared<std::fstream>(filepath, std::ios::out);
     if (!file->is_open()) {
         return false;
     }
-    auto persister = persister_creator_->CreatePersister(*model_, file);
-    std::future<bool> is_saved = std::async(std::bind(&ModelPersister::Save, persister.get()));
+    auto persister = persister_creator_->CreatePersister(*repository_, file);
+    std::future<bool> is_saved = std::async(std::bind(&Persister::Save, persister.get()));
     is_saved.wait();
     return is_saved.get();
 }

@@ -7,9 +7,9 @@
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include "core/persistence/ModelPersister.h"
+#include "core/persistence/Persister.h"
 
-class MockModelPersister : public ModelPersister {
+class MockModelPersister : public Persister {
 
 public:
     MOCK_METHOD(bool, Save, (), (override));

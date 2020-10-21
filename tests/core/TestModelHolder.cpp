@@ -17,7 +17,7 @@ class ModelHolderTest : public ::testing::Test {
 
 
 TEST_F(ModelHolderTest, TestSaveSuccessfull) {
-    auto mm =  std::make_unique<MockModel>();
+    auto mm =  std::make_unique<MockRepository>();
     TaskRepositoryInterface *mmget = mm.get();
     auto mmc = std::make_unique<MockModelCreator>();
     auto mmp = std::make_unique<MockModelPersister>();
@@ -28,11 +28,11 @@ TEST_F(ModelHolderTest, TestSaveSuccessfull) {
             .WillOnce(Return(true));
     EXPECT_CALL(*mmpc, CreatePersister).WillOnce(Return(ByMove(std::move(mmp))));
     RepositoryHolder mh(std::move(mmc), std::move(mmpc));
-    ASSERT_TRUE(mh.SaveModelToFile("abacabadabacaba"));
+    ASSERT_TRUE(mh.SaveRepositoryToFile("abacabadabacaba"));
 }
 
 TEST_F(ModelHolderTest, TestSaveFail) {
-    auto mm =  std::make_unique<MockModel>();
+    auto mm =  std::make_unique<MockRepository>();
     TaskRepositoryInterface *mmget = mm.get();
     auto mmc = std::make_unique<MockModelCreator>();
     auto mmp = std::make_unique<MockModelPersister>();
@@ -42,12 +42,12 @@ TEST_F(ModelHolderTest, TestSaveFail) {
             .WillOnce(Return(false));
     EXPECT_CALL(*mmpc, CreatePersister).WillOnce(Return(ByMove(std::move(mmp))));
     RepositoryHolder mh(std::move(mmc), std::move(mmpc));
-    ASSERT_FALSE(mh.SaveModelToFile("abacabadabacaba"));
+    ASSERT_FALSE(mh.SaveRepositoryToFile("abacabadabacaba"));
 }
 
 TEST_F(ModelHolderTest, TestLoadSuccessfull) {
-    auto mm =  std::make_unique<MockModel>();
-    auto mm0 =  std::make_unique<MockModel>();
+    auto mm =  std::make_unique<MockRepository>();
+    auto mm0 =  std::make_unique<MockRepository>();
     TaskRepositoryInterface *mmget = mm.get();
     auto mmc = std::make_unique<MockModelCreator>();
     auto mmp = std::make_unique<MockModelPersister>();
@@ -59,12 +59,12 @@ TEST_F(ModelHolderTest, TestLoadSuccessfull) {
             .WillOnce(Return(true));
     EXPECT_CALL(*mmpc, CreatePersister).WillOnce(Return(ByMove(std::move(mmp))));
     RepositoryHolder mh(std::move(mmc), std::move(mmpc));
-    ASSERT_TRUE(mh.LoadModelFromFile("abacabadabacaba"));
+    ASSERT_TRUE(mh.LoadRepositoryFromFile("abacabadabacaba"));
 }
 
 TEST_F(ModelHolderTest, TestLoadFail) {
-    auto mm =  std::make_unique<MockModel>();
-    auto mm0 =  std::make_unique<MockModel>();
+    auto mm =  std::make_unique<MockRepository>();
+    auto mm0 =  std::make_unique<MockRepository>();
     TaskRepositoryInterface *mmget = mm.get();
     auto mmc = std::make_unique<MockModelCreator>();
     auto mmp = std::make_unique<MockModelPersister>();
@@ -76,5 +76,5 @@ TEST_F(ModelHolderTest, TestLoadFail) {
             .WillOnce(Return(false));
     EXPECT_CALL(*mmpc, CreatePersister).WillOnce(Return(ByMove(std::move(mmp))));
     RepositoryHolder mh(std::move(mmc), std::move(mmpc));
-    ASSERT_FALSE(mh.LoadModelFromFile("abacabadabacaba"));
+    ASSERT_FALSE(mh.LoadRepositoryFromFile("abacabadabacaba"));
 }

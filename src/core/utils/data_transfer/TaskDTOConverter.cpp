@@ -4,13 +4,13 @@
 
 #include "TaskDTOConverter.h"
 
-Task TaskDTOConverter::getTask(const TaskDTO &dto) {
+Task TaskDTOConverter::getTask(const RepositoryTaskDTO &dto) {
     return Task::create(dto.getName(), dto.getPriority(), dto.getLabel(), dto.getDate());
 }
 
-TaskDTO TaskDTOConverter::getDTO(const std::shared_ptr<TaskNode> &node) {
+RepositoryTaskDTO TaskDTOConverter::getDTO(const std::shared_ptr<TaskNode> &node) {
     const Task& task = node->getTask();
-    return TaskDTO::create(
+    return RepositoryTaskDTO::create(
                     node->getId(),
                     task.getName(),
                     task.getPriority(),

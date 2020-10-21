@@ -2,7 +2,7 @@
 // Created by denis on 30.09.20.
 //
 
-#include "IostreamModelPersister.h"
+#include "IostreamRepositoryPersister.h"
 #include "core/memory_model/view/DatePriorityView.h"
 #include "core/memory_model/view/TagPriorityView.h"
 #include "core/memory_model/data/TaskStorage.h"
@@ -11,7 +11,7 @@
 #include "core/persistence/ProtoConvert.h"
 
 
-IostreamModelPersister::IostreamModelPersister(
+IostreamRepositoryPersister::IostreamRepositoryPersister(
         TaskRepositoryInterface &model,
         std::shared_ptr<std::iostream> stream)
         :
@@ -19,7 +19,7 @@ IostreamModelPersister::IostreamModelPersister(
         stream_(stream)
         {}
 
-bool IostreamModelPersister::WriteTaskToTaskMessage(const TaskDTO& task, TaskMessage* message) {
+bool IostreamRepositoryPersister::WriteTaskToTaskMessage(const RepositoryTaskDTO& task, TaskMessage* message) {
     message->set_allocated_task(new TaskData);
     proto_convert::WriteToMessage(task, message->mutable_task());
     for (const auto& subtask : model_.getSubTasks(task.getId())) {
@@ -31,7 +31,7 @@ bool IostreamModelPersister::WriteTaskToTaskMessage(const TaskDTO& task, TaskMes
     return true;
 }
 
-bool IostreamModelPersister::Save() {
+bool IostreamRepositoryPersister::Save() {
     TaskModelMessage assembled_model_message;
     for (const auto& task : model_.getAllTasks()) {
         if (!model_.getParentTask(task.getId())) {
@@ -44,9 +44,9 @@ bool IostreamModelPersister::Save() {
     return assembled_model_message.SerializeToOstream(stream_.get());
 }
 
-bool IostreamModelPersister::RestoreTaskByMessage(TaskID id, const TaskMessage& message) {
+bool IostreamRepositoryPersister::RestoreTaskByMessage(TaskID id, const TaskMessage& message) {
     for (const TaskMessage& subtask_load : message.subtasks()) {
-        TaskDTO subtask = proto_convert::RestoreFromMessage(subtask_load.task());
+        RepositoryTaskDTO subtask = proto_convert::RestoreFromMessage(subtask_load.task());
         TaskCreationResult result = model_.addSubTask(id, subtask);
         if (!result.getCreatedTaskID()) {
             return false;
@@ -61,13 +61,13 @@ bool IostreamModelPersister::RestoreTaskByMessage(TaskID id, const TaskMessage& 
     return true;
 }
 
-bool IostreamModelPersister::Load() {
+bool IostreamRepositoryPersister::Load() {
     TaskModelMessage loaded_model;
     if (!loaded_model.ParseFromIstream(stream_.get())) {
         return false;
     }
     for (const TaskMessage& task_load : loaded_model.tasks()) {
-        TaskDTO task = proto_convert::RestoreFromMessage(task_load.task());
+        RepositoryTaskDTO task = proto_convert::RestoreFromMessage(task_load.task());
         TaskCreationResult result = model_.addTask(task);
 
         if (!result.getCreatedTaskID()) {

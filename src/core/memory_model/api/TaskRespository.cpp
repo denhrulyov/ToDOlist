@@ -7,8 +7,8 @@
 
 
 
-std::vector<TaskDTO> convertAllNodes(const std::vector<std::weak_ptr<TaskNode>>& all) {
-    std::vector<TaskDTO> user_result_set;
+std::vector<RepositoryTaskDTO> convertAllNodes(const std::vector<std::weak_ptr<TaskNode>>& all) {
+    std::vector<RepositoryTaskDTO> user_result_set;
     std::transform(all.begin(), all.end(),
                    std::back_inserter(user_result_set),
                    [] (std::weak_ptr<TaskNode> node) {
@@ -20,7 +20,7 @@ std::vector<TaskDTO> convertAllNodes(const std::vector<std::weak_ptr<TaskNode>>&
 
 /*****************************************************************************/
 
-TaskCreationResult TaskRespository::addTask(const TaskDTO &task_data) {
+TaskCreationResult TaskRespository::addTask(const RepositoryTaskDTO &task_data) {
     auto created_node = std::make_shared<TaskNode>(
             id_generator_.generateID(),
             TaskDTOConverter::getTask(task_data)
@@ -34,7 +34,7 @@ TaskCreationResult TaskRespository::addTask(const TaskDTO &task_data) {
     return TaskCreationResult::success(created_node->getId());
 }
 
-TaskCreationResult TaskRespository::addSubTask(TaskID parent, const TaskDTO &task_data) {
+TaskCreationResult TaskRespository::addSubTask(TaskID parent, const RepositoryTaskDTO &task_data) {
     auto parent_node = storage_->getTaskByID(parent).lock();
     if (!parent_node) {
         return TaskCreationResult::taskNotFound();
@@ -50,7 +50,7 @@ TaskCreationResult TaskRespository::addSubTask(TaskID parent, const TaskDTO &tas
     return TaskCreationResult::success(generated_id);
 }
 
-TaskModificationResult TaskRespository::setTaskData(TaskID id, const TaskDTO &new_data) {
+TaskModificationResult TaskRespository::setTaskData(TaskID id, const RepositoryTaskDTO &new_data) {
     auto old_node = storage_->getTaskByID(id).lock();
     if (!old_node) {
         return TaskModificationResult::taskNotFound();
@@ -62,7 +62,7 @@ TaskModificationResult TaskRespository::setTaskData(TaskID id, const TaskDTO &ne
     return TaskModificationResult::success();
 }
 
-std::optional<TaskDTO> TaskRespository::getTaskData(TaskID id) const {
+std::optional<RepositoryTaskDTO> TaskRespository::getTaskData(TaskID id) const {
     auto node = storage_->getTaskByID(id).lock();
     return node ? std::make_optional(TaskDTOConverter::getDTO(node)) : std::nullopt;
 }
@@ -92,24 +92,24 @@ TaskModificationResult TaskRespository::setCompleted(TaskID id) {
     return TaskModificationResult::success();
 }
 
-std::vector<TaskDTO> TaskRespository::getToDate(const BoostDate &date_to) const {
+std::vector<RepositoryTaskDTO> TaskRespository::getToDate(const BoostDate &date_to) const {
     return convertAllNodes(by_date_->getAllWithConstraint(date_to));
 }
 
-std::vector<TaskDTO> TaskRespository::getWithLabel(const std::string &label) const {
+std::vector<RepositoryTaskDTO> TaskRespository::getWithLabel(const std::string &label) const {
     return convertAllNodes(by_label_->getAllWithConstraint(label));
 }
 
-std::vector<TaskDTO> TaskRespository::getSubTasks(TaskID id) const {
+std::vector<RepositoryTaskDTO> TaskRespository::getSubTasks(TaskID id) const {
     auto parent = storage_->getTaskByID(id).lock();
     if (parent) {
         return convertAllNodes(parent->getSubNodes());
     }
-    return std::vector<TaskDTO>{};
+    return std::vector<RepositoryTaskDTO>{};
 }
 
-std::vector<TaskDTO> get_children_recurse(const std::shared_ptr<TaskNode>& node) {
-    std::vector<TaskDTO> result = { TaskDTOConverter::getDTO(node) };
+std::vector<RepositoryTaskDTO> get_children_recurse(const std::shared_ptr<TaskNode>& node) {
+    std::vector<RepositoryTaskDTO> result = { TaskDTOConverter::getDTO(node) };
     for (const auto& child : node->getSubNodes()) {
         auto sub_result = get_children_recurse(child.lock());
         result.insert(result.end(), sub_result.begin(), sub_result.end());
@@ -117,24 +117,24 @@ std::vector<TaskDTO> get_children_recurse(const std::shared_ptr<TaskNode>& node)
     return result;
 }
 
-std::vector<TaskDTO> TaskRespository::getSubTasksRecursive(TaskID id) const {
+std::vector<RepositoryTaskDTO> TaskRespository::getSubTasksRecursive(TaskID id) const {
     auto parent = storage_->getTaskByID(id).lock();
     if (parent) {
-        std::vector<TaskDTO> result;
+        std::vector<RepositoryTaskDTO> result;
         for (const auto& child : parent->getSubNodes()) {
             auto sub_result = get_children_recurse(child.lock());
             result.insert(result.end(), sub_result.begin(), sub_result.end());
         }
         return result;
     }
-    return std::vector<TaskDTO>{};
+    return std::vector<RepositoryTaskDTO>{};
 }
 
-std::vector<TaskDTO> TaskRespository::getAllTasks() const {
+std::vector<RepositoryTaskDTO> TaskRespository::getAllTasks() const {
     return convertAllNodes(storage_->getAllTasks());
 }
 
-std::optional<TaskDTO> TaskRespository::getParentTask(TaskID id) const {
+std::optional<RepositoryTaskDTO> TaskRespository::getParentTask(TaskID id) const {
     auto node = storage_->getTaskByID(id).lock();
     if (!node) {
         return std::nullopt;

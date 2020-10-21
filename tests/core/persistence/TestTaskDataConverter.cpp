@@ -19,7 +19,7 @@ TEST_F(TestProtoConvert, TestAllRestoredFieldsSet) {
     proto.set_label("label");
     proto.set_allocated_date(::google::protobuf::Timestamp().New());
     proto.set_completed(true);
-    TaskDTO task = proto_convert::RestoreFromMessage(proto);
+    RepositoryTaskDTO task = proto_convert::RestoreFromMessage(proto);
     ASSERT_EQ(proto.name(), task.getName());
     ASSERT_EQ(proto_convert::RestorePriority(proto.prior()), task.getPriority());
     ASSERT_EQ(proto.label(), task.getLabel());
@@ -29,7 +29,7 @@ TEST_F(TestProtoConvert, TestAllRestoredFieldsSet) {
 
 TEST_F(TestProtoConvert, TestAllWrittenFieldsSet) {
     TaskData proto;
-    auto task = TaskDTO::create( TaskID(1),
+    auto task = RepositoryTaskDTO::create( TaskID(1),
                                  "name",
                                  TaskPriority::SECOND,
                                  "label",

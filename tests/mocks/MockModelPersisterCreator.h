@@ -14,8 +14,8 @@
 class MockModelPersisterCreator : public PersisterCreator {
 
 public:
-    MOCK_METHOD(std::unique_ptr<ModelPersister>, CreatePersister,
-            (TaskRepositoryInterface&, std::shared_ptr<std::iostream>), (override));
+    MOCK_METHOD(std::unique_ptr<Persister>, CreatePersister,
+                (TaskRepositoryInterface&, std::shared_ptr<std::iostream>), (override));
 };
 
 

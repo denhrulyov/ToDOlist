@@ -4,7 +4,7 @@
 
 #include "mocks/CoreMocks.h"
 #include "mocks/CoreMocks.h"
-#include "core/persistence/IostreamModelPersister.h"
+#include "core/persistence/IostreamRepositoryPersister.h"
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
@@ -31,18 +31,18 @@ void fill_task(TaskData* task, std::string name) {
 }
 
 auto has_name(std::string str) {
-    return Truly([str] (const TaskDTO& dto) {
+    return Truly([str] (const RepositoryTaskDTO& dto) {
         return dto.getName() == str;
     });
 }
 
 TEST_F(IostreamModelPersisterTest, TestDemanglesAllSubtasks) {
-    MockModel mm;
+    MockRepository mm;
     TaskModelMessage model_proto;
     TaskMessage* task1 = model_proto.add_tasks();
     task1->set_allocated_task(new TaskData);
     fill_task(task1->mutable_task(), "1");
-    EXPECT_CALL(mm, addTask(Truly([] (const TaskDTO& dto) {
+    EXPECT_CALL(mm, addTask(Truly([] (const RepositoryTaskDTO& dto) {
         return dto.getName() == "1";
     })))
             .WillOnce(Return(TaskCreationResult::success(TaskID(0))));
@@ -79,12 +79,12 @@ TEST_F(IostreamModelPersisterTest, TestDemanglesAllSubtasks) {
     std::vector protos {task1, task11, task12, task121, task13, task2, task3};;
     auto ss = std::make_shared<std::stringstream>(std::ios::out | std::ios::in);
     model_proto.SerializeToOstream(ss.get());
-    IostreamModelPersister iosmp(mm, ss);
+    IostreamRepositoryPersister iosmp(mm, ss);
     ASSERT_TRUE(iosmp.Load());
 }
 
-std::vector<TaskDTO> on_indexes(const std::vector<TaskDTO>& vec, const std::vector<std::size_t>& indexes) {
-    std::vector<TaskDTO> vec_filter;
+std::vector<RepositoryTaskDTO> on_indexes(const std::vector<RepositoryTaskDTO>& vec, const std::vector<std::size_t>& indexes) {
+    std::vector<RepositoryTaskDTO> vec_filter;
     for (std::size_t index : indexes) {
         vec_filter.push_back(vec[index]);
     }
@@ -94,17 +94,17 @@ std::vector<TaskDTO> on_indexes(const std::vector<TaskDTO>& vec, const std::vect
 
 TEST_F(IostreamModelPersisterTest, TestSerializesAllSubtasks) {
     std::vector sample_tasks {
-            TaskDTO::create(TaskID(0), DUMMY_TASK_FIELDS, false),
-            TaskDTO::create(TaskID(1), DUMMY_TASK_FIELDS, false),
-            TaskDTO::create(TaskID(2), DUMMY_TASK_FIELDS, false),
-            TaskDTO::create(TaskID(3), DUMMY_TASK_FIELDS, false),
-            TaskDTO::create(TaskID(4), DUMMY_TASK_FIELDS, false),
-            TaskDTO::create(TaskID(5), DUMMY_TASK_FIELDS, false),
-            TaskDTO::create(TaskID(6), DUMMY_TASK_FIELDS, false),
-            TaskDTO::create(TaskID(7), DUMMY_TASK_FIELDS, false)
+            RepositoryTaskDTO::create(TaskID(0), DUMMY_TASK_FIELDS, false),
+            RepositoryTaskDTO::create(TaskID(1), DUMMY_TASK_FIELDS, false),
+            RepositoryTaskDTO::create(TaskID(2), DUMMY_TASK_FIELDS, false),
+            RepositoryTaskDTO::create(TaskID(3), DUMMY_TASK_FIELDS, false),
+            RepositoryTaskDTO::create(TaskID(4), DUMMY_TASK_FIELDS, false),
+            RepositoryTaskDTO::create(TaskID(5), DUMMY_TASK_FIELDS, false),
+            RepositoryTaskDTO::create(TaskID(6), DUMMY_TASK_FIELDS, false),
+            RepositoryTaskDTO::create(TaskID(7), DUMMY_TASK_FIELDS, false)
 
     };
-    MockModel ms;
+    MockRepository ms;
     EXPECT_CALL(ms, getAllTasks).WillRepeatedly(Return(sample_tasks));
     EXPECT_CALL(ms, getParentTask(TaskID(0))).Times(1).WillOnce(Return(std::nullopt));
     EXPECT_CALL(ms, getParentTask(TaskID(1))).Times(1).WillOnce(Return(sample_tasks[0]));
@@ -122,18 +122,18 @@ TEST_F(IostreamModelPersisterTest, TestSerializesAllSubtasks) {
     EXPECT_CALL(ms, getSubTasks(sample_tasks[1].getId()))
             .WillRepeatedly(Return(on_indexes(sample_tasks, {4, 5})));
     EXPECT_CALL(ms, getSubTasks(sample_tasks[2].getId()))
-            .WillRepeatedly(Return(std::vector<TaskDTO> {}));
+            .WillRepeatedly(Return(std::vector<RepositoryTaskDTO> {}));
     EXPECT_CALL(ms, getSubTasks(sample_tasks[3].getId()))
-            .WillRepeatedly(Return(std::vector<TaskDTO> {}));
+            .WillRepeatedly(Return(std::vector<RepositoryTaskDTO> {}));
     EXPECT_CALL(ms, getSubTasks(sample_tasks[4].getId()))
-            .WillRepeatedly(Return(std::vector<TaskDTO> {}));
+            .WillRepeatedly(Return(std::vector<RepositoryTaskDTO> {}));
     EXPECT_CALL(ms, getSubTasks(sample_tasks[5].getId()))
             .WillRepeatedly(Return(on_indexes(sample_tasks, {6})));
     EXPECT_CALL(ms, getSubTasks(sample_tasks[6].getId()))
-            .WillRepeatedly(Return(std::vector<TaskDTO> {}));
+            .WillRepeatedly(Return(std::vector<RepositoryTaskDTO> {}));
     EXPECT_CALL(ms, getSubTasks(sample_tasks[7].getId()))
-            .WillRepeatedly(Return(std::vector<TaskDTO> {}));
+            .WillRepeatedly(Return(std::vector<RepositoryTaskDTO> {}));
 
-    IostreamModelPersister sr(ms, std::make_shared<std::fstream>());
+    IostreamRepositoryPersister sr(ms, std::make_shared<std::fstream>());
     sr.Save();
 }

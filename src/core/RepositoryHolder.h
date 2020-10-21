@@ -18,13 +18,13 @@ public:
             std::unique_ptr<PersisterCreator> persister_creator);
 
 public:
-    virtual TaskRepositoryInterface&     GetModel();
-    virtual bool                    LoadModelFromFile(const std::string& filepath);
-    virtual bool                    SaveModelToFile(const std::string& filepath);
+    virtual TaskRepositoryInterface&     GetRepository();
+    virtual bool                         LoadRepositoryFromFile(const std::string& filepath);
+    virtual bool                         SaveRepositoryToFile(const std::string& filepath);
     virtual ~RepositoryHolder() = default;
 
 private:
-    std::unique_ptr<TaskRepositoryInterface> model_;
+    std::unique_ptr<TaskRepositoryInterface> repository_;
     std::unique_ptr<RepositoryCreator> creator_;
     std::unique_ptr<PersisterCreator> persister_creator_;
 
