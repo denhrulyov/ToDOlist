@@ -148,7 +148,9 @@ add_executable(TestsExecutable
         ${CLI_SOURCES} ${CLI_HEADERS}
         ${CORE_SOURCES} ${CORE_HEADERS}
         ${TESTS} ${MOCKS}
-        ${PROTO_SRCS} ${PROTO_HDRS})
+        ${PROTO_SRCS} ${PROTO_HDRS}
+        ${ts_proto_srcs}
+        ${ts_grpc_srcs})
 target_link_libraries(TestsExecutable GTest::GTest GTest::Main
         ${GMOCK_LIBRARY} ${GMOCK_MAIN_LIBRARY}
         ${Boost_LIBRARIES}

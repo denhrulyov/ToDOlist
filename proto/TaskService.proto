@@ -8,6 +8,8 @@ service GrpcTaskService {
   rpc AddSubTask (AddSubTaskRequest) returns (AddTaskResponse) {}
 }
 
+// Just an wrapper serving as optional
+// response.has_task() == false is interpreted as nullopt
 message GetTaskByIDResponse {
   TaskData task = 1;
 }

@@ -30,10 +30,10 @@ using grpc::Status;
 class GrpcTaskServiceImpl final : public GrpcTaskService::Service {
 
 public:
-    explicit GrpcTaskServiceImpl(std::unique_ptr<RepositoryHolder>&& repos_holder);
-    Status GetTaskByID(ServerContext* context, const TaskIdMessage* request, GetTaskByIDResponse* response) override;
-    Status AddTask(ServerContext* context, const TaskData* request, AddTaskResponse* response) override;
-    Status AddSubTask(ServerContext* context, const AddSubTaskRequest* request, AddTaskResponse* response) override;
+    explicit  GrpcTaskServiceImpl(std::unique_ptr<RepositoryHolder>&& repos_holder);
+    Status    GetTaskByID(ServerContext* context, const TaskIdMessage* request, GetTaskByIDResponse* response) override;
+    Status    AddTask(ServerContext* context, const TaskData* request, AddTaskResponse* response) override;
+    Status    AddSubTask(ServerContext* context, const AddSubTaskRequest* request, AddTaskResponse* response) override;
 
 private:
     std::unique_ptr<RepositoryHolder> repository_holder_;
