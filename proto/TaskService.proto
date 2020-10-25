@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+import "task.proto";
+
+service GrpcTaskService {
+  rpc GetTaskByID (TaskIdMessage) returns (GetTaskByIDResponse) {}
+  rpc AddTask (TaskData) returns (AddTaskResponse) {}
+  rpc AddSubTask (AddSubTaskRequest) returns (AddTaskResponse) {}
+}
+
+message GetTaskByIDResponse {
+  TaskData task = 1;
+}
+
+message AddSubTaskRequest {
+  TaskIdMessage parent = 1;
+  TaskData task = 2;
+}
+
+message AddTaskResponse {
+  bool success = 1;
+  TaskIdMessage created_id = 2;
+  string error_msg = 3;
+}

@@ -1,4 +1,5 @@
 syntax = "proto3";
+
 import "google/protobuf/timestamp.proto";
 
 message TaskData {
@@ -14,6 +15,10 @@ message TaskData {
   google.protobuf.Timestamp  date        = 4;
   bool                       completed   = 5;
 
+}
+
+message TaskIdMessage {
+  uint32 id = 1;
 }
 
 message TaskMessage {
