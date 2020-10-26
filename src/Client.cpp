@@ -23,11 +23,7 @@ public:
     explicit ToDOListClient(const std::shared_ptr<Channel>& channel)
             : stub_(GrpcTaskService::NewStub(channel)) {}
 
-    void Run() {
-
-    }
 private:
-
     std::unique_ptr<GrpcTaskService::Stub> stub_;
 };
 
@@ -36,6 +32,5 @@ int main() {
     std::string server_address("0.0.0.0:50051");
     ToDOListClient client(grpc::CreateChannel(
             server_address, grpc::InsecureChannelCredentials()));
-    client.Run();
     return 0;
 }
