@@ -174,3 +174,78 @@ TEST_F(GrpcTaskServiceTest, AddSubTaskCalledWithAppropriateData) {
     GrpcTaskServiceImpl ts = GrpcTaskServiceImpl(std::move(mrh));
     EXPECT_TRUE(ts.AddSubTask(nullptr, &request, &response).ok());
 }
+
+
+TEST_F(GrpcTaskServiceTest, TestGetSubtasks) {
+    TaskID root(9);
+    auto mm = std::make_unique<MockRepository>();
+    auto mmh = std::make_unique<MockRepositoryHolder>();
+    EXPECT_CALL(*mmh, GetRepository).WillRepeatedly(ReturnRef(*mm));
+    EXPECT_CALL(*mm, getSubTasks(root)).Times(1);
+    GrpcTaskServiceImpl ts = GrpcTaskServiceImpl(std::move(mmh));
+    TaskIdMessage request;
+    TaskDTOList response;
+    request.set_id(root);
+    ts.GetSubTasks(nullptr, &request, &response);
+}
+
+TEST_F(GrpcTaskServiceTest, TestGetSubtasksRecursive) {
+    TaskID root(9);
+    auto mm = std::make_unique<MockRepository>();
+    auto mmh = std::make_unique<MockRepositoryHolder>();
+    EXPECT_CALL(*mmh, GetRepository).WillRepeatedly(ReturnRef(*mm));
+    EXPECT_CALL(*mm, getSubTasksRecursive(root)).Times(1);
+    GrpcTaskServiceImpl ts = GrpcTaskServiceImpl(std::move(mmh));
+    TaskIdMessage request;
+    TaskDTOList response;
+    request.set_id(root);
+    ts.GetSubTasksRecursive(nullptr, &request, &response);
+}
+
+TEST_F(GrpcTaskServiceTest, TestGetByLabel) {
+    auto mm = std::make_unique<MockRepository>();
+    auto mmh = std::make_unique<MockRepositoryHolder>();
+    EXPECT_CALL(*mmh, GetRepository).WillRepeatedly(ReturnRef(*mm));
+    EXPECT_CALL(*mm, getWithLabel("label")).Times(1);
+    GrpcTaskServiceImpl ts = GrpcTaskServiceImpl(std::move(mmh));
+    StringRequest request;
+    request.set_str("label");
+    TaskDTOList response;
+    ts.GetAllWithLabel(nullptr, &request, &response);
+}
+
+
+TEST_F(GrpcTaskServiceTest, TestGetAllTasks) {
+    TaskID root(9);
+    auto mm = std::make_unique<MockRepository>();
+    auto mmh = std::make_unique<MockRepositoryHolder>();
+    EXPECT_CALL(*mmh, GetRepository).WillRepeatedly(ReturnRef(*mm));
+    EXPECT_CALL(*mm, getToDate(service::max_date)).Times(1);
+    GrpcTaskServiceImpl ts = GrpcTaskServiceImpl(std::move(mmh));
+    EmptyRequest request;
+    TaskDTOList response;
+    ts.GetAllTasks(nullptr, &request, &response);
+}
+
+TEST_F(GrpcTaskServiceTest, TestGetThisWeek) {
+    auto mm = std::make_unique<MockRepository>();
+    auto mmh = std::make_unique<MockRepositoryHolder>();
+    EXPECT_CALL(*mmh, GetRepository).WillRepeatedly(ReturnRef(*mm));
+    EXPECT_CALL(*mm, getToDate(day_clock::local_day() + days(6))).Times(1);
+    GrpcTaskServiceImpl ts = GrpcTaskServiceImpl(std::move(mmh));
+    EmptyRequest request;
+    TaskDTOList response;
+    ts.GetThisWeek(nullptr, &request, &response);
+}
+
+TEST_F(GrpcTaskServiceTest, TestGetToday) {
+    auto mm = std::make_unique<MockRepository>();
+    auto mmh = std::make_unique<MockRepositoryHolder>();
+    EXPECT_CALL(*mmh, GetRepository).WillRepeatedly(ReturnRef(*mm));
+    EXPECT_CALL(*mm, getToDate(day_clock::local_day())).Times(1);
+    GrpcTaskServiceImpl ts = GrpcTaskServiceImpl(std::move(mmh));
+    EmptyRequest request;
+    TaskDTOList response;
+    ts.GetToday(nullptr, &request, &response);
+}
+

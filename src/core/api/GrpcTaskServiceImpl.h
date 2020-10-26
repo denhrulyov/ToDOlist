@@ -34,6 +34,12 @@ public:
     Status    GetTaskByID(ServerContext* context, const TaskIdMessage* request, GetTaskByIDResponse* response) override;
     Status    AddTask(ServerContext* context, const TaskData* request, AddTaskResponse* response) override;
     Status    AddSubTask(ServerContext* context, const AddSubTaskRequest* request, AddTaskResponse* response) override;
+    Status    GetAllWithLabel(ServerContext* context, const StringRequest* request, TaskDTOList* response) override;
+    Status    GetToday(ServerContext* context, const EmptyRequest* request,TaskDTOList* response) override;
+    Status    GetThisWeek(ServerContext* context, const EmptyRequest* request,TaskDTOList* response) override;
+    Status    GetAllTasks(ServerContext* context, const EmptyRequest* request,TaskDTOList* response) override;
+    Status    GetSubTasks(ServerContext* context, const TaskIdMessage* request,TaskDTOList* response) override;
+    Status    GetSubTasksRecursive(ServerContext* context, const TaskIdMessage* request,TaskDTOList* response) override;
 
 private:
     std::unique_ptr<RepositoryHolder> repository_holder_;
@@ -41,5 +47,6 @@ private:
 
 
 void ConvertTogRPC(TaskCreationResult& repos_result, AddTaskResponse* response);
+void ConvertTogRPC(const std::vector<RepositoryTaskDTO>& tasks, TaskDTOList* response);
 
 #endif //TODOLIST_GRPCTASKSERVICEIMPL_H
