@@ -19,6 +19,16 @@ void ConvertTogRPC(TaskCreationResult& repos_result, AddTaskResponse* response) 
     }
 }
 
+template<class ReposResult>
+void ConvertTogRPC(ReposResult& repos_result, DefaultResponse* response) {
+    bool status =       repos_result.getSuccessStatus();
+    auto error_msg =    repos_result.getErrorMessage();
+    response->set_success(status);
+    if (error_msg) {
+        response->set_error_msg(error_msg.value());
+    }
+}
+
 void ConvertTogRPC(const std::vector<RepositoryTaskDTO>& tasks, TaskDTOList* response) {
     for (const auto& task : tasks) {
         GrpcTaskDTO* grpc_dto = response->add_tasks();
@@ -144,4 +154,66 @@ GrpcTaskServiceImpl::GetSubTasksRecursive(ServerContext *context, const TaskIdMe
                     .getSubTasksRecursive(TaskID(request->id()));
     ConvertTogRPC(result_set, response);
     return Status::OK;;
+}
+
+Status GrpcTaskServiceImpl::DeleteTask(ServerContext *context, const TaskIdMessage *request, DefaultResponse *response) {
+    TaskModificationResult result =
+            repository_holder_
+                ->GetRepository()
+                .dropTask(TaskID(request->id()));
+    ConvertTogRPC(result, response);
+    return Status::OK;
+}
+
+Status GrpcTaskServiceImpl::PostponeTask(ServerContext *context, const PostponeRequest *request, DefaultResponse *response) {
+    auto id = TaskID(request->id().id());
+    // Getting requested task current data
+    std::optional<RepositoryTaskDTO> old_task_opt =
+            repository_holder_
+                ->GetRepository()
+                .getTaskData(id);
+    if (!old_task_opt) {
+        auto not_found_res = TaskModificationResult::taskNotFound();
+        ConvertTogRPC(not_found_res, response);
+        return Status::OK;
+    }
+
+    // Creating the same task but with modified date
+    RepositoryTaskDTO old_task = old_task_opt.value();
+    RepositoryTaskDTO postponed_task = RepositoryTaskDTO::create(
+            id,
+            old_task.getName(),
+            old_task.getPriority(),
+            old_task.getLabel(),
+            proto_convert::RestoreDate(request->date_postpone()),
+            old_task.isCompleted()
+    );
+
+    TaskModificationResult result =
+            repository_holder_->GetRepository().setTaskData(
+                    id,
+                    postponed_task
+            );
+    ConvertTogRPC(result, response);
+    return Status::OK;
+}
+
+Status GrpcTaskServiceImpl::CompleteTask(ServerContext *context, const TaskIdMessage *request, DefaultResponse *response) {
+    auto id = TaskID(request->id());
+    TaskRepositoryInterface& model = repository_holder_->GetRepository();
+    auto root_complete_result = model.setCompleted(id);
+    if (!root_complete_result.getSuccessStatus()) {
+        ConvertTogRPC(root_complete_result, response);
+        return Status::OK;
+    }
+    for (const auto& task : model.getSubTasksRecursive(id)) {
+        auto complete_result = model.setCompleted(task.getId());
+        if (!complete_result.getSuccessStatus()) {
+            ConvertTogRPC(complete_result, response);
+            return Status::OK;
+        }
+    }
+    auto res_success = RequestResult::success();
+    ConvertTogRPC(res_success, response);
+    return Status::OK;
 }

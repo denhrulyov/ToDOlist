@@ -35,17 +35,21 @@ public:
     Status    AddTask(ServerContext* context, const TaskData* request, AddTaskResponse* response) override;
     Status    AddSubTask(ServerContext* context, const AddSubTaskRequest* request, AddTaskResponse* response) override;
     Status    GetAllWithLabel(ServerContext* context, const StringRequest* request, TaskDTOList* response) override;
-    Status    GetToday(ServerContext* context, const EmptyRequest* request,TaskDTOList* response) override;
-    Status    GetThisWeek(ServerContext* context, const EmptyRequest* request,TaskDTOList* response) override;
-    Status    GetAllTasks(ServerContext* context, const EmptyRequest* request,TaskDTOList* response) override;
-    Status    GetSubTasks(ServerContext* context, const TaskIdMessage* request,TaskDTOList* response) override;
-    Status    GetSubTasksRecursive(ServerContext* context, const TaskIdMessage* request,TaskDTOList* response) override;
+    Status    GetToday(ServerContext* context, const EmptyRequest* request, TaskDTOList* response) override;
+    Status    GetThisWeek(ServerContext* context, const EmptyRequest* request, TaskDTOList* response) override;
+    Status    GetAllTasks(ServerContext* context, const EmptyRequest* request, TaskDTOList* response) override;
+    Status    GetSubTasks(ServerContext* context, const TaskIdMessage* request, TaskDTOList* response) override;
+    Status    GetSubTasksRecursive(ServerContext* context, const TaskIdMessage* request, TaskDTOList* response) override;
+    Status    DeleteTask(ServerContext* context, const TaskIdMessage* request, DefaultResponse* response) override;
+    Status    PostponeTask(ServerContext* context, const PostponeRequest* request, DefaultResponse* response) override;
+    Status    CompleteTask(ServerContext* context, const TaskIdMessage* request, DefaultResponse* response) override;
 
 private:
     std::unique_ptr<RepositoryHolder> repository_holder_;
 };
 
-
+template<class ReposResult>
+void ConvertTogRPC(ReposResult& repos_result, DefaultResponse* response);
 void ConvertTogRPC(TaskCreationResult& repos_result, AddTaskResponse* response);
 void ConvertTogRPC(const std::vector<RepositoryTaskDTO>& tasks, TaskDTOList* response);
 

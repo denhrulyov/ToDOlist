@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 import "task.proto";
+import "google/protobuf/timestamp.proto";
 
 service GrpcTaskService {
   rpc GetTaskByID           (TaskIdMessage)         returns (GetTaskByIDResponse) {}
@@ -13,7 +14,7 @@ service GrpcTaskService {
   rpc GetSubTasks           (TaskIdMessage)         returns (TaskDTOList) {}
   rpc GetSubTasksRecursive  (TaskIdMessage)         returns (TaskDTOList) {}
   rpc DeleteTask            (TaskIdMessage)         returns (DefaultResponse) {}
-  rpc PostponeTask          (TaskIdMessage)         returns (DefaultResponse) {}
+  rpc PostponeTask          (PostponeRequest)       returns (DefaultResponse) {}
   rpc CompleteTask          (TaskIdMessage)         returns (DefaultResponse) {}
   rpc SaveToFile            (StringRequest)         returns (DefaultResponse) {}
   rpc LoadFromFile          (StringRequest)         returns (DefaultResponse) {}
@@ -44,6 +45,12 @@ message GrpcTaskDTO {
 message TaskDTOList {
   repeated GrpcTaskDTO tasks = 1;
 }
+
+message PostponeRequest {
+  TaskIdMessage id = 1;
+  google.protobuf.Timestamp date_postpone = 2;
+}
+
 
 message StringRequest {
   string str = 1;

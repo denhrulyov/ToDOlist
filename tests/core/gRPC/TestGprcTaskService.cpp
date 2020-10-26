@@ -24,11 +24,16 @@ class GrpcTaskServiceTest : public ::testing::Test {
 };
 
 auto DataIsEqual(const TaskData& message) {
-    return Truly([&] (const RepositoryTaskDTO& dto) -> bool {
+    return Truly([message] (const RepositoryTaskDTO& dto) -> bool {
         return message.name() == dto.getName();
     });
 }
 
+auto DataIsEqual(const RepositoryTaskDTO& dto_compare) {
+    return Truly([dto_compare] (const RepositoryTaskDTO& dto) -> bool {
+        return dto_compare.getName() == dto.getName();
+    });
+}
 
 TEST_F(GrpcTaskServiceTest, ConvertTogRPCTaskCreationResultGood) {
     auto result = TaskCreationResult::success(TaskID(100500));
@@ -186,7 +191,7 @@ TEST_F(GrpcTaskServiceTest, TestGetSubtasks) {
     TaskIdMessage request;
     TaskDTOList response;
     request.set_id(root);
-    ts.GetSubTasks(nullptr, &request, &response);
+    EXPECT_TRUE(ts.GetSubTasks(nullptr, &request, &response).ok());
 }
 
 TEST_F(GrpcTaskServiceTest, TestGetSubtasksRecursive) {
@@ -199,7 +204,7 @@ TEST_F(GrpcTaskServiceTest, TestGetSubtasksRecursive) {
     TaskIdMessage request;
     TaskDTOList response;
     request.set_id(root);
-    ts.GetSubTasksRecursive(nullptr, &request, &response);
+    EXPECT_TRUE(ts.GetSubTasksRecursive(nullptr, &request, &response).ok());
 }
 
 TEST_F(GrpcTaskServiceTest, TestGetByLabel) {
@@ -211,7 +216,7 @@ TEST_F(GrpcTaskServiceTest, TestGetByLabel) {
     StringRequest request;
     request.set_str("label");
     TaskDTOList response;
-    ts.GetAllWithLabel(nullptr, &request, &response);
+    EXPECT_TRUE(ts.GetAllWithLabel(nullptr, &request, &response).ok());
 }
 
 
@@ -224,7 +229,7 @@ TEST_F(GrpcTaskServiceTest, TestGetAllTasks) {
     GrpcTaskServiceImpl ts = GrpcTaskServiceImpl(std::move(mmh));
     EmptyRequest request;
     TaskDTOList response;
-    ts.GetAllTasks(nullptr, &request, &response);
+    EXPECT_TRUE(ts.GetAllTasks(nullptr, &request, &response).ok());
 }
 
 TEST_F(GrpcTaskServiceTest, TestGetThisWeek) {
@@ -235,7 +240,7 @@ TEST_F(GrpcTaskServiceTest, TestGetThisWeek) {
     GrpcTaskServiceImpl ts = GrpcTaskServiceImpl(std::move(mmh));
     EmptyRequest request;
     TaskDTOList response;
-    ts.GetThisWeek(nullptr, &request, &response);
+    EXPECT_TRUE(ts.GetThisWeek(nullptr, &request, &response).ok());
 }
 
 TEST_F(GrpcTaskServiceTest, TestGetToday) {
@@ -246,6 +251,238 @@ TEST_F(GrpcTaskServiceTest, TestGetToday) {
     GrpcTaskServiceImpl ts = GrpcTaskServiceImpl(std::move(mmh));
     EmptyRequest request;
     TaskDTOList response;
-    ts.GetToday(nullptr, &request, &response);
+    EXPECT_TRUE(ts.GetToday(nullptr, &request, &response).ok());
 }
+
+TEST_F(GrpcTaskServiceTest, TestDeleteExisitingTask) {
+    auto mm = std::make_unique<MockRepository>();
+    auto mmh = std::make_unique<MockRepositoryHolder>();
+    TaskID test_id(2);
+    EXPECT_CALL(*mmh, GetRepository).WillRepeatedly(ReturnRef(*mm));
+    EXPECT_CALL(*mm, dropTask(test_id))
+            .Times(1)
+            .WillOnce(Return(TaskModificationResult::success()));
+    GrpcTaskServiceImpl ts = GrpcTaskServiceImpl(std::move(mmh));
+    TaskIdMessage request;
+    DefaultResponse response;
+    request.set_id(test_id);
+
+    EXPECT_TRUE(ts.DeleteTask(nullptr, &request, &response).ok());
+    EXPECT_TRUE(response.success());
+}
+
+TEST_F(GrpcTaskServiceTest, TestDeleteNotExisitingTask) {
+    auto mm = std::make_unique<MockRepository>();
+    auto mmh = std::make_unique<MockRepositoryHolder>();
+    TaskID test_id(2);
+    EXPECT_CALL(*mmh, GetRepository).WillRepeatedly(ReturnRef(*mm));
+    EXPECT_CALL(*mm, dropTask(test_id))
+        .Times(1)
+        .WillOnce(Return(TaskModificationResult::taskNotFound()));
+    GrpcTaskServiceImpl ts = GrpcTaskServiceImpl(std::move(mmh));
+    TaskIdMessage request;
+    DefaultResponse response;
+    request.set_id(test_id);
+
+    EXPECT_TRUE(ts.DeleteTask(nullptr, &request, &response).ok());
+    EXPECT_FALSE(response.success());
+}
+
+TEST_F(GrpcTaskServiceTest, TestPostponeExistingTask) {
+    auto mm = std::make_unique<MockRepository>();
+    auto mmh = std::make_unique<MockRepositoryHolder>();
+    auto id = TaskID(5);
+    auto new_date = day_clock::local_day() + days(10);
+    auto old_task =
+            RepositoryTaskDTO::create(
+                    id,
+                    "name",
+                    TaskPriority::SECOND,
+                    "label",
+                    day_clock::local_day(),
+                    true);
+    auto new_task =
+            RepositoryTaskDTO::create(
+                    id,
+                    old_task.getName(),
+                    old_task.getPriority(),
+                    old_task.getLabel(),
+                    new_date,
+                    old_task.isCompleted());
+
+    EXPECT_CALL(*mmh, GetRepository).WillRepeatedly(ReturnRef(*mm));
+    EXPECT_CALL(*mm, getTaskData(id))
+            .Times(1)
+            .WillOnce(Return(old_task));
+    EXPECT_CALL(*mm, setTaskData(id, DataIsEqual(new_task)))
+            .Times(1)
+            .WillOnce(Return(TaskModificationResult::success()));
+
+    GrpcTaskServiceImpl ts = GrpcTaskServiceImpl(std::move(mmh));
+    PostponeRequest request;
+    DefaultResponse response;
+    request.mutable_id()->set_id(id);
+    request.set_allocated_date_postpone(
+            proto_convert::GetProtobufDate(new_task.getDate()).release());
+
+
+    EXPECT_TRUE(ts.PostponeTask(nullptr, &request, &response).ok());
+    EXPECT_TRUE(response.success());
+}
+
+TEST_F(GrpcTaskServiceTest, TestPostponeExistingTaskAndReposotoryError) {
+    auto mm = std::make_unique<MockRepository>();
+    auto mmh = std::make_unique<MockRepositoryHolder>();
+    auto id = TaskID(5);
+    auto new_date = day_clock::local_day() + days(10);
+    auto old_task =
+            RepositoryTaskDTO::create(
+                    id,
+                    "name",
+                    TaskPriority::SECOND,
+                    "label",
+                    day_clock::local_day(),
+                    true);
+    auto new_task =
+            RepositoryTaskDTO::create(
+                    id,
+                    old_task.getName(),
+                    old_task.getPriority(),
+                    old_task.getLabel(),
+                    new_date,
+                    old_task.isCompleted());
+
+    EXPECT_CALL(*mmh, GetRepository).WillRepeatedly(ReturnRef(*mm));
+    EXPECT_CALL(*mm, getTaskData(id))
+            .Times(1)
+            .WillOnce(Return(old_task));
+    EXPECT_CALL(*mm, setTaskData)
+            .Times(1)
+            .WillOnce(Return(TaskModificationResult::error("Unknown error")));
+
+    GrpcTaskServiceImpl ts = GrpcTaskServiceImpl(std::move(mmh));
+    PostponeRequest request;
+    DefaultResponse response;
+    request.mutable_id()->set_id(id);
+    request.set_allocated_date_postpone(
+            proto_convert::GetProtobufDate(new_task.getDate()).release());
+
+
+    EXPECT_TRUE(ts.PostponeTask(nullptr, &request, &response).ok());
+    EXPECT_FALSE(response.success());
+}
+
+
+TEST_F(GrpcTaskServiceTest, TestPostponeNotExistingTask) {
+    auto mm = std::make_unique<MockRepository>();
+    auto mmh = std::make_unique<MockRepositoryHolder>();
+    auto id = TaskID(5);
+    auto new_date = day_clock::local_day() + days(10);
+    auto old_task =
+            RepositoryTaskDTO::create(
+                    id,
+                    "name",
+                    TaskPriority::SECOND,
+                    "label",
+                    day_clock::local_day(),
+                    true);
+    auto new_task =
+            RepositoryTaskDTO::create(
+                    id,
+                    old_task.getName(),
+                    old_task.getPriority(),
+                    old_task.getLabel(),
+                    new_date,
+                    old_task.isCompleted());
+
+    EXPECT_CALL(*mmh, GetRepository).WillRepeatedly(ReturnRef(*mm));
+    EXPECT_CALL(*mm, getTaskData(id))
+            .Times(1)
+            .WillOnce(Return(std::nullopt));
+    EXPECT_CALL(*mm, setTaskData)
+            .Times(0);
+
+    GrpcTaskServiceImpl ts = GrpcTaskServiceImpl(std::move(mmh));
+    PostponeRequest request;
+    DefaultResponse response;
+    request.mutable_id()->set_id(id);
+    request.set_allocated_date_postpone(
+            proto_convert::GetProtobufDate(new_task.getDate()).release());
+
+
+    EXPECT_TRUE(ts.PostponeTask(nullptr, &request, &response).ok());
+    EXPECT_FALSE(response.success());
+}
+
+TEST_F(GrpcTaskServiceTest, TestCompleteExistingTask) {
+    auto mm = std::make_unique<MockRepository>();
+    auto mmh = std::make_unique<MockRepositoryHolder>();
+    auto root = TaskID(200);
+    EXPECT_CALL(*mmh, GetRepository).WillRepeatedly(ReturnRef(*mm));
+    EXPECT_CALL(*mm, getSubTasksRecursive(root)).WillOnce(Return(
+            std::vector<RepositoryTaskDTO> {
+                    RepositoryTaskDTO::create(TaskID(1), "", TaskPriority::FIRST, "", BoostDate()),
+                    RepositoryTaskDTO::create(TaskID(2), "", TaskPriority::FIRST, "", BoostDate()),
+                    RepositoryTaskDTO::create(TaskID(3), "", TaskPriority::FIRST, "", BoostDate()),
+                    RepositoryTaskDTO::create(TaskID(4), "", TaskPriority::FIRST, "", BoostDate())
+            }));
+    EXPECT_CALL(*mm, setCompleted(TaskID(root))).WillOnce(Return(TaskModificationResult::success()));
+    EXPECT_CALL(*mm, setCompleted(TaskID(1))).WillOnce(Return(TaskModificationResult::success()));
+    EXPECT_CALL(*mm, setCompleted(TaskID(2))).WillOnce(Return(TaskModificationResult::success()));
+    EXPECT_CALL(*mm, setCompleted(TaskID(3))).WillOnce(Return(TaskModificationResult::success()));
+    EXPECT_CALL(*mm, setCompleted(TaskID(4))).WillOnce(Return(TaskModificationResult::success()));
+    GrpcTaskServiceImpl ts = GrpcTaskServiceImpl(std::move(mmh));
+    TaskIdMessage request;
+    DefaultResponse response;
+    request.set_id(root);
+    EXPECT_TRUE(ts.CompleteTask(nullptr, &request, &response).ok());
+    EXPECT_TRUE(response.success());
+}
+
+TEST_F(GrpcTaskServiceTest, TestCompleteExistingTaskButOneOfSetCompleteRequestsFailed) {
+    auto mm = std::make_unique<MockRepository>();
+    auto mmh = std::make_unique<MockRepositoryHolder>();
+    auto root = TaskID(200);
+    EXPECT_CALL(*mmh, GetRepository).WillRepeatedly(ReturnRef(*mm));
+    EXPECT_CALL(*mm, getSubTasksRecursive(root)).WillOnce(Return(
+            std::vector<RepositoryTaskDTO> {
+                    RepositoryTaskDTO::create(TaskID(1), "", TaskPriority::FIRST, "", BoostDate()),
+                    RepositoryTaskDTO::create(TaskID(2), "", TaskPriority::FIRST, "", BoostDate()),
+                    RepositoryTaskDTO::create(TaskID(3), "", TaskPriority::FIRST, "", BoostDate()),
+                    RepositoryTaskDTO::create(TaskID(4), "", TaskPriority::FIRST, "", BoostDate())
+            }));
+
+    EXPECT_CALL(*mm, setCompleted).Times(0); // Expect no calls after failure on TaskID(2)
+    EXPECT_CALL(*mm, setCompleted(TaskID(root))).WillOnce(Return(TaskModificationResult::success()));
+    EXPECT_CALL(*mm, setCompleted(TaskID(1))).WillOnce(Return(TaskModificationResult::success()));
+    EXPECT_CALL(*mm, setCompleted(TaskID(2))).WillOnce(Return(TaskModificationResult::taskNotFound()));
+    GrpcTaskServiceImpl ts = GrpcTaskServiceImpl(std::move(mmh));
+    TaskIdMessage request;
+    DefaultResponse response;
+    request.set_id(root);
+    EXPECT_TRUE(ts.CompleteTask(nullptr, &request, &response).ok());
+    EXPECT_FALSE(response.success());
+}
+
+TEST_F(GrpcTaskServiceTest, TestCompleteNotExistingTask) {
+    auto mm = std::make_unique<MockRepository>();
+    auto mmh = std::make_unique<MockRepositoryHolder>();
+    auto root = TaskID(200);
+    EXPECT_CALL(*mmh, GetRepository).WillRepeatedly(ReturnRef(*mm));
+    EXPECT_CALL(*mm, getSubTasksRecursive(root)).Times(0);
+    EXPECT_CALL(*mm, setCompleted).Times(0); // Expect no calls after failure requesting root
+    EXPECT_CALL(*mm, setCompleted(TaskID(root)))
+        .WillOnce(Return(TaskModificationResult::taskNotFound()));
+
+    GrpcTaskServiceImpl ts = GrpcTaskServiceImpl(std::move(mmh));
+    TaskIdMessage request;
+    DefaultResponse response;
+    request.set_id(root);
+    EXPECT_TRUE(ts.CompleteTask(nullptr, &request, &response).ok());
+    EXPECT_FALSE(response.success());
+}
+
+
+
+
 
