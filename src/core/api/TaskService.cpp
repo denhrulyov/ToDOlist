@@ -7,7 +7,6 @@
 
 
 bool validate_date(const BoostDate& date) {
-    std::cout << "Validating : " << date << std::endl;
     return  date <= service::max_date &&
             date >= boost::gregorian::day_clock::local_day();
 }
