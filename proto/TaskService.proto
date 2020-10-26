@@ -7,7 +7,7 @@ service GrpcTaskService {
   rpc GetTaskByID           (TaskIdMessage)         returns (GetTaskByIDResponse) {}
   rpc AddTask               (TaskData)              returns (AddTaskResponse) {}
   rpc AddSubTask            (AddSubTaskRequest)     returns (AddTaskResponse) {}
-  rpc GetAllWithLabel       (StringRequest)         returns (TaskDTOList) {}
+  rpc GetAllWithLabel       (StringMessage)         returns (TaskDTOList) {}
   rpc GetToday              (EmptyRequest)          returns (TaskDTOList) {}
   rpc GetThisWeek           (EmptyRequest)          returns (TaskDTOList) {}
   rpc GetAllTasks           (EmptyRequest)          returns (TaskDTOList) {}
@@ -16,8 +16,8 @@ service GrpcTaskService {
   rpc DeleteTask            (TaskIdMessage)         returns (DefaultResponse) {}
   rpc PostponeTask          (PostponeRequest)       returns (DefaultResponse) {}
   rpc CompleteTask          (TaskIdMessage)         returns (DefaultResponse) {}
-  rpc SaveToFile            (StringRequest)         returns (DefaultResponse) {}
-  rpc LoadFromFile          (StringRequest)         returns (DefaultResponse) {}
+  rpc SaveToFile            (StringMessage)         returns (DefaultResponse) {}
+  rpc LoadFromFile          (StringMessage)         returns (DefaultResponse) {}
 }
 
 // Just an wrapper serving as optional
@@ -52,7 +52,7 @@ message PostponeRequest {
 }
 
 
-message StringRequest {
+message StringMessage {
   string str = 1;
 }
 

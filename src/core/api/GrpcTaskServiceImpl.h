@@ -33,7 +33,7 @@ public:
     Status    GetTaskByID(ServerContext* context, const TaskIdMessage* request, GetTaskByIDResponse* response) override;
     Status    AddTask(ServerContext* context, const TaskData* request, AddTaskResponse* response) override;
     Status    AddSubTask(ServerContext* context, const AddSubTaskRequest* request, AddTaskResponse* response) override;
-    Status    GetAllWithLabel(ServerContext* context, const StringRequest* request, TaskDTOList* response) override;
+    Status    GetAllWithLabel(ServerContext* context, const StringMessage* request, TaskDTOList* response) override;
     Status    GetToday(ServerContext* context, const EmptyRequest* request, TaskDTOList* response) override;
     Status    GetThisWeek(ServerContext* context, const EmptyRequest* request, TaskDTOList* response) override;
     Status    GetAllTasks(ServerContext* context, const EmptyRequest* request, TaskDTOList* response) override;
@@ -42,8 +42,8 @@ public:
     Status    DeleteTask(ServerContext* context, const TaskIdMessage* request, DefaultResponse* response) override;
     Status    PostponeTask(ServerContext* context, const PostponeRequest* request, DefaultResponse* response) override;
     Status    CompleteTask(ServerContext* context, const TaskIdMessage* request, DefaultResponse* response) override;
-    Status    SaveToFile(ServerContext* context, const StringRequest* request,DefaultResponse* response) override;
-    Status    LoadFromFile(ServerContext* context, const StringRequest* request,DefaultResponse* response) override;
+    Status    SaveToFile(ServerContext* context, const StringMessage* request, DefaultResponse* response) override;
+    Status    LoadFromFile(ServerContext* context, const StringMessage* request, DefaultResponse* response) override;
 
 private:
     std::unique_ptr<RepositoryHolder> repository_holder_;

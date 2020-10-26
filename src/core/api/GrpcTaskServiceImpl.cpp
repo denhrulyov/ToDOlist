@@ -94,7 +94,7 @@ GrpcTaskServiceImpl::AddSubTask(ServerContext* context, const AddSubTaskRequest*
 }
 
 Status
-GrpcTaskServiceImpl::GetAllWithLabel(ServerContext *context, const StringRequest *request, TaskDTOList *response) {
+GrpcTaskServiceImpl::GetAllWithLabel(ServerContext *context, const StringMessage *request, TaskDTOList *response) {
     std::vector<RepositoryTaskDTO> result_set =
             repository_holder_
                 ->GetRepository()
@@ -224,14 +224,14 @@ Status GrpcTaskServiceImpl::CompleteTask(ServerContext *context, const TaskIdMes
     return Status::OK;
 }
 
-Status GrpcTaskServiceImpl::SaveToFile(ServerContext *context, const StringRequest *request, DefaultResponse *response) {
+Status GrpcTaskServiceImpl::SaveToFile(ServerContext *context, const StringMessage *request, DefaultResponse *response) {
     bool saved = repository_holder_->SaveRepositoryToFile(request->str());
     auto result = saved ? RequestResult::success() : RequestResult(false, "Could not save");
     ConvertTogRPC(result, response);
     return Status::OK;
 }
 
-Status GrpcTaskServiceImpl::LoadFromFile(ServerContext *context, const StringRequest *request, DefaultResponse *response) {
+Status GrpcTaskServiceImpl::LoadFromFile(ServerContext *context, const StringMessage *request, DefaultResponse *response) {
     bool loaded = repository_holder_->LoadRepositoryFromFile(request->str());
     auto result = loaded ? RequestResult::success() : RequestResult(false, "Could not load");
     ConvertTogRPC(result, response);

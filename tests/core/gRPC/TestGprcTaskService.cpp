@@ -214,7 +214,7 @@ TEST_F(GrpcTaskServiceTest, TestGetByLabel) {
     EXPECT_CALL(*mmh, GetRepository).WillRepeatedly(ReturnRef(*mm));
     EXPECT_CALL(*mm, getWithLabel("label")).Times(1);
     GrpcTaskServiceImpl ts = GrpcTaskServiceImpl(std::move(mmh));
-    StringRequest request;
+    StringMessage request;
     request.set_str("label");
     TaskDTOList response;
     EXPECT_TRUE(ts.GetAllWithLabel(nullptr, &request, &response).ok());
@@ -492,7 +492,7 @@ TEST_F(GrpcTaskServiceTest, TestLoadFromFileReturnsSuccess) {
     EXPECT_CALL(*mmh, LoadRepositoryFromFile(filepath)).Times(1).WillOnce(Return(true));
 
     GrpcTaskServiceImpl ts = GrpcTaskServiceImpl(std::move(mmh));
-    StringRequest request;
+    StringMessage request;
     request.set_str(filepath);
     DefaultResponse response;
 
@@ -509,7 +509,7 @@ TEST_F(GrpcTaskServiceTest, TestLoadFromFileReturnsErrorOnFail) {
     EXPECT_CALL(*mmh, LoadRepositoryFromFile(filepath)).Times(1).WillOnce(Return(false));
 
     GrpcTaskServiceImpl ts = GrpcTaskServiceImpl(std::move(mmh));
-    StringRequest request;
+    StringMessage request;
     request.set_str(filepath);
     DefaultResponse response;
 
@@ -526,7 +526,7 @@ TEST_F(GrpcTaskServiceTest, TestSaveToFileReturnsSuccess) {
     EXPECT_CALL(*mmh, SaveRepositoryToFile(filepath)).Times(1).WillOnce(Return(true));
 
     GrpcTaskServiceImpl ts = GrpcTaskServiceImpl(std::move(mmh));
-    StringRequest request;
+    StringMessage request;
     request.set_str(filepath);
     DefaultResponse response;
 
@@ -543,7 +543,7 @@ TEST_F(GrpcTaskServiceTest, TestSaveToFileReturnsErrorOnFail) {
     EXPECT_CALL(*mmh, SaveRepositoryToFile(filepath)).Times(1).WillOnce(Return(false));
 
     GrpcTaskServiceImpl ts = GrpcTaskServiceImpl(std::move(mmh));
-    StringRequest request;
+    StringMessage request;
     request.set_str(filepath);
     DefaultResponse response;
 
