@@ -13,12 +13,10 @@
 #include <grpcpp/grpcpp.h>
 #include <grpcpp/health_check_service_interface.h>
 #include <grpcpp/ext/proto_server_reflection_plugin.h>
-#include <core/api/TaskService.h>
 #include <core/RepositoryHolder.h>
 #include <core/persistence/ProtoConvert.h>
 #include "TaskService.grpc.pb.h"
 #include "TaskService.pb.h"
-
 
 
 using grpc::Server;
@@ -26,6 +24,7 @@ using grpc::ServerBuilder;
 using grpc::ServerContext;
 using grpc::Status;
 
+namespace grpc_task_service {
 
 class GrpcTaskServiceImpl final : public GrpcTaskService::Service {
 
@@ -50,9 +49,17 @@ private:
     std::unique_ptr<RepositoryHolder> repository_holder_;
 };
 
+const BoostDate max_date(
+            BoostDate::year_type(3000),
+            BoostDate::month_type(1),
+            BoostDate::day_type(1));
+
 template<class ReposResult>
 void ConvertTogRPC(ReposResult& repos_result, DefaultResponse* response);
 void ConvertTogRPC(TaskCreationResult& repos_result, AddTaskResponse* response);
 void ConvertTogRPC(const std::vector<RepositoryTaskDTO>& tasks, TaskDTOList* response);
+bool validate_date(const BoostDate& date);
+
+}
 
 #endif //TODOLIST_GRPCTASKSERVICEIMPL_H

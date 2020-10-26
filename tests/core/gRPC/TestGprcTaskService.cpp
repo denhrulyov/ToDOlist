@@ -18,6 +18,7 @@ using ::testing::Truly;
 using ::testing::StrictMock;
 
 using namespace boost::gregorian;
+using namespace grpc_task_service;
 
 class GrpcTaskServiceTest : public ::testing::Test {
 
@@ -99,7 +100,7 @@ void TestTaskWithDate(BoostDate date, bool must_be_added) {
 }
 
 TEST_F(GrpcTaskServiceTest, TestTaskWithDateBiggerThenMaxNotAdded) {
-    TestTaskWithDate(service::max_date + days(1), false);
+    TestTaskWithDate(grpc_task_service::max_date + days(1), false);
 }
 
 TEST_F(GrpcTaskServiceTest, TestTaskWithDateBeforeTodayNotAdded) {
@@ -107,8 +108,8 @@ TEST_F(GrpcTaskServiceTest, TestTaskWithDateBeforeTodayNotAdded) {
 }
 
 TEST_F(GrpcTaskServiceTest, TestTaskWithUncceptableDatesAdded) {
-    TestTaskWithDate(service::max_date + days(365), false);
-    TestTaskWithDate(service::max_date + days(366), false);
+    TestTaskWithDate(grpc_task_service::max_date + days(365), false);
+    TestTaskWithDate(grpc_task_service::max_date + days(366), false);
     TestTaskWithDate(day_clock::local_day() - days(6), false);
     TestTaskWithDate(day_clock::local_day() - days(365), false);
     TestTaskWithDate(day_clock::local_day() - days(366), false);
@@ -119,11 +120,11 @@ TEST_F(GrpcTaskServiceTest, TestTaskTodayAdded) {
 }
 
 TEST_F(GrpcTaskServiceTest, TestTaskMaxDayAdded) {
-    TestTaskWithDate(service::max_date, true);
+    TestTaskWithDate(grpc_task_service::max_date, true);
 }
 
 TEST_F(GrpcTaskServiceTest, TestTaskWithAcceptableDatesAdded) {
-    TestTaskWithDate(service::max_date - days(1), true);
+    TestTaskWithDate(grpc_task_service::max_date - days(1), true);
     TestTaskWithDate(day_clock::local_day() + days(6), true);
     TestTaskWithDate(day_clock::local_day() + days(8), true);
 }
@@ -225,7 +226,7 @@ TEST_F(GrpcTaskServiceTest, TestGetAllTasks) {
     auto mm = std::make_unique<MockRepository>();
     auto mmh = std::make_unique<MockRepositoryHolder>();
     EXPECT_CALL(*mmh, GetRepository).WillRepeatedly(ReturnRef(*mm));
-    EXPECT_CALL(*mm, getToDate(service::max_date)).Times(1);
+    EXPECT_CALL(*mm, getToDate(grpc_task_service::max_date)).Times(1);
     GrpcTaskServiceImpl ts = GrpcTaskServiceImpl(std::move(mmh));
     EmptyRequest request;
     TaskDTOList response;

@@ -3,8 +3,14 @@
 //
 
 #include "GrpcTaskServiceImpl.h"
+using namespace grpc_task_service;
 
-void ConvertTogRPC(TaskCreationResult& repos_result, AddTaskResponse* response) {
+bool grpc_task_service::validate_date(const BoostDate& date) {
+    return  date <= grpc_task_service::max_date &&
+            date >= boost::gregorian::day_clock::local_day();
+}
+
+void grpc_task_service::ConvertTogRPC(TaskCreationResult& repos_result, AddTaskResponse* response) {
     bool status =       repos_result.getSuccessStatus();
     auto error_msg =    repos_result.getErrorMessage();
     auto id =           repos_result.getCreatedTaskID();
@@ -20,7 +26,7 @@ void ConvertTogRPC(TaskCreationResult& repos_result, AddTaskResponse* response) 
 }
 
 template<class ReposResult>
-void ConvertTogRPC(ReposResult& repos_result, DefaultResponse* response) {
+void grpc_task_service::ConvertTogRPC(ReposResult& repos_result, DefaultResponse* response) {
     bool status =       repos_result.getSuccessStatus();
     auto error_msg =    repos_result.getErrorMessage();
     response->set_success(status);
@@ -29,7 +35,7 @@ void ConvertTogRPC(ReposResult& repos_result, DefaultResponse* response) {
     }
 }
 
-void ConvertTogRPC(const std::vector<RepositoryTaskDTO>& tasks, TaskDTOList* response) {
+void grpc_task_service::ConvertTogRPC(const std::vector<RepositoryTaskDTO>& tasks, TaskDTOList* response) {
     for (const auto& task : tasks) {
         GrpcTaskDTO* grpc_dto = response->add_tasks();
         auto id =         std::make_unique<TaskIdMessage>();
@@ -127,7 +133,7 @@ GrpcTaskServiceImpl::GetAllTasks(ServerContext *context, const EmptyRequest *req
     std::vector<RepositoryTaskDTO> result_set =
             repository_holder_
                     ->GetRepository()
-                    .getToDate(service::max_date);
+                    .getToDate(max_date);
     ConvertTogRPC(result_set, response);
     return Status::OK;
 }

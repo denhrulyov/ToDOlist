@@ -4,6 +4,8 @@
 
 #include "core/api/GrpcTaskServiceImpl.h"
 
+using grpc_task_service::GrpcTaskServiceImpl;
+
 int main() {
     std::string server_address("0.0.0.0:50051");
     grpc::EnableDefaultHealthCheckService(true);
