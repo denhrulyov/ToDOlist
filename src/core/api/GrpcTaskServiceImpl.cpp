@@ -217,3 +217,17 @@ Status GrpcTaskServiceImpl::CompleteTask(ServerContext *context, const TaskIdMes
     ConvertTogRPC(res_success, response);
     return Status::OK;
 }
+
+Status GrpcTaskServiceImpl::SaveToFile(ServerContext *context, const StringRequest *request, DefaultResponse *response) {
+    bool saved = repository_holder_->SaveRepositoryToFile(request->str());
+    auto result = saved ? RequestResult::success() : RequestResult(false, "Could not save");
+    ConvertTogRPC(result, response);
+    return Status::OK;
+}
+
+Status GrpcTaskServiceImpl::LoadFromFile(ServerContext *context, const StringRequest *request, DefaultResponse *response) {
+    bool loaded = repository_holder_->LoadRepositoryFromFile(request->str());
+    auto result = loaded ? RequestResult::success() : RequestResult(false, "Could not load");
+    ConvertTogRPC(result, response);
+    return Status::OK;
+}

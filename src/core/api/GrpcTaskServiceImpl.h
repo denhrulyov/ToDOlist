@@ -43,6 +43,8 @@ public:
     Status    DeleteTask(ServerContext* context, const TaskIdMessage* request, DefaultResponse* response) override;
     Status    PostponeTask(ServerContext* context, const PostponeRequest* request, DefaultResponse* response) override;
     Status    CompleteTask(ServerContext* context, const TaskIdMessage* request, DefaultResponse* response) override;
+    Status    SaveToFile(ServerContext* context, const StringRequest* request,DefaultResponse* response) override;
+    Status    LoadFromFile(ServerContext* context, const StringRequest* request,DefaultResponse* response) override;
 
 private:
     std::unique_ptr<RepositoryHolder> repository_holder_;

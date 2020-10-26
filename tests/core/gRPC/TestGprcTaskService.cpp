@@ -482,7 +482,70 @@ TEST_F(GrpcTaskServiceTest, TestCompleteNotExistingTask) {
     EXPECT_FALSE(response.success());
 }
 
+TEST_F(GrpcTaskServiceTest, TestLoadFromFileReturnsSuccess) {
+    auto mm = std::make_unique<MockRepository>();
+    auto mmh = std::make_unique<MockRepositoryHolder>();
+    EXPECT_CALL(*mmh, GetRepository).WillRepeatedly(ReturnRef(*mm));
 
+    std::string filepath = "abacabadabacaba";
+    EXPECT_CALL(*mmh, LoadRepositoryFromFile(filepath)).Times(1).WillOnce(Return(true));
 
+    GrpcTaskServiceImpl ts = GrpcTaskServiceImpl(std::move(mmh));
+    StringRequest request;
+    request.set_str(filepath);
+    DefaultResponse response;
 
+    EXPECT_TRUE(ts.LoadFromFile(nullptr, &request, &response).ok());
+    EXPECT_TRUE(response.success());
+}
 
+TEST_F(GrpcTaskServiceTest, TestLoadFromFileReturnsErrorOnFail) {
+    auto mm = std::make_unique<MockRepository>();
+    auto mmh = std::make_unique<MockRepositoryHolder>();
+    EXPECT_CALL(*mmh, GetRepository).WillRepeatedly(ReturnRef(*mm));
+
+    std::string filepath = "abacabadabacaba";
+    EXPECT_CALL(*mmh, LoadRepositoryFromFile(filepath)).Times(1).WillOnce(Return(false));
+
+    GrpcTaskServiceImpl ts = GrpcTaskServiceImpl(std::move(mmh));
+    StringRequest request;
+    request.set_str(filepath);
+    DefaultResponse response;
+
+    EXPECT_TRUE(ts.LoadFromFile(nullptr, &request, &response).ok());
+    EXPECT_FALSE(response.success());
+}
+
+TEST_F(GrpcTaskServiceTest, TestSaveToFileReturnsSuccess) {
+    auto mm = std::make_unique<MockRepository>();
+    auto mmh = std::make_unique<MockRepositoryHolder>();
+    EXPECT_CALL(*mmh, GetRepository).WillRepeatedly(ReturnRef(*mm));
+
+    std::string filepath = "abacabadabacaba";
+    EXPECT_CALL(*mmh, SaveRepositoryToFile(filepath)).Times(1).WillOnce(Return(true));
+
+    GrpcTaskServiceImpl ts = GrpcTaskServiceImpl(std::move(mmh));
+    StringRequest request;
+    request.set_str(filepath);
+    DefaultResponse response;
+
+    EXPECT_TRUE(ts.SaveToFile(nullptr, &request, &response).ok());
+    EXPECT_TRUE(response.success());
+}
+
+TEST_F(GrpcTaskServiceTest, TestSaveToFileReturnsErrorOnFail) {
+    auto mm = std::make_unique<MockRepository>();
+    auto mmh = std::make_unique<MockRepositoryHolder>();
+    EXPECT_CALL(*mmh, GetRepository).WillRepeatedly(ReturnRef(*mm));
+
+    std::string filepath = "abacabadabacaba";
+    EXPECT_CALL(*mmh, SaveRepositoryToFile(filepath)).Times(1).WillOnce(Return(false));
+
+    GrpcTaskServiceImpl ts = GrpcTaskServiceImpl(std::move(mmh));
+    StringRequest request;
+    request.set_str(filepath);
+    DefaultResponse response;
+
+    EXPECT_TRUE(ts.SaveToFile(nullptr, &request, &response).ok());
+    EXPECT_FALSE(response.success());
+}
