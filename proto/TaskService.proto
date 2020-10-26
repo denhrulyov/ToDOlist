@@ -3,9 +3,20 @@ syntax = "proto3";
 import "task.proto";
 
 service GrpcTaskService {
-  rpc GetTaskByID (TaskIdMessage) returns (GetTaskByIDResponse) {}
-  rpc AddTask (TaskData) returns (AddTaskResponse) {}
-  rpc AddSubTask (AddSubTaskRequest) returns (AddTaskResponse) {}
+  rpc GetTaskByID           (TaskIdMessage)         returns (GetTaskByIDResponse) {}
+  rpc AddTask               (TaskData)              returns (AddTaskResponse) {}
+  rpc AddSubTask            (AddSubTaskRequest)     returns (AddTaskResponse) {}
+  rpc GetAllWithLabel       (StringRequest)         returns (TaskDTOList) {}
+  rpc GetToday              (EmptyRequest)          returns (TaskDTOList) {}
+  rpc GetThisWeek           (EmptyRequest)          returns (TaskDTOList) {}
+  rpc GetAllTasks           (EmptyRequest)          returns (TaskDTOList) {}
+  rpc GetSubTasks           (TaskIdMessage)         returns (TaskDTOList) {}
+  rpc GetSubTasksRecursive  (TaskIdMessage)         returns (TaskDTOList) {}
+  rpc DeleteTask            (TaskIdMessage)         returns (DefaultResponse) {}
+  rpc PostponeTask          (TaskIdMessage)         returns (DefaultResponse) {}
+  rpc CompleteTask          (TaskIdMessage)         returns (DefaultResponse) {}
+  rpc SaveToFile            (StringRequest)         returns (DefaultResponse) {}
+  rpc LoadFromFile          (StringRequest)         returns (DefaultResponse) {}
 }
 
 // Just an wrapper serving as optional
@@ -23,4 +34,26 @@ message AddTaskResponse {
   bool success = 1;
   TaskIdMessage created_id = 2;
   string error_msg = 3;
+}
+
+message GrpcTaskDTO {
+  TaskIdMessage id = 1;
+  TaskData task = 2;
+}
+
+message TaskDTOList {
+  repeated GrpcTaskDTO tasks = 1;
+}
+
+message StringRequest {
+  string str = 1;
+}
+
+message EmptyRequest {
+
+}
+
+message DefaultResponse {
+  bool success = 1;
+  string error_msg = 2;
 }
