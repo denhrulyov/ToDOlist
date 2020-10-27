@@ -36,11 +36,13 @@ void grpc_task_service::ConvertTogRPC(ReposResult& repos_result, DefaultResponse
 }
 
 void grpc_task_service::ConvertTogRPC(const std::vector<RepositoryTaskDTO>& tasks, TaskDTOList* response) {
-    for (const auto& task : tasks) {
-        GrpcTaskDTO* grpc_dto = response->add_tasks();
+    for (auto& task : tasks) {
         auto id =         std::make_unique<TaskIdMessage>();
         auto grpc_task =  std::make_unique<TaskData>();
+        proto_convert::WriteToMessage(task, grpc_task.get());
         id->set_id(task.getId());
+
+        GrpcTaskDTO* grpc_dto = response->add_tasks();
         grpc_dto->set_allocated_id(id.release());
         grpc_dto->set_allocated_task(grpc_task.release());
     }

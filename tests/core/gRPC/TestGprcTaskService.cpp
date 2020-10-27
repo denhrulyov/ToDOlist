@@ -54,6 +54,35 @@ TEST_F(GrpcTaskServiceTest, ConvertTogRPCTaskCreationResultBad) {
     ASSERT_FALSE(response.success());
 }
 
+TEST_F(GrpcTaskServiceTest, ConvertTogRPCTaskDTOList) {
+    auto result = std::vector<RepositoryTaskDTO> {
+            RepositoryTaskDTO::create(
+                    TaskID(1), "name1", TaskPriority::FIRST, "lbl",
+                    day_clock::local_day() + days(1)),
+            RepositoryTaskDTO::create(
+                    TaskID(2), "name2", TaskPriority::SECOND, "lbl",
+                    day_clock::local_day() + days(1000)),
+            RepositoryTaskDTO::create(
+                    TaskID(3), "name3", TaskPriority::NONE, "lbl",
+                    day_clock::local_day() + days(10))
+    };
+    TaskDTOList response;
+    ConvertTogRPC(result, &response);
+    ASSERT_EQ(result.size(), response.tasks().size());
+    for (int i = 0; i < result.size(); ++i) {
+        ASSERT_EQ(result[i].getName(), response.tasks().at(i).task().name());
+        ASSERT_EQ(
+                result[i].getPriority(),
+                proto_convert::RestorePriority(response.tasks().at(i).task().prior()));
+        ASSERT_EQ(result[i].getLabel(), response.tasks().at(i).task().label());
+        ASSERT_EQ(
+                result[i].getDate(),
+                proto_convert::RestoreDate(response.tasks().at(i).task().date()));
+        ASSERT_EQ(result[i].isCompleted(), response.tasks().at(i).task().completed());
+    }
+}
+
+
 TEST_F(GrpcTaskServiceTest, TestGetTaskByID) {
     auto mrh = std::make_unique<MockRepositoryHolder>();
     StrictMock<MockRepository> mr;
