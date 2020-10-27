@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+import "task.proto";
+import "google/protobuf/timestamp.proto";
+
+service GrpcTaskService {
+  rpc GetTaskByID           (TaskIdMessage)         returns (GetTaskByIDResponse) {}
+  rpc AddTask               (TaskData)              returns (AddTaskResponse) {}
+  rpc AddSubTask            (AddSubTaskRequest)     returns (AddTaskResponse) {}
+  rpc GetAllWithLabel       (StringMessage)         returns (TaskDTOList) {}
+  rpc GetToday              (EmptyRequest)          returns (TaskDTOList) {}
+  rpc GetThisWeek           (EmptyRequest)          returns (TaskDTOList) {}
+  rpc GetAllTasks           (EmptyRequest)          returns (TaskDTOList) {}
+  rpc GetSubTasks           (TaskIdMessage)         returns (TaskDTOList) {}
+  rpc GetSubTasksRecursive  (TaskIdMessage)         returns (TaskDTOList) {}
+  rpc DeleteTask            (TaskIdMessage)         returns (DefaultResponse) {}
+  rpc PostponeTask          (PostponeRequest)       returns (DefaultResponse) {}
+  rpc CompleteTask          (TaskIdMessage)         returns (DefaultResponse) {}
+  rpc SaveToFile            (StringMessage)         returns (DefaultResponse) {}
+  rpc LoadFromFile          (StringMessage)         returns (DefaultResponse) {}
+}
+
+// Just an wrapper serving as optional
+// response.has_task() == false is interpreted as nullopt
+message GetTaskByIDResponse {
+  TaskData task = 1;
+}
+
+message AddSubTaskRequest {
+  TaskIdMessage parent = 1;
+  TaskData task = 2;
+}
+
+message AddTaskResponse {
+  bool success = 1;
+  TaskIdMessage created_id = 2;
+  string error_msg = 3;
+}
+
+message GrpcTaskDTO {
+  TaskIdMessage id = 1;
+  TaskData task = 2;
+}
+
+message TaskDTOList {
+  repeated GrpcTaskDTO tasks = 1;
+}
+
+message PostponeRequest {
+  TaskIdMessage id = 1;
+  google.protobuf.Timestamp date_postpone = 2;
+}
+
+
+message StringMessage {
+  string str = 1;
+}
+
+message EmptyRequest {
+
+}
+
+message DefaultResponse {
+  bool success = 1;
+  string error_msg = 2;
+}
