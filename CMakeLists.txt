@@ -107,7 +107,6 @@ target_link_libraries(ToDOList ${Boost_LIBRARIES} ${_REFLECTION}
         ${_PROTOBUF_LIBPROTOBUF})
 
 add_executable(Server src/Server.cpp
-        src/core/api/GrpcTaskServiceImpl.h src/core/api/GrpcTaskServiceImpl.cpp
         ${Boost_LIBRARIES}
         ${CLI_SOURCES} ${CLI_HEADERS}
         ${CORE_SOURCES} ${CORE_HEADERS}
@@ -121,7 +120,6 @@ target_link_libraries(Server
         ${_PROTOBUF_LIBPROTOBUF})
 
 add_executable(Client src/Client.cpp
-        src/core/api/GrpcTaskServiceImpl.h src/core/api/GrpcTaskServiceImpl.cpp
         ${CLI_SOURCES} ${CLI_HEADERS}
         ${CORE_SOURCES} ${CORE_HEADERS}
         ${PROTO_SRCS} ${PROTO_HDRS}
