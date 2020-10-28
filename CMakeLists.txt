@@ -96,6 +96,8 @@ file( GLOB_RECURSE CLI_SOURCES src/cli/*.cpp)
 file( GLOB_RECURSE CLI_HEADERS src/cli/*.h)
 file( GLOB_RECURSE CORE_HEADERS src/core/*.h)
 file( GLOB_RECURSE CORE_SOURCES src/core/*.cpp)
+file( GLOB_RECURSE CLIENT src/client/*)
+file( GLOB_RECURSE SERVER src/server/*)
 add_executable(ToDOList src/main.cpp
         ${CLI_SOURCES} ${CLI_HEADERS}
         ${CORE_SOURCES} ${CORE_HEADERS}
@@ -106,7 +108,7 @@ target_link_libraries(ToDOList ${Boost_LIBRARIES} ${_REFLECTION}
         ${_GRPC_GRPCPP}
         ${_PROTOBUF_LIBPROTOBUF})
 
-add_executable(Server src/Server.cpp
+add_executable(Server ${SERVER}
         ${Boost_LIBRARIES}
         ${CLI_SOURCES} ${CLI_HEADERS}
         ${CORE_SOURCES} ${CORE_HEADERS}
@@ -119,7 +121,7 @@ target_link_libraries(Server
         ${_GRPC_GRPCPP}
         ${_PROTOBUF_LIBPROTOBUF})
 
-add_executable(Client src/Client.cpp
+add_executable(Client ${CLIENT}
         ${CLI_SOURCES} ${CLI_HEADERS}
         ${CORE_SOURCES} ${CORE_HEADERS}
         ${PROTO_SRCS} ${PROTO_HDRS}

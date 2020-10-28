@@ -10,10 +10,14 @@ int main() {
     std::string server_address("0.0.0.0:50051");
     grpc::EnableDefaultHealthCheckService(true);
     grpc::reflection::InitProtoReflectionServerBuilderPlugin();
+
+    auto creator =      std::make_unique<RepositoryCreator>();
+    auto pers_creator = std::make_unique<PersisterCreator>();
+    auto holder =       std::make_unique<RepositoryHolder>(
+            std::move(creator),
+            std::move(pers_creator));
     GrpcTaskServiceImpl service(
-            std::make_unique<RepositoryHolder>(
-                    std::make_unique<RepositoryCreator>(),
-                    std::make_unique<PersisterCreator>()));
+            std::move(holder));
     ServerBuilder builder;
     // Listen on the given address without any authentication mechanism.
     builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());

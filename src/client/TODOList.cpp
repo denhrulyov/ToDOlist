@@ -5,11 +5,9 @@
 #include "TODOList.h"
 
 std::unique_ptr<TaskServiceInterface> todo_list::createService() {
-    auto creator =      std::make_unique<RepositoryCreator>();
-    auto pers_creator = std::make_unique<PersisterCreator>();
-    auto holder =       std::make_unique<RepositoryHolder>(
-                            std::move(creator),
-                            std::move(pers_creator));
+    std::string server_address("0.0.0.0:50051");
     return
-    std::make_unique<TaskService>(std::move(holder));
+    std::make_unique<GrpcTaskServiceAdaptor>(
+            GrpcTaskService::NewStub(grpc::CreateChannel(
+            server_address, grpc::InsecureChannelCredentials())));
 }
