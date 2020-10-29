@@ -30,7 +30,7 @@ std::vector<TaskDTO> RestoreFromGrpcDTOList(const TaskDTOList& all) {
 
 TaskCreationResult RestoreResult(const AddTaskResponse& response) {
     bool status =         response.success();
-    auto error_msg =      status ? std::make_optional(response.error_msg()) : std::nullopt;
+    auto error_msg =      status ? std::nullopt : std::make_optional(response.error_msg());
     return TaskCreationResult(
             TaskID(response.created_id().id()),
             status,

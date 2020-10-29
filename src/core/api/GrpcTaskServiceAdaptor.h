@@ -61,7 +61,7 @@ TaskCreationResult      RestoreResult(const AddTaskResponse& response);
 template<class Result>
 Result RestoreResult(const DefaultResponse& response) {
     bool status =         response.success();
-    auto error_msg =      status ? std::make_optional(response.error_msg()) : std::nullopt;
+    auto error_msg =      status ? std::nullopt : std::make_optional(response.error_msg());
     return Result(status, error_msg);
 }
 
