@@ -17,7 +17,7 @@ using grpc::Status;
 
 class GrpcTaskServiceAdaptor : public TaskServiceInterface {
 public:
-    explicit GrpcTaskServiceAdaptor(std::unique_ptr<GrpcTaskService::Stub> stub)
+    explicit GrpcTaskServiceAdaptor(std::unique_ptr<GrpcTaskService::StubInterface> stub)
     :
     stub_(std::move(stub))
     {}
@@ -46,7 +46,7 @@ public:
     ~GrpcTaskServiceAdaptor() override =                    default;
 
 private:
-    std::unique_ptr<GrpcTaskService::Stub>                  stub_;
+    std::unique_ptr<GrpcTaskService::StubInterface>         stub_;
 };
 
 std::vector<TaskDTO>    RestoreFromGrpcDTOList(const TaskDTOList& all);

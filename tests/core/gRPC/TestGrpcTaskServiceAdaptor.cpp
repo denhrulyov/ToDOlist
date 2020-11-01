@@ -4,6 +4,7 @@
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
+#include "TaskService_mock.grpc.pb.h"
 #include "core/api/GrpcTaskServiceAdaptor.h"
 
 using ::testing::AnyNumber;
@@ -17,6 +18,7 @@ using ::testing::StrictMock;
 
 using namespace boost::gregorian;
 
+/*
 class MockGrpcTaskService : public GrpcTaskService::StubInterface {
 
 public:
@@ -35,7 +37,7 @@ public:
     MOCK_METHOD(Status, SaveToFile, (ClientContext* context, const StringMessage& request, DefaultResponse* response), (override));
     MOCK_METHOD(Status, LoadFromFile, (ClientContext* context, const StringMessage& request, DefaultResponse* response), (override));
 };
-
+*/
 
 class GrpcTaskServiceAdaptorTest : public ::testing::Test {
 
@@ -167,4 +169,110 @@ TEST_F(GrpcTaskServiceAdaptorTest, TestRestoreAddTaskResult2) {
     ASSERT_TRUE(transformed.getSuccessStatus());
     ASSERT_FALSE(transformed.getErrorMessage());
     ASSERT_EQ(transformed.getCreatedTaskID(), rsp.created_id().id());
+}
+
+TEST_F(GrpcTaskServiceAdaptorTest, TestGetToday) {
+    auto stub_init = std::make_unique<MockGrpcTaskServiceStub>();
+    auto& stub = *stub_init;
+    GrpcTaskServiceAdaptor ad(std::move(stub_init));
+    EXPECT_CALL(stub, GetToday).Times(1);
+    ad.getToday();
+}
+
+TEST_F(GrpcTaskServiceAdaptorTest, TestGetThisWeek) {
+    auto stub_init = std::make_unique<MockGrpcTaskServiceStub>();
+    auto& stub = *stub_init;
+    GrpcTaskServiceAdaptor ad(std::move(stub_init));
+    EXPECT_CALL(stub, GetThisWeek).Times(1);
+    ad.getThisWeek();
+}
+
+TEST_F(GrpcTaskServiceAdaptorTest, TestGetAll) {
+    auto stub_init = std::make_unique<MockGrpcTaskServiceStub>();
+    auto& stub = *stub_init;
+    GrpcTaskServiceAdaptor ad(std::move(stub_init));
+    EXPECT_CALL(stub, GetAllTasks).Times(1);
+    ad.getAllTasks();
+}
+
+TEST_F(GrpcTaskServiceAdaptorTest, TestGetAllWithLabel) {
+    auto stub_init = std::make_unique<MockGrpcTaskServiceStub>();
+    auto& stub = *stub_init;
+    GrpcTaskServiceAdaptor ad(std::move(stub_init));
+    EXPECT_CALL(stub, GetAllWithLabel).Times(1);
+    ad.getAllWithLabel("fff");
+}
+
+TEST_F(GrpcTaskServiceAdaptorTest, TestGetTaskByID) {
+    auto stub_init = std::make_unique<MockGrpcTaskServiceStub>();
+    auto& stub = *stub_init;
+    GrpcTaskServiceAdaptor ad(std::move(stub_init));
+    EXPECT_CALL(stub, GetTaskByID).Times(1);
+    ad.getTaskByID(TaskID(1));
+}
+
+TEST_F(GrpcTaskServiceAdaptorTest, TestGetSubtasks) {
+    auto stub_init = std::make_unique<MockGrpcTaskServiceStub>();
+    auto& stub = *stub_init;
+    GrpcTaskServiceAdaptor ad(std::move(stub_init));
+    EXPECT_CALL(stub, GetSubTasks).Times(1);
+    ad.getSubTasks(TaskID(1));
+}
+
+TEST_F(GrpcTaskServiceAdaptorTest, TestGetSubtasksRecursive) {
+    auto stub_init = std::make_unique<MockGrpcTaskServiceStub>();
+    auto& stub = *stub_init;
+    GrpcTaskServiceAdaptor ad(std::move(stub_init));
+    EXPECT_CALL(stub, GetSubTasksRecursive).Times(1);
+    ad.getSubTasksRecursive(TaskID(1));
+}
+
+TEST_F(GrpcTaskServiceAdaptorTest, TestPostpone) {
+    auto stub_init = std::make_unique<MockGrpcTaskServiceStub>();
+    auto& stub = *stub_init;
+    GrpcTaskServiceAdaptor ad(std::move(stub_init));
+    EXPECT_CALL(stub, PostponeTask).Times(1);
+    ad.postponeTask(TaskID(1), day_clock::local_day());
+}
+
+TEST_F(GrpcTaskServiceAdaptorTest, TestDelete) {
+    auto stub_init = std::make_unique<MockGrpcTaskServiceStub>();
+    auto& stub = *stub_init;
+    GrpcTaskServiceAdaptor ad(std::move(stub_init));
+    EXPECT_CALL(stub, DeleteTask).Times(1);
+    ad.deleteTask(TaskID(1));
+}
+
+TEST_F(GrpcTaskServiceAdaptorTest, TestComplete) {
+    auto stub_init = std::make_unique<MockGrpcTaskServiceStub>();
+    auto& stub = *stub_init;
+    GrpcTaskServiceAdaptor ad(std::move(stub_init));
+    EXPECT_CALL(stub, CompleteTask).Times(1);
+    ad.complete(TaskID(1));
+}
+
+TEST_F(GrpcTaskServiceAdaptorTest, TestAddTask) {
+    auto stub_init = std::make_unique<MockGrpcTaskServiceStub>();
+    auto& stub = *stub_init;
+    GrpcTaskServiceAdaptor ad(std::move(stub_init));
+    EXPECT_CALL(stub, AddTask).Times(1);
+    ad.addTask(TaskDTO::create(
+            "aa",
+            TaskPriority::FIRST,
+            "bb",
+            day_clock::local_day() + days(100)));
+}
+
+TEST_F(GrpcTaskServiceAdaptorTest, TestAddSubTask) {
+    auto stub_init = std::make_unique<MockGrpcTaskServiceStub>();
+    auto& stub = *stub_init;
+    GrpcTaskServiceAdaptor ad(std::move(stub_init));
+    EXPECT_CALL(stub, AddSubTask).Times(1);
+    ad.addSubTask(
+            TaskID(1),
+            TaskDTO::create(
+            "aa",
+            TaskPriority::FIRST,
+            "bb",
+            day_clock::local_day() + days(100)));
 }

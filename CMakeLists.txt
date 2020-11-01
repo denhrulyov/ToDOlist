@@ -64,7 +64,7 @@ add_custom_command(
         OUTPUT "${ts_proto_srcs}" "${ts_proto_hdrs}" "${ts_grpc_srcs}" "${ts_grpc_hdrs}"
         COMMAND protoc
         ARGS -I "${ts_proto_path}"
-        --grpc_out "${CMAKE_CURRENT_BINARY_DIR}"
+        --grpc_out=generate_mock_code=true:"${CMAKE_CURRENT_BINARY_DIR}"
         --cpp_out "${CMAKE_CURRENT_BINARY_DIR}"
         --plugin=protoc-gen-grpc="${_GRPC_CPP_PLUGIN_EXECUTABLE}"
         ${ts_proto}
