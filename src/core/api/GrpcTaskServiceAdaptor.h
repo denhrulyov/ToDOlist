@@ -49,10 +49,34 @@ private:
     std::unique_ptr<GrpcTaskService::StubInterface>         stub_;
 };
 
+/*
+ * Converts gRPC task list response to vector of task dto
+ *
+ * @param   gRPC task list response
+ * @return  vector of task dto
+ */
 std::vector<TaskDTO>    RestoreFromGrpcDTOList(const TaskDTOList& all);
-TaskDTO                 RestoreFromGrpcDTO(const GrpcTaskDTO& all);
+/*
+ * Converts gRPC task dto response to TaskService task dto
+ *
+ * @param   gRPC task dto response
+ * @return  TaskService task dto
+ */
+TaskDTO                 RestoreFromGrpcDTO(const GrpcTaskDTO& task);
+/*
+ * Converts result given by repository to gRPC response
+ *
+ * @param gRPC response
+ * @return analogue compatible with TaskService api
+ */
 template<class Result>
 Result                  RestoreResult(const DefaultResponse& response);
+/*
+ * Converts result given by repository to gRPC response
+ *
+ * @param gRPC response containing info about task creation
+ * @return analogue compatible with TaskService api
+ */
 TaskCreationResult      RestoreResult(const AddTaskResponse& response);
 
 

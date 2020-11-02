@@ -16,10 +16,10 @@ TaskDTO RestoreFromGrpcDTO(const GrpcTaskDTO& dto) {
             );
 }
 
-std::vector<TaskDTO> RestoreFromGrpcDTOList(const TaskDTOList& all) {
+std::vector<TaskDTO> RestoreFromGrpcDTOList(const TaskDTOList& task) {
     std::vector<TaskDTO> converted;
     std::transform(
-            all.tasks().begin(), all.tasks().end(),
+            task.tasks().begin(), task.tasks().end(),
             std::back_inserter(converted),
             [] (const GrpcTaskDTO& grpc_dto) -> TaskDTO {
                 return RestoreFromGrpcDTO(grpc_dto);
