@@ -58,12 +58,3 @@ RepositoryTaskDTO proto_convert::RestoreFromMessage(const TaskData &message) {
                            RestoreDate(message.date()),
                            message.completed());
 }
-
-bool proto_convert::WriteToMessage(const RepositoryTaskDTO &task, TaskData *message) {
-    message->set_name(task.getName());
-    message->set_prior(GetProtobufPriority(task.getPriority()));
-    message->set_label(task.getLabel());
-    message->set_allocated_date(GetProtobufDate(task.getDate()).release());
-    message->set_completed(task.isCompleted());
-    return true;
-}
